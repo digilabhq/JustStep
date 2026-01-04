@@ -888,6 +888,24 @@
             line-height: 1.7;
         }
 
+        /* Inline video area inside welcome modal */
+        .welcome-video-wrap {
+            width: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 2px solid #3d3d3d;
+            margin-top: 12px;
+            display: none; /* shown after pressing Watch button */
+            background: #000;
+        }
+
+        .welcome-video {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            border: 0;
+            display: block;
+        }
+
         @media (max-width: 420px) {
             #welcome-modal .milestone-icon-large {
                 width: 64px;
@@ -1076,7 +1094,7 @@
         <button class="milestone-close" onclick="app.closeMilestone()">Continue</button>
     </div>
 
-    <!-- Welcome Modal (FIRST OPEN) -->
+    <!-- Welcome Modal (EVERY APP OPEN) -->
     <div class="overlay" id="welcome-overlay"></div>
     <div class="milestone-notification" id="welcome-modal">
         <div class="milestone-icon-large">👟</div>
@@ -1101,12 +1119,20 @@
             </p>
         </div>
 
-        <a href="https://www.youtube.com/watch?v=ZuHHYRD6AHQ"
-           target="_blank"
-           class="log-button"
-           style="display: block; text-decoration: none; margin-top: 14px; margin-bottom: 12px;">
+        <button class="log-button" onclick="app.playWelcomeVideo()" style="margin-top: 14px;">
             ▶ Watch the full video
-        </a>
+        </button>
+
+        <div class="welcome-video-wrap" id="welcome-video-wrap">
+            <iframe
+                id="welcome-video"
+                class="welcome-video"
+                src=""
+                title="JustStep Welcome Video"
+                allow="autoplay; encrypted-media; picture-in-picture"
+                allowfullscreen
+            ></iframe>
+        </div>
 
         <button class="milestone-close" onclick="app.closeWelcome()">Let's Go</button>
     </div>
@@ -1152,7 +1178,7 @@
                 this.updateDashboard();
                 this.renderCalendar();
                 this.updateGoalsUI();
-                this.showWelcome(); // <-- added
+                this.showWelcome(); // shows every app open
             },
 
             // Load data from localStorage
@@ -1161,7 +1187,6 @@
                 if (saved) {
                     const parsed = JSON.parse(saved);
                     this.data = { ...this.data, ...parsed };
-                    // Ensure statsView exists (for users upgrading from old version)
                     if (!this.data.currentView.statsView) {
                         this.data.currentView.statsView = 'week';
                     }
@@ -1173,21 +1198,44 @@
                 localStorage.setItem('justStepData', JSON.stringify(this.data));
             },
 
-            // Show welcome message (first launch only)
+            // Show welcome message (EVERY launch)
             showWelcome() {
-                const hasSeenWelcome = localStorage.getItem('justStepWelcomeSeen');
-                if (hasSeenWelcome) return;
-
                 document.getElementById('welcome-overlay').classList.add('show');
                 document.getElementById('welcome-modal').classList.add('show');
 
-                localStorage.setItem('justStepWelcomeSeen', 'true');
+                // Always reset video area on open
+                this.resetWelcomeVideo();
             },
 
             // Close welcome modal
             closeWelcome() {
                 document.getElementById('welcome-overlay').classList.remove('show');
                 document.getElementById('welcome-modal').classList.remove('show');
+
+                // Stop video when closing
+                this.resetWelcomeVideo();
+            },
+
+            // Ensure video always starts from the beginning
+            playWelcomeVideo() {
+                const wrap = document.getElementById('welcome-video-wrap');
+                const iframe = document.getElementById('welcome-video');
+
+                // Show player area
+                wrap.style.display = 'block';
+
+                // Reset src then set fresh embed URL (forces start at 0 every time)
+                iframe.src = '';
+                const cacheBust = Date.now();
+                iframe.src = `https://www.youtube.com/embed/ZuHHYRD6AHQ?autoplay=1&start=0&rel=0&playsinline=1&mute=1&cb=${cacheBust}`;
+            },
+
+            // Hide + clear iframe src (stops playback)
+            resetWelcomeVideo() {
+                const wrap = document.getElementById('welcome-video-wrap');
+                const iframe = document.getElementById('welcome-video');
+                wrap.style.display = 'none';
+                iframe.src = '';
             },
 
             // Setup log date input
@@ -1253,7 +1301,6 @@
                     return;
                 }
 
-                // For cardio activities
                 if (['walk', 'run', 'dog', 'hiking'].includes(activityType)) {
                     valueContainer.innerHTML = `
                         <div class="activity-value-input">
@@ -1261,18 +1308,14 @@
                             <span class="unit">${unit}</span>
                         </div>
                     `;
-                }
-                // For push-ups, pull-ups, and roller abs
-                else if (['pushups', 'pullups', 'rollerabs'].includes(activityType)) {
+                } else if (['pushups', 'pullups', 'rollerabs'].includes(activityType)) {
                     valueContainer.innerHTML = `
                         <div class="activity-value-input">
                             <input type="number" placeholder="0" id="value-${id}" />
                             <span class="unit">reps</span>
                         </div>
                     `;
-                }
-                // For workout days
-                else {
+                } else {
                     valueContainer.innerHTML = `
                         <div class="workout-confirmed">
                             ✓ Workout logged
@@ -1312,19 +1355,17 @@
                         timestamp: new Date().toISOString()
                     };
 
-                    // Get value for cardio and reps-based exercises
                     const valueElement = document.getElementById(`value-${i}`);
                     if (valueElement) {
                         const value = parseFloat(valueElement.value);
                         if (value && value > 0) {
                             if (['walk', 'run', 'dog', 'hiking'].includes(type)) {
-                                // Convert to km for storage if in miles
                                 activity.distance = this.data.goals.unitPreference === 'miles' ? value * 1.60934 : value;
                             } else if (['pushups', 'pullups', 'rollerabs'].includes(type)) {
                                 activity.reps = value;
                             }
                         } else if (['walk', 'run', 'dog', 'hiking', 'pushups', 'pullups', 'rollerabs'].includes(type)) {
-                            continue; // Skip if no value entered for activities that need it
+                            continue;
                         }
                     }
 
@@ -1336,23 +1377,18 @@
                     return;
                 }
 
-                // Add to data
                 this.data.activities.push(...activities);
                 this.saveData();
 
-                // Check for milestones
                 this.checkMilestones();
 
-                // Clear form
                 document.getElementById('activities-container').innerHTML = '';
                 this.activityCounter = 0;
                 this.addActivityRow();
 
-                // Update UI
                 this.updateDashboard();
                 this.renderCalendar();
 
-                // Show success
                 alert('Activity logged successfully!');
             },
 
@@ -1361,7 +1397,6 @@
                 const stats = this.calculateStats();
                 const newMilestones = [];
 
-                // Check mileage milestones (every 50)
                 const milesAchieved = Math.floor(stats.totalDistance / 50) * 50;
                 const lastMilageMilestone = this.data.milestones.filter(m => m.type === 'mileage').reduce((max, m) => Math.max(max, m.value), 0);
 
@@ -1377,7 +1412,6 @@
                     });
                 }
 
-                // Check workout milestones (every 25)
                 const workoutsAchieved = Math.floor(stats.totalWorkouts / 25) * 25;
                 const lastWorkoutMilestone = this.data.milestones.filter(m => m.type === 'workout').reduce((max, m) => Math.max(max, m.value), 0);
 
@@ -1392,7 +1426,6 @@
                     });
                 }
 
-                // Add new milestones and show notification
                 if (newMilestones.length > 0) {
                     this.data.milestones.push(...newMilestones);
                     this.saveData();
@@ -1419,7 +1452,6 @@
             calculateStats() {
                 const now = new Date();
                 const startOfYear = new Date(now.getFullYear(), 0, 1);
-                // Fix: Set start of week to midnight to avoid timezone issues
                 const startOfWeek = new Date(now);
                 startOfWeek.setDate(now.getDate() - now.getDay());
                 startOfWeek.setHours(0, 0, 0, 0);
@@ -1436,19 +1468,14 @@
                 let weekWorkouts = 0;
 
                 this.data.activities.forEach(activity => {
-                    // Fix: Parse date at noon to avoid timezone issues
                     const activityDate = new Date(activity.date + 'T12:00:00');
                     const isThisWeek = activityDate >= startOfWeek;
 
-                    // Total distance (stored in km)
                     if (activity.distance) {
                         totalDistance += activity.distance;
-                        if (isThisWeek) {
-                            weekDistance += activity.distance;
-                        }
+                        if (isThisWeek) weekDistance += activity.distance;
                     }
 
-                    // Total reps by type
                     if (activity.reps) {
                         if (activity.type === 'pushups') {
                             totalPushups += activity.reps;
@@ -1462,14 +1489,12 @@
                         }
                     }
 
-                    // Total workouts (any non-cardio activity)
                     if (['arm', 'back', 'chest', 'core', 'fullbody', 'leg', 'shoulder'].includes(activity.type)) {
                         totalWorkouts++;
                         if (isThisWeek) weekWorkouts++;
                     }
                 });
 
-                // Convert to preferred unit for display
                 if (this.data.goals.unitPreference === 'miles') {
                     totalDistance = totalDistance / 1.60934;
                     weekDistance = weekDistance / 1.60934;
@@ -1495,7 +1520,6 @@
                 const unit = this.data.goals.unitPreference === 'km' ? 'km' : 'miles';
                 const isWeekView = this.data.currentView.statsView === 'week';
 
-                // Update stats based on toggle
                 if (isWeekView) {
                     document.getElementById('stat-miles').textContent = stats.weekDistance;
                     document.getElementById('stat-pushups').textContent = stats.weekPushups;
@@ -1510,14 +1534,12 @@
                     document.getElementById('stat-workouts').textContent = stats.totalWorkouts;
                 }
 
-                // Update labels
                 document.getElementById('stat-miles-label').textContent = unit;
                 document.getElementById('stat-pushups-label').textContent = 'Push-ups';
                 document.getElementById('stat-pullups-label').textContent = 'Pull-ups';
                 document.getElementById('stat-rollerabs-label').textContent = 'Roller Abs';
                 document.getElementById('stat-workouts-label').textContent = 'Workouts';
 
-                // Annual progress (always total)
                 const annualGoal = this.data.goals.annualMiles;
                 const progress = Math.min(100, Math.round((stats.totalDistance / annualGoal) * 100));
                 document.getElementById('annual-progress-percent').textContent = `${progress}%`;
@@ -1525,7 +1547,6 @@
                 document.getElementById('annual-progress-current').textContent = `${stats.totalDistance} ${unit}`;
                 document.getElementById('annual-progress-goal').textContent = `${annualGoal} ${unit}`;
 
-                // Recent milestones
                 const milestoneList = document.getElementById('milestone-list');
                 if (this.data.milestones.length === 0) {
                     milestoneList.innerHTML = '<p style="text-align: center; color: #6b7280; font-size: 14px;">No milestones yet. Keep going!</p>';
@@ -1544,13 +1565,11 @@
             setStatsView(view) {
                 this.data.currentView.statsView = view;
 
-                // Update toggle buttons
                 document.querySelectorAll('.stats-toggle-btn').forEach(btn => {
                     btn.classList.remove('active');
                 });
                 event.target.classList.add('active');
 
-                // Refresh dashboard
                 this.updateDashboard();
             },
 
@@ -1583,7 +1602,6 @@
                     <div class="calendar-day-label">Sat</div>
                 `;
 
-                // Previous month days
                 for (let i = firstDayOfWeek - 1; i >= 0; i--) {
                     const day = daysInPrevMonth - i;
                     const dayDiv = document.createElement('div');
@@ -1592,7 +1610,6 @@
                     grid.appendChild(dayDiv);
                 }
 
-                // Current month days
                 const today = new Date();
                 for (let day = 1; day <= daysInMonth; day++) {
                     const date = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
@@ -1623,7 +1640,6 @@
                     grid.appendChild(dayDiv);
                 }
 
-                // Next month days
                 const remainingDays = 42 - (firstDayOfWeek + daysInMonth);
                 for (let day = 1; day <= remainingDays; day++) {
                     const dayDiv = document.createElement('div');
@@ -1659,10 +1675,7 @@
 
             // Save goals
             saveGoals() {
-                const oldUnit = this.data.goals.unitPreference;
-                const newUnit = document.getElementById('unit-preference').value;
-
-                this.data.goals.unitPreference = newUnit;
+                this.data.goals.unitPreference = document.getElementById('unit-preference').value;
                 this.data.goals.annualMiles = parseInt(document.getElementById('annual-goal').value);
                 this.data.goals.workoutFrequency = parseInt(document.getElementById('workout-frequency').value);
                 this.data.goals.monthlyMiles = parseInt(document.getElementById('monthly-goal').value);
@@ -1691,13 +1704,11 @@
 
             // Show screen
             showScreen(screenName) {
-                // Update screens
                 document.querySelectorAll('.screen').forEach(screen => {
                     screen.classList.remove('active');
                 });
                 document.getElementById(`${screenName}-screen`).classList.add('active');
 
-                // Update tabs
                 document.querySelectorAll('.nav-tab').forEach(tab => {
                     tab.classList.remove('active');
                 });
@@ -1705,7 +1716,6 @@
 
                 this.data.currentView.screen = screenName;
 
-                // Refresh data for specific screens
                 if (screenName === 'dashboard') {
                     this.updateDashboard();
                 } else if (screenName === 'calendar') {
@@ -1735,12 +1745,11 @@
                 } else {
                     const unit = this.data.goals.unitPreference === 'km' ? 'km' : 'miles';
 
-                    // Group and calculate totals
                     let totalDistance = 0;
                     let totalPushups = 0;
                     let workoutCount = 0;
 
-                    const activityHTML = activities.map((activity, index) => {
+                    const activityHTML = activities.map((activity) => {
                         const activityNames = {
                             'walk': 'Walk',
                             'run': 'Running',
@@ -1784,7 +1793,6 @@
                         `;
                     }).join('');
 
-                    // Build totals section
                     const totals = [];
                     if (totalDistance > 0) {
                         const displayDistance = this.data.goals.unitPreference === 'miles'
@@ -1833,11 +1841,9 @@
                 this.data.activities.splice(activityIndex, 1);
                 this.saveData();
 
-                // Refresh all views
                 this.updateDashboard();
                 this.renderCalendar();
 
-                // Reopen the day detail with updated data
                 const dateInput = document.getElementById('day-detail-date').textContent;
                 const activities = this.data.activities.filter(a => {
                     const activityDate = new Date(a.date + 'T12:00:00');
