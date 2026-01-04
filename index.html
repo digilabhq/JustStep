@@ -33,13 +33,38 @@
             padding-bottom: 70px;
         }
 
+        /* App Logo Header */
+        .app-header {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            position: sticky;
+            top: 0;
+            z-index: 101;
+            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.1);
+        }
+
+        .app-logo {
+            font-size: 24px;
+        }
+
+        .app-name {
+            font-size: 22px;
+            font-weight: 700;
+            color: white;
+            letter-spacing: -0.5px;
+        }
+
         /* Navigation */
         .nav-tabs {
             display: flex;
             background: white;
             border-bottom: 1px solid #e8e8e8;
             position: sticky;
-            top: 0;
+            top: 56px;
             z-index: 100;
         }
 
@@ -801,6 +826,12 @@
 </head>
 <body>
     <div class="app-container">
+        <!-- App Header -->
+        <div class="app-header">
+            <span class="app-logo">👟</span>
+            <span class="app-name">JustStep</span>
+        </div>
+
         <!-- Navigation -->
         <div class="nav-tabs">
             <button class="nav-tab active" onclick="app.showScreen('log')">Log</button>
@@ -848,6 +879,14 @@
                 <div class="stat-card">
                     <div class="stat-value" id="stat-pushups">0</div>
                     <div class="stat-label">Push-ups</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-pullups">0</div>
+                    <div class="stat-label">Pull-ups</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-rollerabs">0</div>
+                    <div class="stat-label">Roller Abs</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-value" id="stat-workouts">0</div>
@@ -1052,8 +1091,11 @@
                             <option value="back">Back Day</option>
                             <option value="chest">Chest Day</option>
                             <option value="core">Core Day</option>
+                            <option value="fullbody">Full Body Day</option>
                             <option value="leg">Leg Day</option>
+                            <option value="pullups">Pull-ups</option>
                             <option value="pushups">Push-ups</option>
+                            <option value="rollerabs">Roller Abs</option>
                             <option value="shoulder">Shoulder Day</option>
                         </optgroup>
                     </select>
@@ -1085,8 +1127,8 @@
                         </div>
                     `;
                 }
-                // For push-ups
-                else if (activityType === 'pushups') {
+                // For push-ups, pull-ups, and roller abs
+                else if (['pushups', 'pullups', 'rollerabs'].includes(activityType)) {
                     valueContainer.innerHTML = `
                         <div class="activity-value-input">
                             <input type="number" placeholder="0" id="value-${id}" />
@@ -1135,7 +1177,7 @@
                         timestamp: new Date().toISOString()
                     };
 
-                    // Get value for cardio and push-ups
+                    // Get value for cardio and reps-based exercises
                     const valueElement = document.getElementById(`value-${i}`);
                     if (valueElement) {
                         const value = parseFloat(valueElement.value);
@@ -1143,10 +1185,10 @@
                             if (['walk', 'run', 'dog', 'hiking'].includes(type)) {
                                 // Convert to km for storage if in miles
                                 activity.distance = this.data.goals.unitPreference === 'miles' ? value * 1.60934 : value;
-                            } else if (type === 'pushups') {
+                            } else if (['pushups', 'pullups', 'rollerabs'].includes(type)) {
                                 activity.reps = value;
                             }
-                        } else if (['walk', 'run', 'dog', 'hiking', 'pushups'].includes(type)) {
+                        } else if (['walk', 'run', 'dog', 'hiking', 'pushups', 'pullups', 'rollerabs'].includes(type)) {
                             continue; // Skip if no value entered for activities that need it
                         }
                     }
@@ -1242,16 +1284,21 @@
             calculateStats() {
                 const now = new Date();
                 const startOfYear = new Date(now.getFullYear(), 0, 1);
+                // Fix: Set start of week to midnight to avoid timezone issues
                 const startOfWeek = new Date(now);
                 startOfWeek.setDate(now.getDate() - now.getDay());
+                startOfWeek.setHours(0, 0, 0, 0);
 
                 let totalDistance = 0;
                 let weekDistance = 0;
                 let totalPushups = 0;
+                let totalPullups = 0;
+                let totalRollerAbs = 0;
                 let totalWorkouts = 0;
 
                 this.data.activities.forEach(activity => {
-                    const activityDate = new Date(activity.date);
+                    // Fix: Parse date at noon to avoid timezone issues
+                    const activityDate = new Date(activity.date + 'T12:00:00');
 
                     // Total distance (stored in km)
                     if (activity.distance) {
@@ -1261,13 +1308,19 @@
                         }
                     }
 
-                    // Total pushups
+                    // Total reps by type
                     if (activity.reps) {
-                        totalPushups += activity.reps;
+                        if (activity.type === 'pushups') {
+                            totalPushups += activity.reps;
+                        } else if (activity.type === 'pullups') {
+                            totalPullups += activity.reps;
+                        } else if (activity.type === 'rollerabs') {
+                            totalRollerAbs += activity.reps;
+                        }
                     }
 
                     // Total workouts (any non-cardio activity)
-                    if (['arm', 'back', 'chest', 'core', 'leg', 'shoulder'].includes(activity.type)) {
+                    if (['arm', 'back', 'chest', 'core', 'fullbody', 'leg', 'shoulder'].includes(activity.type)) {
                         totalWorkouts++;
                     }
                 });
@@ -1282,6 +1335,8 @@
                     totalDistance: Math.round(totalDistance * 10) / 10,
                     weekDistance: Math.round(weekDistance * 10) / 10,
                     totalPushups,
+                    totalPullups,
+                    totalRollerAbs,
                     totalWorkouts
                 };
             },
@@ -1296,6 +1351,8 @@
                 document.getElementById('stat-total-miles').textContent = stats.totalDistance;
                 document.getElementById('stat-total-label').textContent = `Total ${unit}`;
                 document.getElementById('stat-pushups').textContent = stats.totalPushups;
+                document.getElementById('stat-pullups').textContent = stats.totalPullups;
+                document.getElementById('stat-rollerabs').textContent = stats.totalRollerAbs;
                 document.getElementById('stat-workouts').textContent = stats.totalWorkouts;
 
                 // Annual progress
@@ -1514,12 +1571,15 @@
                             'dog': 'Dog Walk',
                             'hiking': 'Hiking',
                             'pushups': 'Push-ups',
+                            'pullups': 'Pull-ups',
+                            'rollerabs': 'Roller Abs',
                             'leg': 'Leg Day',
                             'chest': 'Chest Day',
                             'shoulder': 'Shoulder Day',
                             'core': 'Core Day',
                             'arm': 'Arm Day',
-                            'back': 'Back Day'
+                            'back': 'Back Day',
+                            'fullbody': 'Full Body Day'
                         };
                         
                         let valueText = '';
