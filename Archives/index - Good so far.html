@@ -869,36 +869,6 @@
             background: #2563eb;
             color: white;
         }
-
-        /* Welcome modal improvements for small screens */
-        #welcome-modal {
-            width: 92%;
-            max-width: 360px;
-            max-height: 85vh;
-            overflow: hidden;
-            padding: 22px 20px;
-        }
-
-        .welcome-body {
-            max-height: 42vh;
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
-            padding-right: 6px;
-            text-align: left;
-            line-height: 1.7;
-        }
-
-        @media (max-width: 420px) {
-            #welcome-modal .milestone-icon-large {
-                width: 64px;
-                height: 64px;
-                font-size: 32px;
-                margin-bottom: 14px;
-            }
-            #welcome-modal .milestone-title {
-                font-size: 20px;
-            }
-        }
     </style>
 </head>
 <body>
@@ -1076,41 +1046,6 @@
         <button class="milestone-close" onclick="app.closeMilestone()">Continue</button>
     </div>
 
-    <!-- Welcome Modal (FIRST OPEN) -->
-    <div class="overlay" id="welcome-overlay"></div>
-    <div class="milestone-notification" id="welcome-modal">
-        <div class="milestone-icon-large">👟</div>
-
-        <div class="milestone-title">Welcome to JustStep!</div>
-
-        <div class="welcome-body">
-            <p><strong>Success isn't comfortable.</strong></p>
-            <p>
-                Every workout, every mile,<br>
-                every rep you track here is a step closer to your goal.
-            </p>
-            <p>
-                Don't focus on the whole staircase,<br>
-                Just take the next Step.
-            </p>
-            <p>
-                The magic you are looking for is in the work you just did.
-            </p>
-            <p style="margin-top: 12px; font-weight: 600;">
-                Track it. Own it. Grow.
-            </p>
-        </div>
-
-        <a href="https://www.youtube.com/watch?v=ZuHHYRD6AHQ"
-           target="_blank"
-           class="log-button"
-           style="display: block; text-decoration: none; margin-top: 14px; margin-bottom: 12px;">
-            ▶ Watch the full video
-        </a>
-
-        <button class="milestone-close" onclick="app.closeWelcome()">Let's Go</button>
-    </div>
-
     <!-- Day Detail Modal -->
     <div class="overlay" id="day-overlay" onclick="app.closeDayDetail()"></div>
     <div class="day-detail-modal" id="day-detail-modal">
@@ -1152,7 +1087,6 @@
                 this.updateDashboard();
                 this.renderCalendar();
                 this.updateGoalsUI();
-                this.showWelcome(); // <-- added
             },
 
             // Load data from localStorage
@@ -1173,23 +1107,6 @@
                 localStorage.setItem('justStepData', JSON.stringify(this.data));
             },
 
-            // Show welcome message (first launch only)
-            showWelcome() {
-                const hasSeenWelcome = localStorage.getItem('justStepWelcomeSeen');
-                if (hasSeenWelcome) return;
-
-                document.getElementById('welcome-overlay').classList.add('show');
-                document.getElementById('welcome-modal').classList.add('show');
-
-                localStorage.setItem('justStepWelcomeSeen', 'true');
-            },
-
-            // Close welcome modal
-            closeWelcome() {
-                document.getElementById('welcome-overlay').classList.remove('show');
-                document.getElementById('welcome-modal').classList.remove('show');
-            },
-
             // Setup log date input
             setupLogDate() {
                 const dateInput = document.getElementById('log-date');
@@ -1202,17 +1119,17 @@
                 this.activityCounter++;
                 const container = document.getElementById('activities-container');
                 const isFirst = this.activityCounter === 1;
-
+                
                 const activityCard = document.createElement('div');
                 activityCard.className = 'activity-card';
                 activityCard.id = `activity-${this.activityCounter}`;
-
+                
                 activityCard.innerHTML = `
                     <div class="activity-card-header">
                         <span class="activity-card-title">Activity ${this.activityCounter}</span>
                         <button class="remove-activity" onclick="app.removeActivity(${this.activityCounter})" ${isFirst ? 'style="visibility: hidden;"' : ''}>×</button>
                     </div>
-
+                    
                     <select class="activity-type-select" id="type-${this.activityCounter}" onchange="app.updateActivityInputs(${this.activityCounter}, this.value)">
                         <option value="">Select activity type...</option>
                         <optgroup label="Cardio">
@@ -1234,12 +1151,12 @@
                             <option value="shoulder">Shoulder Day</option>
                         </optgroup>
                     </select>
-
+                    
                     <div id="value-input-${this.activityCounter}">
                         <!-- Value input will be inserted here -->
                     </div>
                 `;
-
+                
                 container.appendChild(activityCard);
             },
 
@@ -1247,12 +1164,12 @@
             updateActivityInputs(id, activityType) {
                 const valueContainer = document.getElementById(`value-input-${id}`);
                 const unit = this.data.goals.unitPreference === 'km' ? 'km' : 'miles';
-
+                
                 if (!activityType) {
                     valueContainer.innerHTML = '';
                     return;
                 }
-
+                
                 // For cardio activities
                 if (['walk', 'run', 'dog', 'hiking'].includes(activityType)) {
                     valueContainer.innerHTML = `
@@ -1302,7 +1219,7 @@
                 for (let i = 1; i <= this.activityCounter; i++) {
                     const typeElement = document.getElementById(`type-${i}`);
                     if (!typeElement) continue;
-
+                    
                     const type = typeElement.value;
                     if (!type) continue;
 
@@ -1364,7 +1281,7 @@
                 // Check mileage milestones (every 50)
                 const milesAchieved = Math.floor(stats.totalDistance / 50) * 50;
                 const lastMilageMilestone = this.data.milestones.filter(m => m.type === 'mileage').reduce((max, m) => Math.max(max, m.value), 0);
-
+                
                 if (milesAchieved > lastMilageMilestone && milesAchieved > 0) {
                     const unit = this.data.goals.unitPreference === 'km' ? 'km' : 'miles';
                     newMilestones.push({
@@ -1380,7 +1297,7 @@
                 // Check workout milestones (every 25)
                 const workoutsAchieved = Math.floor(stats.totalWorkouts / 25) * 25;
                 const lastWorkoutMilestone = this.data.milestones.filter(m => m.type === 'workout').reduce((max, m) => Math.max(max, m.value), 0);
-
+                
                 if (workoutsAchieved > lastWorkoutMilestone && workoutsAchieved > 0) {
                     newMilestones.push({
                         type: 'workout',
@@ -1543,13 +1460,13 @@
             // Set stats view (week or total)
             setStatsView(view) {
                 this.data.currentView.statsView = view;
-
+                
                 // Update toggle buttons
                 document.querySelectorAll('.stats-toggle-btn').forEach(btn => {
                     btn.classList.remove('active');
                 });
                 event.target.classList.add('active');
-
+                
                 // Refresh dashboard
                 this.updateDashboard();
             },
@@ -1558,16 +1475,16 @@
             renderCalendar() {
                 const year = this.data.currentView.calendarYear;
                 const month = this.data.currentView.calendarMonth;
-
+                
                 const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
                                    'July', 'August', 'September', 'October', 'November', 'December'];
-
+                
                 document.getElementById('calendar-month-year').textContent = `${monthNames[month]} ${year}`;
 
                 const firstDay = new Date(year, month, 1);
                 const lastDay = new Date(year, month + 1, 0);
                 const prevLastDay = new Date(year, month, 0);
-
+                
                 const firstDayOfWeek = firstDay.getDay();
                 const daysInMonth = lastDay.getDate();
                 const daysInPrevMonth = prevLastDay.getDate();
@@ -1597,20 +1514,20 @@
                 for (let day = 1; day <= daysInMonth; day++) {
                     const date = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
                     const activities = this.data.activities.filter(a => a.date === date);
-
+                    
                     const dayDiv = document.createElement('div');
                     dayDiv.className = 'calendar-day';
                     dayDiv.style.cursor = 'pointer';
                     dayDiv.onclick = () => this.showDayDetail(date);
-
+                    
                     if (activities.length > 0) {
                         dayDiv.classList.add('has-activity');
                     }
-
+                    
                     if (today.getDate() === day && today.getMonth() === month && today.getFullYear() === year) {
                         dayDiv.classList.add('today');
                     }
-
+                    
                     dayDiv.innerHTML = `
                         ${day}
                         ${activities.length > 0 ? `
@@ -1619,7 +1536,7 @@
                             </div>
                         ` : ''}
                     `;
-
+                    
                     grid.appendChild(dayDiv);
                 }
 
@@ -1652,7 +1569,7 @@
                 document.getElementById('annual-goal').value = this.data.goals.annualMiles;
                 document.getElementById('workout-frequency').value = this.data.goals.workoutFrequency;
                 document.getElementById('monthly-goal').value = this.data.goals.monthlyMiles;
-
+                
                 const unit = this.data.goals.unitPreference === 'km' ? 'km' : 'miles';
                 document.getElementById('milestone-unit').textContent = unit;
             },
@@ -1661,16 +1578,16 @@
             saveGoals() {
                 const oldUnit = this.data.goals.unitPreference;
                 const newUnit = document.getElementById('unit-preference').value;
-
+                
                 this.data.goals.unitPreference = newUnit;
                 this.data.goals.annualMiles = parseInt(document.getElementById('annual-goal').value);
                 this.data.goals.workoutFrequency = parseInt(document.getElementById('workout-frequency').value);
                 this.data.goals.monthlyMiles = parseInt(document.getElementById('monthly-goal').value);
-
+                
                 this.saveData();
                 this.updateGoalsUI();
                 this.updateDashboard();
-
+                
                 const successMsg = document.getElementById('settings-success');
                 successMsg.classList.add('show');
                 setTimeout(() => {
@@ -1696,13 +1613,13 @@
                     screen.classList.remove('active');
                 });
                 document.getElementById(`${screenName}-screen`).classList.add('active');
-
+                
                 // Update tabs
                 document.querySelectorAll('.nav-tab').forEach(tab => {
                     tab.classList.remove('active');
                 });
                 event.target.classList.add('active');
-
+                
                 this.data.currentView.screen = screenName;
 
                 // Refresh data for specific screens
@@ -1720,11 +1637,11 @@
                 const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
                                    'July', 'August', 'September', 'October', 'November', 'December'];
                 const formattedDate = `${monthNames[dateObj.getMonth()]} ${dateObj.getDate()}, ${dateObj.getFullYear()}`;
-
+                
                 document.getElementById('day-detail-date').textContent = formattedDate;
-
+                
                 const content = document.getElementById('day-detail-content');
-
+                
                 if (activities.length === 0) {
                     content.innerHTML = `
                         <div class="empty-day">
@@ -1734,12 +1651,12 @@
                     `;
                 } else {
                     const unit = this.data.goals.unitPreference === 'km' ? 'km' : 'miles';
-
+                    
                     // Group and calculate totals
                     let totalDistance = 0;
                     let totalPushups = 0;
                     let workoutCount = 0;
-
+                    
                     const activityHTML = activities.map((activity, index) => {
                         const activityNames = {
                             'walk': 'Walk',
@@ -1757,10 +1674,10 @@
                             'back': 'Back Day',
                             'fullbody': 'Full Body Day'
                         };
-
+                        
                         let valueText = '';
                         if (activity.distance) {
-                            const displayDistance = this.data.goals.unitPreference === 'miles'
+                            const displayDistance = this.data.goals.unitPreference === 'miles' 
                                 ? (activity.distance / 1.60934).toFixed(1)
                                 : activity.distance.toFixed(1);
                             valueText = `${displayDistance} ${unit}`;
@@ -1772,7 +1689,7 @@
                             valueText = 'Completed';
                             workoutCount++;
                         }
-
+                        
                         return `
                             <div class="day-activity-item" data-activity-index="${this.data.activities.indexOf(activity)}">
                                 <div class="day-activity-info">
@@ -1783,11 +1700,11 @@
                             </div>
                         `;
                     }).join('');
-
+                    
                     // Build totals section
                     const totals = [];
                     if (totalDistance > 0) {
-                        const displayDistance = this.data.goals.unitPreference === 'miles'
+                        const displayDistance = this.data.goals.unitPreference === 'miles' 
                             ? (totalDistance / 1.60934).toFixed(1)
                             : totalDistance.toFixed(1);
                         totals.push(`${displayDistance} ${unit} total`);
@@ -1798,7 +1715,7 @@
                     if (workoutCount > 0) {
                         totals.push(`${workoutCount} workout${workoutCount > 1 ? 's' : ''}`);
                     }
-
+                    
                     content.innerHTML = `
                         <div class="day-activity-list">
                             ${activityHTML}
@@ -1813,7 +1730,7 @@
                         ` : ''}
                     `;
                 }
-
+                
                 document.getElementById('day-overlay').classList.add('show');
                 document.getElementById('day-detail-modal').classList.add('show');
             },
@@ -1829,14 +1746,14 @@
                 if (!confirm('Are you sure you want to delete this activity?')) {
                     return;
                 }
-
+                
                 this.data.activities.splice(activityIndex, 1);
                 this.saveData();
-
+                
                 // Refresh all views
                 this.updateDashboard();
                 this.renderCalendar();
-
+                
                 // Reopen the day detail with updated data
                 const dateInput = document.getElementById('day-detail-date').textContent;
                 const activities = this.data.activities.filter(a => {
@@ -1846,7 +1763,7 @@
                     const formattedDate = `${monthNames[activityDate.getMonth()]} ${activityDate.getDate()}, ${activityDate.getFullYear()}`;
                     return formattedDate === dateInput;
                 });
-
+                
                 if (activities.length > 0) {
                     this.showDayDetail(activities[0].date);
                 } else {
