@@ -1227,18 +1227,15 @@
 
             // Check if welcome modal should show
             checkWelcome() {
-                const hasSeenWelcome = localStorage.getItem('justStepWelcomeSeen');
-                if (!hasSeenWelcome) {
-                    document.getElementById('welcome-overlay').classList.add('show');
-                    document.getElementById('welcome-modal').classList.add('show');
-                }
+                // Show welcome modal every time app opens
+                document.getElementById('welcome-overlay').classList.add('show');
+                document.getElementById('welcome-modal').classList.add('show');
             },
 
             // Close welcome modal
             closeWelcome() {
                 document.getElementById('welcome-overlay').classList.remove('show');
                 document.getElementById('welcome-modal').classList.remove('show');
-                localStorage.setItem('justStepWelcomeSeen', 'true');
             },
 
             // Load data from localStorage
