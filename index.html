@@ -870,69 +870,107 @@
             color: white;
         }
 
-        /* Welcome Modal (Improved for iPhone) */
+        /* Welcome Modal */
         .welcome-modal {
-            max-width: 360px;
-            width: 92%;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #2d2d2d;
+            border-radius: 20px;
+            padding: 32px 24px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            max-width: 400px;
+            width: 90%;
             max-height: 85vh;
-            padding: 24px;
-            overflow: hidden;
-            text-align: left;
+            overflow-y: auto;
+            z-index: 2000;
+            display: none;
+            text-align: center;
+        }
+
+        .welcome-modal.show {
+            display: block;
+            animation: popIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
 
         .welcome-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 12px;
+            background: linear-gradient(135deg, #1e40af 0%, #1d4ed8 100%);
+            margin: -32px -24px 24px -24px;
+            padding: 24px;
+            border-radius: 20px 20px 0 0;
         }
 
-        .welcome-close-x {
-            background: none;
-            border: none;
-            font-size: 26px;
-            color: #9ca3af;
-            cursor: pointer;
-            padding: 0;
-            width: 36px;
-            height: 36px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 10px;
-        }
-
-        .welcome-close-x:active {
-            transform: scale(0.98);
-            background: #3d3d3d;
-        }
-
-        .welcome-body {
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
-            max-height: 48vh;
-            padding-right: 6px;
-            margin-bottom: 16px;
-        }
-
-        .welcome-body p {
-            margin-bottom: 12px;
-        }
-
-        .welcome-actions {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .welcome-actions .log-button {
-            margin-top: 0;
-        }
-
-        .welcome-actions .milestone-close {
-            background: #2563eb;
+        .welcome-title {
+            font-size: 28px;
+            font-weight: 700;
             color: white;
-            margin-top: 0;
+            margin-bottom: 0;
+            letter-spacing: -0.5px;
+        }
+
+        .welcome-quote {
+            font-size: 20px;
+            font-weight: 600;
+            color: #60a5fa;
+            margin: 16px 0;
+            font-style: italic;
+            line-height: 1.4;
+        }
+
+        .welcome-content {
+            font-size: 15px;
+            color: #d1d5db;
+            line-height: 1.8;
+            margin: 20px 0;
+        }
+
+        .welcome-highlight {
+            font-size: 16px;
+            font-weight: 600;
+            color: #60a5fa;
+            margin: 20px 0;
+            line-height: 1.6;
+        }
+
+        .welcome-tagline {
+            font-size: 14px;
+            font-weight: 600;
+            color: #9ca3af;
+            margin: 16px 0 24px 0;
+            letter-spacing: 0.5px;
+        }
+
+        .welcome-video-link {
+            display: inline-block;
+            color: #60a5fa;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 20px;
+            transition: color 0.2s;
+        }
+
+        .welcome-video-link:hover {
+            color: #3b82f6;
+        }
+
+        .welcome-button {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            letter-spacing: 0.3px;
+        }
+
+        .welcome-button:active {
+            transform: scale(0.98);
         }
     </style>
 </head>
@@ -1001,8 +1039,12 @@
                     <div class="stat-label" id="stat-rollerabs-label">Roller Abs</div>
                 </div>
                 <div class="stat-card">
+                    <div class="stat-value" id="stat-steps">0</div>
+                    <div class="stat-label" id="stat-steps-label">Steps</div>
+                </div>
+                <div class="stat-card">
                     <div class="stat-value" id="stat-workouts">0</div>
-                    <div class="stat-label" id="stat-workouts-label">Workouts</div>
+                    <div class="stat-label" id="stat-workouts-label">Strength Days</div>
                 </div>
             </div>
 
@@ -1071,19 +1113,19 @@
             <div class="goal-input">
                 <label>Annual Mileage Goal</label>
                 <p class="goal-description">Total distance goal for the year</p>
-                <input type="number" id="annual-goal" value="420" placeholder="420">
+                <input type="number" id="annual-goal" value="420" placeholder="420" inputmode="numeric">
             </div>
 
             <div class="goal-input">
                 <label>Workout Frequency Target</label>
                 <p class="goal-description">How many workouts per week?</p>
-                <input type="number" id="workout-frequency" value="5" placeholder="5">
+                <input type="number" id="workout-frequency" value="5" placeholder="5" inputmode="numeric">
             </div>
 
             <div class="goal-input">
                 <label>Monthly Mileage Target</label>
                 <p class="goal-description">Optional: Set a monthly milestone</p>
-                <input type="number" id="monthly-goal" value="35" placeholder="35">
+                <input type="number" id="monthly-goal" value="35" placeholder="35" inputmode="numeric">
             </div>
 
             <button class="save-button" onclick="app.saveGoals()">Save Settings</button>
@@ -1111,52 +1153,6 @@
         <button class="milestone-close" onclick="app.closeMilestone()">Continue</button>
     </div>
 
-    <!-- Welcome Modal (EVERY OPEN) -->
-    <div class="overlay" id="welcome-overlay" onclick="app.closeWelcome()"></div>
-    <div class="milestone-notification welcome-modal" id="welcome-modal" role="dialog" aria-modal="true" aria-labelledby="welcome-title">
-        <div class="welcome-header">
-            <div class="milestone-icon-large" style="margin: 0; width: 64px; height: 64px; font-size: 32px;">👟</div>
-            <button class="welcome-close-x" onclick="app.closeWelcome()" aria-label="Close">×</button>
-        </div>
-
-        <div class="milestone-title" id="welcome-title" style="margin-bottom: 10px;">Welcome to JustStep!</div>
-
-        <div class="welcome-body">
-            <p><strong>Success isn't comfortable.</strong></p>
-
-            <p>
-                Every workout, every mile,<br>
-                every rep you track here is a step closer to your goal.
-            </p>
-
-            <p>
-                Don't focus on the whole staircase,<br>
-                Just take the next Step!
-            </p>
-
-            <p>
-                The magic you are looking for<br>
-                is in the work you just did.
-            </p>
-
-            <p style="font-weight: 700;">
-                Track it. Own it. Grow.
-            </p>
-        </div>
-
-        <div class="welcome-actions">
-            <a href="https://www.youtube.com/watch?v=ZuHHYRD6AHQ&start=0"
-               target="_blank"
-               rel="noopener noreferrer"
-               class="log-button"
-               style="display: block; text-decoration: none;">
-                ▶ Watch the full video
-            </a>
-
-            <button class="milestone-close" onclick="app.closeWelcome()">Let's Go</button>
-        </div>
-    </div>
-
     <!-- Day Detail Modal -->
     <div class="overlay" id="day-overlay" onclick="app.closeDayDetail()"></div>
     <div class="day-detail-modal" id="day-detail-modal">
@@ -1167,6 +1163,34 @@
         <div id="day-detail-content">
             <!-- Content will be populated dynamically -->
         </div>
+    </div>
+
+    <!-- Welcome Modal -->
+    <div class="overlay" id="welcome-overlay"></div>
+    <div class="welcome-modal" id="welcome-modal">
+        <div class="welcome-header">
+            <div class="welcome-title">Welcome to JustStep</div>
+        </div>
+        
+        <div class="welcome-content">
+            Success isn't comfortable. Every workout, every mile, every rep you log here is a step closer to your goals!
+            <br><br>
+            Just take the next step.
+        </div>
+        
+        <div class="welcome-highlight">
+            The magic you are looking for is in the work you just did.
+        </div>
+        
+        <div class="welcome-tagline">
+            Track it. Own it. Grow.
+        </div>
+        
+        <a href="https://www.youtube.com/watch?v=ZuHHYRD6AHQ" target="_blank" class="welcome-video-link">
+            Watch → To Grow, You Must Suffer
+        </a>
+        
+        <button class="welcome-button" onclick="app.closeWelcome()">Let's Go</button>
     </div>
 
     <script>
@@ -1193,12 +1217,28 @@
             // Initialize app
             init() {
                 this.loadData();
+                this.checkWelcome();
                 this.setupLogDate();
                 this.addActivityRow();
                 this.updateDashboard();
                 this.renderCalendar();
                 this.updateGoalsUI();
-                this.showWelcome();
+            },
+
+            // Check if welcome modal should show
+            checkWelcome() {
+                const hasSeenWelcome = localStorage.getItem('justStepWelcomeSeen');
+                if (!hasSeenWelcome) {
+                    document.getElementById('welcome-overlay').classList.add('show');
+                    document.getElementById('welcome-modal').classList.add('show');
+                }
+            },
+
+            // Close welcome modal
+            closeWelcome() {
+                document.getElementById('welcome-overlay').classList.remove('show');
+                document.getElementById('welcome-modal').classList.remove('show');
+                localStorage.setItem('justStepWelcomeSeen', 'true');
             },
 
             // Load data from localStorage
@@ -1219,18 +1259,6 @@
                 localStorage.setItem('justStepData', JSON.stringify(this.data));
             },
 
-            // Show welcome message (every app open)
-            showWelcome() {
-                document.getElementById('welcome-overlay').classList.add('show');
-                document.getElementById('welcome-modal').classList.add('show');
-            },
-
-            // Close welcome modal
-            closeWelcome() {
-                document.getElementById('welcome-overlay').classList.remove('show');
-                document.getElementById('welcome-modal').classList.remove('show');
-            },
-
             // Setup log date input
             setupLogDate() {
                 const dateInput = document.getElementById('log-date');
@@ -1243,44 +1271,49 @@
                 this.activityCounter++;
                 const container = document.getElementById('activities-container');
                 const isFirst = this.activityCounter === 1;
-
+                
                 const activityCard = document.createElement('div');
                 activityCard.className = 'activity-card';
                 activityCard.id = `activity-${this.activityCounter}`;
-
+                
                 activityCard.innerHTML = `
                     <div class="activity-card-header">
                         <span class="activity-card-title">Activity ${this.activityCounter}</span>
                         <button class="remove-activity" onclick="app.removeActivity(${this.activityCounter})" ${isFirst ? 'style="visibility: hidden;"' : ''}>×</button>
                     </div>
-
+                    
                     <select class="activity-type-select" id="type-${this.activityCounter}" onchange="app.updateActivityInputs(${this.activityCounter}, this.value)">
                         <option value="">Select activity type...</option>
-                        <optgroup label="Cardio">
+                        <optgroup label="─── CARDIO ───">
                             <option value="dog">Dog Walk</option>
                             <option value="hiking">Hiking</option>
                             <option value="run">Running</option>
                             <option value="walk">Walk</option>
                         </optgroup>
-                        <optgroup label="Strength">
+                        <optgroup label="─── STRENGTH ───">
                             <option value="arm">Arm Day</option>
                             <option value="back">Back Day</option>
                             <option value="chest">Chest Day</option>
                             <option value="core">Core Day</option>
                             <option value="fullbody">Full Body Day</option>
                             <option value="leg">Leg Day</option>
+                            <option value="shoulder">Shoulder Day</option>
+                        </optgroup>
+                        <optgroup label="─── SINGLE EXERCISE ───">
                             <option value="pullups">Pull-ups</option>
                             <option value="pushups">Push-ups</option>
                             <option value="rollerabs">Roller Abs</option>
-                            <option value="shoulder">Shoulder Day</option>
+                        </optgroup>
+                        <optgroup label="─── STEPS ───">
+                            <option value="steps">Steps</option>
                         </optgroup>
                     </select>
-
+                    
                     <div id="value-input-${this.activityCounter}">
                         <!-- Value input will be inserted here -->
                     </div>
                 `;
-
+                
                 container.appendChild(activityCard);
             },
 
@@ -1288,18 +1321,27 @@
             updateActivityInputs(id, activityType) {
                 const valueContainer = document.getElementById(`value-input-${id}`);
                 const unit = this.data.goals.unitPreference === 'km' ? 'km' : 'miles';
-
+                
                 if (!activityType) {
                     valueContainer.innerHTML = '';
                     return;
                 }
-
+                
                 // For cardio activities
                 if (['walk', 'run', 'dog', 'hiking'].includes(activityType)) {
                     valueContainer.innerHTML = `
                         <div class="activity-value-input">
-                            <input type="number" step="0.1" placeholder="0.0" id="value-${id}" />
+                            <input type="number" step="0.1" placeholder="0.0" id="value-${id}" inputmode="decimal" />
                             <span class="unit">${unit}</span>
+                        </div>
+                    `;
+                }
+                // For steps
+                else if (activityType === 'steps') {
+                    valueContainer.innerHTML = `
+                        <div class="activity-value-input">
+                            <input type="number" placeholder="0" id="value-${id}" inputmode="numeric" />
+                            <span class="unit">steps</span>
                         </div>
                     `;
                 }
@@ -1307,7 +1349,7 @@
                 else if (['pushups', 'pullups', 'rollerabs'].includes(activityType)) {
                     valueContainer.innerHTML = `
                         <div class="activity-value-input">
-                            <input type="number" placeholder="0" id="value-${id}" />
+                            <input type="number" placeholder="0" id="value-${id}" inputmode="numeric" />
                             <span class="unit">reps</span>
                         </div>
                     `;
@@ -1343,7 +1385,7 @@
                 for (let i = 1; i <= this.activityCounter; i++) {
                     const typeElement = document.getElementById(`type-${i}`);
                     if (!typeElement) continue;
-
+                    
                     const type = typeElement.value;
                     if (!type) continue;
 
@@ -1361,10 +1403,12 @@
                             if (['walk', 'run', 'dog', 'hiking'].includes(type)) {
                                 // Convert to km for storage if in miles
                                 activity.distance = this.data.goals.unitPreference === 'miles' ? value * 1.60934 : value;
+                            } else if (type === 'steps') {
+                                activity.steps = value;
                             } else if (['pushups', 'pullups', 'rollerabs'].includes(type)) {
                                 activity.reps = value;
                             }
-                        } else if (['walk', 'run', 'dog', 'hiking', 'pushups', 'pullups', 'rollerabs'].includes(type)) {
+                        } else if (['walk', 'run', 'dog', 'hiking', 'steps', 'pushups', 'pullups', 'rollerabs'].includes(type)) {
                             continue; // Skip if no value entered for activities that need it
                         }
                     }
@@ -1405,7 +1449,7 @@
                 // Check mileage milestones (every 50)
                 const milesAchieved = Math.floor(stats.totalDistance / 50) * 50;
                 const lastMilageMilestone = this.data.milestones.filter(m => m.type === 'mileage').reduce((max, m) => Math.max(max, m.value), 0);
-
+                
                 if (milesAchieved > lastMilageMilestone && milesAchieved > 0) {
                     const unit = this.data.goals.unitPreference === 'km' ? 'km' : 'miles';
                     newMilestones.push({
@@ -1418,18 +1462,18 @@
                     });
                 }
 
-                // Check workout milestones (every 25)
-                const workoutsAchieved = Math.floor(stats.totalWorkouts / 25) * 25;
-                const lastWorkoutMilestone = this.data.milestones.filter(m => m.type === 'workout').reduce((max, m) => Math.max(max, m.value), 0);
-
-                if (workoutsAchieved > lastWorkoutMilestone && workoutsAchieved > 0) {
+                // Check strength day milestones (every 25 days)
+                const strengthDaysAchieved = Math.floor(stats.totalStrengthDays / 25) * 25;
+                const lastStrengthDayMilestone = this.data.milestones.filter(m => m.type === 'workout').reduce((max, m) => Math.max(max, m.value), 0);
+                
+                if (strengthDaysAchieved > lastStrengthDayMilestone && strengthDaysAchieved > 0) {
                     newMilestones.push({
                         type: 'workout',
-                        value: workoutsAchieved,
+                        value: strengthDaysAchieved,
                         date: new Date().toISOString(),
                         icon: '💪',
-                        title: `${workoutsAchieved} Workouts Completed!`,
-                        description: `Amazing consistency! You've completed ${workoutsAchieved} workouts.`
+                        title: `${strengthDaysAchieved} Strength Days Completed!`,
+                        description: `Amazing consistency! You've trained on ${strengthDaysAchieved} different days.`
                     });
                 }
 
@@ -1467,14 +1511,18 @@
 
                 let totalDistance = 0;
                 let weekDistance = 0;
+                let totalSteps = 0;
+                let weekSteps = 0;
                 let totalPushups = 0;
                 let weekPushups = 0;
                 let totalPullups = 0;
                 let weekPullups = 0;
                 let totalRollerAbs = 0;
                 let weekRollerAbs = 0;
-                let totalWorkouts = 0;
-                let weekWorkouts = 0;
+                
+                // Track unique days with strength activities
+                let strengthDaysTotal = new Set();
+                let strengthDaysWeek = new Set();
 
                 this.data.activities.forEach(activity => {
                     // Fix: Parse date at noon to avoid timezone issues
@@ -1486,6 +1534,14 @@
                         totalDistance += activity.distance;
                         if (isThisWeek) {
                             weekDistance += activity.distance;
+                        }
+                    }
+
+                    // Total steps
+                    if (activity.steps) {
+                        totalSteps += activity.steps;
+                        if (isThisWeek) {
+                            weekSteps += activity.steps;
                         }
                     }
 
@@ -1503,10 +1559,12 @@
                         }
                     }
 
-                    // Total workouts (any non-cardio activity)
+                    // Count unique days with strength activities
                     if (['arm', 'back', 'chest', 'core', 'fullbody', 'leg', 'shoulder'].includes(activity.type)) {
-                        totalWorkouts++;
-                        if (isThisWeek) weekWorkouts++;
+                        strengthDaysTotal.add(activity.date);
+                        if (isThisWeek) {
+                            strengthDaysWeek.add(activity.date);
+                        }
                     }
                 });
 
@@ -1519,14 +1577,16 @@
                 return {
                     totalDistance: Math.round(totalDistance * 10) / 10,
                     weekDistance: Math.round(weekDistance * 10) / 10,
+                    totalSteps,
+                    weekSteps,
                     totalPushups,
                     weekPushups,
                     totalPullups,
                     weekPullups,
                     totalRollerAbs,
                     weekRollerAbs,
-                    totalWorkouts,
-                    weekWorkouts
+                    totalStrengthDays: strengthDaysTotal.size,
+                    weekStrengthDays: strengthDaysWeek.size
                 };
             },
 
@@ -1542,13 +1602,15 @@
                     document.getElementById('stat-pushups').textContent = stats.weekPushups;
                     document.getElementById('stat-pullups').textContent = stats.weekPullups;
                     document.getElementById('stat-rollerabs').textContent = stats.weekRollerAbs;
-                    document.getElementById('stat-workouts').textContent = stats.weekWorkouts;
+                    document.getElementById('stat-steps').textContent = stats.weekSteps.toLocaleString();
+                    document.getElementById('stat-workouts').textContent = stats.weekStrengthDays;
                 } else {
                     document.getElementById('stat-miles').textContent = stats.totalDistance;
                     document.getElementById('stat-pushups').textContent = stats.totalPushups;
                     document.getElementById('stat-pullups').textContent = stats.totalPullups;
                     document.getElementById('stat-rollerabs').textContent = stats.totalRollerAbs;
-                    document.getElementById('stat-workouts').textContent = stats.totalWorkouts;
+                    document.getElementById('stat-steps').textContent = stats.totalSteps.toLocaleString();
+                    document.getElementById('stat-workouts').textContent = stats.totalStrengthDays;
                 }
 
                 // Update labels
@@ -1556,7 +1618,8 @@
                 document.getElementById('stat-pushups-label').textContent = 'Push-ups';
                 document.getElementById('stat-pullups-label').textContent = 'Pull-ups';
                 document.getElementById('stat-rollerabs-label').textContent = 'Roller Abs';
-                document.getElementById('stat-workouts-label').textContent = 'Workouts';
+                document.getElementById('stat-steps-label').textContent = 'Steps';
+                document.getElementById('stat-workouts-label').textContent = 'Strength Days';
 
                 // Annual progress (always total)
                 const annualGoal = this.data.goals.annualMiles;
@@ -1584,13 +1647,13 @@
             // Set stats view (week or total)
             setStatsView(view) {
                 this.data.currentView.statsView = view;
-
+                
                 // Update toggle buttons
                 document.querySelectorAll('.stats-toggle-btn').forEach(btn => {
                     btn.classList.remove('active');
                 });
                 event.target.classList.add('active');
-
+                
                 // Refresh dashboard
                 this.updateDashboard();
             },
@@ -1599,16 +1662,16 @@
             renderCalendar() {
                 const year = this.data.currentView.calendarYear;
                 const month = this.data.currentView.calendarMonth;
-
+                
                 const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
                                    'July', 'August', 'September', 'October', 'November', 'December'];
-
+                
                 document.getElementById('calendar-month-year').textContent = `${monthNames[month]} ${year}`;
 
                 const firstDay = new Date(year, month, 1);
                 const lastDay = new Date(year, month + 1, 0);
                 const prevLastDay = new Date(year, month, 0);
-
+                
                 const firstDayOfWeek = firstDay.getDay();
                 const daysInMonth = lastDay.getDate();
                 const daysInPrevMonth = prevLastDay.getDate();
@@ -1638,20 +1701,20 @@
                 for (let day = 1; day <= daysInMonth; day++) {
                     const date = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
                     const activities = this.data.activities.filter(a => a.date === date);
-
+                    
                     const dayDiv = document.createElement('div');
                     dayDiv.className = 'calendar-day';
                     dayDiv.style.cursor = 'pointer';
                     dayDiv.onclick = () => this.showDayDetail(date);
-
+                    
                     if (activities.length > 0) {
                         dayDiv.classList.add('has-activity');
                     }
-
+                    
                     if (today.getDate() === day && today.getMonth() === month && today.getFullYear() === year) {
                         dayDiv.classList.add('today');
                     }
-
+                    
                     dayDiv.innerHTML = `
                         ${day}
                         ${activities.length > 0 ? `
@@ -1660,7 +1723,7 @@
                             </div>
                         ` : ''}
                     `;
-
+                    
                     grid.appendChild(dayDiv);
                 }
 
@@ -1693,7 +1756,7 @@
                 document.getElementById('annual-goal').value = this.data.goals.annualMiles;
                 document.getElementById('workout-frequency').value = this.data.goals.workoutFrequency;
                 document.getElementById('monthly-goal').value = this.data.goals.monthlyMiles;
-
+                
                 const unit = this.data.goals.unitPreference === 'km' ? 'km' : 'miles';
                 document.getElementById('milestone-unit').textContent = unit;
             },
@@ -1702,16 +1765,16 @@
             saveGoals() {
                 const oldUnit = this.data.goals.unitPreference;
                 const newUnit = document.getElementById('unit-preference').value;
-
+                
                 this.data.goals.unitPreference = newUnit;
                 this.data.goals.annualMiles = parseInt(document.getElementById('annual-goal').value);
                 this.data.goals.workoutFrequency = parseInt(document.getElementById('workout-frequency').value);
                 this.data.goals.monthlyMiles = parseInt(document.getElementById('monthly-goal').value);
-
+                
                 this.saveData();
                 this.updateGoalsUI();
                 this.updateDashboard();
-
+                
                 const successMsg = document.getElementById('settings-success');
                 successMsg.classList.add('show');
                 setTimeout(() => {
@@ -1737,13 +1800,13 @@
                     screen.classList.remove('active');
                 });
                 document.getElementById(`${screenName}-screen`).classList.add('active');
-
+                
                 // Update tabs
                 document.querySelectorAll('.nav-tab').forEach(tab => {
                     tab.classList.remove('active');
                 });
                 event.target.classList.add('active');
-
+                
                 this.data.currentView.screen = screenName;
 
                 // Refresh data for specific screens
@@ -1761,11 +1824,11 @@
                 const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
                                    'July', 'August', 'September', 'October', 'November', 'December'];
                 const formattedDate = `${monthNames[dateObj.getMonth()]} ${dateObj.getDate()}, ${dateObj.getFullYear()}`;
-
+                
                 document.getElementById('day-detail-date').textContent = formattedDate;
-
+                
                 const content = document.getElementById('day-detail-content');
-
+                
                 if (activities.length === 0) {
                     content.innerHTML = `
                         <div class="empty-day">
@@ -1775,18 +1838,22 @@
                     `;
                 } else {
                     const unit = this.data.goals.unitPreference === 'km' ? 'km' : 'miles';
-
+                    
                     // Group and calculate totals
                     let totalDistance = 0;
+                    let totalSteps = 0;
                     let totalPushups = 0;
+                    let totalPullups = 0;
+                    let totalRollerAbs = 0;
                     let workoutCount = 0;
-
+                    
                     const activityHTML = activities.map((activity, index) => {
                         const activityNames = {
                             'walk': 'Walk',
                             'run': 'Running',
                             'dog': 'Dog Walk',
                             'hiking': 'Hiking',
+                            'steps': 'Steps',
                             'pushups': 'Push-ups',
                             'pullups': 'Pull-ups',
                             'rollerabs': 'Roller Abs',
@@ -1798,22 +1865,28 @@
                             'back': 'Back Day',
                             'fullbody': 'Full Body Day'
                         };
-
+                        
                         let valueText = '';
                         if (activity.distance) {
-                            const displayDistance = this.data.goals.unitPreference === 'miles'
+                            const displayDistance = this.data.goals.unitPreference === 'miles' 
                                 ? (activity.distance / 1.60934).toFixed(1)
                                 : activity.distance.toFixed(1);
                             valueText = `${displayDistance} ${unit}`;
                             totalDistance += activity.distance;
+                        } else if (activity.steps) {
+                            valueText = `${activity.steps.toLocaleString()} steps`;
+                            totalSteps += activity.steps;
                         } else if (activity.reps) {
                             valueText = `${activity.reps} reps`;
-                            totalPushups += activity.reps;
+                            // Track by type
+                            if (activity.type === 'pushups') totalPushups += activity.reps;
+                            else if (activity.type === 'pullups') totalPullups += activity.reps;
+                            else if (activity.type === 'rollerabs') totalRollerAbs += activity.reps;
                         } else {
                             valueText = 'Completed';
                             workoutCount++;
                         }
-
+                        
                         return `
                             <div class="day-activity-item" data-activity-index="${this.data.activities.indexOf(activity)}">
                                 <div class="day-activity-info">
@@ -1824,22 +1897,31 @@
                             </div>
                         `;
                     }).join('');
-
+                    
                     // Build totals section
                     const totals = [];
                     if (totalDistance > 0) {
-                        const displayDistance = this.data.goals.unitPreference === 'miles'
+                        const displayDistance = this.data.goals.unitPreference === 'miles' 
                             ? (totalDistance / 1.60934).toFixed(1)
                             : totalDistance.toFixed(1);
                         totals.push(`${displayDistance} ${unit} total`);
                     }
+                    if (totalSteps > 0) {
+                        totals.push(`${totalSteps.toLocaleString()} steps`);
+                    }
                     if (totalPushups > 0) {
                         totals.push(`${totalPushups} push-ups`);
+                    }
+                    if (totalPullups > 0) {
+                        totals.push(`${totalPullups} pull-ups`);
+                    }
+                    if (totalRollerAbs > 0) {
+                        totals.push(`${totalRollerAbs} roller abs`);
                     }
                     if (workoutCount > 0) {
                         totals.push(`${workoutCount} workout${workoutCount > 1 ? 's' : ''}`);
                     }
-
+                    
                     content.innerHTML = `
                         <div class="day-activity-list">
                             ${activityHTML}
@@ -1854,7 +1936,7 @@
                         ` : ''}
                     `;
                 }
-
+                
                 document.getElementById('day-overlay').classList.add('show');
                 document.getElementById('day-detail-modal').classList.add('show');
             },
@@ -1870,14 +1952,14 @@
                 if (!confirm('Are you sure you want to delete this activity?')) {
                     return;
                 }
-
+                
                 this.data.activities.splice(activityIndex, 1);
                 this.saveData();
-
+                
                 // Refresh all views
                 this.updateDashboard();
                 this.renderCalendar();
-
+                
                 // Reopen the day detail with updated data
                 const dateInput = document.getElementById('day-detail-date').textContent;
                 const activities = this.data.activities.filter(a => {
@@ -1887,7 +1969,7 @@
                     const formattedDate = `${monthNames[activityDate.getMonth()]} ${activityDate.getDate()}, ${activityDate.getFullYear()}`;
                     return formattedDate === dateInput;
                 });
-
+                
                 if (activities.length > 0) {
                     this.showDayDetail(activities[0].date);
                 } else {
