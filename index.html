@@ -1117,8 +1117,8 @@
             </div>
 
             <div class="goal-input">
-                <label>Workout Frequency Target</label>
-                <p class="goal-description">How many workouts per week?</p>
+                <label>Strength Days Target</label>
+                <p class="goal-description">How many strength days per week?</p>
                 <input type="number" id="workout-frequency" value="5" placeholder="5" inputmode="numeric">
             </div>
 
@@ -1217,6 +1217,10 @@
             // Initialize app
             init() {
                 this.loadData();
+                // Ensure statsView is set before updating dashboard
+                if (!this.data.currentView.statsView) {
+                    this.data.currentView.statsView = 'week';
+                }
                 this.checkWelcome();
                 this.setupLogDate();
                 this.addActivityRow();
@@ -1256,11 +1260,14 @@
                 localStorage.setItem('justStepData', JSON.stringify(this.data));
             },
 
-            // Setup log date input
+            // Setup log date input (FIXED: timezone-safe)
             setupLogDate() {
                 const dateInput = document.getElementById('log-date');
-                const today = new Date().toISOString().split('T')[0];
-                dateInput.value = today;
+                const today = new Date();
+                const year = today.getFullYear();
+                const month = String(today.getMonth() + 1).padStart(2, '0');
+                const day = String(today.getDate()).padStart(2, '0');
+                dateInput.value = `${year}-${month}-${day}`;
             },
 
             // Add activity row
@@ -1587,11 +1594,21 @@
                 };
             },
 
-            // Update dashboard
+            // Update dashboard (FIXED: toggle buttons sync with data)
             updateDashboard() {
                 const stats = this.calculateStats();
                 const unit = this.data.goals.unitPreference === 'km' ? 'km' : 'miles';
                 const isWeekView = this.data.currentView.statsView === 'week';
+                
+                // FIX: Update toggle buttons to match current view
+                document.querySelectorAll('.stats-toggle-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                if (isWeekView) {
+                    document.querySelector('.stats-toggle-btn:first-child').classList.add('active');
+                } else {
+                    document.querySelector('.stats-toggle-btn:last-child').classList.add('active');
+                }
 
                 // Update stats based on toggle
                 if (isWeekView) {
@@ -1895,7 +1912,7 @@
                         `;
                     }).join('');
                     
-                    // Build totals section
+                    // Build totals section (FIXED: "exercises" instead of "workouts")
                     const totals = [];
                     if (totalDistance > 0) {
                         const displayDistance = this.data.goals.unitPreference === 'miles' 
@@ -1916,7 +1933,7 @@
                         totals.push(`${totalRollerAbs} roller abs`);
                     }
                     if (workoutCount > 0) {
-                        totals.push(`${workoutCount} workout${workoutCount > 1 ? 's' : ''}`);
+                        totals.push(`${workoutCount} exercise${workoutCount > 1 ? 's' : ''}`);
                     }
                     
                     content.innerHTML = `
