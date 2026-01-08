@@ -313,7 +313,7 @@
         .stats-grid {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
-            gap: 10px;
+            gap: 12px;
             margin-bottom: 24px;
         }
 
@@ -324,42 +324,51 @@
             }
             
             .stat-card {
-                padding: 16px 12px;
+                padding: 6px 3px;
+                min-height: 52px;
             }
             
             .stat-value {
-                font-size: 24px;
+                font-size: 15px;
             }
             
             .stat-label {
-                font-size: 11px;
+                font-size: 8px;
             }
         }
 
         .stat-card {
             background: #2d2d2d;
             border: 2px solid #3d3d3d;
-            border-radius: 16px;
-            padding: 20px;
+            border-radius: 12px;
+            padding: 8px 4px;
             transition: all 0.2s;
             text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 60px;
+            aspect-ratio: 1.4 / 1;
         }
 
         .stat-value {
-            font-size: 32px;
+            font-size: 18px;
             font-weight: 700;
             color: #e8e8e8;
-            margin-bottom: 4px;
+            margin-bottom: 3px;
             text-align: center;
+            line-height: 1;
         }
 
         .stat-label {
-            font-size: 12px;
+            font-size: 9px;
             color: #9ca3af;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            text-transform: capitalize;
+            letter-spacing: 0.2px;
             font-weight: 600;
             text-align: center;
+            line-height: 1.2;
         }
 
         .progress-card {
