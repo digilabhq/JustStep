@@ -309,12 +309,31 @@
             text-align: center;
         }
 
-        /* Dashboard Screen */
+        /* Dashboard Screen - Always 3 columns */
         .stats-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
             margin-bottom: 24px;
+        }
+
+        /* Smaller cards on mobile for better fit */
+        @media (max-width: 600px) {
+            .stats-grid {
+                gap: 8px;
+            }
+            
+            .stat-card {
+                padding: 16px 12px;
+            }
+            
+            .stat-value {
+                font-size: 24px;
+            }
+            
+            .stat-label {
+                font-size: 11px;
+            }
         }
 
         .stat-card {
@@ -323,6 +342,7 @@
             border-radius: 16px;
             padding: 20px;
             transition: all 0.2s;
+            text-align: center;
         }
 
         .stat-value {
@@ -330,6 +350,7 @@
             font-weight: 700;
             color: #e8e8e8;
             margin-bottom: 4px;
+            text-align: center;
         }
 
         .stat-label {
@@ -338,6 +359,7 @@
             text-transform: uppercase;
             letter-spacing: 0.5px;
             font-weight: 600;
+            text-align: center;
         }
 
         .progress-card {
@@ -972,6 +994,119 @@
         .welcome-button:active {
             transform: scale(0.98);
         }
+
+        /* Customize Dashboard Button */
+        .customize-dashboard-btn {
+            display: block;
+            margin: 24px auto 0;
+            background: none;
+            border: none;
+            color: #6b7280;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            padding: 8px 16px;
+            transition: color 0.2s;
+            text-align: center;
+        }
+
+        .customize-dashboard-btn:hover {
+            color: #9ca3af;
+        }
+
+        /* Customize Modal */
+        .customize-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #2d2d2d;
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 400px;
+            width: 90%;
+            z-index: 1500;
+            display: none;
+        }
+
+        .customize-modal.show {
+            display: block;
+            animation: popIn 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .customize-modal-header {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #e8e8e8;
+        }
+
+        .customize-slot {
+            margin-bottom: 16px;
+        }
+
+        .customize-slot-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #9ca3af;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .customize-slot select {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #3d3d3d;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            background: #1a1a1a;
+            color: #e8e8e8;
+            cursor: pointer;
+        }
+
+        .customize-slot select:focus {
+            outline: none;
+            border-color: #2563eb;
+        }
+
+        .customize-modal-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .customize-modal-btn {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .customize-modal-btn.save {
+            background: #2563eb;
+            color: white;
+        }
+
+        .customize-modal-btn.save:active {
+            transform: scale(0.98);
+            background: #1d4ed8;
+        }
+
+        .customize-modal-btn.cancel {
+            background: #3d3d3d;
+            color: #e8e8e8;
+        }
+
+        .customize-modal-btn.cancel:active {
+            transform: scale(0.98);
+            background: #4d4d4d;
+        }
     </style>
 </head>
 <body>
@@ -1022,31 +1157,36 @@
             </div>
 
             <div class="stats-grid">
+                <!-- Row 1: Fixed Cards -->
                 <div class="stat-card">
                     <div class="stat-value" id="stat-miles">0</div>
                     <div class="stat-label" id="stat-miles-label">Miles</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value" id="stat-pushups">0</div>
-                    <div class="stat-label" id="stat-pushups-label">Push-ups</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value" id="stat-pullups">0</div>
-                    <div class="stat-label" id="stat-pullups-label">Pull-ups</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value" id="stat-rollerabs">0</div>
-                    <div class="stat-label" id="stat-rollerabs-label">Roller Abs</div>
+                    <div class="stat-value" id="stat-workouts">0</div>
+                    <div class="stat-label" id="stat-workouts-label">Strength Days</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-value" id="stat-steps">0</div>
                     <div class="stat-label" id="stat-steps-label">Steps</div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-value" id="stat-workouts">0</div>
-                    <div class="stat-label" id="stat-workouts-label">Strength Days</div>
+                
+                <!-- Row 2: Custom Cards (dynamically rendered) -->
+                <div class="stat-card" id="custom-card-1">
+                    <div class="stat-value" id="custom-stat-1">0</div>
+                    <div class="stat-label" id="custom-label-1">Push-ups</div>
+                </div>
+                <div class="stat-card" id="custom-card-2">
+                    <div class="stat-value" id="custom-stat-2">0</div>
+                    <div class="stat-label" id="custom-label-2">Pull-ups</div>
+                </div>
+                <div class="stat-card" id="custom-card-3">
+                    <div class="stat-value" id="custom-stat-3">0</div>
+                    <div class="stat-label" id="custom-label-3">Roller Abs</div>
                 </div>
             </div>
+
+            <button class="customize-dashboard-btn" onclick="app.openCustomizeModal()">⚙️ Customize Cards</button>
 
             <div class="progress-card">
                 <div class="progress-header">
@@ -1146,7 +1286,7 @@
             <div class="success-message" id="import-success">Data imported successfully!</div>
             
             <div style="text-align: center; color: #6b7280; font-size: 12px; margin-top: 32px; padding: 16px 0;">
-                v1.2.0
+                v1.3.0
             </div>
         </div>
     </div>
@@ -1200,9 +1340,56 @@
         <button class="welcome-button" onclick="app.closeWelcome()">Let's Go</button>
     </div>
 
+    <!-- Customize Dashboard Modal -->
+    <div class="overlay" id="customize-overlay" onclick="app.closeCustomizeModal()"></div>
+    <div class="customize-modal" id="customize-modal">
+        <div class="customize-modal-header">Customize Dashboard Cards</div>
+        
+        <div class="customize-slot">
+            <label class="customize-slot-label">Card 1</label>
+            <select id="custom-slot-1">
+                <option value="dips">Dips</option>
+                <option value="pullups">Pull-ups</option>
+                <option value="pushups">Push-ups</option>
+                <option value="rollerabs">Roller Abs</option>
+                <option value="situps">Sit-ups</option>
+                <option value="squats">Squats</option>
+            </select>
+        </div>
+        
+        <div class="customize-slot">
+            <label class="customize-slot-label">Card 2</label>
+            <select id="custom-slot-2">
+                <option value="dips">Dips</option>
+                <option value="pullups">Pull-ups</option>
+                <option value="pushups">Push-ups</option>
+                <option value="rollerabs">Roller Abs</option>
+                <option value="situps">Sit-ups</option>
+                <option value="squats">Squats</option>
+            </select>
+        </div>
+        
+        <div class="customize-slot">
+            <label class="customize-slot-label">Card 3</label>
+            <select id="custom-slot-3">
+                <option value="dips">Dips</option>
+                <option value="pullups">Pull-ups</option>
+                <option value="pushups">Push-ups</option>
+                <option value="rollerabs">Roller Abs</option>
+                <option value="situps">Sit-ups</option>
+                <option value="squats">Squats</option>
+            </select>
+        </div>
+        
+        <div class="customize-modal-buttons">
+            <button class="customize-modal-btn cancel" onclick="app.closeCustomizeModal()">Cancel</button>
+            <button class="customize-modal-btn save" onclick="app.saveCustomCards()">Save</button>
+        </div>
+    </div>
+
     <script>
         // App Version
-        const APP_VERSION = '1.2.0';
+        const APP_VERSION = '1.3.0';
         
         // Main App Object
         const app = {
@@ -1220,7 +1407,8 @@
                     statsView: 'week', // 'week' or 'total'
                     calendarMonth: new Date().getMonth(),
                     calendarYear: new Date().getFullYear()
-                }
+                },
+                customDashboardCards: ['pushups', 'pullups', 'rollerabs'] // Row 2 customizable cards
             },
             activityCounter: 0,
 
@@ -1280,6 +1468,10 @@
                     if (!this.data.currentView.statsView) {
                         this.data.currentView.statsView = 'week';
                     }
+                    // Ensure customDashboardCards exists (for users upgrading from v1.2.0)
+                    if (!this.data.customDashboardCards) {
+                        this.data.customDashboardCards = ['pushups', 'pullups', 'rollerabs'];
+                    }
                 }
             },
 
@@ -1332,9 +1524,12 @@
                             <option value="shoulder">Shoulder Day</option>
                         </optgroup>
                         <optgroup label="─── SINGLE EXERCISE ───">
+                            <option value="dips">Dips</option>
                             <option value="pullups">Pull-ups</option>
                             <option value="pushups">Push-ups</option>
                             <option value="rollerabs">Roller Abs</option>
+                            <option value="situps">Sit-ups</option>
+                            <option value="squats">Squats</option>
                         </optgroup>
                         <optgroup label="─── STEPS ───">
                             <option value="steps">Steps</option>
@@ -1377,8 +1572,8 @@
                         </div>
                     `;
                 }
-                // For push-ups, pull-ups, and roller abs
-                else if (['pushups', 'pullups', 'rollerabs'].includes(activityType)) {
+                // For push-ups, pull-ups, roller abs, dips, squats, sit-ups
+                else if (['pushups', 'pullups', 'rollerabs', 'dips', 'squats', 'situps'].includes(activityType)) {
                     valueContainer.innerHTML = `
                         <div class="activity-value-input">
                             <input type="number" placeholder="0" id="value-${id}" inputmode="numeric" />
@@ -1439,10 +1634,10 @@
                                 activity.distance = this.data.goals.unitPreference === 'miles' ? value * 1.60934 : value;
                             } else if (type === 'steps') {
                                 activity.steps = value;
-                            } else if (['pushups', 'pullups', 'rollerabs'].includes(type)) {
+                            } else if (['pushups', 'pullups', 'rollerabs', 'dips', 'squats', 'situps'].includes(type)) {
                                 activity.reps = value;
                             }
-                        } else if (['walk', 'run', 'dog', 'hiking', 'steps', 'pushups', 'pullups', 'rollerabs'].includes(type)) {
+                        } else if (['walk', 'run', 'dog', 'hiking', 'steps', 'pushups', 'pullups', 'rollerabs', 'dips', 'squats', 'situps'].includes(type)) {
                             continue; // Skip if no value entered for activities that need it
                         }
                     }
@@ -1553,6 +1748,12 @@
                 let weekPullups = 0;
                 let totalRollerAbs = 0;
                 let weekRollerAbs = 0;
+                let totalDips = 0;
+                let weekDips = 0;
+                let totalSquats = 0;
+                let weekSquats = 0;
+                let totalSitups = 0;
+                let weekSitups = 0;
                 
                 // Track unique days with strength activities
                 let strengthDaysTotal = new Set();
@@ -1590,6 +1791,15 @@
                         } else if (activity.type === 'rollerabs') {
                             totalRollerAbs += activity.reps;
                             if (isThisWeek) weekRollerAbs += activity.reps;
+                        } else if (activity.type === 'dips') {
+                            totalDips += activity.reps;
+                            if (isThisWeek) weekDips += activity.reps;
+                        } else if (activity.type === 'squats') {
+                            totalSquats += activity.reps;
+                            if (isThisWeek) weekSquats += activity.reps;
+                        } else if (activity.type === 'situps') {
+                            totalSitups += activity.reps;
+                            if (isThisWeek) weekSitups += activity.reps;
                         }
                     }
 
@@ -1619,12 +1829,18 @@
                     weekPullups,
                     totalRollerAbs,
                     weekRollerAbs,
+                    totalDips,
+                    weekDips,
+                    totalSquats,
+                    weekSquats,
+                    totalSitups,
+                    weekSitups,
                     totalStrengthDays: strengthDaysTotal.size,
                     weekStrengthDays: strengthDaysWeek.size
                 };
             },
 
-            // Update dashboard (FIXED: toggle buttons sync with data)
+            // Update dashboard (FIXED: toggle buttons sync with data + custom cards)
             updateDashboard() {
                 const stats = this.calculateStats();
                 const unit = this.data.goals.unitPreference === 'km' ? 'km' : 'miles';
@@ -1640,30 +1856,24 @@
                     document.querySelector('.stats-toggle-btn:last-child').classList.add('active');
                 }
 
-                // Update stats based on toggle
+                // ROW 1: Update fixed cards (Miles, Strength Days, Steps)
                 if (isWeekView) {
                     document.getElementById('stat-miles').textContent = stats.weekDistance;
-                    document.getElementById('stat-pushups').textContent = stats.weekPushups;
-                    document.getElementById('stat-pullups').textContent = stats.weekPullups;
-                    document.getElementById('stat-rollerabs').textContent = stats.weekRollerAbs;
-                    document.getElementById('stat-steps').textContent = stats.weekSteps.toLocaleString();
                     document.getElementById('stat-workouts').textContent = stats.weekStrengthDays;
+                    document.getElementById('stat-steps').textContent = stats.weekSteps.toLocaleString();
                 } else {
                     document.getElementById('stat-miles').textContent = stats.totalDistance;
-                    document.getElementById('stat-pushups').textContent = stats.totalPushups;
-                    document.getElementById('stat-pullups').textContent = stats.totalPullups;
-                    document.getElementById('stat-rollerabs').textContent = stats.totalRollerAbs;
-                    document.getElementById('stat-steps').textContent = stats.totalSteps.toLocaleString();
                     document.getElementById('stat-workouts').textContent = stats.totalStrengthDays;
+                    document.getElementById('stat-steps').textContent = stats.totalSteps.toLocaleString();
                 }
 
-                // Update labels
+                // Update fixed card labels
                 document.getElementById('stat-miles-label').textContent = unit;
-                document.getElementById('stat-pushups-label').textContent = 'Push-ups';
-                document.getElementById('stat-pullups-label').textContent = 'Pull-ups';
-                document.getElementById('stat-rollerabs-label').textContent = 'Roller Abs';
-                document.getElementById('stat-steps-label').textContent = 'Steps';
                 document.getElementById('stat-workouts-label').textContent = 'Strength Days';
+                document.getElementById('stat-steps-label').textContent = 'Steps';
+
+                // ROW 2: Update custom cards based on user preferences
+                this.renderCustomCards(stats, isWeekView);
 
                 // Annual progress (always total)
                 const annualGoal = this.data.goals.annualMiles;
@@ -1686,6 +1896,98 @@
                         </div>
                     `).join('');
                 }
+            },
+
+            // Render custom dashboard cards (Row 2)
+            renderCustomCards(stats, isWeekView) {
+                const statMap = {
+                    'pushups': {
+                        label: 'Push-ups',
+                        weekValue: stats.weekPushups,
+                        totalValue: stats.totalPushups
+                    },
+                    'pullups': {
+                        label: 'Pull-ups',
+                        weekValue: stats.weekPullups,
+                        totalValue: stats.totalPullups
+                    },
+                    'rollerabs': {
+                        label: 'Roller Abs',
+                        weekValue: stats.weekRollerAbs,
+                        totalValue: stats.totalRollerAbs
+                    },
+                    'dips': {
+                        label: 'Dips',
+                        weekValue: stats.weekDips,
+                        totalValue: stats.totalDips
+                    },
+                    'squats': {
+                        label: 'Squats',
+                        weekValue: stats.weekSquats,
+                        totalValue: stats.totalSquats
+                    },
+                    'situps': {
+                        label: 'Sit-ups',
+                        weekValue: stats.weekSitups,
+                        totalValue: stats.totalSitups
+                    }
+                };
+
+                // Update each custom card
+                for (let i = 0; i < 3; i++) {
+                    const cardType = this.data.customDashboardCards[i];
+                    const cardData = statMap[cardType];
+                    
+                    if (cardData) {
+                        const value = isWeekView ? cardData.weekValue : cardData.totalValue;
+                        document.getElementById(`custom-stat-${i + 1}`).textContent = value;
+                        document.getElementById(`custom-label-${i + 1}`).textContent = cardData.label;
+                    }
+                }
+            },
+
+            // Open customize modal
+            openCustomizeModal() {
+                // Set current selections in dropdowns
+                for (let i = 0; i < 3; i++) {
+                    const select = document.getElementById(`custom-slot-${i + 1}`);
+                    select.value = this.data.customDashboardCards[i];
+                }
+                
+                document.getElementById('customize-overlay').classList.add('show');
+                document.getElementById('customize-modal').classList.add('show');
+            },
+
+            // Close customize modal
+            closeCustomizeModal() {
+                document.getElementById('customize-overlay').classList.remove('show');
+                document.getElementById('customize-modal').classList.remove('show');
+            },
+
+            // Save custom cards preferences
+            saveCustomCards() {
+                const slot1 = document.getElementById('custom-slot-1').value;
+                const slot2 = document.getElementById('custom-slot-2').value;
+                const slot3 = document.getElementById('custom-slot-3').value;
+
+                // Validation: Check for duplicates
+                const selections = [slot1, slot2, slot3];
+                const uniqueSelections = new Set(selections);
+                
+                if (uniqueSelections.size !== 3) {
+                    alert('Please select 3 different stats for your dashboard cards.');
+                    return;
+                }
+
+                // Save preferences
+                this.data.customDashboardCards = selections;
+                this.saveData();
+
+                // Update dashboard
+                this.updateDashboard();
+
+                // Close modal
+                this.closeCustomizeModal();
             },
 
             // Set stats view (week or total)
@@ -1904,6 +2206,14 @@
                     });
                 }
 
+                // Import custom dashboard cards if present, otherwise use defaults
+                if (importedData.customDashboardCards && Array.isArray(importedData.customDashboardCards)) {
+                    this.data.customDashboardCards = importedData.customDashboardCards;
+                } else {
+                    // Set default if not in imported data (backward compatibility)
+                    this.data.customDashboardCards = ['pushups', 'pullups', 'rollerabs'];
+                }
+
                 // Preserve current view settings
                 // (don't import currentView to avoid unexpected screen changes)
 
@@ -1976,6 +2286,9 @@
                     let totalPushups = 0;
                     let totalPullups = 0;
                     let totalRollerAbs = 0;
+                    let totalDips = 0;
+                    let totalSquats = 0;
+                    let totalSitups = 0;
                     let workoutCount = 0;
                     
                     const activityHTML = activities.map((activity, index) => {
@@ -1988,6 +2301,9 @@
                             'pushups': 'Push-ups',
                             'pullups': 'Pull-ups',
                             'rollerabs': 'Roller Abs',
+                            'dips': 'Dips',
+                            'squats': 'Squats',
+                            'situps': 'Sit-ups',
                             'leg': 'Leg Day',
                             'chest': 'Chest Day',
                             'shoulder': 'Shoulder Day',
@@ -2013,6 +2329,9 @@
                             if (activity.type === 'pushups') totalPushups += activity.reps;
                             else if (activity.type === 'pullups') totalPullups += activity.reps;
                             else if (activity.type === 'rollerabs') totalRollerAbs += activity.reps;
+                            else if (activity.type === 'dips') totalDips += activity.reps;
+                            else if (activity.type === 'squats') totalSquats += activity.reps;
+                            else if (activity.type === 'situps') totalSitups += activity.reps;
                         } else {
                             valueText = 'Completed';
                             workoutCount++;
@@ -2048,6 +2367,15 @@
                     }
                     if (totalRollerAbs > 0) {
                         totals.push(`${totalRollerAbs} roller abs`);
+                    }
+                    if (totalDips > 0) {
+                        totals.push(`${totalDips} dips`);
+                    }
+                    if (totalSquats > 0) {
+                        totals.push(`${totalSquats} squats`);
+                    }
+                    if (totalSitups > 0) {
+                        totals.push(`${totalSitups} sit-ups`);
                     }
                     if (workoutCount > 0) {
                         totals.push(`${workoutCount} exercise${workoutCount > 1 ? 's' : ''}`);

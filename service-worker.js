@@ -1,5 +1,5 @@
 // JustStep Service Worker - Silent Auto-Update
-const CACHE_NAME = 'juststep-v1.2.0';
+const CACHE_NAME = 'juststep-v1.3.0';
 const urlsToCache = [
   './',
   './index.html',
