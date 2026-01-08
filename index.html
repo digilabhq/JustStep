@@ -1144,6 +1144,10 @@
             <button class="export-button" onclick="document.getElementById('import-file-input').click()">Import Data</button>
             <button class="export-button" onclick="app.exportData()">Export All Data</button>
             <div class="success-message" id="import-success">Data imported successfully!</div>
+            
+            <div style="text-align: center; color: #6b7280; font-size: 12px; margin-top: 32px; padding: 16px 0;">
+                v1.2.0
+            </div>
         </div>
     </div>
 
@@ -1197,6 +1201,9 @@
     </div>
 
     <script>
+        // App Version
+        const APP_VERSION = '1.2.0';
+        
         // Main App Object
         const app = {
             data: {
@@ -1219,6 +1226,7 @@
 
             // Initialize app
             init() {
+                console.log(`%cJustStep v${APP_VERSION}`, 'color: #2563eb; font-weight: bold; font-size: 14px;');
                 this.loadData();
                 // Ensure statsView is set before updating dashboard
                 if (!this.data.currentView.statsView) {
@@ -1406,6 +1414,8 @@
                 }
 
                 const activities = [];
+                const baseTimestamp = Date.now(); // Get timestamp once at start
+                
                 for (let i = 1; i <= this.activityCounter; i++) {
                     const typeElement = document.getElementById(`type-${i}`);
                     if (!typeElement) continue;
@@ -1416,7 +1426,7 @@
                     const activity = {
                         date: date,
                         type: type,
-                        timestamp: new Date().toISOString()
+                        timestamp: new Date(baseTimestamp + i).toISOString() // Add i milliseconds to ensure uniqueness
                     };
 
                     // Get value for cardio and reps-based exercises
@@ -1859,10 +1869,11 @@
                 let newActivities = 0;
                 let duplicates = 0;
 
-                // Merge activities (skip duplicates based on date + timestamp)
+                // Merge activities (skip duplicates based on date + type + timestamp)
                 importedData.activities.forEach(importActivity => {
                     const isDuplicate = this.data.activities.some(existing => 
                         existing.date === importActivity.date && 
+                        existing.type === importActivity.type &&
                         existing.timestamp === importActivity.timestamp
                     );
                     
