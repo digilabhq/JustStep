@@ -1140,7 +1140,10 @@
                 </div>
             </div>
 
+            <input type="file" id="import-file-input" accept=".json" style="display: none;" onchange="app.handleImportFile(event)">
+            <button class="export-button" onclick="document.getElementById('import-file-input').click()">Import Data</button>
             <button class="export-button" onclick="app.exportData()">Export All Data</button>
+            <div class="success-message" id="import-success">Data imported successfully!</div>
         </div>
     </div>
 
@@ -1227,6 +1230,23 @@
                 this.updateDashboard();
                 this.renderCalendar();
                 this.updateGoalsUI();
+                this.registerServiceWorker();
+            },
+
+            // Register service worker for auto-updates
+            registerServiceWorker() {
+                if ('serviceWorker' in navigator) {
+                    navigator.serviceWorker.register('./service-worker.js')
+                        .then(registration => {
+                            console.log('Service Worker registered');
+                            
+                            // Check for updates every time app is opened
+                            registration.update();
+                        })
+                        .catch(error => {
+                            console.log('Service Worker registration failed:', error);
+                        });
+                }
             },
 
             // Check if welcome modal should show
@@ -1805,6 +1825,92 @@
                 link.href = url;
                 link.download = `juststep-data-${new Date().toISOString().split('T')[0]}.json`;
                 link.click();
+            },
+
+            // Handle import file selection
+            handleImportFile(event) {
+                const file = event.target.files[0];
+                if (!file) return;
+
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    try {
+                        const importedData = JSON.parse(e.target.result);
+                        this.importData(importedData);
+                    } catch (error) {
+                        alert('Error reading file. Please make sure it\'s a valid JustStep export file.');
+                        console.error('Import error:', error);
+                    }
+                };
+                reader.readAsText(file);
+                
+                // Reset file input so same file can be imported again
+                event.target.value = '';
+            },
+
+            // Import and merge data
+            importData(importedData) {
+                // Validate data structure
+                if (!importedData || !importedData.activities || !Array.isArray(importedData.activities)) {
+                    alert('Invalid data file. Please export from JustStep and try again.');
+                    return;
+                }
+
+                let newActivities = 0;
+                let duplicates = 0;
+
+                // Merge activities (skip duplicates based on date + timestamp)
+                importedData.activities.forEach(importActivity => {
+                    const isDuplicate = this.data.activities.some(existing => 
+                        existing.date === importActivity.date && 
+                        existing.timestamp === importActivity.timestamp
+                    );
+                    
+                    if (!isDuplicate) {
+                        this.data.activities.push(importActivity);
+                        newActivities++;
+                    } else {
+                        duplicates++;
+                    }
+                });
+
+                // Replace goals completely
+                if (importedData.goals) {
+                    this.data.goals = { ...importedData.goals };
+                }
+
+                // Merge milestones (skip duplicates by type + value)
+                if (importedData.milestones && Array.isArray(importedData.milestones)) {
+                    importedData.milestones.forEach(importMilestone => {
+                        const isDuplicate = this.data.milestones.some(existing =>
+                            existing.type === importMilestone.type &&
+                            existing.value === importMilestone.value
+                        );
+                        
+                        if (!isDuplicate) {
+                            this.data.milestones.push(importMilestone);
+                        }
+                    });
+                }
+
+                // Preserve current view settings
+                // (don't import currentView to avoid unexpected screen changes)
+
+                // Save merged data
+                this.saveData();
+
+                // Update all views
+                this.updateGoalsUI();
+                this.updateDashboard();
+                this.renderCalendar();
+
+                // Show success message
+                const successMsg = document.getElementById('import-success');
+                successMsg.textContent = `Imported ${newActivities} activities${duplicates > 0 ? `, skipped ${duplicates} duplicates` : ''}`;
+                successMsg.classList.add('show');
+                setTimeout(() => {
+                    successMsg.classList.remove('show');
+                }, 4000);
             },
 
             // Show screen
