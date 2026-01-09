@@ -352,6 +352,12 @@
             aspect-ratio: 1.4 / 1;
         }
 
+        .stat-star {
+            font-size: 12px;
+            margin-bottom: 2px;
+            opacity: 0.8;
+        }
+
         .stat-value {
             font-size: 18px;
             font-weight: 700;
@@ -1182,20 +1188,23 @@
                 
                 <!-- Row 2: Custom Cards (dynamically rendered) -->
                 <div class="stat-card" id="custom-card-1">
+                    <div class="stat-star">⭐</div>
                     <div class="stat-value" id="custom-stat-1">0</div>
                     <div class="stat-label" id="custom-label-1">Push-ups</div>
                 </div>
                 <div class="stat-card" id="custom-card-2">
+                    <div class="stat-star">⭐</div>
                     <div class="stat-value" id="custom-stat-2">0</div>
                     <div class="stat-label" id="custom-label-2">Pull-ups</div>
                 </div>
                 <div class="stat-card" id="custom-card-3">
+                    <div class="stat-star">⭐</div>
                     <div class="stat-value" id="custom-stat-3">0</div>
                     <div class="stat-label" id="custom-label-3">Roller Abs</div>
                 </div>
             </div>
 
-            <button class="customize-dashboard-btn" onclick="app.openCustomizeModal()">⚙️ Customize Cards</button>
+            <button class="customize-dashboard-btn" onclick="app.openCustomizeModal()">⭐ Customize Favorites</button>
 
             <div class="progress-card">
                 <div class="progress-header">
@@ -1247,7 +1256,7 @@
 
         <!-- Goals Screen -->
         <div id="goals-screen" class="screen">
-            <h1>Settings</h1>
+            <h1>Goals</h1>
             <p class="subtitle">Customize your goals and preferences</p>
 
             <div class="goal-input">
@@ -1295,7 +1304,7 @@
             <div class="success-message" id="import-success">Data imported successfully!</div>
             
             <div style="text-align: center; color: #6b7280; font-size: 12px; margin-top: 32px; padding: 16px 0;">
-                v1.3.0
+                v1.4.0
             </div>
         </div>
     </div>
@@ -1352,47 +1361,77 @@
     <!-- Customize Dashboard Modal -->
     <div class="overlay" id="customize-overlay" onclick="app.closeCustomizeModal()"></div>
     <div class="customize-modal" id="customize-modal">
-        <div class="customize-modal-header">Customize Dashboard Cards</div>
+        <div class="customize-modal-header">⭐ Customize Your Favorites</div>
         
         <div class="customize-slot">
-            <label class="customize-slot-label">Card 1</label>
+            <label class="customize-slot-label">Favorite 1</label>
             <select id="custom-slot-1">
-                <option value="dips">Dips</option>
-                <option value="pullups">Pull-ups</option>
-                <option value="pushups">Push-ups</option>
-                <option value="rollerabs">Roller Abs</option>
-                <option value="situps">Sit-ups</option>
-                <option value="squats">Squats</option>
+                <optgroup label="─── CARDIO ───">
+                    <option value="biking">Biking</option>
+                    <option value="dog">Dog Walk</option>
+                    <option value="hiking">Hiking</option>
+                    <option value="run">Running</option>
+                    <option value="stairs">Master Stairs</option>
+                    <option value="walk">Walking</option>
+                </optgroup>
+                <optgroup label="─── EXERCISES ───">
+                    <option value="dips">Dips</option>
+                    <option value="pullups">Pull-ups</option>
+                    <option value="pushups">Push-ups</option>
+                    <option value="rollerabs">Roller Abs</option>
+                    <option value="situps">Sit-ups</option>
+                    <option value="squats">Squats</option>
+                </optgroup>
             </select>
         </div>
         
         <div class="customize-slot">
-            <label class="customize-slot-label">Card 2</label>
+            <label class="customize-slot-label">Favorite 2</label>
             <select id="custom-slot-2">
-                <option value="dips">Dips</option>
-                <option value="pullups">Pull-ups</option>
-                <option value="pushups">Push-ups</option>
-                <option value="rollerabs">Roller Abs</option>
-                <option value="situps">Sit-ups</option>
-                <option value="squats">Squats</option>
+                <optgroup label="─── CARDIO ───">
+                    <option value="biking">Biking</option>
+                    <option value="dog">Dog Walk</option>
+                    <option value="hiking">Hiking</option>
+                    <option value="run">Running</option>
+                    <option value="stairs">Master Stairs</option>
+                    <option value="walk">Walking</option>
+                </optgroup>
+                <optgroup label="─── EXERCISES ───">
+                    <option value="dips">Dips</option>
+                    <option value="pullups">Pull-ups</option>
+                    <option value="pushups">Push-ups</option>
+                    <option value="rollerabs">Roller Abs</option>
+                    <option value="situps">Sit-ups</option>
+                    <option value="squats">Squats</option>
+                </optgroup>
             </select>
         </div>
         
         <div class="customize-slot">
-            <label class="customize-slot-label">Card 3</label>
+            <label class="customize-slot-label">Favorite 3</label>
             <select id="custom-slot-3">
-                <option value="dips">Dips</option>
-                <option value="pullups">Pull-ups</option>
-                <option value="pushups">Push-ups</option>
-                <option value="rollerabs">Roller Abs</option>
-                <option value="situps">Sit-ups</option>
-                <option value="squats">Squats</option>
+                <optgroup label="─── CARDIO ───">
+                    <option value="biking">Biking</option>
+                    <option value="dog">Dog Walk</option>
+                    <option value="hiking">Hiking</option>
+                    <option value="run">Running</option>
+                    <option value="stairs">Master Stairs</option>
+                    <option value="walk">Walking</option>
+                </optgroup>
+                <optgroup label="─── EXERCISES ───">
+                    <option value="dips">Dips</option>
+                    <option value="pullups">Pull-ups</option>
+                    <option value="pushups">Push-ups</option>
+                    <option value="rollerabs">Roller Abs</option>
+                    <option value="situps">Sit-ups</option>
+                    <option value="squats">Squats</option>
+                </optgroup>
             </select>
         </div>
         
         <div class="customize-modal-buttons">
             <button class="customize-modal-btn cancel" onclick="app.closeCustomizeModal()">Cancel</button>
-            <button class="customize-modal-btn save" onclick="app.saveCustomCards()">Save</button>
+            <button class="customize-modal-btn save" onclick="app.saveCustomCards()">Save Favorites</button>
         </div>
     </div>
 
@@ -1518,9 +1557,11 @@
                     <select class="activity-type-select" id="type-${this.activityCounter}" onchange="app.updateActivityInputs(${this.activityCounter}, this.value)">
                         <option value="">Select activity type...</option>
                         <optgroup label="─── CARDIO ───">
+                            <option value="biking">Biking</option>
                             <option value="dog">Dog Walk</option>
                             <option value="hiking">Hiking</option>
                             <option value="run">Running</option>
+                            <option value="stairs">Master Stairs</option>
                             <option value="walk">Walk</option>
                         </optgroup>
                         <optgroup label="─── STRENGTH ───">
@@ -1563,12 +1604,21 @@
                     return;
                 }
                 
-                // For cardio activities
-                if (['walk', 'run', 'dog', 'hiking'].includes(activityType)) {
+                // For cardio activities (distance-based)
+                if (['walk', 'run', 'dog', 'hiking', 'biking'].includes(activityType)) {
                     valueContainer.innerHTML = `
                         <div class="activity-value-input">
                             <input type="number" step="0.1" placeholder="0.0" id="value-${id}" inputmode="decimal" />
                             <span class="unit">${unit}</span>
+                        </div>
+                    `;
+                }
+                // For stairs (floors)
+                else if (activityType === 'stairs') {
+                    valueContainer.innerHTML = `
+                        <div class="activity-value-input">
+                            <input type="number" placeholder="0" id="value-${id}" inputmode="numeric" />
+                            <span class="unit">floors</span>
                         </div>
                     `;
                 }
@@ -1638,15 +1688,17 @@
                     if (valueElement) {
                         const value = parseFloat(valueElement.value);
                         if (value && value > 0) {
-                            if (['walk', 'run', 'dog', 'hiking'].includes(type)) {
+                            if (['walk', 'run', 'dog', 'hiking', 'biking'].includes(type)) {
                                 // Convert to km for storage if in miles
                                 activity.distance = this.data.goals.unitPreference === 'miles' ? value * 1.60934 : value;
+                            } else if (type === 'stairs') {
+                                activity.floors = value;
                             } else if (type === 'steps') {
                                 activity.steps = value;
                             } else if (['pushups', 'pullups', 'rollerabs', 'dips', 'squats', 'situps'].includes(type)) {
                                 activity.reps = value;
                             }
-                        } else if (['walk', 'run', 'dog', 'hiking', 'steps', 'pushups', 'pullups', 'rollerabs', 'dips', 'squats', 'situps'].includes(type)) {
+                        } else if (['walk', 'run', 'dog', 'hiking', 'biking', 'stairs', 'steps', 'pushups', 'pullups', 'rollerabs', 'dips', 'squats', 'situps'].includes(type)) {
                             continue; // Skip if no value entered for activities that need it
                         }
                     }
@@ -1763,6 +1815,18 @@
                 let weekSquats = 0;
                 let totalSitups = 0;
                 let weekSitups = 0;
+                let totalBiking = 0;
+                let weekBiking = 0;
+                let totalDogWalk = 0;
+                let weekDogWalk = 0;
+                let totalHiking = 0;
+                let weekHiking = 0;
+                let totalRunning = 0;
+                let weekRunning = 0;
+                let totalWalking = 0;
+                let weekWalking = 0;
+                let totalStairs = 0;
+                let weekStairs = 0;
                 
                 // Track unique days with strength activities
                 let strengthDaysTotal = new Set();
@@ -1773,11 +1837,37 @@
                     const activityDate = new Date(activity.date + 'T12:00:00');
                     const isThisWeek = activityDate >= startOfWeek;
 
-                    // Total distance (stored in km)
+                    // Total distance (stored in km) - also track by type
                     if (activity.distance) {
                         totalDistance += activity.distance;
                         if (isThisWeek) {
                             weekDistance += activity.distance;
+                        }
+                        
+                        // Track by specific type
+                        if (activity.type === 'biking') {
+                            totalBiking += activity.distance;
+                            if (isThisWeek) weekBiking += activity.distance;
+                        } else if (activity.type === 'dog') {
+                            totalDogWalk += activity.distance;
+                            if (isThisWeek) weekDogWalk += activity.distance;
+                        } else if (activity.type === 'hiking') {
+                            totalHiking += activity.distance;
+                            if (isThisWeek) weekHiking += activity.distance;
+                        } else if (activity.type === 'run') {
+                            totalRunning += activity.distance;
+                            if (isThisWeek) weekRunning += activity.distance;
+                        } else if (activity.type === 'walk') {
+                            totalWalking += activity.distance;
+                            if (isThisWeek) weekWalking += activity.distance;
+                        }
+                    }
+
+                    // Total floors for stairs
+                    if (activity.floors) {
+                        totalStairs += activity.floors;
+                        if (isThisWeek) {
+                            weekStairs += activity.floors;
                         }
                     }
 
@@ -1825,6 +1915,16 @@
                 if (this.data.goals.unitPreference === 'miles') {
                     totalDistance = totalDistance / 1.60934;
                     weekDistance = weekDistance / 1.60934;
+                    totalBiking = totalBiking / 1.60934;
+                    weekBiking = weekBiking / 1.60934;
+                    totalDogWalk = totalDogWalk / 1.60934;
+                    weekDogWalk = weekDogWalk / 1.60934;
+                    totalHiking = totalHiking / 1.60934;
+                    weekHiking = weekHiking / 1.60934;
+                    totalRunning = totalRunning / 1.60934;
+                    weekRunning = weekRunning / 1.60934;
+                    totalWalking = totalWalking / 1.60934;
+                    weekWalking = weekWalking / 1.60934;
                 }
 
                 return {
@@ -1844,6 +1944,18 @@
                     weekSquats,
                     totalSitups,
                     weekSitups,
+                    totalBiking: Math.round(totalBiking * 10) / 10,
+                    weekBiking: Math.round(weekBiking * 10) / 10,
+                    totalDogWalk: Math.round(totalDogWalk * 10) / 10,
+                    weekDogWalk: Math.round(weekDogWalk * 10) / 10,
+                    totalHiking: Math.round(totalHiking * 10) / 10,
+                    weekHiking: Math.round(weekHiking * 10) / 10,
+                    totalRunning: Math.round(totalRunning * 10) / 10,
+                    weekRunning: Math.round(weekRunning * 10) / 10,
+                    totalWalking: Math.round(totalWalking * 10) / 10,
+                    weekWalking: Math.round(weekWalking * 10) / 10,
+                    totalStairs,
+                    weekStairs,
                     totalStrengthDays: strengthDaysTotal.size,
                     weekStrengthDays: strengthDaysWeek.size
                 };
@@ -1909,7 +2021,10 @@
 
             // Render custom dashboard cards (Row 2)
             renderCustomCards(stats, isWeekView) {
+                const unit = this.data.goals.unitPreference === 'km' ? 'km' : 'miles';
+                
                 const statMap = {
+                    // Single exercises (reps)
                     'pushups': {
                         label: 'Push-ups',
                         weekValue: stats.weekPushups,
@@ -1939,6 +2054,37 @@
                         label: 'Sit-ups',
                         weekValue: stats.weekSitups,
                         totalValue: stats.totalSitups
+                    },
+                    // Cardio activities (distance)
+                    'biking': {
+                        label: `Biking (${unit})`,
+                        weekValue: stats.weekBiking,
+                        totalValue: stats.totalBiking
+                    },
+                    'dog': {
+                        label: `Dog Walk (${unit})`,
+                        weekValue: stats.weekDogWalk,
+                        totalValue: stats.totalDogWalk
+                    },
+                    'hiking': {
+                        label: `Hiking (${unit})`,
+                        weekValue: stats.weekHiking,
+                        totalValue: stats.totalHiking
+                    },
+                    'run': {
+                        label: `Running (${unit})`,
+                        weekValue: stats.weekRunning,
+                        totalValue: stats.totalRunning
+                    },
+                    'walk': {
+                        label: `Walking (${unit})`,
+                        weekValue: stats.weekWalking,
+                        totalValue: stats.totalWalking
+                    },
+                    'stairs': {
+                        label: 'Stairs (floors)',
+                        weekValue: stats.weekStairs,
+                        totalValue: stats.totalStairs
                     }
                 };
 
@@ -2298,6 +2444,7 @@
                     let totalDips = 0;
                     let totalSquats = 0;
                     let totalSitups = 0;
+                    let totalStairs = 0;
                     let workoutCount = 0;
                     
                     const activityHTML = activities.map((activity, index) => {
@@ -2306,6 +2453,8 @@
                             'run': 'Running',
                             'dog': 'Dog Walk',
                             'hiking': 'Hiking',
+                            'biking': 'Biking',
+                            'stairs': 'Master Stairs',
                             'steps': 'Steps',
                             'pushups': 'Push-ups',
                             'pullups': 'Pull-ups',
@@ -2329,6 +2478,9 @@
                                 : activity.distance.toFixed(1);
                             valueText = `${displayDistance} ${unit}`;
                             totalDistance += activity.distance;
+                        } else if (activity.floors) {
+                            valueText = `${activity.floors} floors`;
+                            totalStairs += activity.floors;
                         } else if (activity.steps) {
                             valueText = `${activity.steps.toLocaleString()} steps`;
                             totalSteps += activity.steps;
@@ -2385,6 +2537,9 @@
                     }
                     if (totalSitups > 0) {
                         totals.push(`${totalSitups} sit-ups`);
+                    }
+                    if (totalStairs > 0) {
+                        totals.push(`${totalStairs} floors`);
                     }
                     if (workoutCount > 0) {
                         totals.push(`${workoutCount} exercise${workoutCount > 1 ? 's' : ''}`);
