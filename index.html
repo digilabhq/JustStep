@@ -1773,7 +1773,7 @@
             <div class="success-message" id="import-success">Data imported successfully!</div>
             
             <div style="text-align: center; color: #6b7280; font-size: 12px; margin-top: 32px; padding: 16px 0;">
-                v1.5.1
+                v1.5.2
             </div>
         </div>
     </div>
@@ -2281,283 +2281,267 @@
                 now.setHours(23, 59, 59, 999); // Set to end of today for comparisons
                 const startOfYear = new Date(now.getFullYear(), 0, 1);
                 
-                // Calendar week (Sunday-Saturday) for "This Week" card display
-                const weekStart = new Date(now);
-                weekStart.setDate(now.getDate() - now.getDay());
-                weekStart.setHours(0, 0, 0, 0);
+                // ============================================
+                // DATE PERIOD DEFINITIONS (v1.5.2)
+                // ============================================
                 
-                // Rolling 7-day periods for trending arrows
-                const last7DaysStart = new Date(now);
-                last7DaysStart.setDate(now.getDate() - 6);
-                last7DaysStart.setHours(0, 0, 0, 0);
+                // THIS CALENDAR WEEK (Sunday - Today)
+                // For display: "This Week" toggle shows current calendar week progress
+                const thisWeekStart = new Date(now);
+                thisWeekStart.setDate(now.getDate() - now.getDay()); // This Sunday at midnight
+                thisWeekStart.setHours(0, 0, 0, 0);
                 
-                const previous7DaysStart = new Date(now);
-                previous7DaysStart.setDate(now.getDate() - 13);
-                previous7DaysStart.setHours(0, 0, 0, 0);
+                // PREVIOUS CALENDAR WEEK (Last Sunday - Last Saturday)
+                // For trending: Compare this week vs same full previous week
+                const prevWeekStart = new Date(thisWeekStart);
+                prevWeekStart.setDate(prevWeekStart.getDate() - 7); // Previous Sunday
+                prevWeekStart.setHours(0, 0, 0, 0);
                 
-                const previous7DaysEnd = new Date(now);
-                previous7DaysEnd.setDate(now.getDate() - 7);
-                previous7DaysEnd.setHours(23, 59, 59, 999);
+                const prevWeekEnd = new Date(thisWeekStart);
+                prevWeekEnd.setDate(prevWeekEnd.getDate() - 1); // Last Saturday
+                prevWeekEnd.setHours(23, 59, 59, 999);
                 
-                // Debug date ranges
-
+                // ============================================
+                // TRACKING VARIABLES
+                // ============================================
+                
+                // Total (all-time)
                 let totalDistance = 0;
-                let weekDistance = 0;           // Calendar week (Sun-Sat)
-                let lastWeekDistance = 0;        // Rolling 7-day (for trending)
-                let previousWeekDistance = 0;    // Previous rolling 7-day (for trending comparison)
                 let totalSteps = 0;
-                let weekSteps = 0;
-                let lastWeekSteps = 0;
-                let previousWeekSteps = 0;
                 let totalPushups = 0;
-                let weekPushups = 0;
-                let lastWeekPushups = 0;
-                let previousWeekPushups = 0;
                 let totalPullups = 0;
-                let weekPullups = 0;
-                let lastWeekPullups = 0;
-                let previousWeekPullups = 0;
                 let totalRollerAbs = 0;
-                let weekRollerAbs = 0;
-                let lastWeekRollerAbs = 0;
-                let previousWeekRollerAbs = 0;
                 let totalDips = 0;
-                let weekDips = 0;
-                let lastWeekDips = 0;
-                let previousWeekDips = 0;
                 let totalSquats = 0;
-                let weekSquats = 0;
-                let lastWeekSquats = 0;
-                let previousWeekSquats = 0;
                 let totalSitups = 0;
-                let weekSitups = 0;
-                let lastWeekSitups = 0;
-                let previousWeekSitups = 0;
                 let totalBiking = 0;
-                let weekBiking = 0;
-                let lastWeekBiking = 0;
-                let previousWeekBiking = 0;
                 let totalDogWalk = 0;
-                let weekDogWalk = 0;
-                let lastWeekDogWalk = 0;
-                let previousWeekDogWalk = 0;
                 let totalHiking = 0;
-                let weekHiking = 0;
-                let lastWeekHiking = 0;
-                let previousWeekHiking = 0;
                 let totalRunning = 0;
-                let weekRunning = 0;
-                let lastWeekRunning = 0;
-                let previousWeekRunning = 0;
                 let totalWalking = 0;
-                let weekWalking = 0;
-                let lastWeekWalking = 0;
-                let previousWeekWalking = 0;
                 let totalStairs = 0;
-                let weekStairs = 0;
-                let lastWeekStairs = 0;
-                let previousWeekStairs = 0;
                 
-                // Track unique days with strength activities
+                // This calendar week (for display)
+                let thisWeekDistance = 0;
+                let thisWeekSteps = 0;
+                let thisWeekPushups = 0;
+                let thisWeekPullups = 0;
+                let thisWeekRollerAbs = 0;
+                let thisWeekDips = 0;
+                let thisWeekSquats = 0;
+                let thisWeekSitups = 0;
+                let thisWeekBiking = 0;
+                let thisWeekDogWalk = 0;
+                let thisWeekHiking = 0;
+                let thisWeekRunning = 0;
+                let thisWeekWalking = 0;
+                let thisWeekStairs = 0;
+                
+                // Previous calendar week (for trending comparison)
+                let prevWeekDistance = 0;
+                let prevWeekSteps = 0;
+                let prevWeekPushups = 0;
+                let prevWeekPullups = 0;
+                let prevWeekRollerAbs = 0;
+                let prevWeekDips = 0;
+                let prevWeekSquats = 0;
+                let prevWeekSitups = 0;
+                let prevWeekBiking = 0;
+                let prevWeekDogWalk = 0;
+                let prevWeekHiking = 0;
+                let prevWeekRunning = 0;
+                let prevWeekWalking = 0;
+                let prevWeekStairs = 0;
+                
+                // Track unique strength days (Sets are better for counting unique days)
                 let strengthDaysTotal = new Set();
-                let strengthDaysWeek = new Set();
-                let strengthDaysLastWeek = new Set();
-                let strengthDaysPreviousWeek = new Set();
+                let strengthDaysThisWeek = new Set();
+                let strengthDaysPrevWeek = new Set();
 
+                // ============================================
+                // PROCESS ALL ACTIVITIES
+                // ============================================
                 this.data.activities.forEach(activity => {
-                    // Fix: Parse date at noon to avoid timezone issues
+                    // Parse date at noon to avoid timezone issues
                     const activityDate = new Date(activity.date + 'T12:00:00');
-                    const isThisWeek = activityDate >= weekStart && activityDate <= now;
-                    const isLast7Days = activityDate >= last7DaysStart && activityDate <= now;
-                    const isPrevious7Days = activityDate >= previous7DaysStart && activityDate <= previous7DaysEnd;
                     
-                    // Debug logging
-
-                    // Total distance (stored in km) - also track by type
+                    // Check which periods this activity belongs to
+                    const isThisWeek = activityDate >= thisWeekStart && activityDate <= now;
+                    const isPrevWeek = activityDate >= prevWeekStart && activityDate <= prevWeekEnd;
+                    
+                    // ========== DISTANCE ACTIVITIES ==========
                     if (activity.distance) {
                         totalDistance += activity.distance;
-                        if (isThisWeek) weekDistance += activity.distance;
-                        if (isLast7Days) lastWeekDistance += activity.distance;
-                        if (isPrevious7Days) previousWeekDistance += activity.distance;
+                        if (isThisWeek) thisWeekDistance += activity.distance;
+                        if (isPrevWeek) prevWeekDistance += activity.distance;
                         
-                        // Track by specific type
+                        // Track by specific distance type
                         if (activity.type === 'biking') {
                             totalBiking += activity.distance;
-                            if (isThisWeek) weekBiking += activity.distance;
-                            if (isLast7Days) lastWeekBiking += activity.distance;
-                            if (isPrevious7Days) previousWeekBiking += activity.distance;
+                            if (isThisWeek) thisWeekBiking += activity.distance;
+                            if (isPrevWeek) prevWeekBiking += activity.distance;
                         } else if (activity.type === 'dog') {
                             totalDogWalk += activity.distance;
-                            if (isThisWeek) weekDogWalk += activity.distance;
-                            if (isLast7Days) lastWeekDogWalk += activity.distance;
-                            if (isPrevious7Days) previousWeekDogWalk += activity.distance;
+                            if (isThisWeek) thisWeekDogWalk += activity.distance;
+                            if (isPrevWeek) prevWeekDogWalk += activity.distance;
                         } else if (activity.type === 'hiking') {
                             totalHiking += activity.distance;
-                            if (isThisWeek) weekHiking += activity.distance;
-                            if (isLast7Days) lastWeekHiking += activity.distance;
-                            if (isPrevious7Days) previousWeekHiking += activity.distance;
+                            if (isThisWeek) thisWeekHiking += activity.distance;
+                            if (isPrevWeek) prevWeekHiking += activity.distance;
                         } else if (activity.type === 'run') {
                             totalRunning += activity.distance;
-                            if (isThisWeek) weekRunning += activity.distance;
-                            if (isLast7Days) lastWeekRunning += activity.distance;
-                            if (isPrevious7Days) previousWeekRunning += activity.distance;
+                            if (isThisWeek) thisWeekRunning += activity.distance;
+                            if (isPrevWeek) prevWeekRunning += activity.distance;
                         } else if (activity.type === 'walk') {
                             totalWalking += activity.distance;
-                            if (isThisWeek) weekWalking += activity.distance;
-                            if (isLast7Days) lastWeekWalking += activity.distance;
-                            if (isPrevious7Days) previousWeekWalking += activity.distance;
+                            if (isThisWeek) thisWeekWalking += activity.distance;
+                            if (isPrevWeek) prevWeekWalking += activity.distance;
                         }
                     }
 
-                    // Total floors for stairs
+                    // ========== STAIRS (FLOORS) ==========
                     if (activity.floors) {
                         totalStairs += activity.floors;
-                        if (isThisWeek) weekStairs += activity.floors;
-                        if (isLast7Days) lastWeekStairs += activity.floors;
-                        if (isPrevious7Days) previousWeekStairs += activity.floors;
+                        if (isThisWeek) thisWeekStairs += activity.floors;
+                        if (isPrevWeek) prevWeekStairs += activity.floors;
                     }
 
-                    // Total steps
+                    // ========== STEPS ==========
                     if (activity.steps) {
                         totalSteps += activity.steps;
-                        if (isThisWeek) weekSteps += activity.steps;
-                        if (isLast7Days) lastWeekSteps += activity.steps;
-                        if (isPrevious7Days) previousWeekSteps += activity.steps;
+                        if (isThisWeek) thisWeekSteps += activity.steps;
+                        if (isPrevWeek) prevWeekSteps += activity.steps;
                     }
 
-                    // Total reps by type
+                    // ========== REPS (EXERCISES) ==========
                     if (activity.reps) {
                         if (activity.type === 'pushups') {
                             totalPushups += activity.reps;
-                            if (isThisWeek) weekPushups += activity.reps;
-                            if (isLast7Days) lastWeekPushups += activity.reps;
-                            if (isPrevious7Days) previousWeekPushups += activity.reps;
+                            if (isThisWeek) thisWeekPushups += activity.reps;
+                            if (isPrevWeek) prevWeekPushups += activity.reps;
                         } else if (activity.type === 'pullups') {
                             totalPullups += activity.reps;
-                            if (isThisWeek) weekPullups += activity.reps;
-                            if (isLast7Days) lastWeekPullups += activity.reps;
-                            if (isPrevious7Days) previousWeekPullups += activity.reps;
+                            if (isThisWeek) thisWeekPullups += activity.reps;
+                            if (isPrevWeek) prevWeekPullups += activity.reps;
                         } else if (activity.type === 'rollerabs') {
                             totalRollerAbs += activity.reps;
-                            if (isThisWeek) weekRollerAbs += activity.reps;
-                            if (isLast7Days) lastWeekRollerAbs += activity.reps;
-                            if (isPrevious7Days) previousWeekRollerAbs += activity.reps;
+                            if (isThisWeek) thisWeekRollerAbs += activity.reps;
+                            if (isPrevWeek) prevWeekRollerAbs += activity.reps;
                         } else if (activity.type === 'dips') {
                             totalDips += activity.reps;
-                            if (isThisWeek) weekDips += activity.reps;
-                            if (isLast7Days) lastWeekDips += activity.reps;
-                            if (isPrevious7Days) previousWeekDips += activity.reps;
+                            if (isThisWeek) thisWeekDips += activity.reps;
+                            if (isPrevWeek) prevWeekDips += activity.reps;
                         } else if (activity.type === 'squats') {
                             totalSquats += activity.reps;
-                            if (isThisWeek) weekSquats += activity.reps;
-                            if (isLast7Days) lastWeekSquats += activity.reps;
-                            if (isPrevious7Days) previousWeekSquats += activity.reps;
+                            if (isThisWeek) thisWeekSquats += activity.reps;
+                            if (isPrevWeek) prevWeekSquats += activity.reps;
                         } else if (activity.type === 'situps') {
                             totalSitups += activity.reps;
-                            if (isThisWeek) weekSitups += activity.reps;
-                            if (isLast7Days) lastWeekSitups += activity.reps;
-                            if (isPrevious7Days) previousWeekSitups += activity.reps;
+                            if (isThisWeek) thisWeekSitups += activity.reps;
+                            if (isPrevWeek) prevWeekSitups += activity.reps;
                         }
                     }
 
-                    // Count unique days with strength activities
+                    // ========== STRENGTH DAYS ==========
                     if (['arm', 'back', 'chest', 'core', 'fullbody', 'leg', 'shoulder'].includes(activity.type)) {
                         strengthDaysTotal.add(activity.date);
-                        if (isThisWeek) strengthDaysWeek.add(activity.date);
-                        if (isLast7Days) strengthDaysLastWeek.add(activity.date);
-                        if (isPrevious7Days) strengthDaysPreviousWeek.add(activity.date);
+                        if (isThisWeek) strengthDaysThisWeek.add(activity.date);
+                        if (isPrevWeek) strengthDaysPrevWeek.add(activity.date);
                     }
                 });
 
-                // Convert to preferred unit for display
+                // ============================================
+                // CONVERT KM TO MILES (if needed)
+                // ============================================
                 if (this.data.goals.unitPreference === 'miles') {
-                    totalDistance = totalDistance / 1.60934;
-                    weekDistance = weekDistance / 1.60934;
-                    lastWeekDistance = lastWeekDistance / 1.60934;
-                    totalBiking = totalBiking / 1.60934;
-                    weekBiking = weekBiking / 1.60934;
-                    lastWeekBiking = lastWeekBiking / 1.60934;
-                    totalDogWalk = totalDogWalk / 1.60934;
-                    weekDogWalk = weekDogWalk / 1.60934;
-                    lastWeekDogWalk = lastWeekDogWalk / 1.60934;
-                    totalHiking = totalHiking / 1.60934;
-                    weekHiking = weekHiking / 1.60934;
-                    lastWeekHiking = lastWeekHiking / 1.60934;
-                    totalRunning = totalRunning / 1.60934;
-                    weekRunning = weekRunning / 1.60934;
-                    lastWeekRunning = lastWeekRunning / 1.60934;
-                    totalWalking = totalWalking / 1.60934;
-                    weekWalking = weekWalking / 1.60934;
-                    lastWeekWalking = lastWeekWalking / 1.60934;
-                    previousWeekDistance = previousWeekDistance / 1.60934;
-                    previousWeekBiking = previousWeekBiking / 1.60934;
-                    previousWeekDogWalk = previousWeekDogWalk / 1.60934;
-                    previousWeekHiking = previousWeekHiking / 1.60934;
-                    previousWeekRunning = previousWeekRunning / 1.60934;
-                    previousWeekWalking = previousWeekWalking / 1.60934;
+                    const KM_TO_MILES = 1.60934;
+                    
+                    // Total
+                    totalDistance = totalDistance / KM_TO_MILES;
+                    totalBiking = totalBiking / KM_TO_MILES;
+                    totalDogWalk = totalDogWalk / KM_TO_MILES;
+                    totalHiking = totalHiking / KM_TO_MILES;
+                    totalRunning = totalRunning / KM_TO_MILES;
+                    totalWalking = totalWalking / KM_TO_MILES;
+                    
+                    // This Week
+                    thisWeekDistance = thisWeekDistance / KM_TO_MILES;
+                    thisWeekBiking = thisWeekBiking / KM_TO_MILES;
+                    thisWeekDogWalk = thisWeekDogWalk / KM_TO_MILES;
+                    thisWeekHiking = thisWeekHiking / KM_TO_MILES;
+                    thisWeekRunning = thisWeekRunning / KM_TO_MILES;
+                    thisWeekWalking = thisWeekWalking / KM_TO_MILES;
+                    
+                    // Previous Week
+                    prevWeekDistance = prevWeekDistance / KM_TO_MILES;
+                    prevWeekBiking = prevWeekBiking / KM_TO_MILES;
+                    prevWeekDogWalk = prevWeekDogWalk / KM_TO_MILES;
+                    prevWeekHiking = prevWeekHiking / KM_TO_MILES;
+                    prevWeekRunning = prevWeekRunning / KM_TO_MILES;
+                    prevWeekWalking = prevWeekWalking / KM_TO_MILES;
                 }
 
+                // ============================================
+                // RETURN ALL CALCULATED STATS
+                // ============================================
                 return {
+                    // Distance (rounded to 1 decimal)
                     totalDistance: Math.round(totalDistance * 10) / 10,
-                    weekDistance: Math.round(weekDistance * 10) / 10,
-                    lastWeekDistance: Math.round(lastWeekDistance * 10) / 10,
-                    previousWeekDistance: Math.round(previousWeekDistance * 10) / 10,
+                    thisWeekDistance: Math.round(thisWeekDistance * 10) / 10,
+                    prevWeekDistance: Math.round(prevWeekDistance * 10) / 10,
+                    
+                    // Steps (whole numbers)
                     totalSteps,
-                    weekSteps,
-                    lastWeekSteps,
-                    previousWeekSteps,
+                    thisWeekSteps,
+                    prevWeekSteps,
+                    
+                    // Exercises - Reps (whole numbers)
                     totalPushups,
-                    weekPushups,
-                    lastWeekPushups,
-                    previousWeekPushups,
+                    thisWeekPushups,
+                    prevWeekPushups,
                     totalPullups,
-                    weekPullups,
-                    lastWeekPullups,
-                    previousWeekPullups,
+                    thisWeekPullups,
+                    prevWeekPullups,
                     totalRollerAbs,
-                    weekRollerAbs,
-                    lastWeekRollerAbs,
-                    previousWeekRollerAbs,
+                    thisWeekRollerAbs,
+                    prevWeekRollerAbs,
                     totalDips,
-                    weekDips,
-                    lastWeekDips,
-                    previousWeekDips,
+                    thisWeekDips,
+                    prevWeekDips,
                     totalSquats,
-                    weekSquats,
-                    lastWeekSquats,
-                    previousWeekSquats,
+                    thisWeekSquats,
+                    prevWeekSquats,
                     totalSitups,
-                    weekSitups,
-                    lastWeekSitups,
-                    previousWeekSitups,
+                    thisWeekSitups,
+                    prevWeekSitups,
+                    
+                    // Distance by Type (rounded to 1 decimal)
                     totalBiking: Math.round(totalBiking * 10) / 10,
-                    weekBiking: Math.round(weekBiking * 10) / 10,
-                    lastWeekBiking: Math.round(lastWeekBiking * 10) / 10,
-                    previousWeekBiking: Math.round(previousWeekBiking * 10) / 10,
+                    thisWeekBiking: Math.round(thisWeekBiking * 10) / 10,
+                    prevWeekBiking: Math.round(prevWeekBiking * 10) / 10,
                     totalDogWalk: Math.round(totalDogWalk * 10) / 10,
-                    weekDogWalk: Math.round(weekDogWalk * 10) / 10,
-                    lastWeekDogWalk: Math.round(lastWeekDogWalk * 10) / 10,
-                    previousWeekDogWalk: Math.round(previousWeekDogWalk * 10) / 10,
+                    thisWeekDogWalk: Math.round(thisWeekDogWalk * 10) / 10,
+                    prevWeekDogWalk: Math.round(prevWeekDogWalk * 10) / 10,
                     totalHiking: Math.round(totalHiking * 10) / 10,
-                    weekHiking: Math.round(weekHiking * 10) / 10,
-                    lastWeekHiking: Math.round(lastWeekHiking * 10) / 10,
-                    previousWeekHiking: Math.round(previousWeekHiking * 10) / 10,
+                    thisWeekHiking: Math.round(thisWeekHiking * 10) / 10,
+                    prevWeekHiking: Math.round(prevWeekHiking * 10) / 10,
                     totalRunning: Math.round(totalRunning * 10) / 10,
-                    weekRunning: Math.round(weekRunning * 10) / 10,
-                    lastWeekRunning: Math.round(lastWeekRunning * 10) / 10,
-                    previousWeekRunning: Math.round(previousWeekRunning * 10) / 10,
+                    thisWeekRunning: Math.round(thisWeekRunning * 10) / 10,
+                    prevWeekRunning: Math.round(prevWeekRunning * 10) / 10,
                     totalWalking: Math.round(totalWalking * 10) / 10,
-                    weekWalking: Math.round(weekWalking * 10) / 10,
-                    lastWeekWalking: Math.round(lastWeekWalking * 10) / 10,
-                    previousWeekWalking: Math.round(previousWeekWalking * 10) / 10,
+                    thisWeekWalking: Math.round(thisWeekWalking * 10) / 10,
+                    prevWeekWalking: Math.round(prevWeekWalking * 10) / 10,
+                    
+                    // Stairs (whole numbers)
                     totalStairs,
-                    weekStairs,
-                    lastWeekStairs,
-                    previousWeekStairs,
+                    thisWeekStairs,
+                    prevWeekStairs,
+                    
+                    // Strength Days (count of unique days)
                     totalStrengthDays: strengthDaysTotal.size,
-                    weekStrengthDays: strengthDaysWeek.size,
-                    lastWeekStrengthDays: strengthDaysLastWeek.size,
-                    previousWeekStrengthDays: strengthDaysPreviousWeek.size,
+                    thisWeekStrengthDays: strengthDaysThisWeek.size,
+                    prevWeekStrengthDays: strengthDaysPrevWeek.size,
+                    
                     // Weight data
                     currentWeight: this.getWeightStats().current
                 };
@@ -2579,22 +2563,23 @@
                     document.querySelector('.stats-toggle-btn:last-child').classList.add('active');
                 }
 
-                // ROW 1: Update fixed cards (Miles, Strength Days, Steps) with animations
-                const milesValue = isWeekView ? stats.weekDistance : stats.totalDistance;
-                const workoutsValue = isWeekView ? stats.weekStrengthDays : stats.totalStrengthDays;
-                const stepsValue = isWeekView ? stats.weekSteps : stats.totalSteps;
+                // ========== FIXED CARDS (Miles, Strength Days, Steps) ==========
+                const milesValue = isWeekView ? stats.thisWeekDistance : stats.totalDistance;
+                const workoutsValue = isWeekView ? stats.thisWeekStrengthDays : stats.totalStrengthDays;
+                const stepsValue = isWeekView ? stats.thisWeekSteps : stats.totalSteps;
                 
                 // Animate numbers
                 this.animateCountUp(document.getElementById('stat-miles'), milesValue);
                 this.animateCountUp(document.getElementById('stat-workouts'), workoutsValue);
                 this.animateCountUp(document.getElementById('stat-steps'), stepsValue);
 
-                // Update fixed card labels with trends (only in Week view)
+                // ========== TRENDING ARROWS (Week View Only) ==========
                 if (isWeekView) {
-                    // Add trends comparing this week to last week
-                    const milesTrend = this.getTrendIndicator(stats.lastWeekDistance, stats.previousWeekDistance);
-                    const workoutsTrend = this.getTrendIndicator(stats.lastWeekStrengthDays, stats.previousWeekStrengthDays);
-                    const stepsTrend = this.getTrendIndicator(stats.lastWeekSteps, stats.previousWeekSteps);
+                    // v1.5.2: Compare THIS WEEK vs PREVIOUS CALENDAR WEEK
+                    // Only show arrow if current value > 0
+                    const milesTrend = milesValue > 0 ? this.getTrendIndicator(milesValue, stats.prevWeekDistance) : '';
+                    const workoutsTrend = workoutsValue > 0 ? this.getTrendIndicator(workoutsValue, stats.prevWeekStrengthDays) : '';
+                    const stepsTrend = stepsValue > 0 ? this.getTrendIndicator(stepsValue, stats.prevWeekSteps) : '';
                     
                     document.getElementById('stat-miles-label').textContent = unit;
                     document.getElementById('stat-workouts-label').textContent = 'Strength Days';
@@ -2604,7 +2589,7 @@
                     document.getElementById('stat-workouts-trend').innerHTML = workoutsTrend;
                     document.getElementById('stat-steps-trend').innerHTML = stepsTrend;
                 } else {
-                    // No trends in All Time view
+                    // All Time view: No trends
                     document.getElementById('stat-miles-label').textContent = unit;
                     document.getElementById('stat-workouts-label').textContent = 'Strength Days';
                     document.getElementById('stat-steps-label').textContent = 'Steps';
@@ -2650,120 +2635,110 @@
             renderCustomCards(stats, isWeekView) {
                 const unit = this.data.goals.unitPreference === 'km' ? 'km' : 'miles';
                 
+                // v1.5.2: Map stat names to their values (thisWeek for display, prevWeek for trending)
                 const statMap = {
-                    // Single exercises (reps)
+                    // Rep-based exercises
                     'pushups': {
                         label: 'Push-ups',
-                        weekValue: stats.weekPushups,
-                        lastWeekValue: stats.lastWeekPushups,
-                        previousWeekValue: stats.previousWeekPushups,
+                        thisWeekValue: stats.thisWeekPushups,
+                        prevWeekValue: stats.prevWeekPushups,
                         totalValue: stats.totalPushups
                     },
                     'pullups': {
                         label: 'Pull-ups',
-                        weekValue: stats.weekPullups,
-                        lastWeekValue: stats.lastWeekPullups,
-                        previousWeekValue: stats.previousWeekPullups,
+                        thisWeekValue: stats.thisWeekPullups,
+                        prevWeekValue: stats.prevWeekPullups,
                         totalValue: stats.totalPullups
                     },
                     'rollerabs': {
                         label: 'Roller Abs',
-                        weekValue: stats.weekRollerAbs,
-                        lastWeekValue: stats.lastWeekRollerAbs,
-                        previousWeekValue: stats.previousWeekRollerAbs,
+                        thisWeekValue: stats.thisWeekRollerAbs,
+                        prevWeekValue: stats.prevWeekRollerAbs,
                         totalValue: stats.totalRollerAbs
                     },
                     'dips': {
                         label: 'Dips',
-                        weekValue: stats.weekDips,
-                        lastWeekValue: stats.lastWeekDips,
-                        previousWeekValue: stats.previousWeekDips,
+                        thisWeekValue: stats.thisWeekDips,
+                        prevWeekValue: stats.prevWeekDips,
                         totalValue: stats.totalDips
                     },
                     'squats': {
                         label: 'Squats',
-                        weekValue: stats.weekSquats,
-                        lastWeekValue: stats.lastWeekSquats,
-                        previousWeekValue: stats.previousWeekSquats,
+                        thisWeekValue: stats.thisWeekSquats,
+                        prevWeekValue: stats.prevWeekSquats,
                         totalValue: stats.totalSquats
                     },
                     'situps': {
                         label: 'Sit-ups',
-                        weekValue: stats.weekSitups,
-                        lastWeekValue: stats.lastWeekSitups,
-                        previousWeekValue: stats.previousWeekSitups,
+                        thisWeekValue: stats.thisWeekSitups,
+                        prevWeekValue: stats.prevWeekSitups,
                         totalValue: stats.totalSitups
                     },
-                    // Cardio activities (distance)
+                    // Distance-based activities
                     'biking': {
                         label: `Biking (${unit})`,
-                        weekValue: stats.weekBiking,
-                        lastWeekValue: stats.lastWeekBiking,
-                        previousWeekValue: stats.previousWeekBiking,
+                        thisWeekValue: stats.thisWeekBiking,
+                        prevWeekValue: stats.prevWeekBiking,
                         totalValue: stats.totalBiking
                     },
                     'dog': {
                         label: `Dog Walking (${unit})`,
-                        weekValue: stats.weekDogWalk,
-                        lastWeekValue: stats.lastWeekDogWalk,
-                        previousWeekValue: stats.previousWeekDogWalk,
+                        thisWeekValue: stats.thisWeekDogWalk,
+                        prevWeekValue: stats.prevWeekDogWalk,
                         totalValue: stats.totalDogWalk
                     },
                     'hiking': {
                         label: `Hiking (${unit})`,
-                        weekValue: stats.weekHiking,
-                        lastWeekValue: stats.lastWeekHiking,
-                        previousWeekValue: stats.previousWeekHiking,
+                        thisWeekValue: stats.thisWeekHiking,
+                        prevWeekValue: stats.prevWeekHiking,
                         totalValue: stats.totalHiking
                     },
                     'run': {
                         label: `Running (${unit})`,
-                        weekValue: stats.weekRunning,
-                        lastWeekValue: stats.lastWeekRunning,
-                        previousWeekValue: stats.previousWeekRunning,
+                        thisWeekValue: stats.thisWeekRunning,
+                        prevWeekValue: stats.prevWeekRunning,
                         totalValue: stats.totalRunning
                     },
                     'walk': {
                         label: `Walking (${unit})`,
-                        weekValue: stats.weekWalking,
-                        lastWeekValue: stats.lastWeekWalking,
-                        previousWeekValue: stats.previousWeekWalking,
+                        thisWeekValue: stats.thisWeekWalking,
+                        prevWeekValue: stats.prevWeekWalking,
                         totalValue: stats.totalWalking
                     },
                     'stairs': {
                         label: 'Stairs (floors)',
-                        weekValue: stats.weekStairs,
-                        lastWeekValue: stats.lastWeekStairs,
-                        previousWeekValue: stats.previousWeekStairs,
+                        thisWeekValue: stats.thisWeekStairs,
+                        prevWeekValue: stats.prevWeekStairs,
                         totalValue: stats.totalStairs
                     },
-                    // Weight tracking
+                    // Weight tracking (special case)
                     'weight': {
                         label: `Weight (${this.data.goals.weightUnit})`,
-                        weekValue: stats.currentWeight || 0,
-                        lastWeekValue: 0, // Weight has its own trend logic
+                        thisWeekValue: stats.currentWeight || 0,
+                        prevWeekValue: 0, // Weight uses its own trend logic
                         totalValue: stats.currentWeight || 0
                     }
                 };
 
-                // Update each custom card
+                // ========== RENDER EACH CUSTOM CARD ==========
                 for (let i = 0; i < 3; i++) {
                     const cardType = this.data.customDashboardCards[i];
                     const cardData = statMap[cardType];
                     
                     if (cardData) {
-                        const value = isWeekView ? cardData.weekValue : cardData.totalValue;
+                        // Display value: this week or all time
+                        const value = isWeekView ? cardData.thisWeekValue : cardData.totalValue;
                         const element = document.getElementById(`custom-stat-${i + 1}`);
                         const labelElement = document.getElementById(`custom-label-${i + 1}`);
                         const trendElement = document.getElementById(`custom-trend-${i + 1}`);
                         
-                        // Animate the value
+                        // Animate the display value
                         this.animateCountUp(element, value);
                         
-                        // Set label (no trend inline)
+                        // Set label
                         labelElement.textContent = cardData.label;
                         
-                        // Add trend indicators for week view in separate div below
+                        // ========== TRENDING (Week View Only) ==========
                         if (isWeekView) {
                             // Special handling for weight card
                             if (cardType === 'weight' && value > 0) {
@@ -2778,12 +2753,12 @@
                                 }
                                 trendElement.innerHTML = trendHTML;
                             } else {
-                                // All other cards: compare week vs last week
-                                const trendHTML = this.getTrendIndicator(cardData.lastWeekValue, cardData.previousWeekValue);
+                                // v1.5.2: Compare THIS WEEK vs PREVIOUS WEEK
+                                const trendHTML = value > 0 ? this.getTrendIndicator(value, cardData.prevWeekValue) : '';
                                 trendElement.innerHTML = trendHTML;
                             }
                         } else {
-                            // All time view: no trends
+                            // All Time view: No trends
                             trendElement.innerHTML = '';
                         }
                     }
@@ -2966,18 +2941,18 @@
                 };
                 
                 // Strength exercises
-                addItem('Push-ups', stats.weekPushups, monthStats.monthPushups, stats.totalPushups, ' reps');
-                addItem('Pull-ups', stats.weekPullups, monthStats.monthPullups, stats.totalPullups, ' reps');
-                addItem('Roller Abs', stats.weekRollerAbs, monthStats.monthRollerAbs, stats.totalRollerAbs, ' reps');
-                addItem('Dips', stats.weekDips, monthStats.monthDips, stats.totalDips, ' reps');
-                addItem('Squats', stats.weekSquats, monthStats.monthSquats, stats.totalSquats, ' reps');
-                addItem('Sit-ups', stats.weekSitups, monthStats.monthSitups, stats.totalSitups, ' reps');
+                addItem('Push-ups', stats.thisWeekPushups, monthStats.monthPushups, stats.totalPushups, ' reps');
+                addItem('Pull-ups', stats.thisWeekPullups, monthStats.monthPullups, stats.totalPullups, ' reps');
+                addItem('Roller Abs', stats.thisWeekRollerAbs, monthStats.monthRollerAbs, stats.totalRollerAbs, ' reps');
+                addItem('Dips', stats.thisWeekDips, monthStats.monthDips, stats.totalDips, ' reps');
+                addItem('Squats', stats.thisWeekSquats, monthStats.monthSquats, stats.totalSquats, ' reps');
+                addItem('Sit-ups', stats.thisWeekSitups, monthStats.monthSitups, stats.totalSitups, ' reps');
                 
                 // Cardio activities
                 if (stats.totalRunning > 0) {
                     summaryItems.push({
                         name: 'Running',
-                        week: stats.weekRunning > 0 ? `${stats.weekRunning} ${unit}` : '-',
+                        week: stats.thisWeekRunning > 0 ? `${stats.thisWeekRunning} ${unit}` : '-',
                         month: monthStats.monthRunning > 0 ? `${monthStats.monthRunning} ${unit}` : '-',
                         total: `${stats.totalRunning} ${unit}`
                     });
@@ -2985,7 +2960,7 @@
                 if (stats.totalWalking > 0) {
                     summaryItems.push({
                         name: 'Walking',
-                        week: stats.weekWalking > 0 ? `${stats.weekWalking} ${unit}` : '-',
+                        week: stats.thisWeekWalking > 0 ? `${stats.thisWeekWalking} ${unit}` : '-',
                         month: monthStats.monthWalking > 0 ? `${monthStats.monthWalking} ${unit}` : '-',
                         total: `${stats.totalWalking} ${unit}`
                     });
@@ -2993,7 +2968,7 @@
                 if (stats.totalBiking > 0) {
                     summaryItems.push({
                         name: 'Biking',
-                        week: stats.weekBiking > 0 ? `${stats.weekBiking} ${unit}` : '-',
+                        week: stats.thisWeekBiking > 0 ? `${stats.thisWeekBiking} ${unit}` : '-',
                         month: monthStats.monthBiking > 0 ? `${monthStats.monthBiking} ${unit}` : '-',
                         total: `${stats.totalBiking} ${unit}`
                     });
@@ -3001,7 +2976,7 @@
                 if (stats.totalDogWalk > 0) {
                     summaryItems.push({
                         name: 'Dog Walking',
-                        week: stats.weekDogWalk > 0 ? `${stats.weekDogWalk} ${unit}` : '-',
+                        week: stats.thisWeekDogWalk > 0 ? `${stats.thisWeekDogWalk} ${unit}` : '-',
                         month: monthStats.monthDogWalk > 0 ? `${monthStats.monthDogWalk} ${unit}` : '-',
                         total: `${stats.totalDogWalk} ${unit}`
                     });
@@ -3009,22 +2984,22 @@
                 if (stats.totalHiking > 0) {
                     summaryItems.push({
                         name: 'Hiking',
-                        week: stats.weekHiking > 0 ? `${stats.weekHiking} ${unit}` : '-',
+                        week: stats.thisWeekHiking > 0 ? `${stats.thisWeekHiking} ${unit}` : '-',
                         month: monthStats.monthHiking > 0 ? `${monthStats.monthHiking} ${unit}` : '-',
                         total: `${stats.totalHiking} ${unit}`
                     });
                 }
                 
                 // Other
-                addItem('Stairs', stats.weekStairs, monthStats.monthStairs, stats.totalStairs, ' floors');
-                addItem('Steps', stats.weekSteps, monthStats.monthSteps, stats.totalSteps, '');
+                addItem('Stairs', stats.thisWeekStairs, monthStats.monthStairs, stats.totalStairs, ' floors');
+                addItem('Steps', stats.thisWeekSteps, monthStats.monthSteps, stats.totalSteps, '');
                 
                 // Totals
-                addItem('Strength Days', stats.weekStrengthDays, monthStats.monthStrengthDays, stats.totalStrengthDays, ' days');
+                addItem('Strength Days', stats.thisWeekStrengthDays, monthStats.monthStrengthDays, stats.totalStrengthDays, ' days');
                 if (stats.totalDistance > 0) {
                     summaryItems.push({
                         name: 'Total Distance',
-                        week: stats.weekDistance > 0 ? `${stats.weekDistance} ${unit}` : '-',
+                        week: stats.thisWeekDistance > 0 ? `${stats.thisWeekDistance} ${unit}` : '-',
                         month: monthStats.monthDistance > 0 ? `${monthStats.monthDistance} ${unit}` : '-',
                         total: `${stats.totalDistance} ${unit}`
                     });
@@ -3702,13 +3677,13 @@
                 lastMonthDistance = Math.round(lastMonthDistance * 10) / 10;
 
                 // Render week comparison
-                const maxWeek = Math.max(stats.weekDistance, lastWeekDistance, 1);
-                const weekCurrentPercent = (stats.weekDistance / maxWeek) * 100;
+                const maxWeek = Math.max(stats.thisWeekDistance, lastWeekDistance, 1);
+                const weekCurrentPercent = (stats.thisWeekDistance / maxWeek) * 100;
                 const weekPreviousPercent = (lastWeekDistance / maxWeek) * 100;
 
                 document.getElementById('week-current-bar').style.width = `${weekCurrentPercent}%`;
                 document.getElementById('week-previous-bar').style.width = `${weekPreviousPercent}%`;
-                document.getElementById('week-current-value').textContent = `${stats.weekDistance} ${unit}`;
+                document.getElementById('week-current-value').textContent = `${stats.thisWeekDistance} ${unit}`;
                 document.getElementById('week-previous-value').textContent = `${lastWeekDistance} ${unit}`;
 
                 // Render month comparison
@@ -3724,6 +3699,12 @@
 
             // Get trend indicator for comparing current vs previous values
             getTrendIndicator(current, previous) {
+                // Don't show trend if current value is 0 (nothing to trend from)
+                if (!current || current === 0) {
+                    return '';
+                }
+                
+                // Don't show trend if no previous data to compare against
                 if (!previous || previous === 0) {
                     return ''; // No trend if no previous data
                 }
@@ -3739,7 +3720,7 @@
                 if (diff > 0) {
                     return '<span class="trend-indicator up" style="font-size: 11px; margin-left: 4px;">↗</span>';
                 } else if (diff < 0) {
-                    return '<span class="trend-indicator down" style="font-size: 11px; margin-left: 4px;">↘</span>';
+                    return '<span class="trend-indicator down" style="font-size: 11px; margin-left: 4px;\">↘</span>';
                 } else {
                     return '';
                 }
