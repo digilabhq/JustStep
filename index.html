@@ -36,7 +36,7 @@
         /* App Logo Header */
         .app-header {
             background: linear-gradient(135deg, #1e40af 0%, #1d4ed8 100%);
-            padding: 16px 20px;
+            padding: 10px 14px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -70,7 +70,7 @@
 
         .nav-tab {
             flex: 1;
-            padding: 16px;
+            padding: 10px;
             text-align: center;
             background: none;
             border: none;
@@ -90,7 +90,7 @@
 
         .screen {
             display: none;
-            padding: 20px;
+            padding: 12px;
             animation: fadeIn 0.3s;
         }
 
@@ -114,22 +114,22 @@
         h2 {
             font-size: 20px;
             font-weight: 600;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
             letter-spacing: -0.3px;
         }
 
         .subtitle {
             color: #9ca3af;
             font-size: 14px;
-            margin-bottom: 24px;
+            margin-bottom: 12px;
         }
 
         /* Daily Logging Screen */
         .date-selector {
             background: #2d2d2d;
-            padding: 12px 16px;
+            padding: 5px 8px;
             border-radius: 12px;
-            margin-bottom: 24px;
+            margin-bottom: 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -149,15 +149,15 @@
         }
 
         .activities-container {
-            margin-bottom: 16px;
+            margin-bottom: 12px;
         }
 
         .activity-card {
             background: #2d2d2d;
             border: 2px solid #3d3d3d;
             border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 16px;
+            padding: 5px;
+            margin-bottom: 12px;
             position: relative;
             animation: slideIn 0.3s ease;
         }
@@ -176,7 +176,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
         }
 
         .activity-card-title {
@@ -210,7 +210,7 @@
 
         .activity-type-select {
             width: 100%;
-            padding: 14px 16px;
+            padding: 10px 12px;
             border: 2px solid #3d3d3d;
             border-radius: 12px;
             font-size: 16px;
@@ -234,7 +234,7 @@
 
         .activity-value-input input {
             flex: 1;
-            padding: 14px 16px;
+            padding: 10px 12px;
             border: 2px solid #3d3d3d;
             border-radius: 12px;
             font-size: 18px;
@@ -259,7 +259,7 @@
 
         .add-activity-button {
             width: 100%;
-            padding: 14px;
+            padding: 10px;
             background: #2d2d2d;
             color: #60a5fa;
             border: 2px dashed #3d3d3d;
@@ -267,7 +267,7 @@
             font-size: 15px;
             font-weight: 600;
             cursor: pointer;
-            margin-top: 16px;
+            margin-top: 12px;
             transition: all 0.2s;
             display: flex;
             align-items: center;
@@ -281,7 +281,7 @@
 
         .log-button {
             width: 100%;
-            padding: 16px;
+            padding: 10px;
             background: #2563eb;
             color: white;
             border: none;
@@ -289,7 +289,7 @@
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            margin-top: 24px;
+            margin-top: 12px;
             transition: all 0.2s;
             letter-spacing: 0.3px;
         }
@@ -300,7 +300,7 @@
         }
 
         .workout-confirmed {
-            padding: 14px 16px;
+            padding: 10px 12px;
             background: #1e3a5f;
             border-radius: 12px;
             color: #60a5fa;
@@ -314,7 +314,7 @@
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
             gap: 12px;
-            margin-bottom: 24px;
+            margin-bottom: 12px;
         }
 
         /* Smaller cards on mobile for better fit */
@@ -324,7 +324,7 @@
             }
             
             .stat-card {
-                padding: 6px 3px;
+                padding: 5px 3px;
                 min-height: 52px;
             }
             
@@ -341,7 +341,7 @@
             background: #2d2d2d;
             border: 2px solid #3d3d3d;
             border-radius: 12px;
-            padding: 8px 4px;
+            padding: 5px 3px;
             transition: all 0.2s;
             text-align: center;
             display: flex;
@@ -394,15 +394,15 @@
             background: #2d2d2d;
             border: 2px solid #3d3d3d;
             border-radius: 16px;
-            padding: 24px;
-            margin-bottom: 24px;
+            padding: 16px;
+            margin-bottom: 12px;
         }
 
         .progress-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
         }
 
         .progress-title {
@@ -474,10 +474,83 @@
             color: #e8e8e8;
         }
 
+        /* Activity Report (Collapsible) */
+        .activity-report-toggle {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+            font-size: 16px;
+            font-weight: 700;
+            color: #e8e8e8;
+            padding: 4px 0;
+        }
+
+        .activity-report-toggle:hover {
+            color: #60a5fa;
+        }
+
+        .activity-report-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .activity-report-content.expanded {
+            max-height: 2000px;
+        }
+
+        .activity-summary-list {
+            margin-top: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .activity-summary-item {
+            display: grid;
+            grid-template-columns: 1fr auto auto auto;
+            gap: 12px;
+            align-items: center;
+            padding: 6px 0;
+            border-bottom: 1px solid #2d2d2d;
+            font-size: 13px;
+        }
+
+        .activity-summary-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-summary-name {
+            color: #9ca3af;
+            font-weight: 600;
+        }
+
+        .activity-summary-value {
+            color: #e8e8e8;
+            font-weight: 600;
+            text-align: right;
+            min-width: 70px;
+        }
+
+        .activity-summary-value.week {
+            color: #34d399;
+        }
+
+        .activity-summary-value.month {
+            color: #60a5fa;
+        }
+
+        .activity-summary-value.total {
+            color: #e8e8e8;
+            font-weight: 700;
+        }
+
         /* Calendar View */
         .calendar-header {
             text-align: center;
-            margin-bottom: 24px;
+            margin-bottom: 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -488,7 +561,7 @@
             border: none;
             font-size: 24px;
             cursor: pointer;
-            padding: 8px;
+            padding: 5px;
             color: #9ca3af;
         }
 
@@ -508,7 +581,7 @@
             font-size: 11px;
             color: #6b7280;
             font-weight: 600;
-            padding: 8px 0;
+            padding: 5px 0;
             text-transform: uppercase;
         }
 
@@ -557,7 +630,7 @@
 
         /* Goals Screen */
         .goal-input {
-            margin-bottom: 24px;
+            margin-bottom: 12px;
         }
 
         .goal-input label {
@@ -576,7 +649,7 @@
 
         .goal-input input, .goal-input select {
             width: 100%;
-            padding: 14px 16px;
+            padding: 10px 12px;
             border: 2px solid #3d3d3d;
             border-radius: 12px;
             font-size: 16px;
@@ -588,7 +661,7 @@
 
         .save-button {
             width: 100%;
-            padding: 16px;
+            padding: 10px;
             background: #1a1a1a;
             color: white;
             border: none;
@@ -607,7 +680,7 @@
 
         .info-box {
             margin-top: 32px;
-            padding: 20px;
+            padding: 5px;
             background: #2d2d2d;
             border-radius: 12px;
         }
@@ -647,7 +720,7 @@
             transform: translate(-50%, -50%);
             background: #2d2d2d;
             border-radius: 20px;
-            padding: 40px;
+            padding: 20px;
             text-align: center;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             max-width: 320px;
@@ -673,7 +746,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 20px;
+            margin: 0 auto 12px;
             font-size: 40px;
         }
 
@@ -686,12 +759,12 @@
         .milestone-description {
             font-size: 14px;
             color: #9ca3af;
-            margin-bottom: 24px;
+            margin-bottom: 12px;
         }
 
         .milestone-close {
             width: 100%;
-            padding: 14px;
+            padding: 10px;
             background: #2d2d2d;
             border: none;
             border-radius: 12px;
@@ -702,7 +775,7 @@
 
         .export-button {
             width: 100%;
-            padding: 16px;
+            padding: 10px;
             background: #2d2d2d;
             color: #e8e8e8;
             border: 2px solid #3d3d3d;
@@ -722,7 +795,7 @@
         .success-message {
             background: #1e3a5f;
             color: #2563eb;
-            padding: 12px 16px;
+            padding: 5px 8px;
             border-radius: 12px;
             font-size: 14px;
             font-weight: 600;
@@ -744,7 +817,7 @@
             transform: translate(-50%, -50%);
             background: #2d2d2d;
             border-radius: 20px;
-            padding: 24px;
+            padding: 10px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             max-width: 360px;
             width: 90%;
@@ -763,7 +836,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 12px;
             padding-bottom: 16px;
             border-bottom: 2px solid #3d3d3d;
         }
@@ -794,12 +867,12 @@
         }
 
         .day-activity-list {
-            margin-bottom: 16px;
+            margin-bottom: 12px;
         }
 
         .day-activity-item {
             background: #1a1a1a;
-            padding: 16px;
+            padding: 10px;
             border-radius: 12px;
             margin-bottom: 12px;
             display: flex;
@@ -830,7 +903,7 @@
             background: #3d1f1f;
             color: #ef4444;
             border: none;
-            padding: 8px 12px;
+            padding: 5px 8px;
             border-radius: 8px;
             font-size: 13px;
             font-weight: 600;
@@ -845,9 +918,9 @@
 
         .day-totals {
             background: #1e3a5f;
-            padding: 16px;
+            padding: 10px;
             border-radius: 12px;
-            margin-top: 16px;
+            margin-top: 12px;
         }
 
         .day-totals-title {
@@ -867,7 +940,7 @@
 
         .empty-day {
             text-align: center;
-            padding: 40px 20px;
+            padding: 24px 12px;
             color: #6b7280;
         }
 
@@ -882,8 +955,9 @@
 
         .calendar-hint {
             text-align: center;
-            margin-top: 16px;
-            padding: 12px;
+            margin-top: 12px;
+            margin-bottom: 12px;
+            padding: 5px;
             background: #1e3a5f;
             border-radius: 12px;
             font-size: 13px;
@@ -895,16 +969,16 @@
         .stats-toggle {
             display: flex;
             gap: 8px;
-            margin-bottom: 24px;
+            margin-bottom: 12px;
             background: #2d2d2d;
-            padding: 4px;
+            padding: 3px;
             border-radius: 12px;
             border: 2px solid #3d3d3d;
         }
 
         .stats-toggle-btn {
             flex: 1;
-            padding: 10px 16px;
+            padding: 6px 12px;
             background: none;
             border: none;
             border-radius: 8px;
@@ -929,7 +1003,7 @@
             transform: translate(-50%, -50%);
             background: #2d2d2d;
             border-radius: 20px;
-            padding: 32px 24px;
+            padding: 20px 16px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.5);
             max-width: 400px;
             width: 90%;
@@ -947,8 +1021,8 @@
 
         .welcome-header {
             background: linear-gradient(135deg, #1e40af 0%, #1d4ed8 100%);
-            margin: -32px -24px 24px -24px;
-            padding: 24px;
+            margin: -20px -16px 16px -16px;
+            padding: 16px;
             border-radius: 20px 20px 0 0;
         }
 
@@ -998,7 +1072,7 @@
             text-decoration: none;
             font-size: 14px;
             font-weight: 500;
-            margin-bottom: 20px;
+            margin-bottom: 12px;
             transition: color 0.2s;
         }
 
@@ -1008,7 +1082,7 @@
 
         .welcome-button {
             width: 100%;
-            padding: 16px;
+            padding: 10px;
             background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
             color: white;
             border: none;
@@ -1027,7 +1101,7 @@
         /* Customize Dashboard Button */
         .customize-dashboard-btn {
             display: block;
-            margin: 2px auto 0;
+            margin: -20px auto 0;
             background: none;
             border: none;
             color: #d4af37;
@@ -1051,7 +1125,7 @@
             transform: translate(-50%, -50%);
             background: #2d2d2d;
             border-radius: 20px;
-            padding: 24px;
+            padding: 10px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             max-width: 400px;
             width: 90%;
@@ -1067,12 +1141,12 @@
         .customize-modal-header {
             font-size: 20px;
             font-weight: 700;
-            margin-bottom: 20px;
+            margin-bottom: 12px;
             color: #e8e8e8;
         }
 
         .customize-slot {
-            margin-bottom: 16px;
+            margin-bottom: 12px;
         }
 
         .customize-slot-label {
@@ -1085,7 +1159,7 @@
 
         .customize-slot select {
             width: 100%;
-            padding: 14px 16px;
+            padding: 10px 12px;
             border: 2px solid #3d3d3d;
             border-radius: 12px;
             font-size: 16px;
@@ -1103,12 +1177,12 @@
         .customize-modal-buttons {
             display: flex;
             gap: 12px;
-            margin-top: 24px;
+            margin-top: 12px;
         }
 
         .customize-modal-btn {
             flex: 1;
-            padding: 14px;
+            padding: 10px;
             border: none;
             border-radius: 12px;
             font-size: 15px;
@@ -1142,9 +1216,9 @@
             background: #2d2d2d;
             border: 2px solid #3d3d3d;
             border-radius: 16px;
-            padding: 20px;
+            padding: 5px;
             margin-top: 32px;
-            margin-bottom: 24px;
+            margin-bottom: 12px;
         }
 
         .weight-input-header {
@@ -1164,7 +1238,7 @@
 
         .weight-input-field {
             flex: 1;
-            padding: 14px 16px;
+            padding: 10px 12px;
             border: 2px solid #3d3d3d;
             border-radius: 12px;
             font-size: 18px;
@@ -1252,8 +1326,8 @@
             background: #2d2d2d;
             border: 2px solid #3d3d3d;
             border-radius: 16px;
-            padding: 16px;
-            margin-bottom: 20px;
+            padding: 10px;
+            margin-bottom: 12px;
         }
 
         .comparison-header {
@@ -1265,7 +1339,7 @@
         }
 
         .comparison-graph {
-            margin-bottom: 16px;
+            margin-bottom: 12px;
         }
 
         .comparison-graph:last-child {
@@ -1377,7 +1451,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 8px 0;
+            padding: 5px 0;
             border-bottom: 1px solid #2d2d2d;
             font-size: 13px;
         }
@@ -1478,7 +1552,8 @@
                            class="weight-input-field" 
                            placeholder="Enter weight" 
                            step="0.1"
-                           min="0">
+                           min="0"
+                           inputmode="decimal">
                     <span class="weight-unit-label" id="weight-unit-display">lbs</span>
                 </div>
                 <button class="weight-save-btn-subtle" onclick="app.logWeight()">Save</button>
@@ -1627,6 +1702,19 @@
                 💡 Tap any day to see details
             </div>
 
+            <!-- Activity Report (Collapsible) -->
+            <div class="progress-card">
+                <div class="activity-report-toggle" id="activity-report-toggle" onclick="app.toggleActivityReport()">
+                    <span>Activity Report</span>
+                    <span>▼</span>
+                </div>
+                <div class="activity-report-content" id="activity-report-content">
+                    <div class="activity-summary-list" id="activity-summary-list">
+                        <p style="text-align: center; color: #6b7280; font-size: 14px;">No activities logged yet.</p>
+                    </div>
+                </div>
+            </div>
+
             <h2>Recent Milestones</h2>
             <div class="progress-card">
                 <div class="milestone-list" id="milestone-list">
@@ -1685,7 +1773,7 @@
             <div class="success-message" id="import-success">Data imported successfully!</div>
             
             <div style="text-align: center; color: #6b7280; font-size: 12px; margin-top: 32px; padding: 16px 0;">
-                v1.5.0
+                v1.5.1
             </div>
         </div>
     </div>
@@ -1749,7 +1837,7 @@
             <select id="custom-slot-1">
                 <optgroup label="─── CARDIO ───">
                     <option value="biking">Biking</option>
-                    <option value="dog">Dog Walk</option>
+                    <option value="dog">Dog Walking</option>
                     <option value="hiking">Hiking</option>
                     <option value="run">Running</option>
                     <option value="stairs">Master Stairs</option>
@@ -1774,7 +1862,7 @@
             <select id="custom-slot-2">
                 <optgroup label="─── CARDIO ───">
                     <option value="biking">Biking</option>
-                    <option value="dog">Dog Walk</option>
+                    <option value="dog">Dog Walking</option>
                     <option value="hiking">Hiking</option>
                     <option value="run">Running</option>
                     <option value="stairs">Master Stairs</option>
@@ -1799,7 +1887,7 @@
             <select id="custom-slot-3">
                 <optgroup label="─── CARDIO ───">
                     <option value="biking">Biking</option>
-                    <option value="dog">Dog Walk</option>
+                    <option value="dog">Dog Walking</option>
                     <option value="hiking">Hiking</option>
                     <option value="run">Running</option>
                     <option value="stairs">Master Stairs</option>
@@ -1959,11 +2047,11 @@
                         <option value="">Select activity type...</option>
                         <optgroup label="─── CARDIO ───">
                             <option value="biking">Biking</option>
-                            <option value="dog">Dog Walk</option>
+                            <option value="dog">Dog Walking</option>
                             <option value="hiking">Hiking</option>
                             <option value="run">Running</option>
                             <option value="stairs">Master Stairs</option>
-                            <option value="walk">Walk</option>
+                            <option value="walk">Walking</option>
                         </optgroup>
                         <optgroup label="─── STRENGTH ───">
                             <option value="arm">Arm Day</option>
@@ -2041,13 +2129,9 @@
                         </div>
                     `;
                 }
-                // For workout days
+                // For workout days - no value input needed, but show nothing to avoid confusion
                 else {
-                    valueContainer.innerHTML = `
-                        <div class="workout-confirmed">
-                            ✓ Workout logged
-                        </div>
-                    `;
+                    valueContainer.innerHTML = '';
                 }
             },
 
@@ -2194,124 +2278,151 @@
             // Calculate stats
             calculateStats() {
                 const now = new Date();
+                now.setHours(23, 59, 59, 999); // Set to end of today for comparisons
                 const startOfYear = new Date(now.getFullYear(), 0, 1);
-                // Fix: Set start of week to midnight to avoid timezone issues
-                const startOfWeek = new Date(now);
-                startOfWeek.setDate(now.getDate() - now.getDay());
-                startOfWeek.setHours(0, 0, 0, 0);
                 
-                // Last week for trending
-                const startOfLastWeek = new Date(startOfWeek);
-                startOfLastWeek.setDate(startOfLastWeek.getDate() - 7);
+                // Calendar week (Sunday-Saturday) for "This Week" card display
+                const weekStart = new Date(now);
+                weekStart.setDate(now.getDate() - now.getDay());
+                weekStart.setHours(0, 0, 0, 0);
+                
+                // Rolling 7-day periods for trending arrows
+                const last7DaysStart = new Date(now);
+                last7DaysStart.setDate(now.getDate() - 6);
+                last7DaysStart.setHours(0, 0, 0, 0);
+                
+                const previous7DaysStart = new Date(now);
+                previous7DaysStart.setDate(now.getDate() - 13);
+                previous7DaysStart.setHours(0, 0, 0, 0);
+                
+                const previous7DaysEnd = new Date(now);
+                previous7DaysEnd.setDate(now.getDate() - 7);
+                previous7DaysEnd.setHours(23, 59, 59, 999);
+                
+                // Debug date ranges
 
                 let totalDistance = 0;
-                let weekDistance = 0;
-                let lastWeekDistance = 0;
+                let weekDistance = 0;           // Calendar week (Sun-Sat)
+                let lastWeekDistance = 0;        // Rolling 7-day (for trending)
+                let previousWeekDistance = 0;    // Previous rolling 7-day (for trending comparison)
                 let totalSteps = 0;
                 let weekSteps = 0;
                 let lastWeekSteps = 0;
+                let previousWeekSteps = 0;
                 let totalPushups = 0;
                 let weekPushups = 0;
                 let lastWeekPushups = 0;
+                let previousWeekPushups = 0;
                 let totalPullups = 0;
                 let weekPullups = 0;
                 let lastWeekPullups = 0;
+                let previousWeekPullups = 0;
                 let totalRollerAbs = 0;
                 let weekRollerAbs = 0;
                 let lastWeekRollerAbs = 0;
+                let previousWeekRollerAbs = 0;
                 let totalDips = 0;
                 let weekDips = 0;
                 let lastWeekDips = 0;
+                let previousWeekDips = 0;
                 let totalSquats = 0;
                 let weekSquats = 0;
                 let lastWeekSquats = 0;
+                let previousWeekSquats = 0;
                 let totalSitups = 0;
                 let weekSitups = 0;
                 let lastWeekSitups = 0;
+                let previousWeekSitups = 0;
                 let totalBiking = 0;
                 let weekBiking = 0;
                 let lastWeekBiking = 0;
+                let previousWeekBiking = 0;
                 let totalDogWalk = 0;
                 let weekDogWalk = 0;
                 let lastWeekDogWalk = 0;
+                let previousWeekDogWalk = 0;
                 let totalHiking = 0;
                 let weekHiking = 0;
                 let lastWeekHiking = 0;
+                let previousWeekHiking = 0;
                 let totalRunning = 0;
                 let weekRunning = 0;
                 let lastWeekRunning = 0;
+                let previousWeekRunning = 0;
                 let totalWalking = 0;
                 let weekWalking = 0;
                 let lastWeekWalking = 0;
+                let previousWeekWalking = 0;
                 let totalStairs = 0;
                 let weekStairs = 0;
                 let lastWeekStairs = 0;
+                let previousWeekStairs = 0;
                 
                 // Track unique days with strength activities
                 let strengthDaysTotal = new Set();
                 let strengthDaysWeek = new Set();
                 let strengthDaysLastWeek = new Set();
+                let strengthDaysPreviousWeek = new Set();
 
                 this.data.activities.forEach(activity => {
                     // Fix: Parse date at noon to avoid timezone issues
                     const activityDate = new Date(activity.date + 'T12:00:00');
-                    const isThisWeek = activityDate >= startOfWeek;
-                    const isLastWeek = activityDate >= startOfLastWeek && activityDate < startOfWeek;
+                    const isThisWeek = activityDate >= weekStart && activityDate <= now;
+                    const isLast7Days = activityDate >= last7DaysStart && activityDate <= now;
+                    const isPrevious7Days = activityDate >= previous7DaysStart && activityDate <= previous7DaysEnd;
+                    
+                    // Debug logging
 
                     // Total distance (stored in km) - also track by type
                     if (activity.distance) {
                         totalDistance += activity.distance;
-                        if (isThisWeek) {
-                            weekDistance += activity.distance;
-                        }
-                        if (isLastWeek) {
-                            lastWeekDistance += activity.distance;
-                        }
+                        if (isThisWeek) weekDistance += activity.distance;
+                        if (isLast7Days) lastWeekDistance += activity.distance;
+                        if (isPrevious7Days) previousWeekDistance += activity.distance;
                         
                         // Track by specific type
                         if (activity.type === 'biking') {
                             totalBiking += activity.distance;
                             if (isThisWeek) weekBiking += activity.distance;
-                            if (isLastWeek) lastWeekBiking += activity.distance;
+                            if (isLast7Days) lastWeekBiking += activity.distance;
+                            if (isPrevious7Days) previousWeekBiking += activity.distance;
                         } else if (activity.type === 'dog') {
                             totalDogWalk += activity.distance;
                             if (isThisWeek) weekDogWalk += activity.distance;
-                            if (isLastWeek) lastWeekDogWalk += activity.distance;
+                            if (isLast7Days) lastWeekDogWalk += activity.distance;
+                            if (isPrevious7Days) previousWeekDogWalk += activity.distance;
                         } else if (activity.type === 'hiking') {
                             totalHiking += activity.distance;
                             if (isThisWeek) weekHiking += activity.distance;
-                            if (isLastWeek) lastWeekHiking += activity.distance;
+                            if (isLast7Days) lastWeekHiking += activity.distance;
+                            if (isPrevious7Days) previousWeekHiking += activity.distance;
                         } else if (activity.type === 'run') {
                             totalRunning += activity.distance;
                             if (isThisWeek) weekRunning += activity.distance;
-                            if (isLastWeek) lastWeekRunning += activity.distance;
+                            if (isLast7Days) lastWeekRunning += activity.distance;
+                            if (isPrevious7Days) previousWeekRunning += activity.distance;
                         } else if (activity.type === 'walk') {
                             totalWalking += activity.distance;
                             if (isThisWeek) weekWalking += activity.distance;
-                            if (isLastWeek) lastWeekWalking += activity.distance;
+                            if (isLast7Days) lastWeekWalking += activity.distance;
+                            if (isPrevious7Days) previousWeekWalking += activity.distance;
                         }
                     }
 
                     // Total floors for stairs
                     if (activity.floors) {
                         totalStairs += activity.floors;
-                        if (isThisWeek) {
-                            weekStairs += activity.floors;
-                        }
-                        if (isLastWeek) {
-                            lastWeekStairs += activity.floors;
-                        }
+                        if (isThisWeek) weekStairs += activity.floors;
+                        if (isLast7Days) lastWeekStairs += activity.floors;
+                        if (isPrevious7Days) previousWeekStairs += activity.floors;
                     }
 
                     // Total steps
                     if (activity.steps) {
                         totalSteps += activity.steps;
-                        if (isThisWeek) {
-                            weekSteps += activity.steps;
-                        }
-                        if (isLastWeek) {
-                            lastWeekSteps += activity.steps;
-                        }
+                        if (isThisWeek) weekSteps += activity.steps;
+                        if (isLast7Days) lastWeekSteps += activity.steps;
+                        if (isPrevious7Days) previousWeekSteps += activity.steps;
                     }
 
                     // Total reps by type
@@ -2319,39 +2430,42 @@
                         if (activity.type === 'pushups') {
                             totalPushups += activity.reps;
                             if (isThisWeek) weekPushups += activity.reps;
-                            if (isLastWeek) lastWeekPushups += activity.reps;
+                            if (isLast7Days) lastWeekPushups += activity.reps;
+                            if (isPrevious7Days) previousWeekPushups += activity.reps;
                         } else if (activity.type === 'pullups') {
                             totalPullups += activity.reps;
                             if (isThisWeek) weekPullups += activity.reps;
-                            if (isLastWeek) lastWeekPullups += activity.reps;
+                            if (isLast7Days) lastWeekPullups += activity.reps;
+                            if (isPrevious7Days) previousWeekPullups += activity.reps;
                         } else if (activity.type === 'rollerabs') {
                             totalRollerAbs += activity.reps;
                             if (isThisWeek) weekRollerAbs += activity.reps;
-                            if (isLastWeek) lastWeekRollerAbs += activity.reps;
+                            if (isLast7Days) lastWeekRollerAbs += activity.reps;
+                            if (isPrevious7Days) previousWeekRollerAbs += activity.reps;
                         } else if (activity.type === 'dips') {
                             totalDips += activity.reps;
                             if (isThisWeek) weekDips += activity.reps;
-                            if (isLastWeek) lastWeekDips += activity.reps;
+                            if (isLast7Days) lastWeekDips += activity.reps;
+                            if (isPrevious7Days) previousWeekDips += activity.reps;
                         } else if (activity.type === 'squats') {
                             totalSquats += activity.reps;
                             if (isThisWeek) weekSquats += activity.reps;
-                            if (isLastWeek) lastWeekSquats += activity.reps;
+                            if (isLast7Days) lastWeekSquats += activity.reps;
+                            if (isPrevious7Days) previousWeekSquats += activity.reps;
                         } else if (activity.type === 'situps') {
                             totalSitups += activity.reps;
                             if (isThisWeek) weekSitups += activity.reps;
-                            if (isLastWeek) lastWeekSitups += activity.reps;
+                            if (isLast7Days) lastWeekSitups += activity.reps;
+                            if (isPrevious7Days) previousWeekSitups += activity.reps;
                         }
                     }
 
                     // Count unique days with strength activities
                     if (['arm', 'back', 'chest', 'core', 'fullbody', 'leg', 'shoulder'].includes(activity.type)) {
                         strengthDaysTotal.add(activity.date);
-                        if (isThisWeek) {
-                            strengthDaysWeek.add(activity.date);
-                        }
-                        if (isLastWeek) {
-                            strengthDaysLastWeek.add(activity.date);
-                        }
+                        if (isThisWeek) strengthDaysWeek.add(activity.date);
+                        if (isLast7Days) strengthDaysLastWeek.add(activity.date);
+                        if (isPrevious7Days) strengthDaysPreviousWeek.add(activity.date);
                     }
                 });
 
@@ -2375,55 +2489,75 @@
                     totalWalking = totalWalking / 1.60934;
                     weekWalking = weekWalking / 1.60934;
                     lastWeekWalking = lastWeekWalking / 1.60934;
-                    weekWalking = weekWalking / 1.60934;
+                    previousWeekDistance = previousWeekDistance / 1.60934;
+                    previousWeekBiking = previousWeekBiking / 1.60934;
+                    previousWeekDogWalk = previousWeekDogWalk / 1.60934;
+                    previousWeekHiking = previousWeekHiking / 1.60934;
+                    previousWeekRunning = previousWeekRunning / 1.60934;
+                    previousWeekWalking = previousWeekWalking / 1.60934;
                 }
 
                 return {
                     totalDistance: Math.round(totalDistance * 10) / 10,
                     weekDistance: Math.round(weekDistance * 10) / 10,
                     lastWeekDistance: Math.round(lastWeekDistance * 10) / 10,
+                    previousWeekDistance: Math.round(previousWeekDistance * 10) / 10,
                     totalSteps,
                     weekSteps,
                     lastWeekSteps,
+                    previousWeekSteps,
                     totalPushups,
                     weekPushups,
                     lastWeekPushups,
+                    previousWeekPushups,
                     totalPullups,
                     weekPullups,
                     lastWeekPullups,
+                    previousWeekPullups,
                     totalRollerAbs,
                     weekRollerAbs,
                     lastWeekRollerAbs,
+                    previousWeekRollerAbs,
                     totalDips,
                     weekDips,
                     lastWeekDips,
+                    previousWeekDips,
                     totalSquats,
                     weekSquats,
                     lastWeekSquats,
+                    previousWeekSquats,
                     totalSitups,
                     weekSitups,
                     lastWeekSitups,
+                    previousWeekSitups,
                     totalBiking: Math.round(totalBiking * 10) / 10,
                     weekBiking: Math.round(weekBiking * 10) / 10,
                     lastWeekBiking: Math.round(lastWeekBiking * 10) / 10,
+                    previousWeekBiking: Math.round(previousWeekBiking * 10) / 10,
                     totalDogWalk: Math.round(totalDogWalk * 10) / 10,
                     weekDogWalk: Math.round(weekDogWalk * 10) / 10,
                     lastWeekDogWalk: Math.round(lastWeekDogWalk * 10) / 10,
+                    previousWeekDogWalk: Math.round(previousWeekDogWalk * 10) / 10,
                     totalHiking: Math.round(totalHiking * 10) / 10,
                     weekHiking: Math.round(weekHiking * 10) / 10,
                     lastWeekHiking: Math.round(lastWeekHiking * 10) / 10,
+                    previousWeekHiking: Math.round(previousWeekHiking * 10) / 10,
                     totalRunning: Math.round(totalRunning * 10) / 10,
                     weekRunning: Math.round(weekRunning * 10) / 10,
                     lastWeekRunning: Math.round(lastWeekRunning * 10) / 10,
+                    previousWeekRunning: Math.round(previousWeekRunning * 10) / 10,
                     totalWalking: Math.round(totalWalking * 10) / 10,
                     weekWalking: Math.round(weekWalking * 10) / 10,
                     lastWeekWalking: Math.round(lastWeekWalking * 10) / 10,
+                    previousWeekWalking: Math.round(previousWeekWalking * 10) / 10,
                     totalStairs,
                     weekStairs,
                     lastWeekStairs,
+                    previousWeekStairs,
                     totalStrengthDays: strengthDaysTotal.size,
                     weekStrengthDays: strengthDaysWeek.size,
                     lastWeekStrengthDays: strengthDaysLastWeek.size,
+                    previousWeekStrengthDays: strengthDaysPreviousWeek.size,
                     // Weight data
                     currentWeight: this.getWeightStats().current
                 };
@@ -2458,9 +2592,9 @@
                 // Update fixed card labels with trends (only in Week view)
                 if (isWeekView) {
                     // Add trends comparing this week to last week
-                    const milesTrend = this.getTrendIndicator(stats.weekDistance, stats.lastWeekDistance);
-                    const workoutsTrend = this.getTrendIndicator(stats.weekStrengthDays, stats.lastWeekStrengthDays);
-                    const stepsTrend = this.getTrendIndicator(stats.weekSteps, stats.lastWeekSteps);
+                    const milesTrend = this.getTrendIndicator(stats.lastWeekDistance, stats.previousWeekDistance);
+                    const workoutsTrend = this.getTrendIndicator(stats.lastWeekStrengthDays, stats.previousWeekStrengthDays);
+                    const stepsTrend = this.getTrendIndicator(stats.lastWeekSteps, stats.previousWeekSteps);
                     
                     document.getElementById('stat-miles-label').textContent = unit;
                     document.getElementById('stat-workouts-label').textContent = 'Strength Days';
@@ -2522,36 +2656,42 @@
                         label: 'Push-ups',
                         weekValue: stats.weekPushups,
                         lastWeekValue: stats.lastWeekPushups,
+                        previousWeekValue: stats.previousWeekPushups,
                         totalValue: stats.totalPushups
                     },
                     'pullups': {
                         label: 'Pull-ups',
                         weekValue: stats.weekPullups,
                         lastWeekValue: stats.lastWeekPullups,
+                        previousWeekValue: stats.previousWeekPullups,
                         totalValue: stats.totalPullups
                     },
                     'rollerabs': {
                         label: 'Roller Abs',
                         weekValue: stats.weekRollerAbs,
                         lastWeekValue: stats.lastWeekRollerAbs,
+                        previousWeekValue: stats.previousWeekRollerAbs,
                         totalValue: stats.totalRollerAbs
                     },
                     'dips': {
                         label: 'Dips',
                         weekValue: stats.weekDips,
                         lastWeekValue: stats.lastWeekDips,
+                        previousWeekValue: stats.previousWeekDips,
                         totalValue: stats.totalDips
                     },
                     'squats': {
                         label: 'Squats',
                         weekValue: stats.weekSquats,
                         lastWeekValue: stats.lastWeekSquats,
+                        previousWeekValue: stats.previousWeekSquats,
                         totalValue: stats.totalSquats
                     },
                     'situps': {
                         label: 'Sit-ups',
                         weekValue: stats.weekSitups,
                         lastWeekValue: stats.lastWeekSitups,
+                        previousWeekValue: stats.previousWeekSitups,
                         totalValue: stats.totalSitups
                     },
                     // Cardio activities (distance)
@@ -2559,36 +2699,42 @@
                         label: `Biking (${unit})`,
                         weekValue: stats.weekBiking,
                         lastWeekValue: stats.lastWeekBiking,
+                        previousWeekValue: stats.previousWeekBiking,
                         totalValue: stats.totalBiking
                     },
                     'dog': {
-                        label: `Dog Walk (${unit})`,
+                        label: `Dog Walking (${unit})`,
                         weekValue: stats.weekDogWalk,
                         lastWeekValue: stats.lastWeekDogWalk,
+                        previousWeekValue: stats.previousWeekDogWalk,
                         totalValue: stats.totalDogWalk
                     },
                     'hiking': {
                         label: `Hiking (${unit})`,
                         weekValue: stats.weekHiking,
                         lastWeekValue: stats.lastWeekHiking,
+                        previousWeekValue: stats.previousWeekHiking,
                         totalValue: stats.totalHiking
                     },
                     'run': {
                         label: `Running (${unit})`,
                         weekValue: stats.weekRunning,
                         lastWeekValue: stats.lastWeekRunning,
+                        previousWeekValue: stats.previousWeekRunning,
                         totalValue: stats.totalRunning
                     },
                     'walk': {
                         label: `Walking (${unit})`,
                         weekValue: stats.weekWalking,
                         lastWeekValue: stats.lastWeekWalking,
+                        previousWeekValue: stats.previousWeekWalking,
                         totalValue: stats.totalWalking
                     },
                     'stairs': {
                         label: 'Stairs (floors)',
                         weekValue: stats.weekStairs,
                         lastWeekValue: stats.lastWeekStairs,
+                        previousWeekValue: stats.previousWeekStairs,
                         totalValue: stats.totalStairs
                     },
                     // Weight tracking
@@ -2633,7 +2779,7 @@
                                 trendElement.innerHTML = trendHTML;
                             } else {
                                 // All other cards: compare week vs last week
-                                const trendHTML = this.getTrendIndicator(cardData.weekValue, cardData.lastWeekValue);
+                                const trendHTML = this.getTrendIndicator(cardData.lastWeekValue, cardData.previousWeekValue);
                                 trendElement.innerHTML = trendHTML;
                             }
                         } else {
@@ -2779,6 +2925,224 @@
                     dayDiv.textContent = day;
                     grid.appendChild(dayDiv);
                 }
+
+                // Render activity summary
+                this.renderActivitySummary();
+            },
+
+            // Toggle activity report expand/collapse
+            toggleActivityReport() {
+                const content = document.getElementById('activity-report-content');
+                const toggle = document.getElementById('activity-report-toggle');
+                
+                if (content.classList.contains('expanded')) {
+                    content.classList.remove('expanded');
+                    toggle.querySelector('span:last-child').textContent = '▼';
+                } else {
+                    content.classList.add('expanded');
+                    toggle.querySelector('span:last-child').textContent = '▲';
+                }
+            },
+
+            // Render activity summary for calendar screen (month + all-time)
+            renderActivitySummary() {
+                const summaryList = document.getElementById('activity-summary-list');
+                const stats = this.calculateStats();
+                const monthStats = this.calculateMonthStats();
+                const unit = this.data.goals.unitPreference === 'km' ? 'km' : 'miles';
+                
+                const summaryItems = [];
+                
+                // Helper to add item with week, month and total
+                const addItem = (name, weekValue, monthValue, totalValue, suffix) => {
+                    if (totalValue > 0) {
+                        summaryItems.push({
+                            name,
+                            week: weekValue > 0 ? `${weekValue.toLocaleString()}${suffix}` : '-',
+                            month: monthValue > 0 ? `${monthValue.toLocaleString()}${suffix}` : '-',
+                            total: `${totalValue.toLocaleString()}${suffix}`
+                        });
+                    }
+                };
+                
+                // Strength exercises
+                addItem('Push-ups', stats.weekPushups, monthStats.monthPushups, stats.totalPushups, ' reps');
+                addItem('Pull-ups', stats.weekPullups, monthStats.monthPullups, stats.totalPullups, ' reps');
+                addItem('Roller Abs', stats.weekRollerAbs, monthStats.monthRollerAbs, stats.totalRollerAbs, ' reps');
+                addItem('Dips', stats.weekDips, monthStats.monthDips, stats.totalDips, ' reps');
+                addItem('Squats', stats.weekSquats, monthStats.monthSquats, stats.totalSquats, ' reps');
+                addItem('Sit-ups', stats.weekSitups, monthStats.monthSitups, stats.totalSitups, ' reps');
+                
+                // Cardio activities
+                if (stats.totalRunning > 0) {
+                    summaryItems.push({
+                        name: 'Running',
+                        week: stats.weekRunning > 0 ? `${stats.weekRunning} ${unit}` : '-',
+                        month: monthStats.monthRunning > 0 ? `${monthStats.monthRunning} ${unit}` : '-',
+                        total: `${stats.totalRunning} ${unit}`
+                    });
+                }
+                if (stats.totalWalking > 0) {
+                    summaryItems.push({
+                        name: 'Walking',
+                        week: stats.weekWalking > 0 ? `${stats.weekWalking} ${unit}` : '-',
+                        month: monthStats.monthWalking > 0 ? `${monthStats.monthWalking} ${unit}` : '-',
+                        total: `${stats.totalWalking} ${unit}`
+                    });
+                }
+                if (stats.totalBiking > 0) {
+                    summaryItems.push({
+                        name: 'Biking',
+                        week: stats.weekBiking > 0 ? `${stats.weekBiking} ${unit}` : '-',
+                        month: monthStats.monthBiking > 0 ? `${monthStats.monthBiking} ${unit}` : '-',
+                        total: `${stats.totalBiking} ${unit}`
+                    });
+                }
+                if (stats.totalDogWalk > 0) {
+                    summaryItems.push({
+                        name: 'Dog Walking',
+                        week: stats.weekDogWalk > 0 ? `${stats.weekDogWalk} ${unit}` : '-',
+                        month: monthStats.monthDogWalk > 0 ? `${monthStats.monthDogWalk} ${unit}` : '-',
+                        total: `${stats.totalDogWalk} ${unit}`
+                    });
+                }
+                if (stats.totalHiking > 0) {
+                    summaryItems.push({
+                        name: 'Hiking',
+                        week: stats.weekHiking > 0 ? `${stats.weekHiking} ${unit}` : '-',
+                        month: monthStats.monthHiking > 0 ? `${monthStats.monthHiking} ${unit}` : '-',
+                        total: `${stats.totalHiking} ${unit}`
+                    });
+                }
+                
+                // Other
+                addItem('Stairs', stats.weekStairs, monthStats.monthStairs, stats.totalStairs, ' floors');
+                addItem('Steps', stats.weekSteps, monthStats.monthSteps, stats.totalSteps, '');
+                
+                // Totals
+                addItem('Strength Days', stats.weekStrengthDays, monthStats.monthStrengthDays, stats.totalStrengthDays, ' days');
+                if (stats.totalDistance > 0) {
+                    summaryItems.push({
+                        name: 'Total Distance',
+                        week: stats.weekDistance > 0 ? `${stats.weekDistance} ${unit}` : '-',
+                        month: monthStats.monthDistance > 0 ? `${monthStats.monthDistance} ${unit}` : '-',
+                        total: `${stats.totalDistance} ${unit}`
+                    });
+                }
+                
+                if (summaryItems.length === 0) {
+                    summaryList.innerHTML = '<p style="text-align: center; color: #6b7280; font-size: 14px; padding: 20px 0;">No activities logged yet.</p>';
+                } else {
+                    // Header row
+                    let html = `
+                        <div class="activity-summary-item" style="font-weight: 700; color: #9ca3af; font-size: 12px; text-transform: uppercase; border-bottom: 2px solid #3d3d3d;">
+                            <div>Activity</div>
+                            <div class="activity-summary-value week">Week</div>
+                            <div class="activity-summary-value month">Month</div>
+                            <div class="activity-summary-value total">All-Time</div>
+                        </div>
+                    `;
+                    
+                    // Data rows
+                    html += summaryItems.map(item => `
+                        <div class="activity-summary-item">
+                            <div class="activity-summary-name">${item.name}</div>
+                            <div class="activity-summary-value week">${item.week}</div>
+                            <div class="activity-summary-value month">${item.month}</div>
+                            <div class="activity-summary-value total">${item.total}</div>
+                        </div>
+                    `).join('');
+                    
+                    summaryList.innerHTML = html;
+                }
+            },
+
+            // Calculate month-to-date stats
+            calculateMonthStats() {
+                const now = new Date();
+                now.setHours(23, 59, 59, 999); // Set to end of today for comparisons
+                const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+                startOfMonth.setHours(0, 0, 0, 0);
+                
+                let monthDistance = 0;
+                let monthPushups = 0;
+                let monthPullups = 0;
+                let monthRollerAbs = 0;
+                let monthDips = 0;
+                let monthSquats = 0;
+                let monthSitups = 0;
+                let monthBiking = 0;
+                let monthDogWalk = 0;
+                let monthHiking = 0;
+                let monthRunning = 0;
+                let monthWalking = 0;
+                let monthStairs = 0;
+                let monthSteps = 0;
+                let monthStrengthDays = new Set();
+                
+                this.data.activities.forEach(activity => {
+                    const activityDate = new Date(activity.date + 'T12:00:00');
+                    const isThisMonth = activityDate >= startOfMonth && activityDate <= now;
+                    
+                    if (isThisMonth) {
+                        // Distance
+                        if (activity.distance) {
+                            monthDistance += activity.distance;
+                            if (activity.type === 'biking') monthBiking += activity.distance;
+                            else if (activity.type === 'dog') monthDogWalk += activity.distance;
+                            else if (activity.type === 'hiking') monthHiking += activity.distance;
+                            else if (activity.type === 'run') monthRunning += activity.distance;
+                            else if (activity.type === 'walk') monthWalking += activity.distance;
+                        }
+                        
+                        // Stairs and Steps
+                        if (activity.floors) monthStairs += activity.floors;
+                        if (activity.steps) monthSteps += activity.steps;
+                        
+                        // Reps
+                        if (activity.reps) {
+                            if (activity.type === 'pushups') monthPushups += activity.reps;
+                            else if (activity.type === 'pullups') monthPullups += activity.reps;
+                            else if (activity.type === 'rollerabs') monthRollerAbs += activity.reps;
+                            else if (activity.type === 'dips') monthDips += activity.reps;
+                            else if (activity.type === 'squats') monthSquats += activity.reps;
+                            else if (activity.type === 'situps') monthSitups += activity.reps;
+                        }
+                        
+                        // Strength days
+                        if (['arm', 'back', 'chest', 'core', 'fullbody', 'leg', 'shoulder'].includes(activity.type)) {
+                            monthStrengthDays.add(activity.date);
+                        }
+                    }
+                });
+                
+                // Convert distances to preferred unit
+                if (this.data.goals.unitPreference === 'miles') {
+                    monthDistance = monthDistance / 1.60934;
+                    monthBiking = monthBiking / 1.60934;
+                    monthDogWalk = monthDogWalk / 1.60934;
+                    monthHiking = monthHiking / 1.60934;
+                    monthRunning = monthRunning / 1.60934;
+                    monthWalking = monthWalking / 1.60934;
+                }
+                
+                return {
+                    monthDistance: Math.round(monthDistance * 10) / 10,
+                    monthPushups,
+                    monthPullups,
+                    monthRollerAbs,
+                    monthDips,
+                    monthSquats,
+                    monthSitups,
+                    monthBiking: Math.round(monthBiking * 10) / 10,
+                    monthDogWalk: Math.round(monthDogWalk * 10) / 10,
+                    monthHiking: Math.round(monthHiking * 10) / 10,
+                    monthRunning: Math.round(monthRunning * 10) / 10,
+                    monthWalking: Math.round(monthWalking * 10) / 10,
+                    monthStairs,
+                    monthSteps,
+                    monthStrengthDays: monthStrengthDays.size
+                };
             },
 
             // Change calendar month
@@ -3010,9 +3374,9 @@
                     
                     const activityHTML = activities.map((activity, index) => {
                         const activityNames = {
-                            'walk': 'Walk',
+                            'walk': 'Walking',
                             'run': 'Running',
-                            'dog': 'Dog Walk',
+                            'dog': 'Dog Walking',
                             'hiking': 'Hiking',
                             'biking': 'Biking',
                             'stairs': 'Master Stairs',
@@ -3431,7 +3795,7 @@
                 const historyList = document.getElementById('weight-history-list');
                 
                 if (!this.data.weights || this.data.weights.length === 0) {
-                    historyList.innerHTML = '<div style="text-align: center; color: #6b7280; padding: 12px; font-size: 12px;">No weight entries yet</div>';
+                    historyList.innerHTML = '<div style="text-align: center; color: #6b7280; padding: 8px; font-size: 12px;">No weight entries yet</div>';
                     return;
                 }
 
