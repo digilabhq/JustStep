@@ -62,16 +62,6 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* Hide number input spinner arrows */
-        input[type=number]::-webkit-inner-spin-button,
-        input[type=number]::-webkit-outer-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-        input[type=number] {
-            -moz-appearance: textfield;
-        }
-
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             background: #1a1a1a;
@@ -847,6 +837,7 @@
             top: 3px;
             right: 3px;
             font-size: 7px;
+            color: #10b981;
             letter-spacing: -1px;
             line-height: 7px;
             font-weight: 700;
@@ -1177,7 +1168,7 @@
             background: transparent;
             border-radius: 8px;
             padding: 0;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
             border: 1px solid #2d2d2d;
             transition: all 0.2s;
         }
@@ -1190,7 +1181,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 8px 12px;
+            padding: 12px 14px;
             cursor: pointer;
             user-select: none;
             transition: background 0.2s;
@@ -1201,9 +1192,9 @@
         }
 
         .pal-expand-icon {
-            font-size: 11px;
+            font-size: 12px;
             color: #6b7280;
-            padding: 3px;
+            padding: 4px;
             transition: color 0.2s;
         }
 
@@ -1212,14 +1203,14 @@
         }
 
         .pal-name {
-            font-size: 14px;
+            font-size: 15px;
             font-weight: 500;
             color: #e8e8e8;
             letter-spacing: -0.01em;
         }
 
         .pal-code {
-            font-size: 10px;
+            font-size: 11px;
             color: #6b7280;
             font-weight: 400;
             margin-top: 2px;
@@ -1227,7 +1218,7 @@
 
         .pal-stats-expanded {
             display: none;
-            padding: 0 12px 8px 12px;
+            padding: 0 14px 12px 14px;
             border-top: 1px solid #2d2d2d;
         }
 
@@ -1236,15 +1227,15 @@
         }
 
         .pal-activity-report {
-            margin-top: 8px;
-            margin-bottom: 8px;
+            margin-top: 12px;
+            margin-bottom: 12px;
         }
 
         .pal-activity-header {
             display: grid;
             grid-template-columns: 1fr auto auto auto;
-            gap: 12px;
-            padding: 4px 0;
+            gap: 16px;
+            padding: 6px 0;
             border-bottom: 1px solid #2d2d2d;
             font-weight: 600;
             color: #6b7280;
@@ -2346,106 +2337,86 @@
             <h1>Goals</h1>
             <p class="subtitle">Customize your goals and preferences</p>
 
-            <!-- Slim compact sections -->
-            <div style="display: flex; flex-direction: column; gap: 8px;">
-                
-                <!-- Unit Preference - Inline -->
-                <div style="background: #2d2d2d; padding: 10px 14px; border-radius: 8px;">
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <label style="font-size: 14px; font-weight: 600; color: #e8e8e8;">Unit Preference</label>
-                        <select id="unit-preference" style="width: 160px; padding: 6px 10px; border: 1px solid #3d3d3d; border-radius: 6px; font-size: 13px; font-weight: 600; background: #1a1a1a; color: #e8e8e8;">
-                            <option value="miles">Miles</option>
-                            <option value="km">Kilometers</option>
-                        </select>
-                    </div>
-                </div>
+            <div class="goal-input">
+                <label>Unit Preference</label>
+                <p class="goal-description">Choose your preferred distance unit</p>
+                <select id="unit-preference">
+                    <option value="miles">Miles</option>
+                    <option value="km">Kilometers</option>
+                </select>
+            </div>
 
-                <!-- Initial Weight - Inline -->
-                <div style="background: #2d2d2d; padding: 10px 14px; border-radius: 8px; margin-bottom: 10px;">
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <label style="font-size: 14px; font-weight: 600; color: #e8e8e8;">Initial Weight</label>
-                        <div style="width: 160px; display: flex; align-items: center; gap: 0; padding: 6px 10px; border: 2px solid #3d3d3d; border-radius: 6px; background: #1a1a1a;">
-                            <input type="number" id="initial-weight-preference" placeholder="Enter initial weight" inputmode="decimal"
-                                   style="flex: 1; min-width: 0; border: none; outline: none; padding: 0; background: transparent; color: #e8e8e8; font-size: 13px; font-weight: 600;">
-                            <span style="margin-left: 8px; font-size: 12px; color: #9ca3af; font-weight: 600;">lbs</span>
-</div>
-                    </div>
-                </div>
+            <div class="goal-input">
+                <label>Weight Unit</label>
+                <p class="goal-description">Choose your preferred weight unit</p>
+                <select id="weight-unit-preference">
+                    <option value="lbs">Pounds (lbs)</option>
+                    <option value="kg">Kilograms (kg)</option>
+                </select>
+            </div>
 
-                <!-- App Theme - Compact -->
-                <div style="background: #2d2d2d; padding: 10px 14px; border-radius: 8px;">
-                    <label style="font-size: 14px; font-weight: 600; color: #e8e8e8; display: block; margin-bottom: 8px;">App Theme</label>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
-                        <button onclick="app.openThemeColorPicker()" 
-                                style="padding: 8px 12px; background: #1a1a1a; color: #e8e8e8; border: 1px solid #3d3d3d; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 6px;">
-                            <span style="width: 16px; height: 16px; border-radius: 50%; background: var(--primary-dark); display: inline-block;"></span>
-                            Choose
-                        </button>
-                        <button onclick="app.resetThemeToDefault()" 
-                                style="padding: 8px 12px; background: #3d3d3d; color: #e8e8e8; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600;">
-                            Reset
-                        </button>
+            <div class="goal-input">
+                <label>App Theme</label>
+                <p class="goal-description">Choose your color theme</p>
+                <div class="theme-selector">
+                    <div class="theme-option" data-theme="blue" onclick="app.setTheme('blue')">
+                        <div class="theme-swatch" style="background: #2563eb;"></div>
+                        <span>Blue</span>
                     </div>
-                </div>
-
-                <!-- Weekly Strength Days Target - Inline -->
-                <div style="background: #2d2d2d; padding: 10px 14px; border-radius: 8px;">
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <label style="font-size: 14px; font-weight: 600; color: #e8e8e8;">Weekly Strength Days Target</label>
-                        <input type="number" id="workout-frequency" value="5" placeholder="5" inputmode="numeric" 
-                               style="width: 80px; padding: 6px 10px; border: 1px solid #3d3d3d; border-radius: 6px; font-size: 13px; font-weight: 600; background: #1a1a1a; color: #e8e8e8; text-align: center;">
+                    <div class="theme-option" data-theme="green" onclick="app.setTheme('green')">
+                        <div class="theme-swatch" style="background: #10b981;"></div>
+                        <span>Green</span>
                     </div>
-                </div>
-
-                <!-- Monthly Mileage Target - Inline -->
-                <div style="background: #2d2d2d; padding: 10px 14px; border-radius: 8px;">
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <label style="font-size: 14px; font-weight: 600; color: #e8e8e8;">Monthly Mileage Target</label>
-                        <input type="number" id="monthly-goal" value="35" placeholder="35" inputmode="numeric" 
-                               style="width: 80px; padding: 6px 10px; border: 1px solid #3d3d3d; border-radius: 6px; font-size: 13px; font-weight: 600; background: #1a1a1a; color: #e8e8e8; text-align: center;">
+                    <div class="theme-option" data-theme="pink" onclick="app.setTheme('pink')">
+                        <div class="theme-swatch" style="background: #ec4899;"></div>
+                        <span>Pink</span>
                     </div>
-                </div>
-
-                <!-- Annual Mileage Target - Inline -->
-                <div style="background: #2d2d2d; padding: 10px 14px; border-radius: 8px;">
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <label style="font-size: 14px; font-weight: 600; color: #e8e8e8;">Annual Mileage Target</label>
-                        <input type="number" id="annual-goal" value="420" placeholder="420" inputmode="numeric" 
-                               style="width: 80px; padding: 6px 10px; border: 1px solid #3d3d3d; border-radius: 6px; font-size: 13px; font-weight: 600; background: #1a1a1a; color: #e8e8e8; text-align: center;">
+                    <div class="theme-option" data-theme="purple" onclick="app.setTheme('purple')">
+                        <div class="theme-swatch" style="background: #8b5cf6;"></div>
+                        <span>Purple</span>
+                    </div>
+                    <div class="theme-option" data-theme="red" onclick="app.setTheme('red')">
+                        <div class="theme-swatch" style="background: #ef4444;"></div>
+                        <span>Red</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Elegant divider line like monthly days section -->
-            <div style="margin: 24px 0; border-top: 1px solid #3d3d3d;"></div>
+            <div class="goal-input">
+                <label>Annual Mileage Goal</label>
+                <p class="goal-description">Total distance goal for the year</p>
+                <input type="number" id="annual-goal" value="420" placeholder="420" inputmode="numeric">
+            </div>
 
-            <!-- Daily Habits Section -->
-            <div>
-                <div style="margin-bottom: 12px;">
-                    <label style="font-size: 14px; font-weight: 600; color: #e8e8e8; display: block; margin-bottom: 4px;">Daily Habits (Private)</label>
-                    <p style="font-size: 12px; color: #6b7280; margin: 0;">Track up to 3 personal habits - not shared with anyone</p>
-                </div>
+            <div class="goal-input">
+                <label>Strength Days Target</label>
+                <p class="goal-description">How many strength days per week?</p>
+                <input type="number" id="workout-frequency" value="5" placeholder="5" inputmode="numeric">
+            </div>
+
+            <div class="goal-input">
+                <label>Monthly Mileage Target</label>
+                <p class="goal-description">Optional: Set a monthly milestone</p>
+                <input type="number" id="monthly-goal" value="35" placeholder="35" inputmode="numeric">
+            </div>
+
+            <div class="goal-input" style="margin-top: 32px; padding-top: 24px; border-top: 1px solid #3d3d3d;">
+                <label>Daily Habits (Private)</label>
+                <p class="goal-description">Track up to 3 personal habits - not shared with anyone</p>
                 
-                <div id="habits-list" style="display: flex; flex-direction: column; gap: 6px;">
+                <div id="habits-list">
                     <!-- Habits will be rendered here -->
                 </div>
                 
-                <button class="export-button" onclick="app.addHabit()" id="add-habit-btn" style="margin-top: 10px; padding: 8px 14px; font-size: 13px;">+ Add Habit</button>
+                <button class="export-button" onclick="app.addHabit()" id="add-habit-btn" style="margin-top: 12px;">+ Add Habit (3 max)</button>
             </div>
 
-            <!-- Save Settings -->
-            <button class="save-button" onclick="app.saveGoals()" style="margin-top: 24px;">Save Settings</button>
+            <button class="save-button" onclick="app.saveGoals()">Save Settings</button>
             <div class="success-message" id="settings-success">Settings saved successfully!</div>
 
-            <!-- Elegant divider line -->
-            <div style="margin: 24px 0; border-top: 1px solid #3d3d3d;"></div>
-
-            <!-- Data Import/Export -->
-            <div style="display: flex; flex-direction: column; gap: 8px;">
-                <input type="file" id="import-file-input" accept=".json" style="display: none;" onchange="app.handleImportFile(event)">
-                <button class="export-button" onclick="document.getElementById('import-file-input').click()" style="padding: 8px 14px; font-size: 13px;">Import Data</button>
-                <button class="export-button" onclick="app.exportData()" style="padding: 8px 14px; font-size: 13px;">Export All Data</button>
-            </div>
+            <input type="file" id="import-file-input" accept=".json" style="display: none;" onchange="app.handleImportFile(event)">
+            <button class="export-button" onclick="document.getElementById('import-file-input').click()">Import Data</button>
+            <button class="export-button" onclick="app.exportData()">Export All Data</button>
             <div class="success-message" id="import-success">Data imported successfully!</div>
             
         </div>
@@ -2455,98 +2426,77 @@
             <h1>Pals</h1>
             <p class="subtitle">Share your fitness journey with friends</p>
 
-            <!-- MY PROFILE Section - Slim Design -->
+            <!-- MY PROFILE Section - Compact Design -->
             <div class="pals-section">
-                <h2 style="font-size: 14px; margin-bottom: 8px; color: var(--primary-light); font-weight: 600;">MY PROFILE</h2>
+                <h2 style="font-size: 16px; margin-bottom: 12px; color: var(--primary-light); font-weight: 600;">MY PROFILE</h2>
                 
                 <!-- Unique ID Row -->
-                <div style="background: #2d2d2d; border-radius: 8px; padding: 8px 12px; margin-bottom: 6px;">
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <div style="flex: 1; min-width: 0;">
-                            <div style="font-size: 11px; color: #6b7280; margin-bottom: 2px;">Unique ID</div>
-                            <div style="font-size: 14px; color: #e8e8e8; font-weight: 600;" id="display-share-code">
+                <div style="background: #2d2d2d; border-radius: 8px; padding: 12px; margin-bottom: 8px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div style="flex: 1;">
+                            <div style="font-size: 12px; color: #6b7280; margin-bottom: 4px;">Unique ID</div>
+                            <div style="font-size: 15px; color: #e8e8e8; font-weight: 600;" id="display-share-code">
                                 Not set
                             </div>
                         </div>
-                        <button id="share-code-btn" onclick="app.handleShareCodeButton()" 
-                                style="width: 55px; height: 32px; flex-shrink: 0; background: var(--primary-dark); color: white; border: none; border-radius: 5px; font-size: 12px; cursor: pointer; font-weight: 600; display: flex; align-items: center; justify-content: center;">
-                            Set ID
+                        <button onclick="app.editShareCode()" 
+                                style="padding: 6px 14px; background: var(--primary-dark); color: white; border: none; border-radius: 6px; font-size: 13px; cursor: pointer; font-weight: 600;">
+                            Share
                         </button>
                     </div>
                 </div>
 
                 <!-- Display Name Row -->
-                <div style="background: #2d2d2d; border-radius: 8px; padding: 8px 12px; margin-bottom: 6px;">
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <div style="flex: 1; min-width: 0;">
-                            <div style="font-size: 11px; color: #6b7280; margin-bottom: 2px;">Display Name</div>
-                            <div style="font-size: 14px; color: #e8e8e8; font-weight: 600;" id="display-display-name">
+                <div style="background: #2d2d2d; border-radius: 8px; padding: 12px; margin-bottom: 8px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div style="flex: 1;">
+                            <div style="font-size: 12px; color: #6b7280; margin-bottom: 4px;">Display Name</div>
+                            <div style="font-size: 15px; color: #e8e8e8; font-weight: 600;" id="display-display-name">
                                 Not set
                             </div>
                         </div>
                         <button onclick="app.editDisplayName()" 
-                                style="width: 55px; height: 32px; flex-shrink: 0; background: #3d3d3d; color: #e8e8e8; border: none; border-radius: 5px; font-size: 12px; cursor: pointer; font-weight: 600; display: flex; align-items: center; justify-content: center;">
+                                style="padding: 6px 14px; background: #3d3d3d; color: #e8e8e8; border: none; border-radius: 6px; font-size: 13px; cursor: pointer; font-weight: 600;">
                             Edit
                         </button>
                     </div>
                 </div>
 
                 <!-- Show in Leaderboards Toggle -->
-                <div style="background: #2d2d2d; border-radius: 8px; padding: 8px 12px;">
-                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
-                        <div style="flex: 1; min-width: 0;">
-                            <span style="font-size: 13px; color: #e8e8e8; font-weight: 500; display: block;">Show in Leaderboards</span>
-                            <span style="font-size: 10px; color: #6b7280; display: block; margin-top: 2px;">Compete globally with all JustStep users</span>
-                        </div>
-                        <div style="width: 55px; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
-                            <input type="checkbox" id="join-leaderboard" onchange="app.toggleLeaderboard()" 
-                                   style="width: 20px; height: 20px; cursor: pointer; margin: 0;">
-                        </div>
+                <div style="background: #2d2d2d; border-radius: 8px; padding: 12px;">
+                    <label style="display: flex; align-items: center; justify-content: space-between; cursor: pointer;">
+                        <span style="font-size: 14px; color: #e8e8e8; font-weight: 500;">Show in Leaderboards</span>
+                        <input type="checkbox" id="join-leaderboard" onchange="app.toggleLeaderboard()" 
+                               style="width: 20px; height: 20px; cursor: pointer;">
                     </label>
-                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; margin-top: 10px;">
-                        <div style="flex: 1; min-width: 0;">
-                            <span style="font-size: 13px; color: var(--text); font-weight: 500; display: block;">Include Weight Leaderboard</span>
-                            <span style="font-size: 10px; color: var(--text-secondary); margin-top: 2px; display: block;">Optional; requires initial weight + weigh-ins</span>
-                        </div>
-                        <div style="width: 55px; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
-                            <input type="checkbox" id="join-weight-leaderboard" onchange="app.toggleWeightLeaderboardOptIn()"
-                                   style="width: 20px; height: 20px; cursor: pointer; margin: 0;">
-                        </div>
-                    </label>
-
+                    <p style="font-size: 11px; color: #6b7280; margin-top: 6px; margin-left: 0;">
+                        Compete globally with all JustStep users
+                    </p>
                 </div>
             </div>
 
             <!-- ADD PAL Section - Compact -->
             <div class="pals-section">
-                <h2 style="font-size: 14px; margin-bottom: 8px; color: var(--primary-light); font-weight: 600;">ADD PAL</h2>
+                <h2 style="font-size: 16px; margin-bottom: 12px; color: var(--primary-light); font-weight: 600;">ADD PAL</h2>
                 
-                <div style="background: #2d2d2d; border-radius: 8px; padding: 8px 12px;">
-                    <div style="display: flex; gap: 8px; align-items: center;">
-                        <input type="text" id="add-pal-code" placeholder="Enter pal ID..." 
-                               style="flex: 1; min-width: 0; padding: 6px 10px; background: #1a1a1a; border: 1px solid #3d3d3d; border-radius: 6px; color: #e8e8e8; font-size: 13px; height: 32px; box-sizing: border-box;" 
-                               maxlength="15">
-                        <button onclick="app.addPal()" 
-                                style="width: 55px; height: 32px; flex-shrink: 0; background: var(--primary-dark); color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 12px; display: flex; align-items: center; justify-content: center;">
-                            Add
-                        </button>
-                    </div>
-                </div>
-                <div class="success-message" id="add-pal-success" style="margin-top: 6px;">Pal added!</div>
-                <div class="error-message" id="add-pal-error" style="margin-top: 6px;"></div>
-            </div>
-
-            <!-- MY PALS List - Slim -->
-            <div class="pals-section">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                    <h2 style="font-size: 14px; color: var(--primary-light); font-weight: 600; margin: 0;">MY PALS</h2>
-                    <button onclick="app.refreshAllPals()" 
-                            style="padding: 4px 10px; background: #3d3d3d; color: #e8e8e8; border: none; border-radius: 5px; font-size: 11px; cursor: pointer; font-weight: 600;">
-                        🔄 Refresh All
+                <div style="display: flex; gap: 8px;">
+                    <input type="text" id="add-pal-code" placeholder="Enter pal code..." 
+                           style="flex: 1; padding: 10px 12px; background: #2d2d2d; border: 1px solid #3d3d3d; border-radius: 8px; color: #e8e8e8; font-size: 14px;" 
+                           maxlength="15">
+                    <button onclick="app.addPal()" 
+                            style="padding: 10px 16px; background: var(--primary-dark); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; white-space: nowrap;">
+                        Add
                     </button>
                 </div>
+                <div class="success-message" id="add-pal-success" style="margin-top: 8px;">Pal added!</div>
+                <div class="error-message" id="add-pal-error" style="margin-top: 8px;"></div>
+            </div>
+
+            <!-- MY PALS List - Compact -->
+            <div class="pals-section">
+                <h2 style="font-size: 16px; margin-bottom: 12px; color: var(--primary-light); font-weight: 600;">MY PALS</h2>
                 <div id="pals-list">
-                    <p style="color: #6b7280; text-align: center; padding: 16px 0; font-size: 13px;">No pals yet. Add one above!</p>
+                    <p style="color: #6b7280; text-align: center; padding: 20px;">No pals yet. Add one above!</p>
                 </div>
             </div>
             
@@ -2729,47 +2679,6 @@
         </div>
     </div>
 
-    <!-- Color Palette Modal -->
-    <div id="color-palette-modal" class="modal" style="display: none;">
-        <div class="modal-content" style="max-width: 340px;">
-            <h2 style="margin-bottom: 16px; font-size: 18px;">Select Color</h2>
-            <div id="color-palette-grid" style="display: grid; grid-template-columns: repeat(8, 1fr); gap: 4px; margin-bottom: 16px;">
-                <!-- Colors will be rendered here: 10 rows x 8 columns -->
-            </div>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-                <button onclick="app.closeColorPalette()" 
-                        style="width: 100%; padding: 10px; background: #3d3d3d; color: #e8e8e8; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">
-                    Cancel
-                </button>
-                <button onclick="app.confirmColorSelection()" 
-                        style="width: 100%; padding: 10px; background: var(--primary-dark); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">
-                    OK
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Color Wheel Modal -->
-    <div id="color-wheel-modal" class="modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1000; align-items: center; justify-content: center;">
-        <div class="modal-content" style="max-width: 360px; text-align: center; background: #1a1a1a; padding: 24px; border-radius: 12px;">
-            <h2 style="margin-bottom: 16px; font-size: 18px; color: #e8e8e8;">Choose Your Color</h2>
-            <div style="display: flex; justify-content: center; margin-bottom: 16px;">
-                <canvas id="color-wheel-canvas" width="280" height="280" style="cursor: crosshair; border-radius: 50%;"></canvas>
-            </div>
-            <div id="selected-color-preview" style="width: 60px; height: 60px; border-radius: 50%; margin: 0 auto 16px; border: 3px solid #3d3d3d; background: #2563eb;"></div>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-                <button onclick="app.closeColorWheel()" 
-                        style="width: 100%; padding: 10px; background: #3d3d3d; color: #e8e8e8; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">
-                    Cancel
-                </button>
-                <button onclick="app.confirmColorWheelSelection()" 
-                        style="width: 100%; padding: 10px; background: var(--primary-dark); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">
-                    OK
-                </button>
-            </div>
-        </div>
-    </div>
-
     <script>
         // App Version
         const APP_VERSION = '1.6.0';
@@ -2784,8 +2693,7 @@
                     workoutFrequency: 5,
                     monthlyMiles: 35,
                     unitPreference: 'miles',
-                    weightUnit: 'lbs',
-                    initialWeight: null
+                    weightUnit: 'lbs'
                 },
                 habits: [], // Daily habits: { id, name, frequency: 'daily'|'weekly', completions: [dates] }
                 milestones: [],
@@ -2796,13 +2704,11 @@
                     calendarYear: new Date().getFullYear()
                 },
                 customDashboardCards: ['pushups', 'pullups', 'rollerabs'], // Row 2 customizable cards
-                themeColor: 'blue', // Theme color: blue, green, pink, orange, purple, red
                 // PALS v1.6.0
                 pals: {
                     myShareCode: '',
                     displayName: '',
                     joinedLeaderboard: false,
-                    joinWeightLeaderboard: false,
                     friends: [] // Array of {shareCode, displayName, stats, lastSync}
                 }
             },
@@ -2823,16 +2729,6 @@
                 // Ensure statsView is set before updating dashboard
                 if (!this.data.currentView.statsView) {
                     this.data.currentView.statsView = 'week';
-                }
-                // Apply saved theme color
-                if (this.data.themeColor) {
-                    if (this.data.themeColor.startsWith('#')) {
-                        // Custom hex color
-                        this.applyCustomThemeColor(this.data.themeColor);
-                    } else {
-                        // Predefined theme name
-                        this.applyTheme(this.data.themeColor);
-                    }
                 }
                 this.checkWelcome();
                 this.setupLogDate();
@@ -2909,13 +2805,11 @@
                     if (!this.data.weights) {
                         this.data.weights = [];
                     }
-                    // Force weight unit to lbs (unit switching removed)
-                    this.data.goals.weightUnit = 'lbs';
-                    // Ensure initialWeight exists (for users upgrading to v1.7.0)
-                    if (this.data.goals.initialWeight === undefined) {
-                        this.data.goals.initialWeight = null;
+                    // Ensure weightUnit exists (for users upgrading to v1.4.0)
+                    if (!this.data.goals.weightUnit) {
+                        this.data.goals.weightUnit = 'lbs';
                     }
-                    // Ensure pals exists and friends array is preserved (for users upgrading to v1.6.0)
+                    // Ensure pals exists (for users upgrading to v1.6.0)
                     if (!this.data.pals) {
                         this.data.pals = {
                             myShareCode: '',
@@ -2923,11 +2817,6 @@
                             joinedLeaderboard: false,
                             friends: []
                         };
-                    } else {
-                        // Ensure friends array exists even if pals exists
-                        if (!this.data.pals.friends) {
-                            this.data.pals.friends = [];
-                        }
                     }
                 }
             },
@@ -3042,12 +2931,9 @@
                             <span>
                                 Selected: <span id="selected-name-${this.activityCounter}" style="color: var(--primary-light); font-weight: 600;"></span>
                             </span>
-                            <span style="display: flex; gap: 6px;">
-                                <button onclick="app.reopenAccordion(${this.activityCounter})" style="background: none; border: 1px solid #3d3d3d; color: #9ca3af; padding: 4px 10px; border-radius: 6px; font-size: 11px; cursor: pointer; transition: all 0.2s;">
-                                    Change
-                                </button>
-                                ${isFirst ? `<button onclick="app.cancelActivity(${this.activityCounter})" style="background: none; border: 1px solid #3d3d3d; color: #ef4444; padding: 4px 10px; border-radius: 6px; font-size: 11px; cursor: pointer; transition: all 0.2s;">Cancel</button>` : ''}
-                            </span>
+                            <button onclick="app.reopenAccordion(${this.activityCounter})" style="background: none; border: 1px solid #3d3d3d; color: #9ca3af; padding: 4px 10px; border-radius: 6px; font-size: 11px; cursor: pointer; transition: all 0.2s;">
+                                Change
+                            </button>
                         </span>
                     </div>
                     
@@ -3117,29 +3003,6 @@
             reopenAccordion(id) {
                 const accordion = document.getElementById(`accordion-${id}`);
                 accordion.style.display = 'block';
-            },
-
-            // Cancel activity selection (for activity 1)
-            cancelActivity(id) {
-                const accordion = document.getElementById(`accordion-${id}`);
-                const selectedDiv = document.getElementById(`selected-activity-${id}`);
-                const valueContainer = document.getElementById(`value-input-${id}`);
-                
-                // Clear selected type
-                delete accordion.dataset.selectedType;
-                
-                // Hide selected display
-                selectedDiv.style.display = 'none';
-                
-                // Clear value input
-                valueContainer.innerHTML = '';
-                
-                // Show accordion again
-                accordion.style.display = 'block';
-                
-                // Remove selection highlights
-                const allItems = accordion.querySelectorAll('.accordion-item');
-                allItems.forEach(item => item.classList.remove('selected'));
             },
 
             // Update activity inputs based on type
@@ -3215,12 +3078,11 @@
                 const baseTimestamp = Date.now(); // Get timestamp once at start
                 
                 for (let i = 1; i <= this.activityCounter; i++) {
-                    // Get type from accordion dataset (not from type-${i} element which doesn't exist)
-                    const accordion = document.getElementById(`accordion-${i}`);
-                    if (!accordion) continue;
+                    const typeElement = document.getElementById(`type-${i}`);
+                    if (!typeElement) continue;
                     
-                    const type = accordion.dataset.selectedType;
-                    if (!type) continue; // Skip if no activity selected
+                    const type = typeElement.value;
+                    if (!type) continue;
 
                     const activity = {
                         date: date,
@@ -3230,10 +3092,6 @@
 
                     // Get value for cardio and reps-based exercises
                     const valueElement = document.getElementById(`value-${i}`);
-                    
-                    // Define activities that REQUIRE a value
-                    const requiresValue = ['walk', 'run', 'dog', 'hiking', 'biking', 'stairs', 'steps', 'pushups', 'pullups', 'rollerabs', 'dips', 'squats', 'situps'];
-                    
                     if (valueElement) {
                         const value = parseFloat(valueElement.value);
                         if (value && value > 0) {
@@ -3247,17 +3105,10 @@
                             } else if (['pushups', 'pullups', 'rollerabs', 'dips', 'squats', 'situps'].includes(type)) {
                                 activity.reps = value;
                             }
-                        } else if (requiresValue.includes(type)) {
-                            // ONLY skip if this activity type requires a value but none was entered
-                            continue;
+                        } else if (['walk', 'run', 'dog', 'hiking', 'biking', 'stairs', 'steps', 'pushups', 'pullups', 'rollerabs', 'dips', 'squats', 'situps'].includes(type)) {
+                            continue; // Skip if no value entered for activities that need it
                         }
-                    } else if (requiresValue.includes(type)) {
-                        // No value element found, but activity requires value - skip it
-                        continue;
                     }
-                    // If we reach here, either:
-                    // 1. Activity has a valid value, OR
-                    // 2. Activity doesn't require a value (like Strength Days)
 
                     activities.push(activity);
                 }
@@ -3787,7 +3638,7 @@
                     },
                     // Weight tracking (special case)
                     'weight': {
-                        label: 'Weight (lbs)',
+                        label: `Weight (${this.data.goals.weightUnit})`,
                         thisWeekValue: stats.currentWeight || 0,
                         prevWeekValue: 0, // Weight uses its own trend logic
                         totalValue: stats.currentWeight || 0
@@ -3944,7 +3795,7 @@
                     // Get habits for this date
                     const completedHabits = this.getHabitsForDate(date);
                     const habitChecks = completedHabits.length > 0 
-                        ? completedHabits.map(h => `<span style="color: ${h.color || '#10b981'};">✓</span>`).join('')
+                        ? `<div class="habit-checks">${'✓'.repeat(completedHabits.length)}</div>` 
                         : '';
                     
                     const dayDiv = document.createElement('div');
@@ -3961,7 +3812,7 @@
                     }
                     
                     dayDiv.innerHTML = `
-                        ${habitChecks ? `<div class="habit-checks">${habitChecks}</div>` : ''}
+                        ${habitChecks}
                         ${day}
                         ${activities.length > 0 ? `
                             <div class="activity-dots">
@@ -4217,10 +4068,7 @@
             // Update goals UI
             updateGoalsUI() {
                 document.getElementById('unit-preference').value = this.data.goals.unitPreference;
-const initialWeightEl = document.getElementById('initial-weight-preference');
-                if (initialWeightEl) {
-                    initialWeightEl.value = (this.data.goals.initialWeight !== null && this.data.goals.initialWeight !== undefined) ? this.data.goals.initialWeight : '';
-                }
+                document.getElementById('weight-unit-preference').value = this.data.goals.weightUnit;
                 document.getElementById('annual-goal').value = this.data.goals.annualMiles;
                 document.getElementById('workout-frequency').value = this.data.goals.workoutFrequency;
                 document.getElementById('monthly-goal').value = this.data.goals.monthlyMiles;
@@ -4235,11 +4083,7 @@ const initialWeightEl = document.getElementById('initial-weight-preference');
                 const newUnit = document.getElementById('unit-preference').value;
                 
                 this.data.goals.unitPreference = newUnit;
-const initialWeightInput = document.getElementById('initial-weight-preference');
-                if (initialWeightInput) {
-                    const v = parseFloat(initialWeightInput.value);
-                    this.data.goals.initialWeight = (!isNaN(v) && v > 0) ? v : null;
-                }
+                this.data.goals.weightUnit = document.getElementById('weight-unit-preference').value;
                 this.data.goals.annualMiles = parseInt(document.getElementById('annual-goal').value);
                 this.data.goals.workoutFrequency = parseInt(document.getElementById('workout-frequency').value);
                 this.data.goals.monthlyMiles = parseInt(document.getElementById('monthly-goal').value);
@@ -4247,14 +4091,19 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                 // Save habit changes from edit mode
                 this.data.habits.forEach(habit => {
                     const nameInput = document.getElementById(`habit-name-${habit.id}`);
-                    const colorInput = document.getElementById(`habit-color-${habit.id}`);
+                    const freqRadios = document.getElementsByName(`freq-${habit.id}`);
                     
                     if (nameInput) {
                         habit.name = nameInput.value;
                     }
                     
-                    if (colorInput) {
-                        habit.color = colorInput.value;
+                    if (freqRadios) {
+                        for (let radio of freqRadios) {
+                            if (radio.checked) {
+                                habit.frequency = radio.value;
+                                break;
+                            }
+                        }
                     }
                 });
                 
@@ -4633,9 +4482,9 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
             updateWeightInputDisplay() {
                 const weightUnitDisplay = document.getElementById('weight-unit-display');
                 if (weightUnitDisplay) {
-                    weightUnitDisplay.textContent = 'lbs';
+                    weightUnitDisplay.textContent = this.data.goals.weightUnit;
                 }
-},
+            },
 
             // Log weight entry
             logWeight() {
@@ -4646,12 +4495,6 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                 if (!weight || weight <= 0) {
                     alert('Please enter a valid weight');
                     return;
-                }
-
-                // Initial weight is recommended for all-time % calculations, but not required to log weight.
-                if (this.data.goals.initialWeight === null || this.data.goals.initialWeight === undefined) {
-                    const proceed = confirm('Initial Weight is not set. You can still log weight, but all-time % change will not be available until you set Initial Weight in Settings → Goals. Continue?');
-                    if (!proceed) return;
                 }
 
                 // Check if weight entry already exists for this date
@@ -4684,32 +4527,17 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
 
                 // Clear input and show success
                 weightInput.value = '';
-                alert(`Weight logged: ${weight} lbs`);
+                alert(`Weight logged: ${weight} ${this.data.goals.weightUnit}`);
             },
 
             // Get weight statistics and trends
             getWeightStats() {
                 if (!this.data.weights || this.data.weights.length === 0) {
-                    const initial = (this.data.goals.initialWeight !== null && this.data.goals.initialWeight !== undefined)
-                        ? Number(this.data.goals.initialWeight)
-                        : null;
-
-                    if (initial !== null && !isNaN(initial) && initial > 0) {
-                        return {
-                            current: initial,
-                            trend: 'stable',
-                            trendValue: 0,
-                            unit: this.data.goals.weightUnit,
-                            trendIsVsInitial: true
-                        };
-                    }
-
                     return {
                         current: null,
                         trend: null,
                         trendValue: 0,
-                        unit: this.data.goals.weightUnit,
-                        trendIsVsInitial: false
+                        unit: this.data.goals.weightUnit
                     };
                 }
 
@@ -4719,18 +4547,18 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                 );
                 const current = sortedWeights[0];
 
-                // Determine trend value
-                // If initialWeight is set, show change vs initial (profile baseline).
-                // Otherwise, fall back to 7-day trend.
-                const initial = (this.data.goals.initialWeight !== null && this.data.goals.initialWeight !== undefined)
-                    ? Number(this.data.goals.initialWeight)
-                    : null;
+                // Get weight from 7 days ago for trend
+                const sevenDaysAgo = new Date();
+                sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+                const sevenDaysAgoStr = sevenDaysAgo.toISOString().split('T')[0];
+
+                const pastWeight = this.data.weights.find(w => w.date <= sevenDaysAgoStr);
 
                 let trend = 'stable';
                 let trendValue = 0;
 
-                if (initial !== null && !isNaN(initial) && initial > 0) {
-                    trendValue = current.weight - initial;
+                if (pastWeight) {
+                    trendValue = current.weight - pastWeight.weight;
                     if (Math.abs(trendValue) < 0.5) {
                         trend = 'stable';
                     } else if (trendValue > 0) {
@@ -4738,155 +4566,38 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                     } else {
                         trend = 'down';
                     }
-                } else {
-                    // Get weight from 7 days ago for trend
-                    const sevenDaysAgo = new Date();
-                    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-                    const sevenDaysAgoStr = sevenDaysAgo.toISOString().split('T')[0];
-
-                    const pastWeight = this.data.weights.find(w => w.date <= sevenDaysAgoStr);
-
-                    if (pastWeight) {
-                        trendValue = current.weight - pastWeight.weight;
-                        if (Math.abs(trendValue) < 0.5) {
-                            trend = 'stable';
-                        } else if (trendValue > 0) {
-                            trend = 'up';
-                        } else {
-                            trend = 'down';
-                        }
-                    }
                 }
 
                 return {
                     current: current.weight,
                     trend: trend,
                     trendValue: trendValue,
-                    unit: current.unit,
-                    trendIsVsInitial: (initial !== null && !isNaN(initial) && initial > 0)
+                    unit: current.unit
                 };
             },
 
             // Calculate weight loss (starting weight - current weight)
             calculateWeightLoss() {
-                // Standard: signed percent change from initial to current (negative = loss, positive = gain)
-                return this.calculateWeightChangePctAllTime();
-            },
-
-            calculateWeightChangePctAllTime() {
-                if (!this.data.weights || this.data.weights.length === 0) return null;
-
-                // Sort weights by date to get current (latest)
-                const sorted = [...this.data.weights].sort((a, b) => new Date(a.date) - new Date(b.date));
-                const current = sorted[sorted.length - 1]?.weight;
-
-                // Standard baseline: initialWeight (profile attribute)
-                const baseline = Number(this.data.goals.initialWeight);
-
-                if (!baseline || baseline <= 0 || !current || current <= 0) return null;
-
-                const pct = ((current - baseline) / baseline) * 100;
-                return Math.round(pct * 10) / 10; // 1 decimal
-            },
-
-            calculateWeightChangePctForPeriod(period) {
-                // period: 'week' | 'month'
-                if (!this.data.weights || this.data.weights.length === 0) return null;
-
-                const now = new Date();
-                const start = new Date(now);
-                const end = new Date(now);
-
-                if (period === 'week') {
-                    // Sunday-start week: Sunday 00:00 to Saturday 23:59:59
-                    const day = start.getDay(); // 0 = Sunday
-                    start.setDate(start.getDate() - day);
-                    start.setHours(0, 0, 0, 0);
-
-                    end.setTime(start.getTime());
-                    end.setDate(start.getDate() + 7);
-                } else if (period === 'month') {
-                    start.setDate(1);
-                    start.setHours(0, 0, 0, 0);
-
-                    end.setFullYear(start.getFullYear(), start.getMonth() + 1, 1);
-                    end.setHours(0, 0, 0, 0);
-                } else {
-                    return null;
+                if (!this.data.weights || this.data.weights.length === 0) {
+                    return 0;
                 }
 
-                const inRange = this.data.weights
-                    .map(w => ({...w, _d: new Date(w.date + 'T00:00:00')}))
-                    .filter(w => w._d >= start && w._d < end)
-                    .sort((a, b) => a._d - b._d);
-
-                if (inRange.length === 0) return null;
-
-                const first = inRange[0].weight;
-                const last = inRange[inRange.length - 1].weight;
-                if (!first || first <= 0 || !last || last <= 0) return null;
-
-                const pct = ((last - first) / first) * 100;
-                return Math.round(pct * 10) / 10;
+                // Sort weights by date to get first and last
+                const sortedWeights = [...this.data.weights].sort((a, b) => 
+                    new Date(a.date) - new Date(b.date)
+                );
+                
+                const startingWeight = sortedWeights[0].weight;
+                const currentWeight = sortedWeights[sortedWeights.length - 1].weight;
+                
+                // Weight loss = starting - current (positive means weight lost)
+                const weightLoss = startingWeight - currentWeight;
+                
+                // Round to 1 decimal place
+                return Math.round(weightLoss * 10) / 10;
             },
 
-            
-            // Signed weight change in lbs from initial weight to latest (negative = loss, positive = gain)
-            calculateWeightChangeLbsAllTime() {
-                if (!this.data.weights || this.data.weights.length === 0) return null;
-
-                const sorted = [...this.data.weights].sort((a, b) => new Date(a.date) - new Date(b.date));
-                const current = sorted[sorted.length - 1]?.weight;
-
-                const baseline = Number(this.data.goals.initialWeight);
-                if (!baseline || baseline <= 0 || !current || current <= 0) return null;
-
-                const delta = current - baseline;
-                return Math.round(delta * 10) / 10; // 1 decimal
-            },
-
-            // Signed weight change in lbs within a period window (week/month); uses first vs last in-range
-            calculateWeightChangeLbsForPeriod(period) {
-                if (!this.data.weights || this.data.weights.length === 0) return null;
-
-                const now = new Date();
-                const start = new Date(now);
-                const end = new Date(now);
-
-                if (period === 'week') {
-                    // Sunday-start week: Sunday 00:00 to Saturday 23:59:59
-                    const day = start.getDay(); // 0 = Sunday
-                    start.setDate(start.getDate() - day);
-                    start.setHours(0, 0, 0, 0);
-
-                    end.setTime(start.getTime());
-                    end.setDate(start.getDate() + 7);
-                } else if (period === 'month') {
-                    start.setDate(1);
-                    start.setHours(0, 0, 0, 0);
-
-                    end.setMonth(start.getMonth() + 1);
-                    end.setDate(1);
-                    end.setHours(0, 0, 0, 0);
-                } else {
-                    return null;
-                }
-
-                const inRange = this.data.weights
-                    .map(w => ({...w, _d: new Date(w.date + 'T00:00:00')}))
-                    .filter(w => w._d >= start && w._d < end)
-                    .sort((a, b) => a._d - b._d);
-
-                if (inRange.length === 0) return null;
-
-                const first = inRange[0].weight;
-                const last = inRange[inRange.length - 1].weight;
-                if (!first || first <= 0 || !last || last <= 0) return null;
-
-                const delta = last - first;
-                return Math.round(delta * 10) / 10;
-            },
-// Animate count-up for numbers
+            // Animate count-up for numbers
             animateCountUp(element, target, duration = 800) {
                 const start = 0;
                 const startTime = performance.now();
@@ -5034,13 +4745,12 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                     
                     // Update trend indicator
                     const trendElement = document.getElementById('weight-trend-indicator');
-                    const trendLabel = (weightStats.trendIsVsInitial) ? ' since start' : '';
                     if (weightStats.trend === 'up') {
-                        trendElement.innerHTML = '<span class="trend-indicator up">↑ +' + Number(weightStats.trendValue).toFixed(1) + ' ' + weightStats.unit + trendLabel + '</span>';
+                        trendElement.innerHTML = '<span class="trend-indicator up">↗ +' + Math.abs(weightStats.trendValue).toFixed(1) + ' ' + weightStats.unit + '</span>';
                     } else if (weightStats.trend === 'down') {
-                        trendElement.innerHTML = '<span class="trend-indicator down">↓ ' + Number(weightStats.trendValue).toFixed(1) + ' ' + weightStats.unit + trendLabel + '</span>';
+                        trendElement.innerHTML = '<span class="trend-indicator down">↘ ' + weightStats.trendValue.toFixed(1) + ' ' + weightStats.unit + '</span>';
                     } else {
-                        trendElement.innerHTML = '<span class="trend-indicator stable">→ No change' + trendLabel + '</span>';
+                        trendElement.innerHTML = '<span class="trend-indicator stable">→ No change</span>';
                     }
                     
                     // Render weight history
@@ -5116,11 +4826,6 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                 this.saveData();
                 this.updateWeightSummary();
                 this.updateDashboard();
-                
-                // Sync to Firebase if PALS is set up
-                if (this.data.pals.myShareCode) {
-                    this.syncMyStatsToFirebase();
-                }
             },
 
             // Delete weight entry
@@ -5133,11 +4838,6 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                 this.saveData();
                 this.updateWeightSummary();
                 this.updateDashboard();
-                
-                // Sync to Firebase if PALS is set up
-                if (this.data.pals.myShareCode) {
-                    this.syncMyStatsToFirebase();
-                }
             },
 
             // ============================================
@@ -5170,7 +4870,6 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                 // Update display elements in compact design
                 const shareCodeDisplay = document.getElementById('display-share-code');
                 const displayNameDisplay = document.getElementById('display-display-name');
-                const shareCodeBtn = document.getElementById('share-code-btn');
                 
                 if (shareCodeDisplay) {
                     shareCodeDisplay.textContent = this.data.pals.myShareCode || 'Not set';
@@ -5180,58 +4879,29 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                     displayNameDisplay.textContent = this.data.pals.displayName || 'Not set';
                 }
                 
-                // Update button text based on whether code exists
-                if (shareCodeBtn) {
-                    if (this.data.pals.myShareCode) {
-                        shareCodeBtn.textContent = 'Share';
-                        shareCodeBtn.style.background = 'var(--primary-dark)';
-                    } else {
-                        shareCodeBtn.textContent = 'Set ID';
-                        shareCodeBtn.style.background = '#6b7280';
-                    }
-                }
-                
                 // Update checkbox
                 const checkbox = document.getElementById('join-leaderboard');
                 if (checkbox) {
                     checkbox.checked = this.data.pals.joinedLeaderboard || false;
                 }
-
-                const weightCheckbox = document.getElementById('join-weight-leaderboard');
-                if (weightCheckbox) {
-                    weightCheckbox.checked = this.data.pals.joinWeightLeaderboard || false;
-                    weightCheckbox.disabled = !(this.data.pals.joinedLeaderboard || false);
-                    weightCheckbox.style.opacity = weightCheckbox.disabled ? '0.5' : '1';
-                    weightCheckbox.style.cursor = weightCheckbox.disabled ? 'not-allowed' : 'pointer';
-                }
-
+                
                 this.renderPalsList();
                 this.renderLeaderboard();
             },
 
             // Save share code
             async saveShareCode() {
-                const inputEl = document.getElementById('my-share-code');
-                if (!inputEl) {
-                    alert('Error: Input element not found');
-                    return;
-                }
-                
-                const code = inputEl.value.trim().toUpperCase();
+                const code = document.getElementById('my-share-code').value.trim().toUpperCase();
                 const errorEl = document.getElementById('share-code-error');
                 const successEl = document.getElementById('share-code-success');
                 
-                if (errorEl) errorEl.classList.remove('show');
-                if (successEl) successEl.classList.remove('show');
+                errorEl.classList.remove('show');
+                successEl.classList.remove('show');
 
                 // Validate format
-                if (!/^[A-Z]{2}-\d{2}$/.test(code)) {
-                    if (errorEl) {
-                        errorEl.textContent = 'Use AA-12 (two letters, dash, two numbers). Example: JP-04';
-                        errorEl.classList.add('show');
-                    } else {
-                        alert('Use AA-12 (two letters, dash, two numbers). Example: JP-04');
-                    }
+                if (!/^[A-Z0-9-]{3,15}$/.test(code)) {
+                    errorEl.textContent = 'Use 3-15 characters (letters, numbers, hyphens only)';
+                    errorEl.classList.add('show');
                     return;
                 }
 
@@ -5243,71 +4913,50 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                         `Your code "${this.data.pals.myShareCode}" is permanent and cannot be changed.\n\n` +
                         'This protects your identity in leaderboards.'
                     );
-                    // Reset input to locked code if element exists
-                    if (inputEl) inputEl.value = this.data.pals.myShareCode;
+                    // Reset input to locked code
+                    document.getElementById('my-share-code').value = this.data.pals.myShareCode;
                     return;
                 }
 
                 // If user already has this code, just update stats
                 if (code === this.data.pals.myShareCode) {
                     await this.syncMyStatsToFirebase();
-                    if (successEl) {
-                        successEl.classList.add('show');
-                        setTimeout(() => successEl.classList.remove('show'), 3000);
-                    }
+                    successEl.classList.add('show');
+                    setTimeout(() => successEl.classList.remove('show'), 3000);
                     return;
                 }
 
-                // FIRST TIME SETTING CODE - CHECK AVAILABILITY THEN PROMPT FOR DISPLAY NAME
-                // Ask for a display name only after the code format is valid and before claiming the code.
-                let displayName = (this.data.pals.displayName || '').trim();
-                const namePrompt = 'Enter a display name (shown to pals and on leaderboards):';
-                while (!displayName) {
-                    const entered = prompt(namePrompt, displayName || '');
-                    if (entered === null) {
-                        // User cancelled
-                        return;
-                    }
-                    displayName = String(entered).trim();
-                }
-
-                // Confirm permanent lock
+                // FIRST TIME SETTING CODE - SHOW CONFIRMATION
                 const confirmed = confirm(
                     `⚠️ Lock This Code?\n\n` +
                     `Code: ${code}\n\n` +
                     `Once confirmed, this code is permanent and cannot be changed.\n\n` +
                     `Continue?`
                 );
-
+                
                 if (!confirmed) return;
 
                 // Use transaction to atomically claim the share code
                 try {
                     const docRef = this.db.collection('users').doc(code);
-
+                    
                     await this.db.runTransaction(async (transaction) => {
                         const doc = await transaction.get(docRef);
-
+                        
                         if (doc.exists) {
                             // Code already taken
                             throw new Error('CODE_TAKEN');
                         }
-
+                        
                         // Code is available - claim it (leaderboard is user's choice via checkbox)
                         const stats = this.calculateStats();
                         const monthStats = this.calculateMonthStats();
                         const weightLoss = this.calculateWeightLoss();
-                        const weightChangeLbsAllTime = this.calculateWeightChangeLbsAllTime();
-                        const weightChangePctThisWeek = this.calculateWeightChangePctForPeriod('week');
-                        const weightChangePctThisMonth = this.calculateWeightChangePctForPeriod('month');
-                        const weightChangeLbsThisWeek = this.calculateWeightChangeLbsForPeriod('week');
-                        const weightChangeLbsThisMonth = this.calculateWeightChangeLbsForPeriod('month');
-
+                        
                         transaction.set(docRef, {
                             shareCode: code,
-                            displayName: displayName,
-                            joinedLeaderboard: this.data.pals.joinedLeaderboard || false,
-                            joinWeightLeaderboard: this.data.pals.joinWeightLeaderboard || false, // USER'S CHOICE
+                            displayName: this.data.pals.displayName || code,
+                            joinedLeaderboard: this.data.pals.joinedLeaderboard || false, // USER'S CHOICE
                             stats: {
                                 // Week totals
                                 thisWeekDistance: stats.thisWeekDistance,
@@ -5361,12 +5010,7 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                                 thisMonthStairs: monthStats.monthStairs,
                                 totalStairs: stats.totalStairs,
                                 // Weight
-                                weightChangePctThisWeek: weightChangePctThisWeek,
-                                weightChangePctThisMonth: weightChangePctThisMonth,
-                                weightChangePctAllTime: weightLoss,
-                                weightChangeLbsThisWeek: weightChangeLbsThisWeek,
-                                weightChangeLbsThisMonth: weightChangeLbsThisMonth,
-                                weightChangeLbsAllTime: weightChangeLbsAllTime
+                                weightLoss: weightLoss
                             },
                             lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
                         });
@@ -5441,45 +5085,27 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
             },
 
             // Edit Share Code (inline prompt)
-            // Handle Share Code button (Set ID or Share)
-            handleShareCodeButton() {
+            editShareCode() {
                 if (this.data.pals.myShareCode) {
                     // Already has code - share it
                     this.shareMyCode();
                 } else {
                     // No code - prompt to create
-                    this.createShareCode();
-                }
-            },
-
-            // Create Share Code
-            createShareCode() {
-                const code = prompt('Create your Unique ID (format AA-12):\nTwo letters, a dash, then two numbers (example: JP-04)');
-                if (code) {
-                    // Validate code format
-                    if (!/^[A-Z]{2}-\d{2}$/.test(code)) {
-                        alert('❌ Invalid format! Use AA-12 (two letters, dash, two numbers). Example: JP-04.');
-                        return;
+                    const code = prompt('Create your Unique ID:\n(3-15 characters: letters, numbers, hyphens only)');
+                    if (code) {
+                        // Temporarily create input to use existing saveShareCode logic
+                        const tempInput = document.createElement('input');
+                        tempInput.id = 'my-share-code';
+                        tempInput.value = code;
+                        tempInput.style.display = 'none';
+                        document.body.appendChild(tempInput);
+                        
+                        this.saveShareCode().then(() => {
+                            document.body.removeChild(tempInput);
+                            this.updatePalsUI();
+                        });
                     }
-                    
-                    // Temporarily create input to use existing saveShareCode logic
-                    const tempInput = document.createElement('input');
-                    tempInput.id = 'my-share-code';
-                    tempInput.value = code;
-                    tempInput.style.display = 'none';
-                    document.body.appendChild(tempInput);
-                    
-                    this.saveShareCode().then(() => {
-                        document.body.removeChild(tempInput);
-                        this.updatePalsUI();
-                        alert('✅ Unique ID created! Now you can share it.');
-                    });
                 }
-            },
-
-            // Legacy function - now just calls handleShareCodeButton
-            editShareCode() {
-                this.handleShareCodeButton();
             },
 
             // Edit Display Name (inline prompt)
@@ -5495,46 +5121,7 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
 
             // Toggle leaderboard
             async toggleLeaderboard() {
-                const checkboxEl = document.getElementById('join-leaderboard');
-                const weightCheckboxEl = document.getElementById('join-weight-leaderboard');
-                const checked = !!(checkboxEl && checkboxEl.checked);
-                const wasJoined = !!this.data.pals.joinedLeaderboard;
-
-                this.data.pals.joinedLeaderboard = checked;
-
-                if (!checked) {
-                    // Turning off leaderboards disables weight opt-in
-                    this.data.pals.joinWeightLeaderboard = false;
-                    if (weightCheckboxEl) weightCheckboxEl.checked = false;
-                } else if (!wasJoined) {
-                    // First time joining: ask whether to include weight leaderboard
-                    const includeWeight = confirm(
-                        'Join leaderboards for Steps and Distance.\n\n' +
-                        'Also include me in the Weight Change leaderboard?'
-                    );
-
-                    if (includeWeight) {
-                        const initial = this.data.goals?.initialWeight;
-                        if (!initial || isNaN(parseFloat(initial)) || parseFloat(initial) <= 0) {
-                            alert('To join the Weight leaderboard, please set your Initial Weight in Goals first.');
-                            this.data.pals.joinWeightLeaderboard = false;
-                            if (weightCheckboxEl) weightCheckboxEl.checked = false;
-                        } else {
-                            this.data.pals.joinWeightLeaderboard = true;
-                            if (weightCheckboxEl) weightCheckboxEl.checked = true;
-                        }
-                    } else {
-                        this.data.pals.joinWeightLeaderboard = false;
-                        if (weightCheckboxEl) weightCheckboxEl.checked = false;
-                    }
-                }
-
-                if (weightCheckboxEl) {
-                    weightCheckboxEl.disabled = !checked;
-                    weightCheckboxEl.style.opacity = weightCheckboxEl.disabled ? '0.5' : '1';
-                    weightCheckboxEl.style.cursor = weightCheckboxEl.disabled ? 'not-allowed' : 'pointer';
-                }
-
+                this.data.pals.joinedLeaderboard = document.getElementById('join-leaderboard').checked;
                 this.saveData();
 
                 // Sync to Firebase
@@ -5542,34 +5129,6 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
 
                 this.renderLeaderboard();
             },
-
-            async toggleWeightLeaderboardOptIn() {
-                const weightCheckboxEl = document.getElementById('join-weight-leaderboard');
-                const checked = !!(weightCheckboxEl && weightCheckboxEl.checked);
-
-                if (!this.data.pals.joinedLeaderboard) {
-                    if (weightCheckboxEl) weightCheckboxEl.checked = false;
-                    return;
-                }
-
-                if (checked) {
-                    const initial = this.data.goals?.initialWeight;
-                    if (!initial || isNaN(parseFloat(initial)) || parseFloat(initial) <= 0) {
-                        alert('To join the Weight leaderboard, please set your Initial Weight in Goals first.');
-                        this.data.pals.joinWeightLeaderboard = false;
-                        if (weightCheckboxEl) weightCheckboxEl.checked = false;
-                    } else {
-                        this.data.pals.joinWeightLeaderboard = true;
-                    }
-                } else {
-                    this.data.pals.joinWeightLeaderboard = false;
-                }
-
-                this.saveData();
-                await this.syncMyStatsToFirebase();
-                this.renderLeaderboard();
-            },
-
 
             // Sync my stats to Firebase
             async syncMyStatsToFirebase() {
@@ -5579,18 +5138,12 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                     const stats = this.calculateStats();
                     const monthStats = this.calculateMonthStats();
                     const weightLoss = this.calculateWeightLoss();
-                    const weightChangeLbsAllTime = this.calculateWeightChangeLbsAllTime();
-                    const weightChangePctThisWeek = this.calculateWeightChangePctForPeriod('week');
-                    const weightChangePctThisMonth = this.calculateWeightChangePctForPeriod('month');
-                    const weightChangeLbsThisWeek = this.calculateWeightChangeLbsForPeriod('week');
-                    const weightChangeLbsThisMonth = this.calculateWeightChangeLbsForPeriod('month');
                     const today = new Date().toISOString().split('T')[0]; // Get today's date
                     
                     const data = {
                         shareCode: this.data.pals.myShareCode,
                         displayName: this.data.pals.displayName || this.data.pals.myShareCode,
                         joinedLeaderboard: this.data.pals.joinedLeaderboard || false,
-                        joinWeightLeaderboard: this.data.pals.joinWeightLeaderboard || false,
                         lastActivityDate: today, // Track last activity date for status indicators
                         stats: {
                             // Week totals
@@ -5644,14 +5197,8 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                             thisWeekStairs: stats.thisWeekStairs,
                             thisMonthStairs: monthStats.monthStairs,
                             totalStairs: stats.totalStairs,
-                            // Weight (signed % change; negative = loss)
-                            weightLoss: weightLoss,
-                            weightChangePctThisWeek: weightChangePctThisWeek,
-                            weightChangePctThisMonth: weightChangePctThisMonth,
-                            weightChangePctAllTime: weightLoss,
-                            weightChangeLbsThisWeek: weightChangeLbsThisWeek,
-                            weightChangeLbsThisMonth: weightChangeLbsThisMonth,
-                            weightChangeLbsAllTime: weightChangeLbsAllTime
+                            // Weight
+                            weightLoss: weightLoss
                         },
                         lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
                     };
@@ -5677,14 +5224,6 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                     errorEl.classList.add('show');
                     return;
                 }
-
-                // Format: AA-12
-                if (!/^[A-Z]{2}-\d{2}$/.test(code)) {
-                    errorEl.textContent = 'Invalid ID format. Use AA-12 (example: JP-04).';
-                    errorEl.classList.add('show');
-                    return;
-                }
-
 
                 if (code === this.data.pals.myShareCode) {
                     errorEl.textContent = "You can't add yourself!";
@@ -5766,8 +5305,9 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
             renderPalsList() {
                 const listEl = document.getElementById('pals-list');
                 const unit = this.data.goals.unitPreference === 'km' ? 'km' : 'miles';
-                const weightUnit = 'lbs';
-// Show empty state if no pals
+                const weightUnit = this.data.goals.weightUnit;
+
+                // Show empty state if no pals
                 if (!this.data.pals.friends || this.data.pals.friends.length === 0) {
                     listEl.innerHTML = '<p style="color: #6b7280; text-align: center; padding: 20px;">No pals yet. Add one above!</p>';
                     return;
@@ -5934,22 +5474,11 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                 document.getElementById('lb-global-btn').classList.remove('active');
                 document.getElementById('lb-friends-btn').classList.remove('active');
                 
-                // Update inline styles for proper toggle
-                const globalBtn = document.getElementById('lb-global-btn');
-                const friendsBtn = document.getElementById('lb-friends-btn');
-                
+                // Add active to selected button
                 if (mode === 'global') {
-                    globalBtn.classList.add('active');
-                    globalBtn.style.background = 'var(--primary-dark)';
-                    globalBtn.style.color = 'white';
-                    friendsBtn.style.background = '#2d2d2d';
-                    friendsBtn.style.color = '#9ca3af';
+                    document.getElementById('lb-global-btn').classList.add('active');
                 } else {
-                    friendsBtn.classList.add('active');
-                    friendsBtn.style.background = 'var(--primary-dark)';
-                    friendsBtn.style.color = 'white';
-                    globalBtn.style.background = '#2d2d2d';
-                    globalBtn.style.color = '#9ca3af';
+                    document.getElementById('lb-friends-btn').classList.add('active');
                 }
                 
                 this.renderLeaderboard();
@@ -5969,7 +5498,7 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                 const period = document.getElementById('leaderboard-period').value;
                 const baseMetric = document.getElementById('leaderboard-metric').value;
                 const unit = this.data.goals.unitPreference === 'km' ? 'km' : 'miles';
-                const weightUnit = 'lbs';
+                const weightUnit = this.data.goals.weightUnit;
 
                 // Update metric based on period
                 let metric = baseMetric;
@@ -5994,40 +5523,21 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                             .where('joinedLeaderboard', '==', true)
                             .get();
                     } else {
-                        // FRIENDS: Show only added friends who OPTED IN + current user (if opted in)
+                        // FRIENDS: Show only added friends
                         const friendCodes = this.data.pals.friends.map(f => f.shareCode);
-                        if (friendCodes.length === 0 && !this.data.pals.myShareCode) {
+                        if (friendCodes.length === 0) {
                             listEl.innerHTML = '<p style="color: #6b7280; text-align: center; padding: 20px;">Add friends to see their rankings!</p>';
                             return;
                         }
                         
-                        // Add current user to the list ONLY if they have opted into leaderboards
-                        const allCodes = [...friendCodes];
-                        if (this.data.pals.myShareCode && 
-                            this.data.pals.joinedLeaderboard && 
-                            !allCodes.includes(this.data.pals.myShareCode)) {
-                            allCodes.push(this.data.pals.myShareCode);
-                        }
-                        
-                        // Fetch friends + user data, but ONLY include those who opted in
+                        // Fetch friends data
                         const friendsData = [];
-                        for (const code of allCodes) {
+                        for (const code of friendCodes) {
                             const doc = await this.db.collection('users').doc(code).get();
                             if (doc.exists) {
-                                const data = doc.data();
-                                // ONLY add if they joined the leaderboard
-                                if (data.joinedLeaderboard === true) {
-                                    friendsData.push(doc);
-                                }
+                                friendsData.push(doc);
                             }
                         }
-                        
-                        // If no friends have opted in, show message
-                        if (friendsData.length === 0) {
-                            listEl.innerHTML = '<p style="color: #6b7280; text-align: center; padding: 20px;">None of your friends have opted into leaderboards yet!</p>';
-                            return;
-                        }
-                        
                         snapshot = { docs: friendsData };
                     }
 
@@ -6043,30 +5553,12 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                         
                         // REMOVE users with 21+ days of inactivity
                         if (daysInactive >= 21) return;
-
-                        // Weight leaderboard is optional per user
-                        if (metric === 'weightLoss' && !(data.joinWeightLeaderboard === true)) return;
-
-                        let value = null;
-                        let valueLbs = null;
-
+                        
+                        let value = 0;
                         if (metric === 'weightLoss') {
-                            // Leaderboard period toggle drives which weight % and lbs delta to use
-                            if (period === 'week') {
-                                value = (data.stats && data.stats.weightChangePctThisWeek !== undefined) ? data.stats.weightChangePctThisWeek : null;
-                                valueLbs = (data.stats && data.stats.weightChangeLbsThisWeek !== undefined) ? data.stats.weightChangeLbsThisWeek : null;
-                            } else if (period === 'month') {
-                                value = (data.stats && data.stats.weightChangePctThisMonth !== undefined) ? data.stats.weightChangePctThisMonth : null;
-                                valueLbs = (data.stats && data.stats.weightChangeLbsThisMonth !== undefined) ? data.stats.weightChangeLbsThisMonth : null;
-                            } else {
-                                value = (data.stats && data.stats.weightChangePctAllTime !== undefined) ? data.stats.weightChangePctAllTime : null;
-                                valueLbs = (data.stats && data.stats.weightChangeLbsAllTime !== undefined) ? data.stats.weightChangeLbsAllTime : null;
-                            }
+                            value = data.stats?.weightLoss || 0;
                         } else {
-                            value = data.stats?.[metric] ?? 0;
-                        // Hide weight entries until at least one weigh-in exists
-                        if (metric === 'weightLoss' && (value === null || value === undefined)) return;
-
+                            value = data.stats?.[metric] || 0;
                         }
 
                         // Determine status indicator
@@ -6082,7 +5574,6 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                             shareCode: data.shareCode,
                             displayName: data.displayName || data.shareCode,
                             value: value,
-                            valueLbs: valueLbs,
                             isMe: data.shareCode === this.data.pals.myShareCode,
                             statusIndicator: statusIndicator
                         });
@@ -6094,54 +5585,11 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                         return;
                     }
 
-                    // Sort + rank participants
-                    let rankedParticipants = [];
-                    let unrankedParticipants = [];
-
-                    if (metric === 'weightLoss') {
-                        rankedParticipants = participants.filter(p => p.value !== null && p.value !== undefined && !Number.isNaN(Number(p.value)));
-                        unrankedParticipants = participants.filter(p => p.value === null || p.value === undefined || Number.isNaN(Number(p.value)));
-
-                        // Weight: more negative (loss) ranks higher
-                        rankedParticipants.sort((a, b) => Number(a.value) - Number(b.value));
-                    } else {
-                        // Steps/Distance: treat 0 or missing as "no data" (unranked, no rank number)
-                        participants.forEach(p => {
-                            const v = Number(p.value);
-                            if (Number.isFinite(v) && v > 0) {
-                                rankedParticipants.push(p);
-                            } else {
-                                unrankedParticipants.push(p);
-                            }
-                        });
-
-                        rankedParticipants.sort((a, b) => Number(b.value) - Number(a.value));
-                        // Keep unranked stable and readable
-                        unrankedParticipants.sort((a, b) => String(a.displayName || '').localeCompare(String(b.displayName || '')));
-                    }
-
-                    // Competition ranking (1, 1, 3, ...)
-                    let lastRankedValue = null;
-                    let currentRank = 0;
-                    let rankedCount = 0;
-
-                    rankedParticipants.forEach(p => {
-                        rankedCount += 1;
-                        const v = Number(p.value);
-                        const isTie = lastRankedValue !== null && Math.abs(v - lastRankedValue) < 1e-9;
-                        if (!isTie) currentRank = rankedCount;
-                        p.rank = currentRank;
-                        lastRankedValue = v;
-                    });
-
-                    unrankedParticipants.forEach(p => { p.rank = ''; });
-
-                    const orderedParticipants = [...rankedParticipants, ...unrankedParticipants];
+                    // Sort by value (highest first)
+                    participants.sort((a, b) => b.value - a.value);
 
                     // Get max value for progress bar scaling
-                    const maxValue = (metric === 'weightLoss')
-                        ? Math.max(...rankedParticipants.map(p => Math.abs(Number(p.value))), 1)
-                        : (rankedParticipants.length ? Number(rankedParticipants[0].value) : 1);
+                    const maxValue = participants[0].value;
 
                     // Determine unit suffix
                     let suffix = '';
@@ -6150,33 +5598,27 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                     } else if (metric.includes('Steps')) {
                         suffix = ' steps';
                     } else if (metric === 'weightLoss') {
-                        suffix = '';
+                        suffix = ` ${weightUnit}`;
                     }
 
                     // Render leaderboard items
-                    listEl.innerHTML = orderedParticipants.map((p, index) => {
-                        const rank = p.rank;
-                        const progressPercent = (rank === '' || maxValue <= 0) ? 0 : ((metric === 'weightLoss' ? Math.abs(Number(p.value ?? 0)) : Number(p.value ?? 0)) / maxValue) * 100;
+                    listEl.innerHTML = participants.map((p, index) => {
+                        const rank = index + 1;
+                        const progressPercent = maxValue > 0 ? (p.value / maxValue) * 100 : 0;
                         const highlight = p.isMe ? 'highlight' : '';
                         
-                        // Format weight change (% + lbs)
+                        // Format weight loss value
                         let displayValue = p.value;
                         if (metric === 'weightLoss') {
-                            if (p.value === null || p.value === undefined) {
-                                displayValue = '--';
+                            if (p.value > 0) {
+                                displayValue = `-${p.value}`;
+                            } else if (p.value < 0) {
+                                displayValue = `+${Math.abs(p.value)}`;
                             } else {
-                                const n = Number(p.value);
-                                const signedPct = (n > 0 ? `+${n.toFixed(1)}` : n.toFixed(1));
-                                let lbsPart = '';
-                                if (p.valueLbs !== null && p.valueLbs !== undefined) {
-                                    const l = Number(p.valueLbs);
-                                    const signedLbs = (l > 0 ? `+${l.toFixed(1)}` : l.toFixed(1));
-                                    lbsPart = ` (${signedLbs} ${weightUnit})`;
-                                }
-                                displayValue = `${signedPct}%${lbsPart}`;
+                                displayValue = '0';
                             }
                         }
-
+                        
                         return `
                             <div class="leaderboard-item-card ${highlight}">
                                 <div class="leaderboard-item-header">
@@ -6224,59 +5666,52 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                     return;
                 }
                 
-                container.innerHTML = this.data.habits.map((habit, index) => {
-                    const habitColor = habit.color || '#10b981';
-                    return `
-                    <div class="habit-item" id="habit-${habit.id}" style="background: #2d2d2d; padding: 8px 12px; border-radius: 8px;">
+                container.innerHTML = this.data.habits.map((habit, index) => `
+                    <div class="habit-item" id="habit-${habit.id}" style="background: #2d2d2d; padding: 12px; border-radius: 8px; margin-bottom: 8px;">
                         <!-- Display Mode -->
                         <div class="habit-display" id="habit-display-${habit.id}">
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <div style="display: flex; align-items: center; gap: 8px; flex: 1;">
-                                    <div style="width: 14px; height: 14px; border-radius: 3px; background: ${habitColor}; flex-shrink: 0;"></div>
-                                    <div style="font-size: 13px; color: #e8e8e8; font-weight: 500;">${habit.name || 'Unnamed habit'}</div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <div style="flex: 1;">
+                                    <div style="font-size: 14px; color: #e8e8e8; font-weight: 500;">${habit.name || 'Unnamed habit'}</div>
+                                    <div style="font-size: 12px; color: #6b7280; margin-top: 2px;">${habit.frequency === 'daily' ? 'Daily' : 'Weekly'}</div>
                                 </div>
-                                <div style="display: flex; gap: 4px;">
-                                    <button onclick="app.editHabit(${habit.id})" 
-                                            style="padding: 4px 8px; background: #3d3d3d; color: #e8e8e8; border: none; border-radius: 5px; font-size: 11px; cursor: pointer; font-weight: 600;">
-                                        Edit
-                                    </button>
-                                    <button onclick="app.removeHabit(${habit.id})" 
-                                            style="background: none; border: none; color: #ef4444; cursor: pointer; font-size: 16px; width: 24px; height: 24px; padding: 0;">×</button>
-                                </div>
+                                <button onclick="app.editHabit(${habit.id})" 
+                                        style="padding: 6px 12px; background: #3d3d3d; color: #e8e8e8; border: none; border-radius: 6px; font-size: 12px; cursor: pointer; font-weight: 600;">
+                                    Edit
+                                </button>
                             </div>
                         </div>
                         
                         <!-- Edit Mode (hidden by default) -->
                         <div class="habit-edit" id="habit-edit-${habit.id}" style="display: none;">
-                            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
                                 <input type="text" id="habit-name-${habit.id}" value="${habit.name || ''}" 
-                                       style="background: #1a1a1a; border: 1px solid #3d3d3d; color: #e8e8e8; padding: 6px 10px; border-radius: 6px; flex: 1; font-size: 14px;" 
+                                       style="background: #1a1a1a; border: 1px solid #3d3d3d; color: #e8e8e8; padding: 6px 10px; border-radius: 6px; flex: 1; margin-right: 8px; font-size: 14px;" 
                                        placeholder="Habit name...">
                                 <button onclick="app.removeHabit(${habit.id})" 
-                                        style="background: none; border: none; color: #ef4444; cursor: pointer; font-size: 20px; width: 28px; height: 28px; flex-shrink: 0;">×</button>
+                                        style="background: none; border: none; color: #ef4444; cursor: pointer; font-size: 20px; width: 28px; height: 28px;">×</button>
                             </div>
-                            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
-                                <label style="font-size: 13px; color: #9ca3af;">Color:</label>
-                                <input type="hidden" id="habit-color-${habit.id}" value="${habitColor}">
-                                <div id="habit-color-display-${habit.id}" 
-                                     onclick="app.openHabitColorPicker(${habit.id})"
-                                     style="width: 40px; height: 28px; background: ${habitColor}; border: 1px solid #3d3d3d; border-radius: 6px; cursor: pointer;">
-                                </div>
+                            <div style="display: flex; gap: 12px; align-items: center; font-size: 13px; margin-bottom: 8px;">
+                                <label style="display: flex; align-items: center; gap: 6px; color: #9ca3af; cursor: pointer;">
+                                    <input type="radio" name="freq-${habit.id}" value="daily" 
+                                           ${habit.frequency === 'daily' ? 'checked' : ''} 
+                                           style="cursor: pointer;">
+                                    Daily
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; color: #9ca3af; cursor: pointer;">
+                                    <input type="radio" name="freq-${habit.id}" value="weekly" 
+                                           ${habit.frequency === 'weekly' ? 'checked' : ''} 
+                                           style="cursor: pointer;">
+                                    Weekly
+                                </label>
                             </div>
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-                                <button onclick="app.cancelEditHabit(${habit.id})" 
-                                        style="padding: 8px 12px; background: #3d3d3d; color: #e8e8e8; border: none; border-radius: 6px; font-size: 12px; cursor: pointer; font-weight: 600;">
-                                    Cancel
-                                </button>
-                                <button onclick="app.saveHabit(${habit.id})" 
-                                        style="padding: 8px 12px; background: var(--primary-dark); color: white; border: none; border-radius: 6px; font-size: 12px; cursor: pointer; font-weight: 600;">
-                                    Save
-                                </button>
-                            </div>
+                            <button onclick="app.cancelEditHabit(${habit.id})" 
+                                    style="padding: 6px 12px; background: #3d3d3d; color: #e8e8e8; border: none; border-radius: 6px; font-size: 12px; cursor: pointer; width: 100%;">
+                                Cancel
+                            </button>
                         </div>
                     </div>
-                `;
-                }).join('');
+                `).join('');
                 
                 // Show/hide add button based on limit
                 if (addBtn) {
@@ -6291,14 +5726,10 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                     return;
                 }
                 
-                // Random default colors for habits
-                const colors = ['#10b981', '#3b82f6', '#8b5cf6', '#ec4899', '#f59e0b', '#ef4444'];
-                const randomColor = colors[this.data.habits.length % colors.length];
-                
                 const newHabit = {
                     id: Date.now(),
                     name: '',
-                    color: randomColor,
+                    frequency: 'daily',
                     completions: []
                 };
                 
@@ -6345,30 +5776,6 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
             cancelEditHabit(id) {
                 document.getElementById(`habit-display-${id}`).style.display = 'block';
                 document.getElementById(`habit-edit-${id}`).style.display = 'none';
-            },
-
-            // Save individual habit
-            saveHabit(id) {
-                const habit = this.data.habits.find(h => h.id === id);
-                if (!habit) return;
-                
-                // Get values from inputs
-                const nameInput = document.getElementById(`habit-name-${id}`);
-                const colorInput = document.getElementById(`habit-color-${id}`);
-                
-                if (nameInput) {
-                    habit.name = nameInput.value;
-                }
-                
-                if (colorInput) {
-                    habit.color = colorInput.value;
-                }
-                
-                // Save to localStorage
-                this.saveData();
-                
-                // Re-render to show updated display mode
-                this.renderHabits();
             },
 
             // Toggle habit completion for a date
@@ -6420,175 +5827,6 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                     option.classList.remove('active');
                     if (option.getAttribute('data-theme') === theme) {
                         option.classList.add('active');
-                    }
-                });
-            },
-
-            // Color Palette Functions
-            // Color Wheel Implementation
-            selectedColor: '#2563eb',
-            currentColorCallback: null,
-            colorWheelCanvas: null,
-            colorWheelCtx: null,
-            
-            // Draw color wheel on canvas
-            drawColorWheel() {
-                const canvas = document.getElementById('color-wheel-canvas');
-                if (!canvas) return;
-                
-                this.colorWheelCanvas = canvas;
-                this.colorWheelCtx = canvas.getContext('2d');
-                
-                const ctx = this.colorWheelCtx;
-                const centerX = canvas.width / 2;
-                const centerY = canvas.height / 2;
-                const radius = canvas.width / 2;
-                
-                // Draw color wheel
-                for (let angle = 0; angle < 360; angle++) {
-                    const startAngle = (angle - 1) * Math.PI / 180;
-                    const endAngle = angle * Math.PI / 180;
-                    
-                    ctx.beginPath();
-                    ctx.moveTo(centerX, centerY);
-                    ctx.arc(centerX, centerY, radius, startAngle, endAngle);
-                    ctx.closePath();
-                    
-                    const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, radius);
-                    gradient.addColorStop(0, 'white');
-                    gradient.addColorStop(0.7, `hsl(${angle}, 100%, 50%)`);
-                    gradient.addColorStop(1, `hsl(${angle}, 100%, 30%)`);
-                    
-                    ctx.fillStyle = gradient;
-                    ctx.fill();
-                }
-                
-                // Add click listener
-                canvas.onclick = (e) => this.handleColorWheelClick(e);
-            },
-            
-            // Handle color wheel click
-            handleColorWheelClick(event) {
-                const canvas = this.colorWheelCanvas;
-                const rect = canvas.getBoundingClientRect();
-                const x = event.clientX - rect.left;
-                const y = event.clientY - rect.top;
-                
-                const centerX = canvas.width / 2;
-                const centerY = canvas.height / 2;
-                
-                // Check if click is within circle
-                const dx = x - centerX;
-                const dy = y - centerY;
-                const distance = Math.sqrt(dx * dx + dy * dy);
-                const radius = canvas.width / 2;
-                
-                if (distance > radius) return; // Outside circle
-                
-                // Get color at click position
-                const imageData = this.colorWheelCtx.getImageData(x, y, 1, 1);
-                const pixel = imageData.data;
-                const color = `#${this.rgbToHex(pixel[0], pixel[1], pixel[2])}`;
-                
-                this.selectedColor = color;
-                document.getElementById('selected-color-preview').style.background = color;
-            },
-            
-            // Convert RGB to Hex
-            rgbToHex(r, g, b) {
-                return [r, g, b].map(x => {
-                    const hex = x.toString(16);
-                    return hex.length === 1 ? '0' + hex : hex;
-                }).join('');
-            },
-            
-            // Open color wheel modal
-            openColorWheel(callback) {
-                this.currentColorCallback = callback;
-                const modal = document.getElementById('color-wheel-modal');
-                modal.style.display = 'flex';
-                
-                // Draw wheel after modal is visible
-                setTimeout(() => this.drawColorWheel(), 50);
-            },
-            
-            // Confirm color wheel selection
-            confirmColorWheelSelection() {
-                if (this.selectedColor && this.currentColorCallback) {
-                    this.currentColorCallback(this.selectedColor);
-                }
-                this.closeColorWheel();
-            },
-            
-            // Close color wheel modal
-            closeColorWheel() {
-                document.getElementById('color-wheel-modal').style.display = 'none';
-                this.currentColorCallback = null;
-            },
-            
-            // Open theme color picker
-            openThemeColorPicker() {
-                this.openColorWheel((color) => {
-                    // Apply theme with selected color
-                    this.applyCustomThemeColor(color);
-                    this.data.themeColor = color; // Save as hex color
-                    this.saveData();
-                });
-            },
-            
-            // Apply custom theme color
-            applyCustomThemeColor(color) {
-                // Convert hex to RGB for CSS variables
-                const r = parseInt(color.slice(1, 3), 16);
-                const g = parseInt(color.slice(3, 5), 16);
-                const b = parseInt(color.slice(5, 7), 16);
-                
-                // Calculate darker shades
-                const darkerR = Math.floor(r * 0.8);
-                const darkerG = Math.floor(g * 0.8);
-                const darkerB = Math.floor(b * 0.8);
-                
-                const darkestR = Math.floor(r * 0.6);
-                const darkestG = Math.floor(g * 0.6);
-                const darkestB = Math.floor(b * 0.6);
-                
-                // Apply to CSS variables
-                document.documentElement.style.setProperty('--primary', color);
-                document.documentElement.style.setProperty('--primary-light', color);
-                document.documentElement.style.setProperty('--primary-dark', `rgb(${darkerR}, ${darkerG}, ${darkerB})`);
-                document.documentElement.style.setProperty('--primary-darker', `rgb(${darkestR}, ${darkestG}, ${darkestB})`);
-            },
-
-            // Reset theme to default blue
-            resetThemeToDefault() {
-                // Clear custom theme color
-                this.data.themeColor = 'blue';
-                this.saveData();
-                
-                // Remove all theme attributes and custom styles
-                document.documentElement.removeAttribute('data-theme');
-                document.documentElement.style.removeProperty('--primary');
-                document.documentElement.style.removeProperty('--primary-light');
-                document.documentElement.style.removeProperty('--primary-dark');
-                document.documentElement.style.removeProperty('--primary-darker');
-                
-                // Apply default blue theme
-                this.applyTheme('blue');
-                
-                // Show confirmation
-                alert('Theme reset to default blue!');
-            },
-            
-            // Open habit color picker
-            openHabitColorPicker(habitId) {
-                this.openColorWheel((color) => {
-                    const colorInput = document.getElementById(`habit-color-${habitId}`);
-                    const colorDisplay = document.getElementById(`habit-color-display-${habitId}`);
-                    if (colorInput) {
-                        colorInput.value = color;
-                    }
-                    if (colorDisplay) {
-                        colorDisplay.style.background = color;
                     }
                 });
             }
