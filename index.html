@@ -2505,9 +2505,7 @@
                     </label>
                     <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; margin-top: 10px;">
                         <div style="flex: 1; min-width: 0;">
-                            <span style="font-size: 13px; color: var(--text); font-weight: 500; display: block;">Include Weight Leaderboard</span>
-                            <span style="font-size: 10px; color: var(--text-secondary); margin-top: 2px; display: block;">Optional; requires initial weight + weigh-ins</span>
-                        </div>
+                            <span style="font-size: 13px; color: var(--text); font-weight: 500; display: block;">Include Weight Leaderboard</span></div>
                         <div style="width: 55px; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
                             <input type="checkbox" id="join-weight-leaderboard" onchange="app.toggleWeightLeaderboardOptIn()"
                                    style="width: 20px; height: 20px; cursor: pointer; margin: 0;">
@@ -2772,7 +2770,7 @@
 
     <script>
         // App Version
-        const APP_VERSION = '1.6.0';
+        const APP_VERSION = '1.6.1';
         
         // Main App Object
         const app = {
@@ -2797,7 +2795,7 @@
                 },
                 customDashboardCards: ['pushups', 'pullups', 'rollerabs'], // Row 2 customizable cards
                 themeColor: 'blue', // Theme color: blue, green, pink, orange, purple, red
-                // PALS v1.6.0
+                // PALS v1.6.1
                 pals: {
                     myShareCode: '',
                     displayName: '',
@@ -2915,7 +2913,7 @@
                     if (this.data.goals.initialWeight === undefined) {
                         this.data.goals.initialWeight = null;
                     }
-                    // Ensure pals exists and friends array is preserved (for users upgrading to v1.6.0)
+                    // Ensure pals exists and friends array is preserved (for users upgrading to v1.6.1)
                     if (!this.data.pals) {
                         this.data.pals = {
                             myShareCode: '',
@@ -5141,7 +5139,7 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
             },
 
             // ============================================
-            // PALS FEATURE (v1.6.0)
+            // PALS FEATURE (v1.6.1)
             // ============================================
 
             // Initialize Firebase
