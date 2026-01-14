@@ -2505,9 +2505,7 @@
                     </label>
                     <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; margin-top: 10px;">
                         <div style="flex: 1; min-width: 0;">
-                            <span style="font-size: 13px; color: var(--text); font-weight: 500; display: block;">Include Weight Leaderboard</span>
-                            <span style="font-size: 10px; color: var(--text-secondary); margin-top: 2px; display: block;">Optional; requires initial weight + weigh-ins</span>
-                        </div>
+                            <span style="font-size: 13px; color: var(--text); font-weight: 500; display: block;">Include Weight Leaderboard</span></div>
                         <div style="width: 55px; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
                             <input type="checkbox" id="join-weight-leaderboard" onchange="app.toggleWeightLeaderboardOptIn()"
                                    style="width: 20px; height: 20px; cursor: pointer; margin: 0;">
@@ -2639,7 +2637,7 @@
         <button class="welcome-button" onclick="app.closeWelcome()">Let's Go</button>
         
         <div style="text-align: center; color: #6b7280; font-size: 11px; margin-top: 16px;">
-            v1.6.0
+            v1.6.1
         </div>
     </div>
 
@@ -2772,7 +2770,7 @@
 
     <script>
         // App Version
-        const APP_VERSION = '1.6.0';
+        const APP_VERSION = '1.6.1';
         
         // Main App Object
         const app = {
@@ -2797,7 +2795,7 @@
                 },
                 customDashboardCards: ['pushups', 'pullups', 'rollerabs'], // Row 2 customizable cards
                 themeColor: 'blue', // Theme color: blue, green, pink, orange, purple, red
-                // PALS v1.6.0
+                // PALS v1.6.1
                 pals: {
                     myShareCode: '',
                     displayName: '',
@@ -2915,7 +2913,7 @@
                     if (this.data.goals.initialWeight === undefined) {
                         this.data.goals.initialWeight = null;
                     }
-                    // Ensure pals exists and friends array is preserved (for users upgrading to v1.6.0)
+                    // Ensure pals exists and friends array is preserved (for users upgrading to v1.6.1)
                     if (!this.data.pals) {
                         this.data.pals = {
                             myShareCode: '',
@@ -5141,7 +5139,7 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
             },
 
             // ============================================
-            // PALS FEATURE (v1.6.0)
+            // PALS FEATURE (v1.6.1)
             // ============================================
 
             // Initialize Firebase
@@ -5441,41 +5439,208 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
             },
 
             // Edit Share Code (inline prompt)
-            // Handle Share Code button (Set ID or Share)
-            handleShareCodeButton() {
-                if (this.data.pals.myShareCode) {
-                    // Already has code - share it
-                    this.shareMyCode();
-                } else {
-                    // No code - prompt to create
-                    this.createShareCode();
-                }
-            },
 
-            // Create Share Code
-            createShareCode() {
-                const code = prompt('Create your Unique ID (format AA-12):\nTwo letters, a dash, then two numbers (example: JP-04)');
-                if (code) {
-                    // Validate code format
-                    if (!/^[A-Z]{2}-\d{2}$/.test(code)) {
-                        alert('❌ Invalid format! Use AA-12 (two letters, dash, two numbers). Example: JP-04.');
-                        return;
-                    }
-                    
-                    // Temporarily create input to use existing saveShareCode logic
-                    const tempInput = document.createElement('input');
-                    tempInput.id = 'my-share-code';
-                    tempInput.value = code;
-                    tempInput.style.display = 'none';
-                    document.body.appendChild(tempInput);
-                    
-                    this.saveShareCode().then(() => {
-                        document.body.removeChild(tempInput);
-                        this.updatePalsUI();
-                        alert('✅ Unique ID created! Now you can share it.');
-                    });
+// Handle Share Code button (Set ID or Share)
+async handleShareCodeButton() {
+    if (this.data.pals.myShareCode) {
+        // Already has code - share it
+        this.shareMyCode();
+    } else {
+        // No code - prompt to create
+        await this.createShareCode();
+    }
+},
+
+// Create Share Code
+async createShareCode() {
+    // Unique ID creation flow:
+    // 1) Prompt for AA-12
+    // 2) If taken: warn and re-prompt
+    // 3) If available: prompt for Display Name
+    // 4) Save code + display name and update the Pals card immediately
+    while (true) {
+        const raw = prompt(
+            'Create your Unique ID (format AA-12):\n' +
+            'Two letters, a dash, then two numbers (example: JP-04)'
+        );
+        if (raw === null) return; // cancelled
+
+        const code = String(raw).trim().toUpperCase();
+
+        // Validate code format
+        if (!/^[A-Z]{2}-\d{2}$/.test(code)) {
+            alert('❌ Invalid format! Use AA-12 (two letters, dash, two numbers). Example: JP-04.');
+            continue;
+        }
+
+        // If code is locked, do not allow changing it
+        if (this.data.pals.myShareCode && code !== this.data.pals.myShareCode) {
+            alert(
+                '⚠️ Share Code Locked\n\n' +
+                `Your code "${this.data.pals.myShareCode}" is permanent and cannot be changed.\n\n` +
+                'This protects your identity in leaderboards.'
+            );
+            return;
+        }
+
+        // Check availability
+        try {
+            const docRef = this.db.collection('users').doc(code);
+            const snap = await docRef.get();
+            if (snap.exists) {
+                alert('⚠️ That Unique ID is already taken. Please try another.');
+                continue;
+            }
+
+            // Prompt for Display Name
+            let displayName = '';
+            while (!displayName) {
+                const entered = prompt('Enter your display name (shown to pals and on leaderboards):', (this.data.pals.displayName || '').trim());
+                if (entered === null) return; // cancelled
+                displayName = String(entered).trim();
+            }
+
+            // Claim the code transactionally (in case it was taken between the check and save)
+            await this.db.runTransaction(async (transaction) => {
+                const doc = await transaction.get(docRef);
+                if (doc.exists) {
+                    throw new Error('CODE_TAKEN');
                 }
-            },
+
+                // Persist locally first and update UI immediately
+                this.data.pals.myShareCode = code;
+                this.data.pals.displayName = displayName;
+                this.saveData();
+                this.updatePalsUI();
+
+                const stats = this.calculateStats();
+                const monthStats = this.calculateMonthStats();
+                const weightLoss = this.calculateWeightLoss();
+                const weightChangeLbsAllTime = this.calculateWeightChangeLbsAllTime();
+                const weightChangePctThisWeek = this.calculateWeightChangePctForPeriod('week');
+                const weightChangePctThisMonth = this.calculateWeightChangePctForPeriod('month');
+                const weightChangeLbsThisWeek = this.calculateWeightChangeLbsForPeriod('week');
+                const weightChangeLbsThisMonth = this.calculateWeightChangeLbsForPeriod('month');
+
+                transaction.set(docRef, {
+                    shareCode: code,
+                    displayName: displayName,
+                    joinedLeaderboard: this.data.pals.joinedLeaderboard || false,
+                    joinWeightLeaderboard: this.data.pals.joinWeightLeaderboard || false,
+                    stats: {
+                        // Week totals
+                        thisWeekDistance: stats.thisWeekDistance,
+                        thisWeekStrengthDays: stats.thisWeekStrengthDays,
+                        thisWeekSteps: stats.thisWeekSteps,
+                        // Month totals
+                        thisMonthDistance: monthStats.monthDistance,
+                        thisMonthStrengthDays: monthStats.monthStrengthDays,
+                        thisMonthSteps: monthStats.monthSteps,
+                        // All time totals
+                        totalDistance: stats.totalDistance,
+                        totalStrengthDays: stats.totalStrengthDays,
+                        totalSteps: stats.totalSteps,
+                        // Workout totals
+                        thisWeekPushups: stats.thisWeekPushups,
+                        thisMonthPushups: monthStats.monthPushups,
+                        totalPushups: stats.totalPushups,
+                        thisWeekPullups: stats.thisWeekPullups,
+                        thisMonthPullups: monthStats.monthPullups,
+                        totalPullups: stats.totalPullups,
+                        thisWeekRollerAbs: stats.thisWeekRollerAbs,
+                        thisMonthRollerAbs: monthStats.monthRollerAbs,
+                        totalRollerAbs: stats.totalRollerAbs,
+                        thisWeekDips: stats.thisWeekDips,
+                        thisMonthDips: monthStats.monthDips,
+                        totalDips: stats.totalDips,
+                        thisWeekSquats: stats.thisWeekSquats,
+                        thisMonthSquats: monthStats.monthSquats,
+                        totalSquats: stats.totalSquats,
+                        thisWeekSitups: stats.thisWeekSitups,
+                        thisMonthSitups: monthStats.monthSitups,
+                        totalSitups: stats.totalSitups,
+                        thisWeekWallSits: stats.thisWeekWallSits,
+                        thisMonthWallSits: monthStats.monthWallSits,
+                        totalWallSits: stats.totalWallSits,
+                        thisWeekPlanks: stats.thisWeekPlanks,
+                        thisMonthPlanks: monthStats.monthPlanks,
+                        totalPlanks: stats.totalPlanks,
+                        thisWeekBurpees: stats.thisWeekBurpees,
+                        thisMonthBurpees: monthStats.monthBurpees,
+                        totalBurpees: stats.totalBurpees,
+                        thisWeekCalfRaises: stats.thisWeekCalfRaises,
+                        thisMonthCalfRaises: monthStats.monthCalfRaises,
+                        totalCalfRaises: stats.totalCalfRaises,
+                        thisWeekJumpingJacks: stats.thisWeekJumpingJacks,
+                        thisMonthJumpingJacks: monthStats.monthJumpingJacks,
+                        totalJumpingJacks: stats.totalJumpingJacks,
+                        thisWeekLunges: stats.thisWeekLunges,
+                        thisMonthLunges: monthStats.monthLunges,
+                        totalLunges: stats.totalLunges,
+                        thisWeekBenchPress: stats.thisWeekBenchPress,
+                        thisMonthBenchPress: monthStats.monthBenchPress,
+                        totalBenchPress: stats.totalBenchPress,
+                        thisWeekShoulderPress: stats.thisWeekShoulderPress,
+                        thisMonthShoulderPress: monthStats.monthShoulderPress,
+                        totalShoulderPress: stats.totalShoulderPress,
+                        thisWeekBicepCurls: stats.thisWeekBicepCurls,
+                        thisMonthBicepCurls: monthStats.monthBicepCurls,
+                        totalBicepCurls: stats.totalBicepCurls,
+                        thisWeekRows: stats.thisWeekRows,
+                        thisMonthRows: monthStats.monthRows,
+                        totalRows: stats.totalRows,
+                        thisWeekDeadlifts: stats.thisWeekDeadlifts,
+                        thisMonthDeadlifts: monthStats.monthDeadlifts,
+                        totalDeadlifts: stats.totalDeadlifts,
+                        thisWeekMountainClimbers: stats.thisWeekMountainClimbers,
+                        thisMonthMountainClimbers: monthStats.monthMountainClimbers,
+                        totalMountainClimbers: stats.totalMountainClimbers,
+                        thisWeekLegRaises: stats.thisWeekLegRaises,
+                        thisMonthLegRaises: monthStats.monthLegRaises,
+                        totalLegRaises: stats.totalLegRaises,
+                        thisWeekRussianTwists: stats.thisWeekRussianTwists,
+                        thisMonthRussianTwists: monthStats.monthRussianTwists,
+                        totalRussianTwists: stats.totalRussianTwists,
+                        thisWeekGluteBridges: stats.thisWeekGluteBridges,
+                        thisMonthGluteBridges: monthStats.monthGluteBridges,
+                        totalGluteBridges: stats.totalGluteBridges,
+                        thisWeekBicycles: stats.thisWeekBicycles,
+                        thisMonthBicycles: monthStats.monthBicycles,
+                        totalBicycles: stats.totalBicycles,
+                        thisWeekRunningMiles: stats.thisWeekRunningMiles,
+                        thisMonthRunningMiles: monthStats.monthRunningMiles,
+                        totalRunningMiles: stats.totalRunningMiles,
+                        thisWeekCyclingMiles: stats.thisWeekCyclingMiles,
+                        thisMonthCyclingMiles: monthStats.monthCyclingMiles,
+                        totalCyclingMiles: stats.totalCyclingMiles,
+                        thisWeekSwimmingMiles: stats.thisWeekSwimmingMiles,
+                        thisMonthSwimmingMiles: monthStats.monthSwimmingMiles,
+                        totalSwimmingMiles: stats.totalSwimmingMiles,
+                        // Weight tracking
+                        weightLoss: weightLoss,
+                        weightChangeLbsAllTime: weightChangeLbsAllTime,
+                        weightChangePctThisWeek: weightChangePctThisWeek,
+                        weightChangePctThisMonth: weightChangePctThisMonth,
+                        weightChangeLbsThisWeek: weightChangeLbsThisWeek,
+                        weightChangeLbsThisMonth: weightChangeLbsThisMonth,
+                        lastUpdated: new Date().toISOString()
+                    }
+                });
+            });
+
+            alert('✅ Unique ID created! Now you can share it.');
+            return;
+        } catch (err) {
+            if (String(err && err.message) === 'CODE_TAKEN') {
+                alert('⚠️ That Unique ID is already taken. Please try another.');
+                continue;
+            }
+            console.error(err);
+            alert('❌ Error creating Unique ID. Please try again.');
+            return;
+        }
+    }
+},
 
             // Legacy function - now just calls handleShareCodeButton
             editShareCode() {
@@ -5493,55 +5658,75 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                 }
             },
 
-            // Toggle leaderboard
-            async toggleLeaderboard() {
-                const checkboxEl = document.getElementById('join-leaderboard');
-                const weightCheckboxEl = document.getElementById('join-weight-leaderboard');
-                const checked = !!(checkboxEl && checkboxEl.checked);
-                const wasJoined = !!this.data.pals.joinedLeaderboard;
+// Toggle leaderboard
+async toggleLeaderboard() {
+    const checkboxEl = document.getElementById('join-leaderboard');
+    const weightCheckboxEl = document.getElementById('join-weight-leaderboard');
+    const checked = !!(checkboxEl && checkboxEl.checked);
+    const wasJoined = !!this.data.pals.joinedLeaderboard;
 
-                this.data.pals.joinedLeaderboard = checked;
+    this.data.pals.joinedLeaderboard = checked;
 
-                if (!checked) {
-                    // Turning off leaderboards disables weight opt-in
+    if (!checked) {
+        // Turning off leaderboards disables weight opt-in
+        this.data.pals.joinWeightLeaderboard = false;
+        if (weightCheckboxEl) weightCheckboxEl.checked = false;
+    } else if (!wasJoined) {
+        // First time joining: ask which leaderboards to join
+        let choice = '';
+        while (choice !== '1' && choice !== '2') {
+            const entered = prompt(
+                'Join leaderboards:\n' +
+                '1 = Join ALL (Steps, Distance, Weight Loss)\n' +
+                '2 = Join only Steps and Distance'
+            );
+            if (entered === null) {
+                // Cancel: revert toggle
+                this.data.pals.joinedLeaderboard = false;
+                if (checkboxEl) checkboxEl.checked = false;
+                this.data.pals.joinWeightLeaderboard = false;
+                if (weightCheckboxEl) weightCheckboxEl.checked = false;
+                break;
+            }
+            choice = String(entered).trim();
+            if (choice !== '1' && choice !== '2') {
+                alert('Please enter 1 or 2.');
+            }
+        }
+
+        if (this.data.pals.joinedLeaderboard) {
+            const includeWeight = (choice === '1');
+
+            if (includeWeight) {
+                const initial = this.data.goals?.initialWeight;
+                if (!initial || isNaN(parseFloat(initial)) || parseFloat(initial) <= 0) {
+                    alert('To join the Weight Loss leaderboard, please set your Initial Weight in Goals first.');
                     this.data.pals.joinWeightLeaderboard = false;
                     if (weightCheckboxEl) weightCheckboxEl.checked = false;
-                } else if (!wasJoined) {
-                    // First time joining: ask whether to include weight leaderboard
-                    const includeWeight = confirm(
-                        'Join leaderboards for Steps and Distance.\n\n' +
-                        'Also include me in the Weight Change leaderboard?'
-                    );
-
-                    if (includeWeight) {
-                        const initial = this.data.goals?.initialWeight;
-                        if (!initial || isNaN(parseFloat(initial)) || parseFloat(initial) <= 0) {
-                            alert('To join the Weight leaderboard, please set your Initial Weight in Goals first.');
-                            this.data.pals.joinWeightLeaderboard = false;
-                            if (weightCheckboxEl) weightCheckboxEl.checked = false;
-                        } else {
-                            this.data.pals.joinWeightLeaderboard = true;
-                            if (weightCheckboxEl) weightCheckboxEl.checked = true;
-                        }
-                    } else {
-                        this.data.pals.joinWeightLeaderboard = false;
-                        if (weightCheckboxEl) weightCheckboxEl.checked = false;
-                    }
+                } else {
+                    this.data.pals.joinWeightLeaderboard = true;
+                    if (weightCheckboxEl) weightCheckboxEl.checked = true;
                 }
+            } else {
+                this.data.pals.joinWeightLeaderboard = false;
+                if (weightCheckboxEl) weightCheckboxEl.checked = false;
+            }
+        }
+    }
 
-                if (weightCheckboxEl) {
-                    weightCheckboxEl.disabled = !checked;
-                    weightCheckboxEl.style.opacity = weightCheckboxEl.disabled ? '0.5' : '1';
-                    weightCheckboxEl.style.cursor = weightCheckboxEl.disabled ? 'not-allowed' : 'pointer';
-                }
+    if (weightCheckboxEl) {
+        weightCheckboxEl.disabled = !this.data.pals.joinedLeaderboard;
+        weightCheckboxEl.style.opacity = weightCheckboxEl.disabled ? '0.5' : '1';
+        weightCheckboxEl.style.cursor = weightCheckboxEl.disabled ? 'not-allowed' : 'pointer';
+    }
 
-                this.saveData();
+    this.saveData();
 
-                // Sync to Firebase
-                await this.syncMyStatsToFirebase();
+    // Sync to Firebase
+    await this.syncMyStatsToFirebase();
 
-                this.renderLeaderboard();
-            },
+    this.renderLeaderboard();
+},
 
             async toggleWeightLeaderboardOptIn() {
                 const weightCheckboxEl = document.getElementById('join-weight-leaderboard');
@@ -5555,7 +5740,7 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                 if (checked) {
                     const initial = this.data.goals?.initialWeight;
                     if (!initial || isNaN(parseFloat(initial)) || parseFloat(initial) <= 0) {
-                        alert('To join the Weight leaderboard, please set your Initial Weight in Goals first.');
+                        alert('To join the Weight Loss leaderboard, please set your Initial Weight in Goals first.');
                         this.data.pals.joinWeightLeaderboard = false;
                         if (weightCheckboxEl) weightCheckboxEl.checked = false;
                     } else {
