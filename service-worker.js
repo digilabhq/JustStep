@@ -1,7 +1,8 @@
-const CACHE_NAME = 'juststep-v1.6.1';
+const CACHE_NAME = 'juststep-v1.6.0';
 const urlsToCache = [
   './',
-  './index.html'
+  './index.html',
+  './service-worker.js'
 ];
 
 self.addEventListener('install', event => {
