@@ -2353,7 +2353,7 @@
                 <div style="background: #2d2d2d; padding: 10px 14px; border-radius: 8px;">
                     <div style="display: flex; justify-content: space-between; align-items: center;">
                         <label style="font-size: 14px; font-weight: 600; color: #e8e8e8;">Unit Preference</label>
-                        <select id="unit-preference" style="width: 160px; padding: 6px 10px; border: 1px solid #3d3d3d; border-radius: 6px; font-size: 13px; font-weight: 600; background: #1a1a1a; color: #e8e8e8;">
+                        <select id="unit-preference" style="width: 220px; padding: 6px 10px; border: 1px solid #3d3d3d; border-radius: 6px; font-size: 13px; font-weight: 600; background: #1a1a1a; color: #e8e8e8;">
                             <option value="miles">Miles</option>
                             <option value="km">Kilometers</option>
                         </select>
@@ -2364,7 +2364,7 @@
                 <div style="background: #2d2d2d; padding: 10px 14px; border-radius: 8px; margin-bottom: 10px;">
                     <div style="display: flex; justify-content: space-between; align-items: center;">
                         <label style="font-size: 14px; font-weight: 600; color: #e8e8e8;">Initial Weight</label>
-                        <div style="width: 160px; display: flex; align-items: center; gap: 0; padding: 6px 10px; border: 2px solid #3d3d3d; border-radius: 6px; background: #1a1a1a;">
+                        <div style="width: 220px; display: flex; align-items: center; gap: 0; padding: 6px 10px; border: 2px solid #3d3d3d; border-radius: 6px; background: #1a1a1a;">
                             <input type="number" id="initial-weight-preference" placeholder="Enter initial weight" inputmode="decimal"
                                    style="flex: 1; min-width: 0; border: none; outline: none; padding: 0; background: transparent; color: #e8e8e8; font-size: 13px; font-weight: 600;">
                             <span style="margin-left: 8px; font-size: 12px; color: #9ca3af; font-weight: 600;">lbs</span>
@@ -2459,18 +2459,18 @@
             <div class="pals-section">
                 <h2 style="font-size: 14px; margin-bottom: 8px; color: var(--primary-light); font-weight: 600;">MY PROFILE</h2>
                 
-                <!-- Unique ID Row -->
+                <!-- PAL Code Row -->
                 <div style="background: #2d2d2d; border-radius: 8px; padding: 8px 12px; margin-bottom: 6px;">
                     <div style="display: flex; align-items: center; gap: 8px;">
                         <div style="flex: 1; min-width: 0;">
-                            <div style="font-size: 11px; color: #6b7280; margin-bottom: 2px;">Unique ID</div>
+                            <div style="font-size: 11px; color: #6b7280; margin-bottom: 2px;">PAL Code</div>
                             <div style="font-size: 14px; color: #e8e8e8; font-weight: 600;" id="display-share-code">
                                 Not set
                             </div>
                         </div>
-                        <button id="share-code-btn" onclick="app.handleShareCodeButton()" 
+                        <button id="share-code-btn" onclick="app.handlePalCodeButton()" 
                                 style="width: 55px; height: 32px; flex-shrink: 0; background: var(--primary-dark); color: white; border: none; border-radius: 5px; font-size: 12px; cursor: pointer; font-weight: 600; display: flex; align-items: center; justify-content: center;">
-                            Set ID
+                            Set Code
                         </button>
                     </div>
                 </div>
@@ -2511,6 +2511,7 @@
                                    style="width: 20px; height: 20px; cursor: pointer; margin: 0;">
                         </div>
                     </label>
+                    <div style="font-size: 11px; color: #6b7280; margin-top: 4px;">Requires Initial Weight in Goals and regular weigh-ins.</div>
 
                 </div>
             </div>
@@ -2521,7 +2522,7 @@
                 
                 <div style="background: #2d2d2d; border-radius: 8px; padding: 8px 12px;">
                     <div style="display: flex; gap: 8px; align-items: center;">
-                        <input type="text" id="add-pal-code" placeholder="Enter pal ID..." 
+                        <input type="text" id="add-pal-code" placeholder="Enter PAL Code..." 
                                style="flex: 1; min-width: 0; padding: 6px 10px; background: #1a1a1a; border: 1px solid #3d3d3d; border-radius: 6px; color: #e8e8e8; font-size: 13px; height: 32px; box-sizing: border-box;" 
                                maxlength="15">
                         <button onclick="app.addPal()" 
@@ -2573,7 +2574,7 @@
                         style="padding: 10px; background: #2d2d2d; border: 1px solid #3d3d3d; border-radius: 8px; color: #e8e8e8; font-size: 14px; cursor: pointer;">
                     <option value="thisWeekDistance">Distance</option>
                     <option value="thisWeekSteps">Steps</option>
-                    <option value="weightLoss">Weight Loss</option>
+                    <option value="weight">Weight</option>
                 </select>
 
                 <select id="leaderboard-period" onchange="app.renderLeaderboard()" 
@@ -2637,7 +2638,7 @@
         <button class="welcome-button" onclick="app.closeWelcome()">Let's Go</button>
         
         <div style="text-align: center; color: #6b7280; font-size: 11px; margin-top: 16px;">
-            v1.6.1
+            v1.7.0
         </div>
     </div>
 
@@ -2795,13 +2796,13 @@
                 },
                 customDashboardCards: ['pushups', 'pullups', 'rollerabs'], // Row 2 customizable cards
                 themeColor: 'blue', // Theme color: blue, green, pink, orange, purple, red
-                // PALS v1.6.1
+                // PALS v1.7.0
                 pals: {
-                    myShareCode: '',
+                    myPalCode: '',
                     displayName: '',
                     joinedLeaderboard: false,
                     joinWeightLeaderboard: false,
-                    friends: [] // Array of {shareCode, displayName, stats, lastSync}
+                    friends: [] // Array of {palCode, displayName, stats, lastSync}
                 }
             },
             activityCounter: 0,
@@ -2913,10 +2914,10 @@
                     if (this.data.goals.initialWeight === undefined) {
                         this.data.goals.initialWeight = null;
                     }
-                    // Ensure pals exists and friends array is preserved (for users upgrading to v1.6.1)
+                    // Ensure pals exists and friends array is preserved (for users upgrading to v1.7.0)
                     if (!this.data.pals) {
                         this.data.pals = {
-                            myShareCode: '',
+                            myPalCode: '',
                             displayName: '',
                             joinedLeaderboard: false,
                             friends: []
@@ -4676,7 +4677,7 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                 this.updateDashboard();
                 
                 // Sync to Firebase if PALS is set up
-                if (this.data.pals.myShareCode) {
+                if (this.data.pals.myPalCode) {
                     this.syncMyStatsToFirebase();
                 }
 
@@ -5116,7 +5117,7 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                 this.updateDashboard();
                 
                 // Sync to Firebase if PALS is set up
-                if (this.data.pals.myShareCode) {
+                if (this.data.pals.myPalCode) {
                     this.syncMyStatsToFirebase();
                 }
             },
@@ -5133,13 +5134,13 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                 this.updateDashboard();
                 
                 // Sync to Firebase if PALS is set up
-                if (this.data.pals.myShareCode) {
+                if (this.data.pals.myPalCode) {
                     this.syncMyStatsToFirebase();
                 }
             },
 
             // ============================================
-            // PALS FEATURE (v1.6.1)
+            // PALS FEATURE (v1.7.0)
             // ============================================
 
             // Initialize Firebase
@@ -5171,7 +5172,7 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                 const shareCodeBtn = document.getElementById('share-code-btn');
                 
                 if (shareCodeDisplay) {
-                    shareCodeDisplay.textContent = this.data.pals.myShareCode || 'Not set';
+                    shareCodeDisplay.textContent = this.data.pals.myPalCode || 'Not set';
                 }
                 
                 if (displayNameDisplay) {
@@ -5180,11 +5181,11 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                 
                 // Update button text based on whether code exists
                 if (shareCodeBtn) {
-                    if (this.data.pals.myShareCode) {
+                    if (this.data.pals.myPalCode) {
                         shareCodeBtn.textContent = 'Share';
                         shareCodeBtn.style.background = 'var(--primary-dark)';
                     } else {
-                        shareCodeBtn.textContent = 'Set ID';
+                        shareCodeBtn.textContent = 'Set Code';
                         shareCodeBtn.style.background = '#6b7280';
                     }
                 }
@@ -5207,7 +5208,7 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                 this.renderLeaderboard();
             },
 
-            // Save share code
+            // Save PAL Code
             async saveShareCode() {
                 const inputEl = document.getElementById('my-share-code');
                 if (!inputEl) {
@@ -5234,20 +5235,20 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                 }
 
                 // CHECK IF CODE IS ALREADY LOCKED
-                if (this.data.pals.myShareCode && code !== this.data.pals.myShareCode) {
+                if (this.data.pals.myPalCode && code !== this.data.pals.myPalCode) {
                     // CODE IS LOCKED - CANNOT CHANGE!
                     alert(
                         '⚠️ Share Code Locked\n\n' +
-                        `Your code "${this.data.pals.myShareCode}" is permanent and cannot be changed.\n\n` +
+                        `Your code "${this.data.pals.myPalCode}" is permanent and cannot be changed.\n\n` +
                         'This protects your identity in leaderboards.'
                     );
                     // Reset input to locked code if element exists
-                    if (inputEl) inputEl.value = this.data.pals.myShareCode;
+                    if (inputEl) inputEl.value = this.data.pals.myPalCode;
                     return;
                 }
 
                 // If user already has this code, just update stats
-                if (code === this.data.pals.myShareCode) {
+                if (code === this.data.pals.myPalCode) {
                     await this.syncMyStatsToFirebase();
                     if (successEl) {
                         successEl.classList.add('show');
@@ -5279,7 +5280,7 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
 
                 if (!confirmed) return;
 
-                // Use transaction to atomically claim the share code
+                // Use transaction to atomically claim the PAL Code
                 try {
                     const docRef = this.db.collection('users').doc(code);
 
@@ -5294,7 +5295,7 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                         // Code is available - claim it (leaderboard is user's choice via checkbox)
                         const stats = this.calculateStats();
                         const monthStats = this.calculateMonthStats();
-                        const weightLoss = this.calculateWeightLoss();
+                        const weight = this.calculateWeightLoss();
                         const weightChangeLbsAllTime = this.calculateWeightChangeLbsAllTime();
                         const weightChangePctThisWeek = this.calculateWeightChangePctForPeriod('week');
                         const weightChangePctThisMonth = this.calculateWeightChangePctForPeriod('month');
@@ -5302,7 +5303,7 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                         const weightChangeLbsThisMonth = this.calculateWeightChangeLbsForPeriod('month');
 
                         transaction.set(docRef, {
-                            shareCode: code,
+                            palCode: code,
                             displayName: displayName,
                             joinedLeaderboard: this.data.pals.joinedLeaderboard || false,
                             joinWeightLeaderboard: this.data.pals.joinWeightLeaderboard || false, // USER'S CHOICE
@@ -5361,7 +5362,7 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                                 // Weight
                                 weightChangePctThisWeek: weightChangePctThisWeek,
                                 weightChangePctThisMonth: weightChangePctThisMonth,
-                                weightChangePctAllTime: weightLoss,
+                                weightChangePctAllTime: weight,
                                 weightChangeLbsThisWeek: weightChangeLbsThisWeek,
                                 weightChangeLbsThisMonth: weightChangeLbsThisMonth,
                                 weightChangeLbsAllTime: weightChangeLbsAllTime
@@ -5371,7 +5372,7 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                     });
 
                     // Transaction succeeded - save locally
-                    this.data.pals.myShareCode = code;
+                    this.data.pals.myPalCode = code;
                     this.saveData();
 
                     successEl.classList.add('show');
@@ -5382,7 +5383,7 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                         errorEl.textContent = 'This code is already taken. Try another!';
                         errorEl.classList.add('show');
                     } else {
-                        console.error('Error claiming share code:', error);
+                        console.error('Error claiming PAL Code:', error);
                         errorEl.textContent = 'Error saving code. Please try again.';
                         errorEl.classList.add('show');
                     }
@@ -5390,10 +5391,10 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
             },
 
             // Share my code via text/messaging
-            shareMyCode() {
-                const code = this.data.pals.myShareCode;
+            shareMyPalCode() {
+                const code = this.data.pals.myPalCode;
                 if (!code) {
-                    alert('Please save your share code first!');
+                    alert('Please save your PAL Code first!');
                     return;
                 }
 
@@ -5440,27 +5441,27 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
 
             // Edit Share Code (inline prompt)
 
-// Handle Share Code button (Set ID or Share)
-async handleShareCodeButton() {
-    if (this.data.pals.myShareCode) {
+// Handle Share Code button (Set Code or Share)
+async handlePalCodeButton() {
+    if (this.data.pals.myPalCode) {
         // Already has code - share it
-        this.shareMyCode();
+        this.shareMyPalCode();
     } else {
         // No code - prompt to create
-        await this.createShareCode();
+        await this.createPalCode();
     }
 },
 
 // Create Share Code
-async createShareCode() {
-    // Unique ID creation flow:
+async createPalCode() {
+    // PAL Code creation flow:
     // 1) Prompt for AA-12
     // 2) If taken: warn and re-prompt
     // 3) If available: prompt for Display Name
     // 4) Save code + display name and update the Pals card immediately
     while (true) {
         const raw = prompt(
-            'Create your Unique ID (format AA-12):\n' +
+            'Create your PAL Code (format AA-12):\n' +
             'Two letters, a dash, then two numbers (example: JP-04)'
         );
         if (raw === null) return; // cancelled
@@ -5474,10 +5475,10 @@ async createShareCode() {
         }
 
         // If code is locked, do not allow changing it
-        if (this.data.pals.myShareCode && code !== this.data.pals.myShareCode) {
+        if (this.data.pals.myPalCode && code !== this.data.pals.myPalCode) {
             alert(
                 '⚠️ Share Code Locked\n\n' +
-                `Your code "${this.data.pals.myShareCode}" is permanent and cannot be changed.\n\n` +
+                `Your code "${this.data.pals.myPalCode}" is permanent and cannot be changed.\n\n` +
                 'This protects your identity in leaderboards.'
             );
             return;
@@ -5488,7 +5489,7 @@ async createShareCode() {
             const docRef = this.db.collection('users').doc(code);
             const snap = await docRef.get();
             if (snap.exists) {
-                alert('⚠️ That Unique ID is already taken. Please try another.');
+                alert('⚠️ That PAL Code is already taken. Please try another.');
                 continue;
             }
 
@@ -5508,14 +5509,14 @@ async createShareCode() {
                 }
 
                 // Persist locally first and update UI immediately
-                this.data.pals.myShareCode = code;
+                this.data.pals.myPalCode = code;
                 this.data.pals.displayName = displayName;
                 this.saveData();
                 this.updatePalsUI();
 
                 const stats = this.calculateStats();
                 const monthStats = this.calculateMonthStats();
-                const weightLoss = this.calculateWeightLoss();
+                const weight = this.calculateWeightLoss();
                 const weightChangeLbsAllTime = this.calculateWeightChangeLbsAllTime();
                 const weightChangePctThisWeek = this.calculateWeightChangePctForPeriod('week');
                 const weightChangePctThisMonth = this.calculateWeightChangePctForPeriod('month');
@@ -5523,7 +5524,7 @@ async createShareCode() {
                 const weightChangeLbsThisMonth = this.calculateWeightChangeLbsForPeriod('month');
 
                 transaction.set(docRef, {
-                    shareCode: code,
+                    palCode: code,
                     displayName: displayName,
                     joinedLeaderboard: this.data.pals.joinedLeaderboard || false,
                     joinWeightLeaderboard: this.data.pals.joinWeightLeaderboard || false,
@@ -5617,7 +5618,7 @@ async createShareCode() {
                         thisMonthSwimmingMiles: monthStats.monthSwimmingMiles,
                         totalSwimmingMiles: stats.totalSwimmingMiles,
                         // Weight tracking
-                        weightLoss: weightLoss,
+                        weight: weight,
                         weightChangeLbsAllTime: weightChangeLbsAllTime,
                         weightChangePctThisWeek: weightChangePctThisWeek,
                         weightChangePctThisMonth: weightChangePctThisMonth,
@@ -5628,23 +5629,23 @@ async createShareCode() {
                 });
             });
 
-            alert('✅ Unique ID created! Now you can share it.');
+            alert('✅ PAL Code created! Now you can share it.');
             return;
         } catch (err) {
             if (String(err && err.message) === 'CODE_TAKEN') {
-                alert('⚠️ That Unique ID is already taken. Please try another.');
+                alert('⚠️ That PAL Code is already taken. Please try another.');
                 continue;
             }
             console.error(err);
-            alert('❌ Error creating Unique ID. Please try again.');
+            alert('❌ Error creating PAL Code. Please try again.');
             return;
         }
     }
 },
 
-            // Legacy function - now just calls handleShareCodeButton
+            // Legacy function - now just calls handlePalCodeButton
             editShareCode() {
-                this.handleShareCodeButton();
+                this.handlePalCodeButton();
             },
 
             // Edit Display Name (inline prompt)
@@ -5668,102 +5669,177 @@ async toggleLeaderboard() {
     this.data.pals.joinedLeaderboard = checked;
 
     if (!checked) {
-        // Turning off leaderboards disables weight opt-in
+        // Turning off leaderboards disables Weight opt-in
         this.data.pals.joinWeightLeaderboard = false;
         if (weightCheckboxEl) weightCheckboxEl.checked = false;
     } else if (!wasJoined) {
-        // First time joining: ask which leaderboards to join
-        let choice = '';
-        while (choice !== '1' && choice !== '2') {
-            const entered = prompt(
-                'Join leaderboards:\n' +
-                '1 = Join ALL (Steps, Distance, Weight Loss)\n' +
-                '2 = Join only Steps and Distance'
-            );
-            if (entered === null) {
-                // Cancel: revert toggle
-                this.data.pals.joinedLeaderboard = false;
-                if (checkboxEl) checkboxEl.checked = false;
-                this.data.pals.joinWeightLeaderboard = false;
-                if (weightCheckboxEl) weightCheckboxEl.checked = false;
-                break;
-            }
-            choice = String(entered).trim();
-            if (choice !== '1' && choice !== '2') {
-                alert('Please enter 1 or 2.');
+        // First time joining Steps + Distance: ask about Weight leaderboard
+        const wantsWeight = confirm(
+            'You will be added to the Steps and Distance leaderboards.\n\n' +
+            'Do you also want to join the Weight leaderboard?'
+        );
+
+        this.data.pals.joinWeightLeaderboard = !!wantsWeight;
+        if (weightCheckboxEl) weightCheckboxEl.checked = !!wantsWeight;
+
+        if (wantsWeight) {
+            const initial = this.data.goals?.initialWeight;
+            if (!initial || isNaN(parseFloat(initial)) || parseFloat(initial) <= 0) {
+                alert('To participate in the Weight leaderboard, please set your Initial Weight in Goals.');
             }
         }
-
-        if (this.data.pals.joinedLeaderboard) {
-            const includeWeight = (choice === '1');
-
-            if (includeWeight) {
-                const initial = this.data.goals?.initialWeight;
-                if (!initial || isNaN(parseFloat(initial)) || parseFloat(initial) <= 0) {
-                    alert('To join the Weight Loss leaderboard, please set your Initial Weight in Goals first.');
-                    this.data.pals.joinWeightLeaderboard = false;
-                    if (weightCheckboxEl) weightCheckboxEl.checked = false;
-                } else {
-                    this.data.pals.joinWeightLeaderboard = true;
-                    if (weightCheckboxEl) weightCheckboxEl.checked = true;
-                }
-            } else {
-                this.data.pals.joinWeightLeaderboard = false;
-                if (weightCheckboxEl) weightCheckboxEl.checked = false;
-            }
+    } else {
+        // Already joined Steps/Distance; keep existing Weight selection
+        if (weightCheckboxEl) {
+            weightCheckboxEl.checked = !!this.data.pals.joinWeightLeaderboard;
         }
-    }
-
-    if (weightCheckboxEl) {
-        weightCheckboxEl.disabled = !this.data.pals.joinedLeaderboard;
-        weightCheckboxEl.style.opacity = weightCheckboxEl.disabled ? '0.5' : '1';
-        weightCheckboxEl.style.cursor = weightCheckboxEl.disabled ? 'not-allowed' : 'pointer';
     }
 
     this.saveData();
-
-    // Sync to Firebase
-    await this.syncMyStatsToFirebase();
-
+    this.updatePalsUI();
+    this.syncMyStatsToFirebase();
     this.renderLeaderboard();
 },
 
-            async toggleWeightLeaderboardOptIn() {
-                const weightCheckboxEl = document.getElementById('join-weight-leaderboard');
-                const checked = !!(weightCheckboxEl && weightCheckboxEl.checked);
+            async createPalCode() {
+    // PAL Code creation flow:
+    // 1) Prompt for 4-digit PAL Code (numbers only; leading zeros allowed)
+    // 2) If taken: warn and re-prompt
+    // 3) If available: confirm it cannot be changed later
+    // 4) Prompt for Display Name
+    // 5) Save PAL Code + display name and update the Pals card immediately
+    while (true) {
+        const raw = prompt(
+            'Create your PAL Code (4 digits):\n' +
+            'Numbers only (example: 0042).\n\n' +
+            'Note: Your PAL Code cannot be changed later.'
+        );
+        if (raw === null) return; // cancelled
 
-                if (!this.data.pals.joinedLeaderboard) {
-                    if (weightCheckboxEl) weightCheckboxEl.checked = false;
-                    return;
-                }
+        const code = String(raw).trim();
 
-                if (checked) {
-                    const initial = this.data.goals?.initialWeight;
-                    if (!initial || isNaN(parseFloat(initial)) || parseFloat(initial) <= 0) {
-                        alert('To join the Weight Loss leaderboard, please set your Initial Weight in Goals first.');
-                        this.data.pals.joinWeightLeaderboard = false;
-                        if (weightCheckboxEl) weightCheckboxEl.checked = false;
-                    } else {
-                        this.data.pals.joinWeightLeaderboard = true;
-                    }
-                } else {
-                    this.data.pals.joinWeightLeaderboard = false;
-                }
+        // Validate code format (exactly 4 digits; keep as string to preserve leading zeros)
+        if (!/^\d{4}$/.test(code)) {
+            alert('⚠️ Invalid PAL Code. Please enter exactly 4 numbers (0000–9999).');
+            continue;
+        }
+
+        try {
+            // Check availability (exact match)
+            const docRef = this.db.collection('users').doc(code);
+            const snap = await docRef.get();
+            if (snap.exists) {
+                alert('⚠️ That PAL Code is already taken. Please try another.');
+                continue;
+            }
+
+            // Confirm lock
+            const okLocked = confirm(
+                `Your PAL Code will be: ${code}\n\n` +
+                'This PAL Code cannot be changed later (unless you clear app data).\n\n' +
+                'Press OK to confirm or Cancel to choose a different code.'
+            );
+            if (!okLocked) {
+                // Choose another code (stay in flow)
+                continue;
+            }
+
+            // Prompt for Display Name
+            let displayName = '';
+            while (!displayName) {
+                const entered = prompt(
+                    'Enter your display name (shown to pals and on leaderboards):',
+                    (this.data.pals.displayName || '').trim()
+                );
+                if (entered === null) return; // cancelled
+                displayName = String(entered).trim();
+            }
+
+            // Claim the code transactionally (protects against race conditions)
+            await this.db.runTransaction(async (transaction) => {
+                const doc = await transaction.get(docRef);
+                if (doc.exists) throw new Error('CODE_TAKEN');
+
+                // Save locally first (so UI updates immediately)
+                this.data.pals.myPalCode = code;
+                this.data.pals.displayName = displayName;
 
                 this.saveData();
-                await this.syncMyStatsToFirebase();
-                this.renderLeaderboard();
-            },
+                this.updatePalsUI();
+
+                // Push initial user record to Firebase (stats snapshot)
+                const stats = this.getStatsForSync();
+                const monthStats = this.getMonthStatsForSync();
+
+                const weightChangePctThisWeek = this.calculateWeightChangePctForPeriod('week');
+                const weightChangePctThisMonth = this.calculateWeightChangePctForPeriod('month');
+                const weightChangeLbsThisWeek = this.calculateWeightChangeLbsForPeriod('week');
+                const weightChangeLbsThisMonth = this.calculateWeightChangeLbsForPeriod('month');
+
+                transaction.set(docRef, {
+                    palCode: code,
+                    displayName: displayName,
+                    joinedLeaderboard: this.data.pals.joinedLeaderboard || false,
+                    joinWeightLeaderboard: this.data.pals.joinWeightLeaderboard || false,
+                    stats: {
+                        // Week totals
+                        thisWeekDistance: stats.thisWeekDistance,
+                        thisWeekStrengthDays: stats.thisWeekStrengthDays,
+                        thisWeekSteps: stats.thisWeekSteps,
+                        // Month totals
+                        thisMonthDistance: monthStats.monthDistance,
+                        thisMonthStrengthDays: monthStats.monthStrengthDays,
+                        thisMonthSteps: monthStats.monthSteps,
+                        // All time totals
+                        totalDistance: stats.totalDistance,
+                        totalStrengthDays: stats.totalStrengthDays,
+                        totalSteps: stats.totalSteps,
+                        // Workout totals
+                        thisWeekPushups: stats.thisWeekPushups,
+                        thisMonthPushups: monthStats.monthPushups,
+                        totalPushups: stats.totalPushups,
+                        thisWeekPullups: stats.thisWeekPullups,
+                        thisMonthPullups: monthStats.monthPullups,
+                        totalPullups: stats.totalPullups,
+                        thisWeekSitups: stats.thisWeekSitups,
+                        thisMonthSitups: monthStats.monthSitups,
+                        totalSitups: stats.totalSitups,
+                        thisWeekSquats: stats.thisWeekSquats,
+                        thisMonthSquats: monthStats.monthSquats,
+                        totalSquats: stats.totalSquats,
+                        // Weight change (still stored as change metrics; leaderboard category is "Weight")
+                        weightChangePctThisWeek: weightChangePctThisWeek,
+                        weightChangePctThisMonth: weightChangePctThisMonth,
+                        weightChangeLbsThisWeek: weightChangeLbsThisWeek,
+                        weightChangeLbsThisMonth: weightChangeLbsThisMonth,
+                        lastUpdated: new Date().toISOString()
+                    }
+                });
+            });
+
+            alert('✅ PAL Code created! You can now share it.');
+            return;
+        } catch (err) {
+            if (String(err && err.message) === 'CODE_TAKEN') {
+                alert('⚠️ That PAL Code is already taken. Please try another.');
+                continue;
+            }
+            console.error(err);
+            alert('❌ Error creating PAL Code. Please try again.');
+            return;
+        }
+    }
+},
 
 
             // Sync my stats to Firebase
             async syncMyStatsToFirebase() {
-                if (!this.data.pals.myShareCode || !this.db) return;
+                if (!this.data.pals.myPalCode || !this.db) return;
 
                 try {
                     const stats = this.calculateStats();
                     const monthStats = this.calculateMonthStats();
-                    const weightLoss = this.calculateWeightLoss();
+                    const weight = this.calculateWeightLoss();
                     const weightChangeLbsAllTime = this.calculateWeightChangeLbsAllTime();
                     const weightChangePctThisWeek = this.calculateWeightChangePctForPeriod('week');
                     const weightChangePctThisMonth = this.calculateWeightChangePctForPeriod('month');
@@ -5772,8 +5848,8 @@ async toggleLeaderboard() {
                     const today = new Date().toISOString().split('T')[0]; // Get today's date
                     
                     const data = {
-                        shareCode: this.data.pals.myShareCode,
-                        displayName: this.data.pals.displayName || this.data.pals.myShareCode,
+                        palCode: this.data.pals.myPalCode,
+                        displayName: this.data.pals.displayName || this.data.pals.myPalCode,
                         joinedLeaderboard: this.data.pals.joinedLeaderboard || false,
                         joinWeightLeaderboard: this.data.pals.joinWeightLeaderboard || false,
                         lastActivityDate: today, // Track last activity date for status indicators
@@ -5830,10 +5906,10 @@ async toggleLeaderboard() {
                             thisMonthStairs: monthStats.monthStairs,
                             totalStairs: stats.totalStairs,
                             // Weight (signed % change; negative = loss)
-                            weightLoss: weightLoss,
+                            weight: weight,
                             weightChangePctThisWeek: weightChangePctThisWeek,
                             weightChangePctThisMonth: weightChangePctThisMonth,
-                            weightChangePctAllTime: weightLoss,
+                            weightChangePctAllTime: weight,
                             weightChangeLbsThisWeek: weightChangeLbsThisWeek,
                             weightChangeLbsThisMonth: weightChangeLbsThisMonth,
                             weightChangeLbsAllTime: weightChangeLbsAllTime
@@ -5841,7 +5917,7 @@ async toggleLeaderboard() {
                         lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
                     };
 
-                    await this.db.collection('users').doc(this.data.pals.myShareCode).set(data);
+                    await this.db.collection('users').doc(this.data.pals.myPalCode).set(data);
                     console.log('✅ Stats synced to Firebase');
                 } catch (error) {
                     console.error('Error syncing stats:', error);
@@ -5858,7 +5934,7 @@ async toggleLeaderboard() {
                 successEl.classList.remove('show');
 
                 if (!code) {
-                    errorEl.textContent = 'Please enter a share code';
+                    errorEl.textContent = 'Please enter a PAL Code';
                     errorEl.classList.add('show');
                     return;
                 }
@@ -5871,14 +5947,14 @@ async toggleLeaderboard() {
                 }
 
 
-                if (code === this.data.pals.myShareCode) {
+                if (code === this.data.pals.myPalCode) {
                     errorEl.textContent = "You can't add yourself!";
                     errorEl.classList.add('show');
                     return;
                 }
 
                 // Check if already added
-                if (this.data.pals.friends.find(f => f.shareCode === code)) {
+                if (this.data.pals.friends.find(f => f.palCode === code)) {
                     errorEl.textContent = 'Already added this pal!';
                     errorEl.classList.add('show');
                     return;
@@ -5898,7 +5974,7 @@ async toggleLeaderboard() {
                     
                     // Add to friends list
                     this.data.pals.friends.push({
-                        shareCode: code,
+                        palCode: code,
                         displayName: palData.displayName || code,
                         stats: palData.stats || {},
                         lastSync: new Date().toISOString()
@@ -5918,25 +5994,25 @@ async toggleLeaderboard() {
             },
 
             // Remove pal
-            removePal(shareCode) {
+            removePal(palCode) {
                 if (!confirm(`Remove this pal?`)) return;
 
-                this.data.pals.friends = this.data.pals.friends.filter(f => f.shareCode !== shareCode);
+                this.data.pals.friends = this.data.pals.friends.filter(f => f.palCode !== palCode);
                 this.saveData();
                 this.updatePalsUI();
             },
 
             // Refresh pal's stats
-            async refreshPalStats(shareCode) {
+            async refreshPalStats(palCode) {
                 try {
-                    const doc = await this.db.collection('users').doc(shareCode).get();
+                    const doc = await this.db.collection('users').doc(palCode).get();
                     
                     if (doc.exists) {
                         const palData = doc.data();
-                        const friend = this.data.pals.friends.find(f => f.shareCode === shareCode);
+                        const friend = this.data.pals.friends.find(f => f.palCode === palCode);
                         if (friend) {
                             friend.stats = palData.stats || {};
-                            friend.displayName = palData.displayName || shareCode;
+                            friend.displayName = palData.displayName || palCode;
                             friend.lastSync = new Date().toISOString();
                             this.saveData();
                             this.updatePalsUI();
@@ -6028,7 +6104,7 @@ async toggleLeaderboard() {
                     }
                     
                     // Weight row
-                    const weightValue = stats.weightLoss ? (stats.weightLoss > 0 ? `-${stats.weightLoss}` : stats.weightLoss < 0 ? `+${Math.abs(stats.weightLoss)}` : '0') : '0';
+                    const weightValue = stats.weight ? (stats.weight > 0 ? `-${stats.weight}` : stats.weight < 0 ? `+${Math.abs(stats.weight)}` : '0') : '0';
                     activityItems.push({
                         name: 'Weight',
                         week: '-',
@@ -6062,10 +6138,10 @@ async toggleLeaderboard() {
                     // Return pal card HTML
                     return `
                         <div class="pal-card ${expandedClass}">
-                            <div class="pal-header" onclick="app.togglePalExpanded('${pal.shareCode}')">
+                            <div class="pal-header" onclick="app.togglePalExpanded('${pal.palCode}')">
                                 <div>
                                     <div class="pal-name">${pal.displayName}</div>
-                                    <div class="pal-code">${pal.shareCode}</div>
+                                    <div class="pal-code">${pal.palCode}</div>
                                 </div>
                                 <div class="pal-expand-icon">${arrow}</div>
                             </div>
@@ -6073,7 +6149,7 @@ async toggleLeaderboard() {
                                 ${activityTableHTML}
                             </div>
                             <div class="pal-actions">
-                                <button class="pal-btn pal-btn-remove" onclick="app.removePal('${pal.shareCode}')">Remove</button>
+                                <button class="pal-btn pal-btn-remove" onclick="app.removePal('${pal.palCode}')">Remove</button>
                             </div>
                         </div>
                     `;
@@ -6081,8 +6157,8 @@ async toggleLeaderboard() {
             },
 
             // Toggle pal card expanded state
-            togglePalExpanded(shareCode) {
-                const pal = this.data.pals.friends.find(f => f.shareCode === shareCode);
+            togglePalExpanded(palCode) {
+                const pal = this.data.pals.friends.find(f => f.palCode === palCode);
                 if (pal) {
                     pal.expanded = !pal.expanded;
                     this.saveData();
@@ -6099,7 +6175,7 @@ async toggleLeaderboard() {
                 }
 
                 for (const pal of this.data.pals.friends) {
-                    await this.refreshPalStats(pal.shareCode);
+                    await this.refreshPalStats(pal.palCode);
                 }
 
                 if (btn) {
@@ -6180,18 +6256,18 @@ async toggleLeaderboard() {
                             .get();
                     } else {
                         // FRIENDS: Show only added friends who OPTED IN + current user (if opted in)
-                        const friendCodes = this.data.pals.friends.map(f => f.shareCode);
-                        if (friendCodes.length === 0 && !this.data.pals.myShareCode) {
+                        const friendCodes = this.data.pals.friends.map(f => f.palCode);
+                        if (friendCodes.length === 0 && !this.data.pals.myPalCode) {
                             listEl.innerHTML = '<p style="color: #6b7280; text-align: center; padding: 20px;">Add friends to see their rankings!</p>';
                             return;
                         }
                         
                         // Add current user to the list ONLY if they have opted into leaderboards
                         const allCodes = [...friendCodes];
-                        if (this.data.pals.myShareCode && 
+                        if (this.data.pals.myPalCode && 
                             this.data.pals.joinedLeaderboard && 
-                            !allCodes.includes(this.data.pals.myShareCode)) {
-                            allCodes.push(this.data.pals.myShareCode);
+                            !allCodes.includes(this.data.pals.myPalCode)) {
+                            allCodes.push(this.data.pals.myPalCode);
                         }
                         
                         // Fetch friends + user data, but ONLY include those who opted in
@@ -6230,12 +6306,12 @@ async toggleLeaderboard() {
                         if (daysInactive >= 21) return;
 
                         // Weight leaderboard is optional per user
-                        if (metric === 'weightLoss' && !(data.joinWeightLeaderboard === true)) return;
+                        if (metric === 'weight' && !(data.joinWeightLeaderboard === true)) return;
 
                         let value = null;
                         let valueLbs = null;
 
-                        if (metric === 'weightLoss') {
+                        if (metric === 'weight') {
                             // Leaderboard period toggle drives which weight % and lbs delta to use
                             if (period === 'week') {
                                 value = (data.stats && data.stats.weightChangePctThisWeek !== undefined) ? data.stats.weightChangePctThisWeek : null;
@@ -6250,7 +6326,7 @@ async toggleLeaderboard() {
                         } else {
                             value = data.stats?.[metric] ?? 0;
                         // Hide weight entries until at least one weigh-in exists
-                        if (metric === 'weightLoss' && (value === null || value === undefined)) return;
+                        if (metric === 'weight' && (value === null || value === undefined)) return;
 
                         }
 
@@ -6264,11 +6340,11 @@ async toggleLeaderboard() {
                         // 1 day = no indicator
 
                         participants.push({
-                            shareCode: data.shareCode,
-                            displayName: data.displayName || data.shareCode,
+                            palCode: data.palCode,
+                            displayName: data.displayName || data.palCode,
                             value: value,
                             valueLbs: valueLbs,
-                            isMe: data.shareCode === this.data.pals.myShareCode,
+                            isMe: data.palCode === this.data.pals.myPalCode,
                             statusIndicator: statusIndicator
                         });
                     });
@@ -6283,7 +6359,7 @@ async toggleLeaderboard() {
                     let rankedParticipants = [];
                     let unrankedParticipants = [];
 
-                    if (metric === 'weightLoss') {
+                    if (metric === 'weight') {
                         rankedParticipants = participants.filter(p => p.value !== null && p.value !== undefined && !Number.isNaN(Number(p.value)));
                         unrankedParticipants = participants.filter(p => p.value === null || p.value === undefined || Number.isNaN(Number(p.value)));
 
@@ -6324,7 +6400,7 @@ async toggleLeaderboard() {
                     const orderedParticipants = [...rankedParticipants, ...unrankedParticipants];
 
                     // Get max value for progress bar scaling
-                    const maxValue = (metric === 'weightLoss')
+                    const maxValue = (metric === 'weight')
                         ? Math.max(...rankedParticipants.map(p => Math.abs(Number(p.value))), 1)
                         : (rankedParticipants.length ? Number(rankedParticipants[0].value) : 1);
 
@@ -6334,19 +6410,19 @@ async toggleLeaderboard() {
                         suffix = ` ${unit}`;
                     } else if (metric.includes('Steps')) {
                         suffix = ' steps';
-                    } else if (metric === 'weightLoss') {
+                    } else if (metric === 'weight') {
                         suffix = '';
                     }
 
                     // Render leaderboard items
                     listEl.innerHTML = orderedParticipants.map((p, index) => {
                         const rank = p.rank;
-                        const progressPercent = (rank === '' || maxValue <= 0) ? 0 : ((metric === 'weightLoss' ? Math.abs(Number(p.value ?? 0)) : Number(p.value ?? 0)) / maxValue) * 100;
+                        const progressPercent = (rank === '' || maxValue <= 0) ? 0 : ((metric === 'weight' ? Math.abs(Number(p.value ?? 0)) : Number(p.value ?? 0)) / maxValue) * 100;
                         const highlight = p.isMe ? 'highlight' : '';
                         
                         // Format weight change (% + lbs)
                         let displayValue = p.value;
-                        if (metric === 'weightLoss') {
+                        if (metric === 'weight') {
                             if (p.value === null || p.value === undefined) {
                                 displayValue = '--';
                             } else {
@@ -6475,21 +6551,30 @@ async toggleLeaderboard() {
                     alert('Maximum 3 habits reached!');
                     return;
                 }
-                
-                // Random default colors for habits
-                const colors = ['#10b981', '#3b82f6', '#8b5cf6', '#ec4899', '#f59e0b', '#ef4444'];
-                const randomColor = colors[this.data.habits.length % colors.length];
-                
-                const newHabit = {
-                    id: Date.now(),
-                    name: '',
-                    color: randomColor,
-                    completions: []
-                };
-                
-                this.data.habits.push(newHabit);
-                this.saveData();
-                this.renderHabits();
+
+                // Prompt for habit name first
+                let name = prompt('Enter habit name:');
+                if (name === null) return; // cancelled
+                name = name.trim();
+                if (!name) {
+                    alert('Habit name is required.');
+                    return;
+                }
+
+                // Then prompt for color using the existing color wheel modal (same as App Theme)
+                this.openColorWheel((color) => {
+                    if (!color) return; // safety; modal cancel does not call callback
+                    const newHabit = {
+                        id: Date.now(),
+                        name,
+                        color,
+                        completions: []
+                    };
+
+                    this.data.habits.push(newHabit);
+                    this.saveData();
+                    this.renderHabits();
+                });
             },
 
             // Remove habit
