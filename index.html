@@ -2464,11 +2464,11 @@
                     <div style="display: flex; align-items: center; gap: 8px;">
                         <div style="flex: 1; min-width: 0;">
                             <div style="font-size: 11px; color: #6b7280; margin-bottom: 2px;">PAL Code</div>
-                            <div style="font-size: 14px; color: #e8e8e8; font-weight: 600;" id="display-share-code">
+                            <div style="font-size: 14px; color: #e8e8e8; font-weight: 600;" id="display-pal-code">
                                 Not set
                             </div>
                         </div>
-                        <button id="share-code-btn" onclick="app.handlePalCodeButton()" 
+                        <button id="pal-code-btn" onclick="app.handlePalCodeButton()" 
                                 style="width: 55px; height: 32px; flex-shrink: 0; background: var(--primary-dark); color: white; border: none; border-radius: 5px; font-size: 12px; cursor: pointer; font-weight: 600; display: flex; align-items: center; justify-content: center;">
                             Set Code
                         </button>
@@ -5170,9 +5170,9 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
             // Update PALS UI
             updatePalsUI() {
                 // Update display elements in compact design
-                const shareCodeDisplay = document.getElementById('display-share-code');
+                const shareCodeDisplay = document.getElementById('display-pal-code');
                 const displayNameDisplay = document.getElementById('display-display-name');
-                const shareCodeBtn = document.getElementById('share-code-btn');
+                const shareCodeBtn = document.getElementById('pal-code-btn');
                 
                 if (shareCodeDisplay) {
                     shareCodeDisplay.textContent = this.data.pals.myPalCode || 'Not set';
@@ -5295,188 +5295,6 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
 
                 // Sync if possible (non-blocking)
                 try { await this.syncStatsToFirebase(); } catch (e) {}
-            },
-
-            // Save PAL Code
-            async saveShareCode() {
-                const inputEl = document.getElementById('my-share-code');
-                if (!inputEl) {
-                    alert('Error: Input element not found');
-                    return;
-                }
-                
-                const code = inputEl.value.trim().toUpperCase();
-                const errorEl = document.getElementById('share-code-error');
-                const successEl = document.getElementById('share-code-success');
-                
-                if (errorEl) errorEl.classList.remove('show');
-                if (successEl) successEl.classList.remove('show');
-
-                // Validate format
-                if (!/^[A-Z]{2}-\d{2}$/.test(code)) {
-                    if (errorEl) {
-                        errorEl.textContent = 'Use AA-12 (two letters, dash, two numbers). Example: JP-04';
-                        errorEl.classList.add('show');
-                    } else {
-                        alert('Use AA-12 (two letters, dash, two numbers). Example: JP-04');
-                    }
-                    return;
-                }
-
-                // CHECK IF CODE IS ALREADY LOCKED
-                if (this.data.pals.myPalCode && code !== this.data.pals.myPalCode) {
-                    // CODE IS LOCKED - CANNOT CHANGE!
-                    alert(
-                        '⚠️ Share Code Locked\n\n' +
-                        `Your code "${this.data.pals.myPalCode}" is permanent and cannot be changed.\n\n` +
-                        'This protects your identity in leaderboards.'
-                    );
-                    // Reset input to locked code if element exists
-                    if (inputEl) inputEl.value = this.data.pals.myPalCode;
-                    return;
-                }
-
-                // If user already has this code, just update stats
-                if (code === this.data.pals.myPalCode) {
-                    await this.syncMyStatsToFirebase();
-                    if (successEl) {
-                        successEl.classList.add('show');
-                        setTimeout(() => successEl.classList.remove('show'), 3000);
-                    }
-                    return;
-                }
-
-                // FIRST TIME SETTING CODE - CHECK AVAILABILITY THEN PROMPT FOR DISPLAY NAME
-                // Ask for a display name only after the code format is valid and before claiming the code.
-                let displayName = (this.data.pals.displayName || '').trim();
-                const namePrompt = 'Enter a display name (shown to pals and on leaderboards):';
-                while (!displayName) {
-                    const entered = prompt(namePrompt, displayName || '');
-                    if (entered === null) {
-                        // User cancelled
-                        return;
-                    }
-                    displayName = String(entered).trim();
-                }
-
-                // Confirm permanent lock
-                const confirmed = confirm(
-                    `⚠️ Lock This Code?\n\n` +
-                    `Code: ${code}\n\n` +
-                    `Once confirmed, this code is permanent and cannot be changed.\n\n` +
-                    `Continue?`
-                );
-
-                if (!confirmed) return;
-
-                // Use transaction to atomically claim the PAL Code
-                try {
-                    const docRef = this.db.collection('users').doc(code);
-
-                    await this.db.runTransaction(async (transaction) => {
-                        const doc = await transaction.get(docRef);
-
-                        if (doc.exists) {
-                            // Code already taken
-                            throw new Error('CODE_TAKEN');
-                        }
-
-                        // Code is available - claim it (leaderboard is user's choice via checkbox)
-                        const stats = this.calculateStats();
-                        const monthStats = this.calculateMonthStats();
-                        const weight = this.calculateWeightLoss();
-                        const weightChangeLbsAllTime = this.calculateWeightChangeLbsAllTime();
-                        const weightChangePctThisWeek = this.calculateWeightChangePctForPeriod('week');
-                        const weightChangePctThisMonth = this.calculateWeightChangePctForPeriod('month');
-                        const weightChangeLbsThisWeek = this.calculateWeightChangeLbsForPeriod('week');
-                        const weightChangeLbsThisMonth = this.calculateWeightChangeLbsForPeriod('month');
-
-                        transaction.set(docRef, {
-                            palCode: code,
-                            displayName: displayName,
-                            joinedLeaderboard: this.data.pals.joinedLeaderboard || false,
-                            joinWeightLeaderboard: this.data.pals.joinWeightLeaderboard || false, // USER'S CHOICE
-                            stats: {
-                                // Week totals
-                                thisWeekDistance: stats.thisWeekDistance,
-                                thisWeekStrengthDays: stats.thisWeekStrengthDays,
-                                thisWeekSteps: stats.thisWeekSteps,
-                                // Month totals
-                                thisMonthDistance: monthStats.monthDistance,
-                                thisMonthStrengthDays: monthStats.monthStrengthDays,
-                                thisMonthSteps: monthStats.monthSteps,
-                                // All-time totals
-                                totalDistance: stats.totalDistance,
-                                totalSteps: stats.totalSteps,
-                                totalStrengthDays: stats.totalStrengthDays,
-                                // Strength exercises
-                                thisWeekPushups: stats.thisWeekPushups,
-                                thisMonthPushups: monthStats.monthPushups,
-                                totalPushups: stats.totalPushups,
-                                thisWeekPullups: stats.thisWeekPullups,
-                                thisMonthPullups: monthStats.monthPullups,
-                                totalPullups: stats.totalPullups,
-                                thisWeekRollerAbs: stats.thisWeekRollerAbs,
-                                thisMonthRollerAbs: monthStats.monthRollerAbs,
-                                totalRollerAbs: stats.totalRollerAbs,
-                                thisWeekDips: stats.thisWeekDips,
-                                thisMonthDips: monthStats.monthDips,
-                                totalDips: stats.totalDips,
-                                thisWeekSquats: stats.thisWeekSquats,
-                                thisMonthSquats: monthStats.monthSquats,
-                                totalSquats: stats.totalSquats,
-                                thisWeekSitups: stats.thisWeekSitups,
-                                thisMonthSitups: monthStats.monthSitups,
-                                totalSitups: stats.totalSitups,
-                                // Cardio activities
-                                thisWeekRunning: stats.thisWeekRunning,
-                                thisMonthRunning: monthStats.monthRunning,
-                                totalRunning: stats.totalRunning,
-                                thisWeekWalking: stats.thisWeekWalking,
-                                thisMonthWalking: monthStats.monthWalking,
-                                totalWalking: stats.totalWalking,
-                                thisWeekBiking: stats.thisWeekBiking,
-                                thisMonthBiking: monthStats.monthBiking,
-                                totalBiking: stats.totalBiking,
-                                thisWeekDogWalk: stats.thisWeekDogWalk,
-                                thisMonthDogWalk: monthStats.monthDogWalk,
-                                totalDogWalk: stats.totalDogWalk,
-                                thisWeekHiking: stats.thisWeekHiking,
-                                thisMonthHiking: monthStats.monthHiking,
-                                totalHiking: stats.totalHiking,
-                                // Other
-                                thisWeekStairs: stats.thisWeekStairs,
-                                thisMonthStairs: monthStats.monthStairs,
-                                totalStairs: stats.totalStairs,
-                                // Weight
-                                weightChangePctThisWeek: weightChangePctThisWeek,
-                                weightChangePctThisMonth: weightChangePctThisMonth,
-                                weightChangePctAllTime: weight,
-                                weightChangeLbsThisWeek: weightChangeLbsThisWeek,
-                                weightChangeLbsThisMonth: weightChangeLbsThisMonth,
-                                weightChangeLbsAllTime: weightChangeLbsAllTime
-                            },
-                            lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
-                        });
-                    });
-
-                    // Transaction succeeded - save locally
-                    this.data.pals.myPalCode = code;
-                    this.saveData();
-
-                    successEl.classList.add('show');
-                    setTimeout(() => successEl.classList.remove('show'), 3000);
-                    
-                } catch (error) {
-                    if (error.message === 'CODE_TAKEN') {
-                        errorEl.textContent = 'This code is already taken. Try another!';
-                        errorEl.classList.add('show');
-                    } else {
-                        console.error('Error claiming PAL Code:', error);
-                        errorEl.textContent = 'Error saving code. Please try again.';
-                        errorEl.classList.add('show');
-                    }
-                }
             },
 
             // Share my code via text/messaging
@@ -5686,9 +5504,9 @@ shareMyPalCode() {
                 setTimeout(() => successEl.classList.remove('show'), 3000);
             },
 
-            // Edit Share Code (inline prompt)
+            // Edit PAL Code (inline prompt)
 
-// Handle Share Code button (Set Code or Share)
+// Handle PAL Code button (Set Code or Share)
 async handlePalCodeButton() {
     if (this.data.pals.myPalCode) {
         // Already has code - share it
@@ -5699,69 +5517,10 @@ async handlePalCodeButton() {
     }
 },
 
-// Create Share Code
+// Create PAL Code
+// Create PAL Code
 async createPalCode() {
-                // PAL Code v1.7.0: 4 digits (numbers only), locked after creation.
-                if (this.data.pals.myPalCode) return; // already set
-
-                // Avoid confusing partial behavior when opened from disk
-                if (location && location.protocol === 'file:') {
-                    alert('PAL Code requires the app to be opened over http/https (for unique availability checks). Please test from GitHub Pages or a local server.');
-                    return;
-                }
-
-                while (true) {
-                    const code = await this.promptForPalCode();
-                    if (code === null) return; // cancelled
-
-                    // Confirm permanence
-                    const confirmBody = document.createElement('div');
-                    confirmBody.style.color = 'rgba(255,255,255,0.8)';
-                    confirmBody.style.fontSize = '13px';
-                    confirmBody.innerHTML = `This PAL Code will be <b>locked</b> and cannot be changed later.<br><br>Continue with <b>${code}</b>?`;
-
-                    const confirmed = await this.promptModal({ title: 'Confirm PAL Code', bodyNode: confirmBody, okText: 'OK', cancelText: 'Cancel' });
-                    if (!confirmed) return;
-
-                    // Claim code remotely (source of truth)
-                    try {
-                        await this.claimPalCodeInFirebase(code);
-                    } catch (err) {
-                        if (err && err.message === 'CODE_TAKEN') {
-                            alert('❌ That PAL Code is already taken. Please choose another one.');
-                            continue;
-                        }
-                        alert('Error creating PAL Code. Please try again.');
-                        return;
-                    }
-
-                    // Prompt for Display Name
-                    const name = await this.promptForDisplayName();
-                    if (name === null) {
-                        // Allow user to set later via Edit (do not block completion)
-                        this.data.pals.myPalCode = code;
-                        this.data.pals.displayName = '';
-                    } else {
-                        this.data.pals.myPalCode = code;
-                        this.data.pals.displayName = name;
-                    }
-
-                    this.saveData();
-                    this.updatePalsUI();
-
-                    // Best-effort stats sync
-                    this.syncMyStatsToFirebase();
-                    return;
-                }
-            },
-
-            async createPalCode() {
-    // PAL Code creation flow:
-    // 1) Prompt for 4-digit PAL Code (numbers only; leading zeros allowed)
-    // 2) If taken: warn and re-prompt
-    // 3) If available: confirm it cannot be changed later
-    // 4) Prompt for Display Name
-    // 5) Save PAL Code + display name and update the Pals card immediately
+    // PAL Code creation flow (4 digits)
     while (true) {
         const raw = prompt(
             'Create your PAL Code (4 digits):\n' +
@@ -5771,60 +5530,47 @@ async createPalCode() {
         if (raw === null) return; // cancelled
 
         const code = String(raw).trim();
-
-        // Validate code format (exactly 4 digits; keep as string to preserve leading zeros)
         if (!/^\d{4}$/.test(code)) {
-            alert('⚠️ Invalid PAL Code. Please enter exactly 4 numbers (0000–9999).');
+            alert('⚠️ Invalid PAL Code. Please enter exactly 4 digits (e.g., 0042).');
             continue;
         }
 
-        try {
-            // Check availability (exact match)
-            const docRef = this.db.collection('users').doc(code);
-            const snap = await docRef.get();
-            if (snap.exists) {
-                alert('⚠️ That PAL Code is already taken. Please try another.');
-                continue;
-            }
+        const confirmLock = confirm(
+            'Your PAL Code cannot be changed later.\n\n' +
+            'Use PAL Code: ' + code + ' ?'
+        );
+        if (!confirmLock) continue;
 
-            // Confirm lock
-            const okLocked = confirm(
-                `Your PAL Code will be: ${code}\n\n` +
-                'This PAL Code cannot be changed later (unless you clear app data).\n\n' +
-                'Press OK to confirm or Cancel to choose a different code.'
+        // Prompt for Display Name
+        let displayName = '';
+        while (!displayName) {
+            const entered = prompt(
+                'Enter your display name (shown to pals and on leaderboards):',
+                (this.data.pals.displayName || '').trim()
             );
-            if (!okLocked) {
-                // Choose another code (stay in flow)
-                continue;
-            }
+            if (entered === null) return; // cancelled
+            displayName = String(entered).trim();
+        }
 
-            // Prompt for Display Name
-            let displayName = '';
-            while (!displayName) {
-                const entered = prompt(
-                    'Enter your display name (shown to pals and on leaderboards):',
-                    (this.data.pals.displayName || '').trim()
-                );
-                if (entered === null) return; // cancelled
-                displayName = String(entered).trim();
-            }
+        if (!this.db) {
+            console.error('Firebase is not initialized (db is missing).');
+            alert('❌ Firebase is not available. Please try again.');
+            return;
+        }
+
+        try {
+            const docRef = this.db.collection('users').doc(code);
 
             // Claim the code transactionally (protects against race conditions)
             await this.db.runTransaction(async (transaction) => {
                 const doc = await transaction.get(docRef);
                 if (doc.exists) throw new Error('CODE_TAKEN');
 
-                // Save locally first (so UI updates immediately)
-                this.data.pals.myPalCode = code;
-                this.data.pals.displayName = displayName;
-
-                this.saveData();
-                this.updatePalsUI();
-
-                // Push initial user record to Firebase (stats snapshot)
-                const stats = this.getStatsForSync();
-                const monthStats = this.getMonthStatsForSync();
-
+                // Snapshot stats at creation time (optional fields for leaderboards)
+                const stats = this.calculateStats();
+                const monthStats = this.calculateMonthStats();
+                const weight = this.calculateWeightLoss();
+                const weightChangeLbsAllTime = this.calculateWeightChangeLbsAllTime();
                 const weightChangePctThisWeek = this.calculateWeightChangePctForPeriod('week');
                 const weightChangePctThisMonth = this.calculateWeightChangePctForPeriod('month');
                 const weightChangeLbsThisWeek = this.calculateWeightChangeLbsForPeriod('week');
@@ -5833,43 +5579,52 @@ async createPalCode() {
                 transaction.set(docRef, {
                     palCode: code,
                     displayName: displayName,
-                    joinedLeaderboard: this.data.pals.joinedLeaderboard || false,
-                    joinWeightLeaderboard: this.data.pals.joinWeightLeaderboard || false,
-                    stats: {
-                        // Week totals
-                        thisWeekDistance: stats.thisWeekDistance,
-                        thisWeekStrengthDays: stats.thisWeekStrengthDays,
-                        thisWeekSteps: stats.thisWeekSteps,
-                        // Month totals
-                        thisMonthDistance: monthStats.monthDistance,
-                        thisMonthStrengthDays: monthStats.monthStrengthDays,
-                        thisMonthSteps: monthStats.monthSteps,
-                        // All time totals
-                        totalDistance: stats.totalDistance,
-                        totalStrengthDays: stats.totalStrengthDays,
-                        totalSteps: stats.totalSteps,
-                        // Workout totals
-                        thisWeekPushups: stats.thisWeekPushups,
-                        thisMonthPushups: monthStats.monthPushups,
-                        totalPushups: stats.totalPushups,
-                        thisWeekPullups: stats.thisWeekPullups,
-                        thisMonthPullups: monthStats.monthPullups,
-                        totalPullups: stats.totalPullups,
-                        thisWeekSitups: stats.thisWeekSitups,
-                        thisMonthSitups: monthStats.monthSitups,
-                        totalSitups: stats.totalSitups,
-                        thisWeekSquats: stats.thisWeekSquats,
-                        thisMonthSquats: monthStats.monthSquats,
-                        totalSquats: stats.totalSquats,
-                        // Weight change (still stored as change metrics; leaderboard category is "Weight")
-                        weightChangePctThisWeek: weightChangePctThisWeek,
-                        weightChangePctThisMonth: weightChangePctThisMonth,
-                        weightChangeLbsThisWeek: weightChangeLbsThisWeek,
-                        weightChangeLbsThisMonth: weightChangeLbsThisMonth,
-                        lastUpdated: new Date().toISOString()
-                    }
+                    pals: [],
+                    joinedLeaderboard: false,
+                    joinWeightLeaderboard: false,
+
+                    // Distance / steps / exercises snapshot
+                    thisWeekDistance: stats.thisWeekDistance,
+                    thisMonthDistance: monthStats.monthDistance,
+                    totalDistance: stats.totalDistance,
+                    thisWeekSteps: stats.thisWeekSteps,
+                    thisMonthSteps: monthStats.monthSteps,
+                    totalSteps: stats.totalSteps,
+                    thisWeekPushups: stats.thisWeekPushups,
+                    thisMonthPushups: monthStats.monthPushups,
+                    totalPushups: stats.totalPushups,
+                    thisWeekPullups: stats.thisWeekPullups,
+                    thisMonthPullups: monthStats.monthPullups,
+                    totalPullups: stats.totalPullups,
+                    thisWeekSitups: stats.thisWeekSitups,
+                    thisMonthSitups: monthStats.monthSitups,
+                    totalSitups: stats.totalSitups,
+                    thisWeekSquats: stats.thisWeekSquats,
+                    thisMonthSquats: monthStats.monthSquats,
+                    totalSquats: stats.totalSquats,
+
+                    // Weight stats snapshot (leaderboard uses opt-in flag)
+                    currentWeight: weight.currentWeight,
+                    initialWeight: weight.initialWeight,
+                    weightLost: weight.weightLost,
+                    weightChangeLbsAllTime: weightChangeLbsAllTime,
+                    weightChangePctThisWeek: weightChangePctThisWeek,
+                    weightChangePctThisMonth: weightChangePctThisMonth,
+                    weightChangeLbsThisWeek: weightChangeLbsThisWeek,
+                    weightChangeLbsThisMonth: weightChangeLbsThisMonth,
+
+                    lastUpdated: new Date().toISOString()
                 });
             });
+
+            // Only persist locally after Firebase claim succeeds
+            this.data.pals.myPalCode = code;
+            this.data.pals.displayName = displayName;
+            this.saveData();
+            this.updatePalsUI();
+
+            // Best-effort stats sync (merge update)
+            await this.syncMyStatsToFirebase();
 
             alert('✅ PAL Code created! You can now share it.');
             return;
@@ -5884,8 +5639,6 @@ async createPalCode() {
         }
     }
 },
-
-
             // Sync my stats to Firebase
             async syncMyStatsToFirebase() {
                 if (!this.data.pals.myPalCode || !this.db) return;
@@ -5971,7 +5724,7 @@ async createPalCode() {
                         lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
                     };
 
-                    await this.db.collection('users').doc(this.data.pals.myPalCode).set(data);
+                    await this.db.collection('users').doc(this.data.pals.myPalCode).set({ ...data, palCode: this.data.pals.myPalCode, displayName: (this.data.pals.displayName || '') }, { merge: true });
                     console.log('✅ Stats synced to Firebase');
                 } catch (error) {
                     console.error('Error syncing stats:', error);
@@ -6019,7 +5772,7 @@ async createPalCode() {
                     const doc = await this.db.collection('users').doc(code).get();
                     
                     if (!doc.exists) {
-                        errorEl.textContent = 'Share code not found. Make sure your pal has set up their profile!';
+                        errorEl.textContent = 'PAL Code not found. Make sure your pal has set up their profile!';
                         errorEl.classList.add('show');
                         return;
                     }
