@@ -2522,9 +2522,9 @@
                 
                 <div style="background: #2d2d2d; border-radius: 8px; padding: 8px 12px;">
                     <div style="display: flex; gap: 8px; align-items: center;">
-                        <input type="text" id="add-pal-code" placeholder="Enter PAL Code..." 
+                        <input type="text" id="add-pal-code" type="tel" inputmode="numeric" placeholder="Enter PAL Code..." 
                                style="flex: 1; min-width: 0; padding: 6px 10px; background: #1a1a1a; border: 1px solid #3d3d3d; border-radius: 6px; color: #e8e8e8; font-size: 13px; height: 32px; box-sizing: border-box;" 
-                               maxlength="15">
+                               maxlength="4">
                         <button onclick="app.addPal()" 
                                 style="width: 55px; height: 32px; flex-shrink: 0; background: var(--primary-dark); color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 12px; display: flex; align-items: center; justify-content: center;">
                             Add
@@ -2920,13 +2920,16 @@
                             myPalCode: '',
                             displayName: '',
                             joinedLeaderboard: false,
+                            joinWeightLeaderboard: false,
                             friends: []
                         };
                     } else {
-                        // Ensure friends array exists even if pals exists
-                        if (!this.data.pals.friends) {
-                            this.data.pals.friends = [];
-                        }
+                        // Ensure required fields exist on pals (upgrade safety)
+                        if (this.data.pals.myPalCode === undefined) this.data.pals.myPalCode = '';
+                        if (this.data.pals.displayName === undefined) this.data.pals.displayName = '';
+                        if (this.data.pals.joinedLeaderboard === undefined) this.data.pals.joinedLeaderboard = false;
+                        if (this.data.pals.joinWeightLeaderboard === undefined) this.data.pals.joinWeightLeaderboard = false;
+                        if (!this.data.pals.friends) this.data.pals.friends = [];
                     }
                 }
             },
@@ -5191,21 +5194,107 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                 }
                 
                 // Update checkbox
+                const hasPalCode = !!(this.data.pals && this.data.pals.myPalCode);
                 const checkbox = document.getElementById('join-leaderboard');
                 if (checkbox) {
-                    checkbox.checked = this.data.pals.joinedLeaderboard || false;
+                    // Only allow leaderboard participation once PAL Code is set
+                    checkbox.checked = (this.data.pals.joinedLeaderboard || false) && hasPalCode;
+                    checkbox.disabled = !hasPalCode;
+                    checkbox.style.opacity = checkbox.disabled ? '0.5' : '1';
+                    checkbox.style.cursor = checkbox.disabled ? 'not-allowed' : 'pointer';
                 }
 
                 const weightCheckbox = document.getElementById('join-weight-leaderboard');
                 if (weightCheckbox) {
-                    weightCheckbox.checked = this.data.pals.joinWeightLeaderboard || false;
-                    weightCheckbox.disabled = !(this.data.pals.joinedLeaderboard || false);
+                    const eligibleForWeight = this.isWeightLeaderboardEligible();
+                    // Weight leaderboard only available when:
+                    // 1) PAL Code exists
+                    // 2) User is in leaderboards (Steps/Distance)
+                    // 3) Initial weight + at least one weigh-in exist
+                    const canToggleWeight = hasPalCode && (this.data.pals.joinedLeaderboard || false) && eligibleForWeight;
+
+                    weightCheckbox.checked = (this.data.pals.joinWeightLeaderboard || false) && canToggleWeight;
+                    weightCheckbox.disabled = !canToggleWeight;
                     weightCheckbox.style.opacity = weightCheckbox.disabled ? '0.5' : '1';
                     weightCheckbox.style.cursor = weightCheckbox.disabled ? 'not-allowed' : 'pointer';
                 }
 
                 this.renderPalsList();
                 this.renderLeaderboard();
+            },
+
+
+            // Weight leaderboard eligibility:
+            // Requires Initial Weight in Goals AND at least one weigh-in logged.
+            isWeightLeaderboardEligible() {
+                const iw = this.data && this.data.goals ? this.data.goals.initialWeight : null;
+                const hasInitial = iw !== null && iw !== '' && !Number.isNaN(Number(iw));
+                const hasWeighIns = Array.isArray(this.data.weights) && this.data.weights.length > 0;
+                return hasInitial && hasWeighIns;
+            },
+
+            // Toggle leaderboard participation (Steps/Distance).
+            // Only allowed once PAL Code is set.
+            async toggleLeaderboard() {
+                const checkbox = document.getElementById('join-leaderboard');
+                const hasPalCode = !!(this.data.pals && this.data.pals.myPalCode);
+
+                if (!hasPalCode) {
+                    if (checkbox) checkbox.checked = false;
+                    this.data.pals.joinedLeaderboard = false;
+                    this.data.pals.joinWeightLeaderboard = false;
+                    this.saveData();
+                    this.updatePalsUI();
+                    alert('Create your PAL Code first to join the leaderboards.');
+                    return;
+                }
+
+                const joined = !!(checkbox && checkbox.checked);
+                this.data.pals.joinedLeaderboard = joined;
+
+                // If leaving leaderboards, also leave weight leaderboard
+                if (!joined) {
+                    this.data.pals.joinWeightLeaderboard = false;
+                    const weightCheckbox = document.getElementById('join-weight-leaderboard');
+                    if (weightCheckbox) weightCheckbox.checked = false;
+                }
+
+                this.saveData();
+                this.updatePalsUI();
+
+                // Sync if possible (non-blocking)
+                try { await this.syncStatsToFirebase(); } catch (e) {}
+            },
+
+            // Toggle Weight leaderboard opt-in.
+            // Only enabled once eligibility requirements are met.
+            async toggleWeightLeaderboardOptIn() {
+                const weightCheckbox = document.getElementById('join-weight-leaderboard');
+                const hasPalCode = !!(this.data.pals && this.data.pals.myPalCode);
+
+                if (!hasPalCode || !(this.data.pals.joinedLeaderboard || false)) {
+                    if (weightCheckbox) weightCheckbox.checked = false;
+                    this.data.pals.joinWeightLeaderboard = false;
+                    this.saveData();
+                    this.updatePalsUI();
+                    return;
+                }
+
+                if (!this.isWeightLeaderboardEligible()) {
+                    if (weightCheckbox) weightCheckbox.checked = false;
+                    this.data.pals.joinWeightLeaderboard = false;
+                    this.saveData();
+                    this.updatePalsUI();
+                    alert('To join the Weight leaderboard, add your Initial Weight in Goals and log at least one weigh-in.');
+                    return;
+                }
+
+                this.data.pals.joinWeightLeaderboard = !!(weightCheckbox && weightCheckbox.checked);
+                this.saveData();
+                this.updatePalsUI();
+
+                // Sync if possible (non-blocking)
+                try { await this.syncStatsToFirebase(); } catch (e) {}
             },
 
             // Save PAL Code
@@ -5391,7 +5480,165 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
             },
 
             // Share my code via text/messaging
-            shareMyPalCode() {
+            
+// -------- PAL Code / Display Name modal helpers (v1.7.0) --------
+createModalOverlay(titleText) {
+    const overlay = document.createElement('div');
+    overlay.style.position = 'fixed';
+    overlay.style.inset = '0';
+    overlay.style.background = 'rgba(0,0,0,0.6)';
+    overlay.style.display = 'flex';
+    overlay.style.alignItems = 'center';
+    overlay.style.justifyContent = 'center';
+    overlay.style.zIndex = '9999';
+
+    const modal = document.createElement('div');
+    modal.style.width = 'min(420px, 92vw)';
+    modal.style.background = '#1f1f1f';
+    modal.style.border = '1px solid rgba(255,255,255,0.08)';
+    modal.style.borderRadius = '16px';
+    modal.style.boxShadow = '0 20px 60px rgba(0,0,0,0.55)';
+    modal.style.padding = '18px';
+
+    const title = document.createElement('div');
+    title.textContent = titleText;
+    title.style.fontSize = '18px';
+    title.style.fontWeight = '700';
+    title.style.color = '#fff';
+    title.style.marginBottom = '10px';
+
+    modal.appendChild(title);
+    overlay.appendChild(modal);
+
+    return { overlay, modal };
+},
+
+promptModal({ title, bodyNode, okText='OK', cancelText='Cancel' }) {
+    return new Promise((resolve) => {
+        const { overlay, modal } = this.createModalOverlay(title);
+
+        const bodyWrap = document.createElement('div');
+        bodyWrap.appendChild(bodyNode);
+        modal.appendChild(bodyWrap);
+
+        const actions = document.createElement('div');
+        actions.style.display = 'flex';
+        actions.style.gap = '10px';
+        actions.style.marginTop = '14px';
+
+        const btnCancel = document.createElement('button');
+        btnCancel.textContent = cancelText;
+        btnCancel.style.flex = '1';
+        btnCancel.className = 'secondary-btn';
+        btnCancel.onclick = () => {
+            document.body.removeChild(overlay);
+            resolve(null);
+        };
+
+        const btnOk = document.createElement('button');
+        btnOk.textContent = okText;
+        btnOk.style.flex = '1';
+        btnOk.className = 'primary-btn';
+        btnOk.onclick = () => {
+            document.body.removeChild(overlay);
+            resolve(true);
+        };
+
+        actions.appendChild(btnCancel);
+        actions.appendChild(btnOk);
+        modal.appendChild(actions);
+
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) {
+                document.body.removeChild(overlay);
+                resolve(null);
+            }
+        });
+
+        document.body.appendChild(overlay);
+    });
+},
+
+async promptForPalCode() {
+    const wrap = document.createElement('div');
+
+    const desc = document.createElement('div');
+    desc.textContent = 'Enter a 4-digit PAL Code (numbers only). Leading zeros are allowed.';
+    desc.style.color = 'rgba(255,255,255,0.75)';
+    desc.style.fontSize = '13px';
+    desc.style.marginBottom = '12px';
+    wrap.appendChild(desc);
+
+    const input = document.createElement('input');
+    input.type = 'tel';
+    input.inputMode = 'numeric';
+    input.autocomplete = 'one-time-code';
+    input.placeholder = '0000';
+    input.maxLength = 4;
+    input.style.width = '100%';
+    input.style.padding = '12px 14px';
+    input.style.borderRadius = '12px';
+    input.style.border = '1px solid rgba(255,255,255,0.12)';
+    input.style.background = '#121212';
+    input.style.color = '#fff';
+    input.style.fontSize = '18px';
+    input.style.letterSpacing = '4px';
+
+    input.addEventListener('input', () => {
+        input.value = input.value.replace(/\D/g, '').slice(0, 4);
+    });
+
+    wrap.appendChild(input);
+
+    // show modal
+    const result = await this.promptModal({ title: 'Create Your PAL Code', bodyNode: wrap, okText: 'OK', cancelText: 'Cancel' });
+    if (!result) return null;
+
+    const code = (input.value || '').trim();
+    if (!/^\d{4}$/.test(code)) {
+        alert('❌ PAL Code must be exactly 4 digits (example: 0042).');
+        return await this.promptForPalCode();
+    }
+    return code;
+},
+
+async promptForDisplayName() {
+    const wrap = document.createElement('div');
+
+    const desc = document.createElement('div');
+    desc.textContent = 'Enter the display name you want Pals to see.';
+    desc.style.color = 'rgba(255,255,255,0.75)';
+    desc.style.fontSize = '13px';
+    desc.style.marginBottom = '12px';
+    wrap.appendChild(desc);
+
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.placeholder = 'Display name';
+    input.maxLength = 20;
+    input.style.width = '100%';
+    input.style.padding = '12px 14px';
+    input.style.borderRadius = '12px';
+    input.style.border = '1px solid rgba(255,255,255,0.12)';
+    input.style.background = '#121212';
+    input.style.color = '#fff';
+    input.style.fontSize = '16px';
+
+    wrap.appendChild(input);
+
+    const result = await this.promptModal({ title: 'Set Display Name', bodyNode: wrap, okText: 'OK', cancelText: 'Cancel' });
+    if (!result) return null;
+
+    const name = (input.value || '').trim();
+    if (!name) {
+        alert('❌ Display Name cannot be empty.');
+        return await this.promptForDisplayName();
+    }
+    return name;
+},
+
+
+shareMyPalCode() {
                 const code = this.data.pals.myPalCode;
                 if (!code) {
                     alert('Please save your PAL Code first!');
@@ -5454,479 +5701,85 @@ async handlePalCodeButton() {
 
 // Create Share Code
 async createPalCode() {
-    // PAL Code creation flow:
-    // 1) Prompt for AA-12
-    // 2) If taken: warn and re-prompt
-    // 3) If available: prompt for Display Name
-    // 4) Save code + display name and update the Pals card immediately
-    while (true) {
-        const raw = prompt(
-            'Create your PAL Code (format AA-12):\n' +
-            'Two letters, a dash, then two numbers (example: JP-04)'
-        );
-        if (raw === null) return; // cancelled
+                // PAL Code v1.7.0: 4 digits (numbers only), locked after creation.
+                if (this.data.pals.myPalCode) return; // already set
 
-        const code = String(raw).trim().toUpperCase();
-
-        // Validate code format
-        if (!/^[A-Z]{2}-\d{2}$/.test(code)) {
-            alert('❌ Invalid format! Use AA-12 (two letters, dash, two numbers). Example: JP-04.');
-            continue;
-        }
-
-        // If code is locked, do not allow changing it
-        if (this.data.pals.myPalCode && code !== this.data.pals.myPalCode) {
-            alert(
-                '⚠️ Share Code Locked\n\n' +
-                `Your code "${this.data.pals.myPalCode}" is permanent and cannot be changed.\n\n` +
-                'This protects your identity in leaderboards.'
-            );
-            return;
-        }
-
-        // Check availability
-        try {
-            const docRef = this.db.collection('users').doc(code);
-            const snap = await docRef.get();
-            if (snap.exists) {
-                alert('⚠️ That PAL Code is already taken. Please try another.');
-                continue;
-            }
-
-            // Prompt for Display Name
-            let displayName = '';
-            while (!displayName) {
-                const entered = prompt('Enter your display name (shown to pals and on leaderboards):', (this.data.pals.displayName || '').trim());
-                if (entered === null) return; // cancelled
-                displayName = String(entered).trim();
-            }
-
-            // Claim the code transactionally (in case it was taken between the check and save)
-            await this.db.runTransaction(async (transaction) => {
-                const doc = await transaction.get(docRef);
-                if (doc.exists) {
-                    throw new Error('CODE_TAKEN');
+                // Avoid confusing partial behavior when opened from disk
+                if (location && location.protocol === 'file:') {
+                    alert('PAL Code requires the app to be opened over http/https (for unique availability checks). Please test from GitHub Pages or a local server.');
+                    return;
                 }
 
-                // Persist locally first and update UI immediately
-                this.data.pals.myPalCode = code;
-                this.data.pals.displayName = displayName;
-                this.saveData();
-                this.updatePalsUI();
+                while (true) {
+                    const code = await this.promptForPalCode();
+                    if (code === null) return; // cancelled
 
-                const stats = this.calculateStats();
-                const monthStats = this.calculateMonthStats();
-                const weight = this.calculateWeightLoss();
-                const weightChangeLbsAllTime = this.calculateWeightChangeLbsAllTime();
-                const weightChangePctThisWeek = this.calculateWeightChangePctForPeriod('week');
-                const weightChangePctThisMonth = this.calculateWeightChangePctForPeriod('month');
-                const weightChangeLbsThisWeek = this.calculateWeightChangeLbsForPeriod('week');
-                const weightChangeLbsThisMonth = this.calculateWeightChangeLbsForPeriod('month');
+                    // Confirm permanence
+                    const confirmBody = document.createElement('div');
+                    confirmBody.style.color = 'rgba(255,255,255,0.8)';
+                    confirmBody.style.fontSize = '13px';
+                    confirmBody.innerHTML = `This PAL Code will be <b>locked</b> and cannot be changed later.<br><br>Continue with <b>${code}</b>?`;
 
-                transaction.set(docRef, {
-                    palCode: code,
-                    displayName: displayName,
-                    joinedLeaderboard: this.data.pals.joinedLeaderboard || false,
-                    joinWeightLeaderboard: this.data.pals.joinWeightLeaderboard || false,
-                    stats: {
-                        // Week totals
-                        thisWeekDistance: stats.thisWeekDistance,
-                        thisWeekStrengthDays: stats.thisWeekStrengthDays,
-                        thisWeekSteps: stats.thisWeekSteps,
-                        // Month totals
-                        thisMonthDistance: monthStats.monthDistance,
-                        thisMonthStrengthDays: monthStats.monthStrengthDays,
-                        thisMonthSteps: monthStats.monthSteps,
-                        // All time totals
-                        totalDistance: stats.totalDistance,
-                        totalStrengthDays: stats.totalStrengthDays,
-                        totalSteps: stats.totalSteps,
-                        // Workout totals
-                        thisWeekPushups: stats.thisWeekPushups,
-                        thisMonthPushups: monthStats.monthPushups,
-                        totalPushups: stats.totalPushups,
-                        thisWeekPullups: stats.thisWeekPullups,
-                        thisMonthPullups: monthStats.monthPullups,
-                        totalPullups: stats.totalPullups,
-                        thisWeekRollerAbs: stats.thisWeekRollerAbs,
-                        thisMonthRollerAbs: monthStats.monthRollerAbs,
-                        totalRollerAbs: stats.totalRollerAbs,
-                        thisWeekDips: stats.thisWeekDips,
-                        thisMonthDips: monthStats.monthDips,
-                        totalDips: stats.totalDips,
-                        thisWeekSquats: stats.thisWeekSquats,
-                        thisMonthSquats: monthStats.monthSquats,
-                        totalSquats: stats.totalSquats,
-                        thisWeekSitups: stats.thisWeekSitups,
-                        thisMonthSitups: monthStats.monthSitups,
-                        totalSitups: stats.totalSitups,
-                        thisWeekWallSits: stats.thisWeekWallSits,
-                        thisMonthWallSits: monthStats.monthWallSits,
-                        totalWallSits: stats.totalWallSits,
-                        thisWeekPlanks: stats.thisWeekPlanks,
-                        thisMonthPlanks: monthStats.monthPlanks,
-                        totalPlanks: stats.totalPlanks,
-                        thisWeekBurpees: stats.thisWeekBurpees,
-                        thisMonthBurpees: monthStats.monthBurpees,
-                        totalBurpees: stats.totalBurpees,
-                        thisWeekCalfRaises: stats.thisWeekCalfRaises,
-                        thisMonthCalfRaises: monthStats.monthCalfRaises,
-                        totalCalfRaises: stats.totalCalfRaises,
-                        thisWeekJumpingJacks: stats.thisWeekJumpingJacks,
-                        thisMonthJumpingJacks: monthStats.monthJumpingJacks,
-                        totalJumpingJacks: stats.totalJumpingJacks,
-                        thisWeekLunges: stats.thisWeekLunges,
-                        thisMonthLunges: monthStats.monthLunges,
-                        totalLunges: stats.totalLunges,
-                        thisWeekBenchPress: stats.thisWeekBenchPress,
-                        thisMonthBenchPress: monthStats.monthBenchPress,
-                        totalBenchPress: stats.totalBenchPress,
-                        thisWeekShoulderPress: stats.thisWeekShoulderPress,
-                        thisMonthShoulderPress: monthStats.monthShoulderPress,
-                        totalShoulderPress: stats.totalShoulderPress,
-                        thisWeekBicepCurls: stats.thisWeekBicepCurls,
-                        thisMonthBicepCurls: monthStats.monthBicepCurls,
-                        totalBicepCurls: stats.totalBicepCurls,
-                        thisWeekRows: stats.thisWeekRows,
-                        thisMonthRows: monthStats.monthRows,
-                        totalRows: stats.totalRows,
-                        thisWeekDeadlifts: stats.thisWeekDeadlifts,
-                        thisMonthDeadlifts: monthStats.monthDeadlifts,
-                        totalDeadlifts: stats.totalDeadlifts,
-                        thisWeekMountainClimbers: stats.thisWeekMountainClimbers,
-                        thisMonthMountainClimbers: monthStats.monthMountainClimbers,
-                        totalMountainClimbers: stats.totalMountainClimbers,
-                        thisWeekLegRaises: stats.thisWeekLegRaises,
-                        thisMonthLegRaises: monthStats.monthLegRaises,
-                        totalLegRaises: stats.totalLegRaises,
-                        thisWeekRussianTwists: stats.thisWeekRussianTwists,
-                        thisMonthRussianTwists: monthStats.monthRussianTwists,
-                        totalRussianTwists: stats.totalRussianTwists,
-                        thisWeekGluteBridges: stats.thisWeekGluteBridges,
-                        thisMonthGluteBridges: monthStats.monthGluteBridges,
-                        totalGluteBridges: stats.totalGluteBridges,
-                        thisWeekBicycles: stats.thisWeekBicycles,
-                        thisMonthBicycles: monthStats.monthBicycles,
-                        totalBicycles: stats.totalBicycles,
-                        thisWeekRunningMiles: stats.thisWeekRunningMiles,
-                        thisMonthRunningMiles: monthStats.monthRunningMiles,
-                        totalRunningMiles: stats.totalRunningMiles,
-                        thisWeekCyclingMiles: stats.thisWeekCyclingMiles,
-                        thisMonthCyclingMiles: monthStats.monthCyclingMiles,
-                        totalCyclingMiles: stats.totalCyclingMiles,
-                        thisWeekSwimmingMiles: stats.thisWeekSwimmingMiles,
-                        thisMonthSwimmingMiles: monthStats.monthSwimmingMiles,
-                        totalSwimmingMiles: stats.totalSwimmingMiles,
-                        // Weight tracking
-                        weight: weight,
-                        weightChangeLbsAllTime: weightChangeLbsAllTime,
-                        weightChangePctThisWeek: weightChangePctThisWeek,
-                        weightChangePctThisMonth: weightChangePctThisMonth,
-                        weightChangeLbsThisWeek: weightChangeLbsThisWeek,
-                        weightChangeLbsThisMonth: weightChangeLbsThisMonth,
-                        lastUpdated: new Date().toISOString()
+                    const confirmed = await this.promptModal({ title: 'Confirm PAL Code', bodyNode: confirmBody, okText: 'OK', cancelText: 'Cancel' });
+                    if (!confirmed) return;
+
+                    // Claim code remotely (source of truth)
+                    try {
+                        await this.claimPalCodeInFirebase(code);
+                    } catch (err) {
+                        if (err && err.message === 'CODE_TAKEN') {
+                            alert('❌ That PAL Code is already taken. Please choose another one.');
+                            continue;
+                        }
+                        alert('Error creating PAL Code. Please try again.');
+                        return;
                     }
-                });
-            });
 
-            alert('✅ PAL Code created! Now you can share it.');
-            return;
-        } catch (err) {
-            if (String(err && err.message) === 'CODE_TAKEN') {
-                alert('⚠️ That PAL Code is already taken. Please try another.');
-                continue;
-            }
-            console.error(err);
-            alert('❌ Error creating PAL Code. Please try again.');
-            return;
-        }
-    }
-},
+                    // Prompt for Display Name
+                    const name = await this.promptForDisplayName();
+                    if (name === null) {
+                        // Allow user to set later via Edit (do not block completion)
+                        this.data.pals.myPalCode = code;
+                        this.data.pals.displayName = '';
+                    } else {
+                        this.data.pals.myPalCode = code;
+                        this.data.pals.displayName = name;
+                    }
 
-            // Legacy function - now just calls handlePalCodeButton
-            editShareCode() {
-                this.handlePalCodeButton();
-            },
-
-            // Edit Display Name (inline prompt)
-            editDisplayName() {
-                const newName = prompt('Enter your display name:', this.data.pals.displayName || '');
-                if (newName !== null && newName.trim()) {
-                    this.data.pals.displayName = newName.trim();
                     this.saveData();
-                    this.syncMyStatsToFirebase();
                     this.updatePalsUI();
+
+                    // Best-effort stats sync
+                    this.syncMyStatsToFirebase();
+                    return;
                 }
             },
 
-// Toggle leaderboard
-async toggleLeaderboard() {
-    const checkboxEl = document.getElementById('join-leaderboard');
-    const weightCheckboxEl = document.getElementById('join-weight-leaderboard');
-    const checked = !!(checkboxEl && checkboxEl.checked);
-    const wasJoined = !!this.data.pals.joinedLeaderboard;
 
-    this.data.pals.joinedLeaderboard = checked;
+            // Claim PAL Code in Firebase (atomic uniqueness)
+            async claimPalCodeInFirebase(code) {
+                if (!this.db) throw new Error('FIREBASE_NOT_READY');
+                const docRef = this.db.collection('users').doc(code);
 
-    if (!checked) {
-        // Turning off leaderboards disables Weight opt-in
-        this.data.pals.joinWeightLeaderboard = false;
-        if (weightCheckboxEl) weightCheckboxEl.checked = false;
-    } else if (!wasJoined) {
-        // First time joining Steps + Distance: ask about Weight leaderboard
-        const wantsWeight = confirm(
-            'You will be added to the Steps and Distance leaderboards.\n\n' +
-            'Do you also want to join the Weight leaderboard?'
-        );
-
-        this.data.pals.joinWeightLeaderboard = !!wantsWeight;
-        if (weightCheckboxEl) weightCheckboxEl.checked = !!wantsWeight;
-
-        if (wantsWeight) {
-            const initial = this.data.goals?.initialWeight;
-            if (!initial || isNaN(parseFloat(initial)) || parseFloat(initial) <= 0) {
-                alert('To participate in the Weight leaderboard, please set your Initial Weight in Goals.');
-            }
-        }
-    } else {
-        // Already joined Steps/Distance; keep existing Weight selection
-        if (weightCheckboxEl) {
-            weightCheckboxEl.checked = !!this.data.pals.joinWeightLeaderboard;
-        }
-    }
-
-    this.saveData();
-    this.updatePalsUI();
-    this.syncMyStatsToFirebase();
-    this.renderLeaderboard();
-},
-
-            async createPalCode() {
-    // PAL Code creation flow:
-    // 1) Prompt for 4-digit PAL Code (numbers only; leading zeros allowed)
-    // 2) If taken: warn and re-prompt
-    // 3) If available: confirm it cannot be changed later
-    // 4) Prompt for Display Name
-    // 5) Save PAL Code + display name and update the Pals card immediately
-    while (true) {
-        const raw = prompt(
-            'Create your PAL Code (4 digits):\n' +
-            'Numbers only (example: 0042).\n\n' +
-            'Note: Your PAL Code cannot be changed later.'
-        );
-        if (raw === null) return; // cancelled
-
-        const code = String(raw).trim();
-
-        // Validate code format (exactly 4 digits; keep as string to preserve leading zeros)
-        if (!/^\d{4}$/.test(code)) {
-            alert('⚠️ Invalid PAL Code. Please enter exactly 4 numbers (0000–9999).');
-            continue;
-        }
-
-        try {
-            // Check availability (exact match)
-            const docRef = this.db.collection('users').doc(code);
-            const snap = await docRef.get();
-            if (snap.exists) {
-                alert('⚠️ That PAL Code is already taken. Please try another.');
-                continue;
-            }
-
-            // Confirm lock
-            const okLocked = confirm(
-                `Your PAL Code will be: ${code}\n\n` +
-                'This PAL Code cannot be changed later (unless you clear app data).\n\n' +
-                'Press OK to confirm or Cancel to choose a different code.'
-            );
-            if (!okLocked) {
-                // Choose another code (stay in flow)
-                continue;
-            }
-
-            // Prompt for Display Name
-            let displayName = '';
-            while (!displayName) {
-                const entered = prompt(
-                    'Enter your display name (shown to pals and on leaderboards):',
-                    (this.data.pals.displayName || '').trim()
-                );
-                if (entered === null) return; // cancelled
-                displayName = String(entered).trim();
-            }
-
-            // Claim the code transactionally (protects against race conditions)
-            await this.db.runTransaction(async (transaction) => {
-                const doc = await transaction.get(docRef);
-                if (doc.exists) throw new Error('CODE_TAKEN');
-
-                // Save locally first (so UI updates immediately)
-                this.data.pals.myPalCode = code;
-                this.data.pals.displayName = displayName;
-
-                this.saveData();
-                this.updatePalsUI();
-
-                // Push initial user record to Firebase (stats snapshot)
-                const stats = this.getStatsForSync();
-                const monthStats = this.getMonthStatsForSync();
-
-                const weightChangePctThisWeek = this.calculateWeightChangePctForPeriod('week');
-                const weightChangePctThisMonth = this.calculateWeightChangePctForPeriod('month');
-                const weightChangeLbsThisWeek = this.calculateWeightChangeLbsForPeriod('week');
-                const weightChangeLbsThisMonth = this.calculateWeightChangeLbsForPeriod('month');
-
-                transaction.set(docRef, {
-                    palCode: code,
-                    displayName: displayName,
-                    joinedLeaderboard: this.data.pals.joinedLeaderboard || false,
-                    joinWeightLeaderboard: this.data.pals.joinWeightLeaderboard || false,
-                    stats: {
-                        // Week totals
-                        thisWeekDistance: stats.thisWeekDistance,
-                        thisWeekStrengthDays: stats.thisWeekStrengthDays,
-                        thisWeekSteps: stats.thisWeekSteps,
-                        // Month totals
-                        thisMonthDistance: monthStats.monthDistance,
-                        thisMonthStrengthDays: monthStats.monthStrengthDays,
-                        thisMonthSteps: monthStats.monthSteps,
-                        // All time totals
-                        totalDistance: stats.totalDistance,
-                        totalStrengthDays: stats.totalStrengthDays,
-                        totalSteps: stats.totalSteps,
-                        // Workout totals
-                        thisWeekPushups: stats.thisWeekPushups,
-                        thisMonthPushups: monthStats.monthPushups,
-                        totalPushups: stats.totalPushups,
-                        thisWeekPullups: stats.thisWeekPullups,
-                        thisMonthPullups: monthStats.monthPullups,
-                        totalPullups: stats.totalPullups,
-                        thisWeekSitups: stats.thisWeekSitups,
-                        thisMonthSitups: monthStats.monthSitups,
-                        totalSitups: stats.totalSitups,
-                        thisWeekSquats: stats.thisWeekSquats,
-                        thisMonthSquats: monthStats.monthSquats,
-                        totalSquats: stats.totalSquats,
-                        // Weight change (still stored as change metrics; leaderboard category is "Weight")
-                        weightChangePctThisWeek: weightChangePctThisWeek,
-                        weightChangePctThisMonth: weightChangePctThisMonth,
-                        weightChangeLbsThisWeek: weightChangeLbsThisWeek,
-                        weightChangeLbsThisMonth: weightChangeLbsThisMonth,
-                        lastUpdated: new Date().toISOString()
+                await this.db.runTransaction(async (transaction) => {
+                    const doc = await transaction.get(docRef);
+                    if (doc.exists) {
+                        throw new Error('CODE_TAKEN');
                     }
+                    transaction.set(docRef, {
+                        palCode: code,
+                        displayName: '',
+                        joinedLeaderboard: false,
+                        joinWeightLeaderboard: false,
+                        createdAt: new Date().toISOString(),
+                        lastUpdated: new Date().toISOString()
+                    });
                 });
-            });
-
-            alert('✅ PAL Code created! You can now share it.');
-            return;
-        } catch (err) {
-            if (String(err && err.message) === 'CODE_TAKEN') {
-                alert('⚠️ That PAL Code is already taken. Please try another.');
-                continue;
-            }
-            console.error(err);
-            alert('❌ Error creating PAL Code. Please try again.');
-            return;
-        }
-    }
-},
-
-
-            // Sync my stats to Firebase
-            async syncMyStatsToFirebase() {
-                if (!this.data.pals.myPalCode || !this.db) return;
-
-                try {
-                    const stats = this.calculateStats();
-                    const monthStats = this.calculateMonthStats();
-                    const weight = this.calculateWeightLoss();
-                    const weightChangeLbsAllTime = this.calculateWeightChangeLbsAllTime();
-                    const weightChangePctThisWeek = this.calculateWeightChangePctForPeriod('week');
-                    const weightChangePctThisMonth = this.calculateWeightChangePctForPeriod('month');
-                    const weightChangeLbsThisWeek = this.calculateWeightChangeLbsForPeriod('week');
-                    const weightChangeLbsThisMonth = this.calculateWeightChangeLbsForPeriod('month');
-                    const today = new Date().toISOString().split('T')[0]; // Get today's date
-                    
-                    const data = {
-                        palCode: this.data.pals.myPalCode,
-                        displayName: this.data.pals.displayName || this.data.pals.myPalCode,
-                        joinedLeaderboard: this.data.pals.joinedLeaderboard || false,
-                        joinWeightLeaderboard: this.data.pals.joinWeightLeaderboard || false,
-                        lastActivityDate: today, // Track last activity date for status indicators
-                        stats: {
-                            // Week totals
-                            thisWeekDistance: stats.thisWeekDistance,
-                            thisWeekStrengthDays: stats.thisWeekStrengthDays,
-                            thisWeekSteps: stats.thisWeekSteps,
-                            // Month totals
-                            thisMonthDistance: monthStats.monthDistance,
-                            thisMonthStrengthDays: monthStats.monthStrengthDays,
-                            thisMonthSteps: monthStats.monthSteps,
-                            // All-time totals
-                            totalDistance: stats.totalDistance,
-                            totalSteps: stats.totalSteps,
-                            totalStrengthDays: stats.totalStrengthDays,
-                            // Strength exercises (week, month, total)
-                            thisWeekPushups: stats.thisWeekPushups,
-                            thisMonthPushups: monthStats.monthPushups,
-                            totalPushups: stats.totalPushups,
-                            thisWeekPullups: stats.thisWeekPullups,
-                            thisMonthPullups: monthStats.monthPullups,
-                            totalPullups: stats.totalPullups,
-                            thisWeekRollerAbs: stats.thisWeekRollerAbs,
-                            thisMonthRollerAbs: monthStats.monthRollerAbs,
-                            totalRollerAbs: stats.totalRollerAbs,
-                            thisWeekDips: stats.thisWeekDips,
-                            thisMonthDips: monthStats.monthDips,
-                            totalDips: stats.totalDips,
-                            thisWeekSquats: stats.thisWeekSquats,
-                            thisMonthSquats: monthStats.monthSquats,
-                            totalSquats: stats.totalSquats,
-                            thisWeekSitups: stats.thisWeekSitups,
-                            thisMonthSitups: monthStats.monthSitups,
-                            totalSitups: stats.totalSitups,
-                            // Cardio activities (week, month, total)
-                            thisWeekRunning: stats.thisWeekRunning,
-                            thisMonthRunning: monthStats.monthRunning,
-                            totalRunning: stats.totalRunning,
-                            thisWeekWalking: stats.thisWeekWalking,
-                            thisMonthWalking: monthStats.monthWalking,
-                            totalWalking: stats.totalWalking,
-                            thisWeekBiking: stats.thisWeekBiking,
-                            thisMonthBiking: monthStats.monthBiking,
-                            totalBiking: stats.totalBiking,
-                            thisWeekDogWalk: stats.thisWeekDogWalk,
-                            thisMonthDogWalk: monthStats.monthDogWalk,
-                            totalDogWalk: stats.totalDogWalk,
-                            thisWeekHiking: stats.thisWeekHiking,
-                            thisMonthHiking: monthStats.monthHiking,
-                            totalHiking: stats.totalHiking,
-                            // Other (week, month, total)
-                            thisWeekStairs: stats.thisWeekStairs,
-                            thisMonthStairs: monthStats.monthStairs,
-                            totalStairs: stats.totalStairs,
-                            // Weight (signed % change; negative = loss)
-                            weight: weight,
-                            weightChangePctThisWeek: weightChangePctThisWeek,
-                            weightChangePctThisMonth: weightChangePctThisMonth,
-                            weightChangePctAllTime: weight,
-                            weightChangeLbsThisWeek: weightChangeLbsThisWeek,
-                            weightChangeLbsThisMonth: weightChangeLbsThisMonth,
-                            weightChangeLbsAllTime: weightChangeLbsAllTime
-                        },
-                        lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
-                    };
-
-                    await this.db.collection('users').doc(this.data.pals.myPalCode).set(data);
-                    console.log('✅ Stats synced to Firebase');
-                } catch (error) {
-                    console.error('Error syncing stats:', error);
-                }
             },
 
-            // Add pal
+                        // Add pal
             async addPal() {
-                const code = document.getElementById('add-pal-code').value.trim().toUpperCase();
+                const code = document.getElementById('add-pal-code').value.trim();
                 const errorEl = document.getElementById('add-pal-error');
                 const successEl = document.getElementById('add-pal-success');
                 
@@ -5939,9 +5792,9 @@ async toggleLeaderboard() {
                     return;
                 }
 
-                // Format: AA-12
-                if (!/^[A-Z]{2}-\d{2}$/.test(code)) {
-                    errorEl.textContent = 'Invalid ID format. Use AA-12 (example: JP-04).';
+                // Format: 4 digits
+                if (!/^\d{4}$/.test(code)) {
+                    errorEl.textContent = 'Invalid PAL Code. Use 4 digits (example: 0042).';
                     errorEl.classList.add('show');
                     return;
                 }
