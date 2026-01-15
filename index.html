@@ -4223,17 +4223,27 @@
 
             // Update goals UI
             updateGoalsUI() {
-                document.getElementById('unit-preference').value = this.data.goals.unitPreference;
-const initialWeightEl = document.getElementById('initial-weight-preference');
-                if (initialWeightEl) {
-                    initialWeightEl.value = (this.data.goals.initialWeight !== null && this.data.goals.initialWeight !== undefined) ? this.data.goals.initialWeight : '';
-                }
-                document.getElementById('annual-goal').value = this.data.goals.annualMiles;
-                document.getElementById('workout-frequency').value = this.data.goals.workoutFrequency;
-                document.getElementById('monthly-goal').value = this.data.goals.monthlyMiles;
-                
+                const setVal = (id, val) => {
+                    const el = document.getElementById(id);
+                    if (el) el.value = val;
+                };
+                const setText = (id, val) => {
+                    const el = document.getElementById(id);
+                    if (el) el.textContent = val;
+                };
+
+                setVal('unit-preference', this.data.goals.unitPreference);
+                setVal('initial-weight-preference',
+                    (this.data.goals.initialWeight !== undefined && this.data.goals.initialWeight !== null)
+                        ? this.data.goals.initialWeight
+                        : ''
+                );
+                setVal('annual-goal', this.data.goals.annualMiles);
+                setVal('workout-frequency', this.data.goals.workoutFrequency);
+                setVal('monthly-goal', this.data.goals.monthlyMiles);
+
                 const unit = this.data.goals.unitPreference === 'km' ? 'km' : 'miles';
-                document.getElementById('milestone-unit').textContent = unit;
+                setText('milestone-unit', unit);
             },
 
             // Save goals
@@ -5574,7 +5584,11 @@ async createPalCode() {
                 // Snapshot stats at creation time (optional fields for leaderboards)
                 const stats = this.calculateStats();
                 const monthStats = this.calculateMonthStats();
-                const weight = this.calculateWeightLoss();
+                const weightStats = this.getWeightStats();
+                const currentWeight = weightStats ? weightStats.current : null;
+                const initialWeight = (this.data.goals.initialWeight !== null && this.data.goals.initialWeight !== undefined && this.data.goals.initialWeight !== '')
+                    ? Number(this.data.goals.initialWeight)
+                    : null;
                 const weightChangeLbsAllTime = this.calculateWeightChangeLbsAllTime();
                 const weightChangePctThisWeek = this.calculateWeightChangePctForPeriod('week');
                 const weightChangePctThisMonth = this.calculateWeightChangePctForPeriod('month');
@@ -5609,8 +5623,8 @@ async createPalCode() {
                     totalSquats: stats.totalSquats,
 
                     // Weight stats snapshot (leaderboard uses opt-in flag)
-                    currentWeight: weight.currentWeight,
-                    initialWeight: weight.initialWeight,
+                    currentWeight: currentWeight,
+                    initialWeight: initialWeight,
                     weightLost: weight.weightLost,
                     weightChangeLbsAllTime: weightChangeLbsAllTime,
                     weightChangePctThisWeek: weightChangePctThisWeek,
@@ -5651,8 +5665,12 @@ async createPalCode() {
                 try {
                     const stats = this.calculateStats();
                     const monthStats = this.calculateMonthStats();
-                    const weight = this.calculateWeightLoss();
-                    const weightChangeLbsAllTime = this.calculateWeightChangeLbsAllTime();
+                    const weightStats = this.getWeightStats();
+                const currentWeight = weightStats ? weightStats.current : null;
+                const initialWeight = (this.data.goals.initialWeight !== null && this.data.goals.initialWeight !== undefined && this.data.goals.initialWeight !== '')
+                    ? Number(this.data.goals.initialWeight)
+                    : null;
+                const weightChangeLbsAllTime = this.calculateWeightChangeLbsAllTime();
                     const weightChangePctThisWeek = this.calculateWeightChangePctForPeriod('week');
                     const weightChangePctThisMonth = this.calculateWeightChangePctForPeriod('month');
                     const weightChangeLbsThisWeek = this.calculateWeightChangeLbsForPeriod('week');
