@@ -5251,11 +5251,6 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
 
                 const joined = !!(checkbox && checkbox.checked);
                 this.data.pals.joinedLeaderboard = joined;
-                // Sync leaderboard opt-in to Firebase
-                this.saveData();
-                this.updatePalsUI();
-                this.syncMyProfileToFirebase && this.syncMyProfileToFirebase().catch(err => console.warn('Leaderboard sync failed:', err));
-
 
                 // If leaving leaderboards, also leave weight leaderboard
                 if (!joined) {
@@ -5736,7 +5731,7 @@ async createPalCode() {
                             alert('❌ That PAL Code is already taken. Please choose another one.');
                             continue;
                         }
-                        alert('Error creating PAL Code: ' + ((err && (err.code || err.message)) ? (err.code || err.message) : String(err)) + '\n\nIf you are testing on GitHub Pages, this is usually a Firestore permissions/rules issue. Check DevTools Console for details.');
+                        alert('Error creating PAL Code. Please try again.');
                         return;
                     }
 
@@ -5760,29 +5755,230 @@ async createPalCode() {
                 }
             },
 
+            async createPalCode() {
+    // PAL Code creation flow:
+    // 1) Prompt for 4-digit PAL Code (numbers only; leading zeros allowed)
+    // 2) If taken: warn and re-prompt
+    // 3) If available: confirm it cannot be changed later
+    // 4) Prompt for Display Name
+    // 5) Save PAL Code + display name and update the Pals card immediately
+    while (true) {
+        const raw = prompt(
+            'Create your PAL Code (4 digits):\n' +
+            'Numbers only (example: 0042).\n\n' +
+            'Note: Your PAL Code cannot be changed later.'
+        );
+        if (raw === null) return; // cancelled
 
-            // Claim PAL Code in Firebase (atomic uniqueness)
-            async claimPalCodeInFirebase(code) {
-                if (!this.db) throw new Error('FIREBASE_NOT_READY');
-                const docRef = this.db.collection('users').doc(code);
+        const code = String(raw).trim();
 
-                await this.db.runTransaction(async (transaction) => {
-                    const doc = await transaction.get(docRef);
-                    if (doc.exists) {
-                        throw new Error('CODE_TAKEN');
-                    }
-                    transaction.set(docRef, {
-                        palCode: code,
-                        displayName: '',
-                        joinedLeaderboard: false,
-                        joinWeightLeaderboard: false,
-                        createdAt: new Date().toISOString(),
+        // Validate code format (exactly 4 digits; keep as string to preserve leading zeros)
+        if (!/^\d{4}$/.test(code)) {
+            alert('⚠️ Invalid PAL Code. Please enter exactly 4 numbers (0000–9999).');
+            continue;
+        }
+
+        try {
+            // Check availability (exact match)
+            const docRef = this.db.collection('users').doc(code);
+            const snap = await docRef.get();
+            if (snap.exists) {
+                alert('⚠️ That PAL Code is already taken. Please try another.');
+                continue;
+            }
+
+            // Confirm lock
+            const okLocked = confirm(
+                `Your PAL Code will be: ${code}\n\n` +
+                'This PAL Code cannot be changed later (unless you clear app data).\n\n' +
+                'Press OK to confirm or Cancel to choose a different code.'
+            );
+            if (!okLocked) {
+                // Choose another code (stay in flow)
+                continue;
+            }
+
+            // Prompt for Display Name
+            let displayName = '';
+            while (!displayName) {
+                const entered = prompt(
+                    'Enter your display name (shown to pals and on leaderboards):',
+                    (this.data.pals.displayName || '').trim()
+                );
+                if (entered === null) return; // cancelled
+                displayName = String(entered).trim();
+            }
+
+            // Claim the code transactionally (protects against race conditions)
+            await this.db.runTransaction(async (transaction) => {
+                const doc = await transaction.get(docRef);
+                if (doc.exists) throw new Error('CODE_TAKEN');
+
+                // Save locally first (so UI updates immediately)
+                this.data.pals.myPalCode = code;
+                this.data.pals.displayName = displayName;
+
+                this.saveData();
+                this.updatePalsUI();
+
+                // Push initial user record to Firebase (stats snapshot)
+                const stats = this.getStatsForSync();
+                const monthStats = this.getMonthStatsForSync();
+
+                const weightChangePctThisWeek = this.calculateWeightChangePctForPeriod('week');
+                const weightChangePctThisMonth = this.calculateWeightChangePctForPeriod('month');
+                const weightChangeLbsThisWeek = this.calculateWeightChangeLbsForPeriod('week');
+                const weightChangeLbsThisMonth = this.calculateWeightChangeLbsForPeriod('month');
+
+                transaction.set(docRef, {
+                    palCode: code,
+                    displayName: displayName,
+                    joinedLeaderboard: this.data.pals.joinedLeaderboard || false,
+                    joinWeightLeaderboard: this.data.pals.joinWeightLeaderboard || false,
+                    stats: {
+                        // Week totals
+                        thisWeekDistance: stats.thisWeekDistance,
+                        thisWeekStrengthDays: stats.thisWeekStrengthDays,
+                        thisWeekSteps: stats.thisWeekSteps,
+                        // Month totals
+                        thisMonthDistance: monthStats.monthDistance,
+                        thisMonthStrengthDays: monthStats.monthStrengthDays,
+                        thisMonthSteps: monthStats.monthSteps,
+                        // All time totals
+                        totalDistance: stats.totalDistance,
+                        totalStrengthDays: stats.totalStrengthDays,
+                        totalSteps: stats.totalSteps,
+                        // Workout totals
+                        thisWeekPushups: stats.thisWeekPushups,
+                        thisMonthPushups: monthStats.monthPushups,
+                        totalPushups: stats.totalPushups,
+                        thisWeekPullups: stats.thisWeekPullups,
+                        thisMonthPullups: monthStats.monthPullups,
+                        totalPullups: stats.totalPullups,
+                        thisWeekSitups: stats.thisWeekSitups,
+                        thisMonthSitups: monthStats.monthSitups,
+                        totalSitups: stats.totalSitups,
+                        thisWeekSquats: stats.thisWeekSquats,
+                        thisMonthSquats: monthStats.monthSquats,
+                        totalSquats: stats.totalSquats,
+                        // Weight change (still stored as change metrics; leaderboard category is "Weight")
+                        weightChangePctThisWeek: weightChangePctThisWeek,
+                        weightChangePctThisMonth: weightChangePctThisMonth,
+                        weightChangeLbsThisWeek: weightChangeLbsThisWeek,
+                        weightChangeLbsThisMonth: weightChangeLbsThisMonth,
                         lastUpdated: new Date().toISOString()
-                    });
+                    }
                 });
+            });
+
+            alert('✅ PAL Code created! You can now share it.');
+            return;
+        } catch (err) {
+            if (String(err && err.message) === 'CODE_TAKEN') {
+                alert('⚠️ That PAL Code is already taken. Please try another.');
+                continue;
+            }
+            console.error(err);
+            alert('❌ Error creating PAL Code. Please try again.');
+            return;
+        }
+    }
+},
+
+
+            // Sync my stats to Firebase
+            async syncMyStatsToFirebase() {
+                if (!this.data.pals.myPalCode || !this.db) return;
+
+                try {
+                    const stats = this.calculateStats();
+                    const monthStats = this.calculateMonthStats();
+                    const weight = this.calculateWeightLoss();
+                    const weightChangeLbsAllTime = this.calculateWeightChangeLbsAllTime();
+                    const weightChangePctThisWeek = this.calculateWeightChangePctForPeriod('week');
+                    const weightChangePctThisMonth = this.calculateWeightChangePctForPeriod('month');
+                    const weightChangeLbsThisWeek = this.calculateWeightChangeLbsForPeriod('week');
+                    const weightChangeLbsThisMonth = this.calculateWeightChangeLbsForPeriod('month');
+                    const today = new Date().toISOString().split('T')[0]; // Get today's date
+                    
+                    const data = {
+                        palCode: this.data.pals.myPalCode,
+                        displayName: this.data.pals.displayName || this.data.pals.myPalCode,
+                        joinedLeaderboard: this.data.pals.joinedLeaderboard || false,
+                        joinWeightLeaderboard: this.data.pals.joinWeightLeaderboard || false,
+                        lastActivityDate: today, // Track last activity date for status indicators
+                        stats: {
+                            // Week totals
+                            thisWeekDistance: stats.thisWeekDistance,
+                            thisWeekStrengthDays: stats.thisWeekStrengthDays,
+                            thisWeekSteps: stats.thisWeekSteps,
+                            // Month totals
+                            thisMonthDistance: monthStats.monthDistance,
+                            thisMonthStrengthDays: monthStats.monthStrengthDays,
+                            thisMonthSteps: monthStats.monthSteps,
+                            // All-time totals
+                            totalDistance: stats.totalDistance,
+                            totalSteps: stats.totalSteps,
+                            totalStrengthDays: stats.totalStrengthDays,
+                            // Strength exercises (week, month, total)
+                            thisWeekPushups: stats.thisWeekPushups,
+                            thisMonthPushups: monthStats.monthPushups,
+                            totalPushups: stats.totalPushups,
+                            thisWeekPullups: stats.thisWeekPullups,
+                            thisMonthPullups: monthStats.monthPullups,
+                            totalPullups: stats.totalPullups,
+                            thisWeekRollerAbs: stats.thisWeekRollerAbs,
+                            thisMonthRollerAbs: monthStats.monthRollerAbs,
+                            totalRollerAbs: stats.totalRollerAbs,
+                            thisWeekDips: stats.thisWeekDips,
+                            thisMonthDips: monthStats.monthDips,
+                            totalDips: stats.totalDips,
+                            thisWeekSquats: stats.thisWeekSquats,
+                            thisMonthSquats: monthStats.monthSquats,
+                            totalSquats: stats.totalSquats,
+                            thisWeekSitups: stats.thisWeekSitups,
+                            thisMonthSitups: monthStats.monthSitups,
+                            totalSitups: stats.totalSitups,
+                            // Cardio activities (week, month, total)
+                            thisWeekRunning: stats.thisWeekRunning,
+                            thisMonthRunning: monthStats.monthRunning,
+                            totalRunning: stats.totalRunning,
+                            thisWeekWalking: stats.thisWeekWalking,
+                            thisMonthWalking: monthStats.monthWalking,
+                            totalWalking: stats.totalWalking,
+                            thisWeekBiking: stats.thisWeekBiking,
+                            thisMonthBiking: monthStats.monthBiking,
+                            totalBiking: stats.totalBiking,
+                            thisWeekDogWalk: stats.thisWeekDogWalk,
+                            thisMonthDogWalk: monthStats.monthDogWalk,
+                            totalDogWalk: stats.totalDogWalk,
+                            thisWeekHiking: stats.thisWeekHiking,
+                            thisMonthHiking: monthStats.monthHiking,
+                            totalHiking: stats.totalHiking,
+                            // Other (week, month, total)
+                            thisWeekStairs: stats.thisWeekStairs,
+                            thisMonthStairs: monthStats.monthStairs,
+                            totalStairs: stats.totalStairs,
+                            // Weight (signed % change; negative = loss)
+                            weight: weight,
+                            weightChangePctThisWeek: weightChangePctThisWeek,
+                            weightChangePctThisMonth: weightChangePctThisMonth,
+                            weightChangePctAllTime: weight,
+                            weightChangeLbsThisWeek: weightChangeLbsThisWeek,
+                            weightChangeLbsThisMonth: weightChangeLbsThisMonth,
+                            weightChangeLbsAllTime: weightChangeLbsAllTime
+                        },
+                        lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
+                    };
+
+                    await this.db.collection('users').doc(this.data.pals.myPalCode).set(data);
+                    console.log('✅ Stats synced to Firebase');
+                } catch (error) {
+                    console.error('Error syncing stats:', error);
+                }
             },
 
-                        // Add pal
+            // Add pal
             async addPal() {
                 const code = document.getElementById('add-pal-code').value.trim();
                 const errorEl = document.getElementById('add-pal-error');
@@ -6723,37 +6919,7 @@ async createPalCode() {
         };
 
         // Initialize app when page loads
-        
-    // --- v1.7.0: Sync my PAL profile + leaderboard flags to Firebase (no UI side-effects) ---
-    if (window.app) {
-      window.app.syncMyProfileToFirebase = async function syncMyProfileToFirebase() {
-        try {
-          if (!this.db) return;
-          const code = this.data?.pals?.myPalCode;
-          if (!code) return;
-
-          // Compute latest stats if a helper exists
-          const stats = (typeof this.computeStatsForFirebase === 'function')
-            ? this.computeStatsForFirebase()
-            : (this.data && this.data.stats ? this.data.stats : {});
-
-          const payload = {
-            palCode: code,
-            displayName: (this.data?.pals?.displayName || ''),
-            joinedLeaderboard: !!this.data?.pals?.joinedLeaderboard,
-            joinWeightLeaderboard: !!this.data?.pals?.joinWeightLeaderboard,
-            stats: stats || {},
-            lastUpdated: new Date().toISOString()
-          };
-
-          await this.db.collection('users').doc(code).set(payload, { merge: true });
-        } catch (e) {
-          // do not throw to UI; callers decide how to surface errors
-          console.warn('syncMyProfileToFirebase failed:', e);
-        }
-      };
-    }
-document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', () => {
             app.init();
         });
     </script>
