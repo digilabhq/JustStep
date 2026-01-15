@@ -2436,7 +2436,7 @@
 <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
 <div style="flex: 1; min-width: 0;">
 <span style="font-size: 12px; color: var(--text); font-weight: 600; display: block;">Show in Leaderboards</span>
-<span style="font-size: 12px; color: rgba(255,255,255,0.75); display: block; margin-top: 4px; font-weight: 500;">Compete globally with all JustStep users</span>
+<span style="font-size: 11px; color: #6b7280; display: block; margin-top: 4px;">Compete globally with all JustStep users</span>
 </div>
 <div style="width: 55px; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
 <input id="join-leaderboard" onchange="app.toggleLeaderboard()" style="width: 20px; height: 20px; cursor: pointer; margin: 0;" type="checkbox"/>
@@ -2549,7 +2549,7 @@
         </a>
 <button class="welcome-button" onclick="app.closeWelcome()">Let's Go</button>
 <div style="text-align: center; color: #6b7280; font-size: 11px; margin-top: 16px;">
-            v1.8.0
+            v2.0.0
         </div>
 </div>
 <!-- Customize Dashboard Modal -->
@@ -2670,7 +2670,7 @@
 </div>
 <script>
         // App Version
-        const APP_VERSION = '1.8.0';
+        const APP_VERSION = '2.0.0';
         
         // Main App Object
         const app = {
@@ -4177,6 +4177,8 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                 this.updateGoalsUI();
                 this.updateWeightInputDisplay();
                 this.updateDashboard();
+                // Refresh PALS eligibility toggles (e.g., weight leaderboard gating)
+                this.updatePalsUI();
                 this.renderHabits(); // Re-render to return to display mode
                 
                 const successMsg = document.getElementById('settings-success');
@@ -4594,6 +4596,8 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
 
                 this.saveData();
                 this.updateDashboard();
+                // Refresh PALS eligibility toggles (e.g., weight leaderboard gating)
+                this.updatePalsUI();
                 
                 // Sync to Firebase if PALS is set up
                 if (this.data.pals.myPalCode) {
@@ -5420,6 +5424,88 @@ shareMyPalCode() {
                 setTimeout(() => successEl.classList.remove('show'), 3000);
             },
 
+            // Edit display name (button in MY PROFILE)
+            async editDisplayName() {
+                const current = (this.data.pals.displayName || '').trim();
+                const entered = prompt('Edit your display name:', current);
+                if (entered === null) return; // cancelled
+
+                const name = String(entered).trim();
+                if (!name) {
+                    alert('Please enter a display name');
+                    return;
+                }
+
+                this.data.pals.displayName = name;
+                this.saveData();
+                this.updatePalsUI();
+                await this.syncMyStatsToFirebase();
+            },
+
+            // Prompt for a 4-digit PAL code using a numeric keyboard on mobile
+            promptFourDigitPalCode() {
+                return new Promise((resolve) => {
+                    const overlay = document.getElementById('palcode-prompt-overlay');
+                    const input = document.getElementById('palcode-prompt-input');
+                    const cancelBtn = document.getElementById('palcode-prompt-cancel');
+                    const okBtn = document.getElementById('palcode-prompt-ok');
+                    const msg = document.getElementById('palcode-prompt-message');
+
+                    if (!overlay || !input || !cancelBtn || !okBtn || !msg) {
+                        // Fallback to browser prompt (should be rare)
+                        const raw = prompt(
+                            'Create your PAL Code (4 digits):\n' +
+                            'Numbers only (example: 0042).\n\n' +
+                            'Note: Your PAL Code cannot be changed later.'
+                        );
+                        resolve(raw === null ? null : String(raw).trim());
+                        return;
+                    }
+
+                    msg.textContent = 'Create your PAL Code (4 digits)';
+                    input.value = '';
+                    overlay.style.display = 'flex';
+
+                    // Focus after display so mobile shows numeric keypad
+                    setTimeout(() => {
+                        input.focus();
+                        input.select();
+                    }, 50);
+
+                    const cleanup = () => {
+                        overlay.style.display = 'none';
+                        cancelBtn.removeEventListener('click', onCancel);
+                        okBtn.removeEventListener('click', onOk);
+                        input.removeEventListener('keydown', onKeyDown);
+                    };
+
+                    const onCancel = () => {
+                        cleanup();
+                        resolve(null);
+                    };
+
+                    const onOk = () => {
+                        const code = String(input.value || '').trim();
+                        cleanup();
+                        resolve(code);
+                    };
+
+                    const onKeyDown = (e) => {
+                        if (e.key === 'Enter') {
+                            e.preventDefault();
+                            onOk();
+                        } else if (e.key === 'Escape') {
+                            e.preventDefault();
+                            onCancel();
+                        }
+                    };
+
+                    cancelBtn.addEventListener('click', onCancel);
+                    okBtn.addEventListener('click', onOk);
+                    input.addEventListener('keydown', onKeyDown);
+                });
+            },
+
             // Edit PAL Code (inline prompt)
 
 // Handle PAL Code button (Set Code or Share)
@@ -5438,14 +5524,8 @@ async handlePalCodeButton() {
 async createPalCode() {
     // PAL Code creation flow (4 digits)
     while (true) {
-        const raw = prompt(
-            'Create your PAL Code (4 digits):\n' +
-            'Numbers only (example: 0042).\n\n' +
-            'Note: Your PAL Code cannot be changed later.'
-        );
-        if (raw === null) return; // cancelled
-
-        const code = String(raw).trim();
+        const code = await this.promptFourDigitPalCode();
+        if (code === null) return; // cancelled
         if (!/^\d{4}$/.test(code)) {
             alert('⚠️ Invalid PAL Code. Please enter exactly 4 digits (e.g., 0042).');
             continue;
@@ -6604,5 +6684,17 @@ async createPalCode() {
             app.init();
         });
     </script>
+
+<!-- PAL Code numeric prompt modal (for mobile numeric keyboard) -->
+<div id="palcode-prompt-overlay" style="display:none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 9999; align-items: center; justify-content: center;">
+  <div style="width: min(360px, 90vw); background: #111; border: 1px solid rgba(255,255,255,0.12); border-radius: 14px; padding: 16px; box-shadow: 0 16px 50px rgba(0,0,0,0.5);">
+    <div id="palcode-prompt-message" style="font-size: 14px; font-weight: 700; color: rgba(255,255,255,0.92); margin-bottom: 10px;">Create your PAL Code (4 digits)</div>
+    <input id="palcode-prompt-input" type="tel" inputmode="numeric" pattern="\\d{4}" maxlength="4" placeholder="0000" style="width: 100%; padding: 10px 12px; background: #1a1a1a; border: 1px solid #3d3d3d; border-radius: 10px; color: #e8e8e8; font-size: 16px; box-sizing: border-box;" />
+    <div style="display:flex; gap: 10px; margin-top: 12px;">
+      <button id="palcode-prompt-cancel" style="flex:1; height: 38px; background: #2a2a2a; color: rgba(255,255,255,0.88); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; font-weight: 700; cursor: pointer;">Cancel</button>
+      <button id="palcode-prompt-ok" style="flex:1; height: 38px; background: var(--primary); color: #fff; border: none; border-radius: 10px; font-weight: 800; cursor: pointer;">OK</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>
