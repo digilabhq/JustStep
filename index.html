@@ -1,19 +1,18 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="theme-color" content="var(--primary)">
-    <title>JustStep</title>
-    <link rel="manifest" href="manifest.json">
-    
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-    
-    <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, user-scalable=no" name="viewport"/>
+<meta content="yes" name="apple-mobile-web-app-capable"/>
+<meta content="default" name="apple-mobile-web-app-status-bar-style"/>
+<meta content="var(--primary)" name="theme-color"/>
+<title>JustStep</title>
+<link href="manifest.json" rel="manifest"/>
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<style>
         /* Theme Variables */
         :root {
             --primary: #2563eb;
@@ -113,10 +112,10 @@
         .app-header-right {
             position: absolute;
             right: 14px;
+            top: 50%;
+            transform: translateY(-45%);
             display: flex;
-            flex-direction: column;
             align-items: center;
-            gap: 2px;
         }
 
         .info-icon {
@@ -133,6 +132,7 @@
             cursor: pointer;
             transition: all 0.2s;
             user-select: none;
+            margin-top: 2px;
         }
 
         .info-icon:hover {
@@ -2113,664 +2113,562 @@
     </style>
 </head>
 <body>
-    <div class="app-container">
-        <!-- App Header -->
-        <div class="app-header">
-            <div class="app-header-left">
-                <span class="app-name">JustStep</span>
-            </div>
-            <div class="app-header-right">
-                <div class="info-icon" onclick="app.showWelcome()" title="About JustStep">i</div>
-                <div class="app-version" id="app-version-display"></div>
-            </div>
-        </div>
+<div class="app-container">
+<!-- App Header -->
+<div class="app-header">
+<div class="app-header-left">
+<span class="app-name">JustStep</span>
+</div>
+<div class="app-header-right">
+<div class="info-icon" onclick="app.showWelcome()" title="About JustStep">i</div>
 
-        <!-- Navigation -->
-        <div class="nav-container">
-            <div class="nav-tabs first-row">
-                <button class="nav-tab active" onclick="app.showScreen('log')">Tracker</button>
-                <button class="nav-tab" onclick="app.showScreen('dashboard')">Dashboard</button>
-                <button class="nav-tab" onclick="app.showScreen('calendar')">Calendar</button>
-            </div>
-            <div class="nav-tabs">
-                <button class="nav-tab" onclick="app.showScreen('goals')">Goals</button>
-                <button class="nav-tab" onclick="app.showScreen('pals')">Pals</button>
-                <button class="nav-tab" onclick="app.showScreen('leaderboard')">Leaderboard</button>
-            </div>
-        </div>
-
-        <!-- Daily Logging Screen -->
-        <div id="log-screen" class="screen active">
-            <h1>Track Activity</h1>
-            <p class="subtitle">Record today's workout</p>
-
-            <div class="date-selector">
-                <span>📅</span>
-                <input type="date" id="log-date" value="">
-            </div>
-
-            <div id="activities-container" class="activities-container">
-                <!-- Activity cards will be added here -->
-            </div>
-
-            <button class="add-activity-button" onclick="app.addActivityRow()">
-                <span style="font-size: 20px; margin-right: 8px;">+</span>
+</div>
+</div>
+<!-- Navigation -->
+<div class="nav-container">
+<div class="nav-tabs first-row">
+<button class="nav-tab active" onclick="app.showScreen('log')">Tracker</button>
+<button class="nav-tab" onclick="app.showScreen('dashboard')">Dashboard</button>
+<button class="nav-tab" onclick="app.showScreen('calendar')">Calendar</button>
+</div>
+<div class="nav-tabs">
+<button class="nav-tab" onclick="app.showScreen('goals')">Goals</button>
+<button class="nav-tab" onclick="app.showScreen('pals')">Pals</button>
+<button class="nav-tab" onclick="app.showScreen('leaderboard')">Leaderboard</button>
+</div>
+</div>
+<!-- Daily Logging Screen -->
+<div class="screen active" id="log-screen">
+<h1>Track Activity</h1>
+<p class="subtitle">Record today's workout</p>
+<div class="date-selector">
+<span>📅</span>
+<input id="log-date" type="date" value=""/>
+</div>
+<div class="activities-container" id="activities-container">
+<!-- Activity cards will be added here -->
+</div>
+<button class="add-activity-button" onclick="app.addActivityRow()">
+<span style="font-size: 20px; margin-right: 8px;">+</span>
                 Add Activity
             </button>
-
-            <button class="log-button" onclick="app.saveLog()">Save Activity</button>
-
-            <!-- Weight Input Section -->
-            <div class="weight-input-section">
-                <div class="weight-input-header">Track Weight</div>
-                <div class="weight-input-row">
-                    <input type="number" 
-                           id="weight-input" 
-                           class="weight-input-field" 
-                           placeholder="Enter weight" 
-                           step="0.1"
-                           min="0"
-                           inputmode="decimal">
-                    <span class="weight-unit-label" id="weight-unit-display">lbs</span>
-                </div>
-                <button class="weight-save-btn-subtle" onclick="app.logWeight()">Save</button>
-            </div>
-        </div>
-
-        <!-- Dashboard Screen -->
-        <div id="dashboard-screen" class="screen">
-            <h1>Dashboard</h1>
-            <p class="subtitle">Your progress overview</p>
-
-            <div class="stats-toggle">
-                <button class="stats-toggle-btn active" onclick="app.setStatsView('week')">This Week</button>
-                <button class="stats-toggle-btn" onclick="app.setStatsView('total')">All Time</button>
-            </div>
-
-            <div class="stats-grid">
-                <!-- Row 1: Fixed Cards -->
-                <div class="stat-card">
-                    <div class="stat-value" id="stat-miles">0</div>
-                    <div class="stat-label" id="stat-miles-label">Miles</div>
-                    <div class="stat-trend" id="stat-miles-trend"></div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value" id="stat-workouts">0</div>
-                    <div class="stat-label" id="stat-workouts-label">Strength Days</div>
-                    <div class="stat-trend" id="stat-workouts-trend"></div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value" id="stat-steps">0</div>
-                    <div class="stat-label" id="stat-steps-label">Steps</div>
-                    <div class="stat-trend" id="stat-steps-trend"></div>
-                </div>
-                
-                <!-- Row 2: Custom Cards (dynamically rendered) -->
-                <div class="stat-card" id="custom-card-1">
-                    <div class="stat-value" id="custom-stat-1">0</div>
-                    <div class="stat-label" id="custom-label-1">Push-ups</div>
-                    <div class="stat-trend" id="custom-trend-1"></div>
-                </div>
-                <div class="stat-card" id="custom-card-2">
-                    <div class="stat-value" id="custom-stat-2">0</div>
-                    <div class="stat-label" id="custom-label-2">Pull-ups</div>
-                    <div class="stat-trend" id="custom-trend-2"></div>
-                </div>
-                <div class="stat-card" id="custom-card-3">
-                    <div class="stat-value" id="custom-stat-3">0</div>
-                    <div class="stat-label" id="custom-label-3">Roller Abs</div>
-                    <div class="stat-trend" id="custom-trend-3"></div>
-                </div>
-            </div>
-
-            <button class="customize-dashboard-btn" onclick="app.openCustomizeModal()">Customize Favorites</button>
-
-            <!-- Comparison Bar Graphs -->
-            <div class="comparison-section">
-                <div class="comparison-header">Progress Comparison</div>
-                
-                <div class="comparison-graph">
-                    <div class="comparison-title">This Week vs Last Week</div>
-                    <div class="bar-row">
-                        <div class="bar-label">This Week</div>
-                        <div class="bar-container">
-                            <div class="bar-fill current-period" id="week-current-bar" style="width: 0%"></div>
-                        </div>
-                        <div class="bar-value" id="week-current-value">0</div>
-                    </div>
-                    <div class="bar-row">
-                        <div class="bar-label">Last Week</div>
-                        <div class="bar-container">
-                            <div class="bar-fill previous-period" id="week-previous-bar" style="width: 0%"></div>
-                        </div>
-                        <div class="bar-value" id="week-previous-value">0</div>
-                    </div>
-                </div>
-
-                <div class="comparison-graph">
-                    <div class="comparison-title">This Month vs Last Month</div>
-                    <div class="bar-row">
-                        <div class="bar-label">This Month</div>
-                        <div class="bar-container">
-                            <div class="bar-fill current-period" id="month-current-bar" style="width: 0%"></div>
-                        </div>
-                        <div class="bar-value" id="month-current-value">0</div>
-                    </div>
-                    <div class="bar-row">
-                        <div class="bar-label">Last Month</div>
-                        <div class="bar-container">
-                            <div class="bar-fill previous-period" id="month-previous-bar" style="width: 0%"></div>
-                        </div>
-                        <div class="bar-value" id="month-previous-value">0</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Weight Summary (if weight data exists) -->
-            <div class="progress-card" id="weight-summary-card" style="display: none;">
-                <div style="display: flex; align-items: center; justify-content: space-between; padding: 4px 0;">
-                    <span class="progress-title" style="margin: 0;">Weight</span>
-                    <div style="display: flex; align-items: baseline; gap: 6px;">
-                        <div style="font-size: 32px; font-weight: 700; color: #e8e8e8;" id="weight-display-value">--</div>
-                        <div style="font-size: 14px; color: #9ca3af;" id="weight-display-unit">lbs</div>
-                        <div id="weight-trend-indicator"></div>
-                    </div>
-                </div>
-                
-                <!-- Weight History Toggle -->
-                <div class="weight-history-toggle" id="weight-history-toggle" onclick="app.toggleWeightHistory()">
+<button class="log-button" onclick="app.saveLog()">Save Activity</button>
+<!-- Weight Input Section -->
+<div class="weight-input-section">
+<div class="weight-input-header">Track Weight</div>
+<div class="weight-input-row">
+<input class="weight-input-field" id="weight-input" inputmode="decimal" min="0" placeholder="Enter weight" step="0.1" type="number"/>
+<span class="weight-unit-label" id="weight-unit-display">lbs</span>
+</div>
+<button class="weight-save-btn-subtle" onclick="app.logWeight()">Save</button>
+</div>
+</div>
+<!-- Dashboard Screen -->
+<div class="screen" id="dashboard-screen">
+<h1>Dashboard</h1>
+<p class="subtitle">Your progress overview</p>
+<div class="stats-toggle">
+<button class="stats-toggle-btn active" onclick="app.setStatsView('week')">This Week</button>
+<button class="stats-toggle-btn" onclick="app.setStatsView('total')">All Time</button>
+</div>
+<div class="stats-grid">
+<!-- Row 1: Fixed Cards -->
+<div class="stat-card">
+<div class="stat-value" id="stat-miles">0</div>
+<div class="stat-label" id="stat-miles-label">Miles</div>
+<div class="stat-trend" id="stat-miles-trend"></div>
+</div>
+<div class="stat-card">
+<div class="stat-value" id="stat-workouts">0</div>
+<div class="stat-label" id="stat-workouts-label">Strength Days</div>
+<div class="stat-trend" id="stat-workouts-trend"></div>
+</div>
+<div class="stat-card">
+<div class="stat-value" id="stat-steps">0</div>
+<div class="stat-label" id="stat-steps-label">Steps</div>
+<div class="stat-trend" id="stat-steps-trend"></div>
+</div>
+<!-- Row 2: Custom Cards (dynamically rendered) -->
+<div class="stat-card" id="custom-card-1">
+<div class="stat-value" id="custom-stat-1">0</div>
+<div class="stat-label" id="custom-label-1">Push-ups</div>
+<div class="stat-trend" id="custom-trend-1"></div>
+</div>
+<div class="stat-card" id="custom-card-2">
+<div class="stat-value" id="custom-stat-2">0</div>
+<div class="stat-label" id="custom-label-2">Pull-ups</div>
+<div class="stat-trend" id="custom-trend-2"></div>
+</div>
+<div class="stat-card" id="custom-card-3">
+<div class="stat-value" id="custom-stat-3">0</div>
+<div class="stat-label" id="custom-label-3">Roller Abs</div>
+<div class="stat-trend" id="custom-trend-3"></div>
+</div>
+</div>
+<button class="customize-dashboard-btn" onclick="app.openCustomizeModal()">Customize Favorites</button>
+<!-- Comparison Bar Graphs -->
+<div class="comparison-section">
+<div class="comparison-header">Progress Comparison</div>
+<div class="comparison-graph">
+<div class="comparison-title">This Week vs Last Week</div>
+<div class="bar-row">
+<div class="bar-label">This Week</div>
+<div class="bar-container">
+<div class="bar-fill current-period" id="week-current-bar" style="width: 0%"></div>
+</div>
+<div class="bar-value" id="week-current-value">0</div>
+</div>
+<div class="bar-row">
+<div class="bar-label">Last Week</div>
+<div class="bar-container">
+<div class="bar-fill previous-period" id="week-previous-bar" style="width: 0%"></div>
+</div>
+<div class="bar-value" id="week-previous-value">0</div>
+</div>
+</div>
+<div class="comparison-graph">
+<div class="comparison-title">This Month vs Last Month</div>
+<div class="bar-row">
+<div class="bar-label">This Month</div>
+<div class="bar-container">
+<div class="bar-fill current-period" id="month-current-bar" style="width: 0%"></div>
+</div>
+<div class="bar-value" id="month-current-value">0</div>
+</div>
+<div class="bar-row">
+<div class="bar-label">Last Month</div>
+<div class="bar-container">
+<div class="bar-fill previous-period" id="month-previous-bar" style="width: 0%"></div>
+</div>
+<div class="bar-value" id="month-previous-value">0</div>
+</div>
+</div>
+</div>
+<!-- Weight Summary (if weight data exists) -->
+<div class="progress-card" id="weight-summary-card" style="display: none;">
+<div style="display: flex; align-items: center; justify-content: space-between; padding: 4px 0;">
+<span class="progress-title" style="margin: 0;">Weight</span>
+<div style="display: flex; align-items: baseline; gap: 6px;">
+<div id="weight-display-value" style="font-size: 32px; font-weight: 700; color: #e8e8e8;">--</div>
+<div id="weight-display-unit" style="font-size: 14px; color: #9ca3af;">lbs</div>
+<div id="weight-trend-indicator"></div>
+</div>
+</div>
+<!-- Weight History Toggle -->
+<div class="weight-history-toggle" id="weight-history-toggle" onclick="app.toggleWeightHistory()">
                     View History ▼
                 </div>
-                
-                <!-- Weight History List (expandable) -->
-                <div class="weight-history-list" id="weight-history-list">
-                    <!-- Populated dynamically -->
-                </div>
-            </div>
-
-            <div class="progress-card">
-                <div class="progress-header">
-                    <span class="progress-title">Annual Goal</span>
-                    <span class="progress-percentage" id="annual-progress-percent">0%</span>
-                </div>
-                <div class="progress-bar-bg">
-                    <div class="progress-bar-fill" id="annual-progress-bar" style="width: 0%"></div>
-                </div>
-                <div class="progress-details">
-                    <span id="annual-progress-current">0</span>
-                    <span id="annual-progress-goal">420</span>
-                </div>
-            </div>
-            
-        </div>
-
-        <!-- Calendar Screen -->
-        <div id="calendar-screen" class="screen">
-            <div class="calendar-header">
-                <button class="calendar-nav" onclick="app.changeMonth(-1)">‹</button>
-                <div class="calendar-month-year" id="calendar-month-year">January 2026</div>
-                <button class="calendar-nav" onclick="app.changeMonth(1)">›</button>
-            </div>
-
-            <div class="calendar-grid" id="calendar-grid">
-                <!-- Calendar will be generated here -->
-            </div>
-
-            <div class="calendar-hint">
+<!-- Weight History List (expandable) -->
+<div class="weight-history-list" id="weight-history-list">
+<!-- Populated dynamically -->
+</div>
+</div>
+<div class="progress-card">
+<div class="progress-header">
+<span class="progress-title">Annual Goal</span>
+<span class="progress-percentage" id="annual-progress-percent">0%</span>
+</div>
+<div class="progress-bar-bg">
+<div class="progress-bar-fill" id="annual-progress-bar" style="width: 0%"></div>
+</div>
+<div class="progress-details">
+<span id="annual-progress-current">0</span>
+<span id="annual-progress-goal">420</span>
+</div>
+</div>
+</div>
+<!-- Calendar Screen -->
+<div class="screen" id="calendar-screen">
+<div class="calendar-header">
+<button class="calendar-nav" onclick="app.changeMonth(-1)">‹</button>
+<div class="calendar-month-year" id="calendar-month-year">January 2026</div>
+<button class="calendar-nav" onclick="app.changeMonth(1)">›</button>
+</div>
+<div class="calendar-grid" id="calendar-grid">
+<!-- Calendar will be generated here -->
+</div>
+<div class="calendar-hint">
                 💡 Tap any day to see details
             </div>
-
-            <!-- Activity Report (Collapsible) -->
-            <div class="progress-card">
-                <div class="activity-report-toggle" id="activity-report-toggle" onclick="app.toggleActivityReport()">
-                    <span>Activity Report</span>
-                    <span>▼</span>
-                </div>
-                <div class="activity-report-content" id="activity-report-content">
-                    <div class="activity-summary-list" id="activity-summary-list">
-                        <p style="text-align: center; color: #6b7280; font-size: 14px;">No activities logged yet.</p>
-                    </div>
-                </div>
-            </div>
-
-            <h2>Recent Milestones</h2>
-            <div class="progress-card">
-                <div class="milestone-list" id="milestone-list">
-                    <p style="text-align: center; color: #6b7280; font-size: 14px;">No milestones yet. Keep going!</p>
-                </div>
-            </div>
-            
-        </div>
-
-        <!-- Goals Screen -->
-        <div id="goals-screen" class="screen">
-            <h1>Goals</h1>
-            <p class="subtitle">Customize your goals and preferences</p>
-
-            <!-- Slim compact sections -->
-            <div style="display: flex; flex-direction: column; gap: 8px;">
-                
-                <!-- Unit Preference - Inline -->
-                <div style="background: #2d2d2d; padding: 10px 14px; border-radius: 8px;">
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <label style="font-size: 14px; font-weight: 600; color: #e8e8e8;">Unit Preference</label>
-                        <select id="unit-preference" style="width: 220px; padding: 6px 10px; border: 1px solid #3d3d3d; border-radius: 6px; font-size: 13px; font-weight: 600; background: #1a1a1a; color: #e8e8e8;">
-                            <option value="miles">Miles</option>
-                            <option value="km">Kilometers</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- Initial Weight - Inline -->
-                <div style="background: #2d2d2d; padding: 10px 14px; border-radius: 8px; margin-bottom: 10px;">
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <label style="font-size: 14px; font-weight: 600; color: #e8e8e8;">Initial Weight</label>
-                        <div style="width: 220px; display: flex; align-items: center; gap: 0; padding: 6px 10px; border: 2px solid #3d3d3d; border-radius: 6px; background: #1a1a1a;">
-                            <input type="number" id="initial-weight-preference" placeholder="Enter initial weight" inputmode="decimal"
-                                   style="flex: 1; min-width: 0; border: none; outline: none; padding: 0; background: transparent; color: #e8e8e8; font-size: 13px; font-weight: 600;">
-                            <span style="margin-left: 8px; font-size: 12px; color: #9ca3af; font-weight: 600;">lbs</span>
+<!-- Activity Report (Collapsible) -->
+<div class="progress-card">
+<div class="activity-report-toggle" id="activity-report-toggle" onclick="app.toggleActivityReport()">
+<span>Activity Report</span>
+<span>▼</span>
 </div>
-                    </div>
-                </div>
-
-                <!-- App Theme - Compact -->
-                <div style="background: #2d2d2d; padding: 10px 14px; border-radius: 8px;">
-                    <label style="font-size: 14px; font-weight: 600; color: #e8e8e8; display: block; margin-bottom: 8px;">App Theme</label>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
-                        <button onclick="app.openThemeColorPicker()" 
-                                style="padding: 8px 12px; background: #1a1a1a; color: #e8e8e8; border: 1px solid #3d3d3d; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 6px;">
-                            <span style="width: 16px; height: 16px; border-radius: 50%; background: var(--primary-dark); display: inline-block;"></span>
+<div class="activity-report-content" id="activity-report-content">
+<div class="activity-summary-list" id="activity-summary-list">
+<p style="text-align: center; color: #6b7280; font-size: 14px;">No activities logged yet.</p>
+</div>
+</div>
+</div>
+<h2>Recent Milestones</h2>
+<div class="progress-card">
+<div class="milestone-list" id="milestone-list">
+<p style="text-align: center; color: #6b7280; font-size: 14px;">No milestones yet. Keep going!</p>
+</div>
+</div>
+</div>
+<!-- Goals Screen -->
+<div class="screen" id="goals-screen">
+<h1>Goals</h1>
+<p class="subtitle">Customize your goals and preferences</p>
+<!-- Slim compact sections -->
+<div style="display: flex; flex-direction: column; gap: 8px;">
+<!-- Unit Preference - Inline -->
+<div style="background: #2d2d2d; padding: 10px 14px; border-radius: 8px;">
+<div style="display: flex; justify-content: space-between; align-items: center;">
+<label style="font-size: 14px; font-weight: 600; color: #e8e8e8;">Unit Preference</label>
+<select id="unit-preference" style="width: 220px; padding: 6px 10px; border: 1px solid #3d3d3d; border-radius: 6px; font-size: 13px; font-weight: 600; background: #1a1a1a; color: #e8e8e8;">
+<option value="miles">Miles</option>
+<option value="km">Kilometers</option>
+</select>
+</div>
+</div>
+<!-- Initial Weight - Inline -->
+<div style="background: #2d2d2d; padding: 10px 14px; border-radius: 8px; margin-bottom: 10px;">
+<div style="display: flex; justify-content: space-between; align-items: center;">
+<label style="font-size: 14px; font-weight: 600; color: #e8e8e8;">Initial Weight</label>
+<div style="width: 220px; display: flex; align-items: center; gap: 0; padding: 6px 10px; border: 2px solid #3d3d3d; border-radius: 6px; background: #1a1a1a;">
+<input id="initial-weight-preference" inputmode="decimal" placeholder="Enter initial weight" style="flex: 1; min-width: 0; border: none; outline: none; padding: 0; background: transparent; color: #e8e8e8; font-size: 13px; font-weight: 600;" type="number"/>
+<span style="margin-left: 8px; font-size: 12px; color: #9ca3af; font-weight: 600;">lbs</span>
+</div>
+</div>
+</div>
+<!-- App Theme - Compact -->
+<div style="background: #2d2d2d; padding: 10px 14px; border-radius: 8px;">
+<label style="font-size: 14px; font-weight: 600; color: #e8e8e8; display: block; margin-bottom: 8px;">App Theme</label>
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
+<button onclick="app.openThemeColorPicker()" style="padding: 8px 12px; background: #1a1a1a; color: #e8e8e8; border: 1px solid #3d3d3d; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 6px;">
+<span style="width: 16px; height: 16px; border-radius: 50%; background: var(--primary-dark); display: inline-block;"></span>
                             Choose
                         </button>
-                        <button onclick="app.resetThemeToDefault()" 
-                                style="padding: 8px 12px; background: #3d3d3d; color: #e8e8e8; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600;">
+<button onclick="app.resetThemeToDefault()" style="padding: 8px 12px; background: #3d3d3d; color: #e8e8e8; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600;">
                             Reset
                         </button>
-                    </div>
-                </div>
-
-                <!-- Weekly Strength Days Target - Inline -->
-                <div style="background: #2d2d2d; padding: 10px 14px; border-radius: 8px;">
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <label style="font-size: 14px; font-weight: 600; color: #e8e8e8;">Weekly Strength Days Target</label>
-                        <input type="number" id="workout-frequency" value="5" placeholder="5" inputmode="numeric" 
-                               style="width: 80px; padding: 6px 10px; border: 1px solid #3d3d3d; border-radius: 6px; font-size: 13px; font-weight: 600; background: #1a1a1a; color: #e8e8e8; text-align: center;">
-                    </div>
-                </div>
-
-                <!-- Monthly Mileage Target - Inline -->
-                <div style="background: #2d2d2d; padding: 10px 14px; border-radius: 8px;">
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <label style="font-size: 14px; font-weight: 600; color: #e8e8e8;">Monthly Mileage Target</label>
-                        <input type="number" id="monthly-goal" value="35" placeholder="35" inputmode="numeric" 
-                               style="width: 80px; padding: 6px 10px; border: 1px solid #3d3d3d; border-radius: 6px; font-size: 13px; font-weight: 600; background: #1a1a1a; color: #e8e8e8; text-align: center;">
-                    </div>
-                </div>
-
-                <!-- Annual Mileage Target - Inline -->
-                <div style="background: #2d2d2d; padding: 10px 14px; border-radius: 8px;">
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <label style="font-size: 14px; font-weight: 600; color: #e8e8e8;">Annual Mileage Target</label>
-                        <input type="number" id="annual-goal" value="420" placeholder="420" inputmode="numeric" 
-                               style="width: 80px; padding: 6px 10px; border: 1px solid #3d3d3d; border-radius: 6px; font-size: 13px; font-weight: 600; background: #1a1a1a; color: #e8e8e8; text-align: center;">
-                    </div>
-                </div>
-            </div>
-
-            <!-- Elegant divider line like monthly days section -->
-            <div style="margin: 24px 0; border-top: 1px solid #3d3d3d;"></div>
-
-            <!-- Daily Habits Section -->
-            <div>
-                <div style="margin-bottom: 12px;">
-                    <label style="font-size: 14px; font-weight: 600; color: #e8e8e8; display: block; margin-bottom: 4px;">Daily Habits (Private)</label>
-                    <p style="font-size: 12px; color: #6b7280; margin: 0;">Track up to 3 personal habits - not shared with anyone</p>
-                </div>
-                
-                <div id="habits-list" style="display: flex; flex-direction: column; gap: 6px;">
-                    <!-- Habits will be rendered here -->
-                </div>
-                
-                <button class="export-button" onclick="app.addHabit()" id="add-habit-btn" style="margin-top: 10px; padding: 8px 14px; font-size: 13px;">+ Add Habit</button>
-            </div>
-
-            <!-- Save Settings -->
-            <button class="save-button" onclick="app.saveGoals()" style="margin-top: 24px;">Save Settings</button>
-            <div class="success-message" id="settings-success">Settings saved successfully!</div>
-
-            <!-- Elegant divider line -->
-            <div style="margin: 24px 0; border-top: 1px solid #3d3d3d;"></div>
-
-            <!-- Data Import/Export -->
-            <div style="display: flex; flex-direction: column; gap: 8px;">
-                <input type="file" id="import-file-input" accept=".json" style="display: none;" onchange="app.handleImportFile(event)">
-                <button class="export-button" onclick="document.getElementById('import-file-input').click()" style="padding: 8px 14px; font-size: 13px;">Import Data</button>
-                <button class="export-button" onclick="app.exportData()" style="padding: 8px 14px; font-size: 13px;">Export All Data</button>
-            </div>
-            <div class="success-message" id="import-success">Data imported successfully!</div>
-            
-        </div>
-
-        <!-- PALS Screen -->
-        <div id="pals-screen" class="screen">
-            <h1>Pals</h1>
-            <p class="subtitle">Share your fitness journey with friends</p>
-
-            <!-- MY PROFILE Section - Slim Design -->
-            <div class="pals-section">
-                <h2 style="font-size: 14px; margin-bottom: 8px; color: var(--primary-light); font-weight: 600;">MY PROFILE</h2>
-                
-                <!-- PAL Code Row -->
-                <div style="background: #2d2d2d; border-radius: 8px; padding: 8px 12px; margin-bottom: 6px;">
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <div style="flex: 1; min-width: 0;">
-                            <div style="font-size: 11px; color: #6b7280; margin-bottom: 2px;">PAL Code</div>
-                            <div style="font-size: 14px; color: #e8e8e8; font-weight: 600;" id="display-pal-code">
+</div>
+</div>
+<!-- Weekly Strength Days Target - Inline -->
+<div style="background: #2d2d2d; padding: 10px 14px; border-radius: 8px;">
+<div style="display: flex; justify-content: space-between; align-items: center;">
+<label style="font-size: 14px; font-weight: 600; color: #e8e8e8;">Weekly Strength Days Target</label>
+<input id="workout-frequency" inputmode="numeric" placeholder="5" style="width: 80px; padding: 6px 10px; border: 1px solid #3d3d3d; border-radius: 6px; font-size: 13px; font-weight: 600; background: #1a1a1a; color: #e8e8e8; text-align: center;" type="number" value="5"/>
+</div>
+</div>
+<!-- Monthly Mileage Target - Inline -->
+<div style="background: #2d2d2d; padding: 10px 14px; border-radius: 8px;">
+<div style="display: flex; justify-content: space-between; align-items: center;">
+<label style="font-size: 14px; font-weight: 600; color: #e8e8e8;">Monthly Mileage Target</label>
+<input id="monthly-goal" inputmode="numeric" placeholder="35" style="width: 80px; padding: 6px 10px; border: 1px solid #3d3d3d; border-radius: 6px; font-size: 13px; font-weight: 600; background: #1a1a1a; color: #e8e8e8; text-align: center;" type="number" value="35"/>
+</div>
+</div>
+<!-- Annual Mileage Target - Inline -->
+<div style="background: #2d2d2d; padding: 10px 14px; border-radius: 8px;">
+<div style="display: flex; justify-content: space-between; align-items: center;">
+<label style="font-size: 14px; font-weight: 600; color: #e8e8e8;">Annual Mileage Target</label>
+<input id="annual-goal" inputmode="numeric" placeholder="420" style="width: 80px; padding: 6px 10px; border: 1px solid #3d3d3d; border-radius: 6px; font-size: 13px; font-weight: 600; background: #1a1a1a; color: #e8e8e8; text-align: center;" type="number" value="420"/>
+</div>
+</div>
+</div>
+<!-- Elegant divider line like monthly days section -->
+<div style="margin: 24px 0; border-top: 1px solid #3d3d3d;"></div>
+<!-- Daily Habits Section -->
+<div>
+<div style="margin-bottom: 12px;">
+<label style="font-size: 14px; font-weight: 600; color: #e8e8e8; display: block; margin-bottom: 4px;">Daily Habits (Private)</label>
+<p style="font-size: 12px; color: #6b7280; margin: 0;">Track up to 3 personal habits - not shared with anyone</p>
+</div>
+<div id="habits-list" style="display: flex; flex-direction: column; gap: 6px;">
+<!-- Habits will be rendered here -->
+</div>
+<button class="export-button" id="add-habit-btn" onclick="app.addHabit()" style="margin-top: 10px; padding: 8px 14px; font-size: 13px;">+ Add Habit</button>
+</div>
+<!-- Save Settings -->
+<button class="save-button" onclick="app.saveGoals()" style="margin-top: 24px;">Save Settings</button>
+<div class="success-message" id="settings-success">Settings saved successfully!</div>
+<!-- Elegant divider line -->
+<div style="margin: 24px 0; border-top: 1px solid #3d3d3d;"></div>
+<!-- Data Import/Export -->
+<div style="display: flex; flex-direction: column; gap: 8px;">
+<input accept=".json" id="import-file-input" onchange="app.handleImportFile(event)" style="display: none;" type="file"/>
+<button class="export-button" onclick="document.getElementById('import-file-input').click()" style="padding: 8px 14px; font-size: 13px;">Import Data</button>
+<button class="export-button" onclick="app.exportData()" style="padding: 8px 14px; font-size: 13px;">Export All Data</button>
+</div>
+<div class="success-message" id="import-success">Data imported successfully!</div>
+</div>
+<!-- PALS Screen -->
+<div class="screen" id="pals-screen">
+<h1>Pals</h1>
+<p class="subtitle">Share your fitness journey with friends</p>
+<!-- MY PROFILE Section - Slim Design -->
+<div class="pals-section">
+<h2 style="font-size: 14px; margin-bottom: 8px; color: var(--primary-light); font-weight: 600;">MY PROFILE</h2>
+<!-- PAL Code Row -->
+<div style="background: var(--card); border-radius: 8px; padding: 8px 12px; margin-bottom: 6px; border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 2px 6px rgba(0,0,0,0.25);">
+<div style="display: flex; align-items: center; gap: 8px;">
+<div style="flex: 1; min-width: 0;">
+<div style="font-size: 12px; color: var(--text); margin-bottom: 4px; font-weight: 600;">PAL Code</div>
+<div id="display-pal-code" style="font-size: 12px; color: rgba(255,255,255,0.75); font-weight: 500;">
                                 Not set
                             </div>
-                        </div>
-                        <button id="pal-code-btn" onclick="app.handlePalCodeButton()" 
-                                style="width: 55px; height: 32px; flex-shrink: 0; background: var(--primary-dark); color: white; border: none; border-radius: 5px; font-size: 12px; cursor: pointer; font-weight: 600; display: flex; align-items: center; justify-content: center;">
+</div>
+<button id="pal-code-btn" onclick="app.handlePalCodeButton()" style="width: 55px; height: 32px; flex-shrink: 0; background: var(--primary-dark); color: white; border: none; border-radius: 5px; font-size: 12px; cursor: pointer; font-weight: 600; display: flex; align-items: center; justify-content: center;">
                             Set Code
                         </button>
-                    </div>
-                </div>
-
-                <!-- Display Name Row -->
-                <div style="background: #2d2d2d; border-radius: 8px; padding: 8px 12px; margin-bottom: 6px;">
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <div style="flex: 1; min-width: 0;">
-                            <div style="font-size: 11px; color: #6b7280; margin-bottom: 2px;">Display Name</div>
-                            <div style="font-size: 14px; color: #e8e8e8; font-weight: 600;" id="display-display-name">
+</div>
+</div>
+<!-- Display Name Row -->
+<div style="background: var(--card); border-radius: 8px; padding: 8px 12px; margin-bottom: 6px; border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 2px 6px rgba(0,0,0,0.25);">
+<div style="display: flex; align-items: center; gap: 8px;">
+<div style="flex: 1; min-width: 0;">
+<div style="font-size: 12px; color: var(--text); margin-bottom: 4px; font-weight: 600;">Display Name</div>
+<div id="display-display-name" style="font-size: 12px; color: rgba(255,255,255,0.75); font-weight: 500;">
                                 Not set
                             </div>
-                        </div>
-                        <button onclick="app.editDisplayName()" 
-                                style="width: 55px; height: 32px; flex-shrink: 0; background: #3d3d3d; color: #e8e8e8; border: none; border-radius: 5px; font-size: 12px; cursor: pointer; font-weight: 600; display: flex; align-items: center; justify-content: center;">
+</div>
+<button onclick="app.editDisplayName()" style="width: 55px; height: 32px; flex-shrink: 0; background: #3d3d3d; color: #e8e8e8; border: none; border-radius: 5px; font-size: 12px; cursor: pointer; font-weight: 600; display: flex; align-items: center; justify-content: center;">
                             Edit
                         </button>
-                    </div>
-                </div>
-
-                <!-- Show in Leaderboards Toggle -->
-                <div style="background: #2d2d2d; border-radius: 8px; padding: 8px 12px;">
-                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
-                        <div style="flex: 1; min-width: 0;">
-                            <span style="font-size: 13px; color: #e8e8e8; font-weight: 500; display: block;">Show in Leaderboards</span>
-                            <span style="font-size: 10px; color: #6b7280; display: block; margin-top: 2px;">Compete globally with all JustStep users</span>
-                        </div>
-                        <div style="width: 55px; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
-                            <input type="checkbox" id="join-leaderboard" onchange="app.toggleLeaderboard()" 
-                                   style="width: 20px; height: 20px; cursor: pointer; margin: 0;">
-                        </div>
-                    </label>
-                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; margin-top: 10px;">
-                        <div style="flex: 1; min-width: 0;">
-                            <span style="font-size: 13px; color: var(--text); font-weight: 500; display: block;">Include Weight Leaderboard</span></div>
-                        <div style="width: 55px; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
-                            <input type="checkbox" id="join-weight-leaderboard" onchange="app.toggleWeightLeaderboardOptIn()"
-                                   style="width: 20px; height: 20px; cursor: pointer; margin: 0;">
-                        </div>
-                    </label>
-                    <div style="font-size: 11px; color: #6b7280; margin-top: 4px;">Requires Initial Weight in Goals and regular weigh-ins.</div>
-
-                </div>
-            </div>
-
-            <!-- ADD PAL Section - Compact -->
-            <div class="pals-section">
-                <h2 style="font-size: 14px; margin-bottom: 8px; color: var(--primary-light); font-weight: 600;">ADD PAL</h2>
-                
-                <div style="background: #2d2d2d; border-radius: 8px; padding: 8px 12px;">
-                    <div style="display: flex; gap: 8px; align-items: center;">
-                        <input type="text" id="add-pal-code" type="tel" inputmode="numeric" placeholder="Enter PAL Code..." 
-                               style="flex: 1; min-width: 0; padding: 6px 10px; background: #1a1a1a; border: 1px solid #3d3d3d; border-radius: 6px; color: #e8e8e8; font-size: 13px; height: 32px; box-sizing: border-box;" 
-                               maxlength="4">
-                        <button onclick="app.addPal()" 
-                                style="width: 55px; height: 32px; flex-shrink: 0; background: var(--primary-dark); color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 12px; display: flex; align-items: center; justify-content: center;">
+</div>
+</div>
+<!-- Show in Leaderboards Toggle -->
+<div style="background: var(--card); border-radius: 8px; padding: 8px 12px; border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 2px 6px rgba(0,0,0,0.25);">
+<label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+<div style="flex: 1; min-width: 0;">
+<span style="font-size: 12px; color: var(--text); font-weight: 600; display: block;">Show in Leaderboards</span>
+<span style="font-size: 12px; color: rgba(255,255,255,0.75); display: block; margin-top: 4px; font-weight: 500;">Compete globally with all JustStep users</span>
+</div>
+<div style="width: 55px; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
+<input id="join-leaderboard" onchange="app.toggleLeaderboard()" style="width: 20px; height: 20px; cursor: pointer; margin: 0;" type="checkbox"/>
+</div>
+</label>
+<label style="display: flex; align-items: center; gap: 8px; cursor: pointer; margin-top: 10px;">
+<div style="flex: 1; min-width: 0;">
+<span style="font-size: 12px; color: var(--text); font-weight: 600; display: block;">Include Weight Leaderboard</span></div>
+<div style="width: 55px; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
+<input id="join-weight-leaderboard" onchange="app.toggleWeightLeaderboardOptIn()" style="width: 20px; height: 20px; cursor: pointer; margin: 0;" type="checkbox"/>
+</div>
+</label>
+<div style="font-size: 11px; color: #6b7280; margin-top: 4px;">Requires Initial Weight in Goals and regular weigh-ins.</div>
+</div>
+</div>
+<!-- ADD PAL Section - Compact -->
+<div class="pals-section">
+<h2 style="font-size: 14px; margin-bottom: 8px; color: var(--primary-light); font-weight: 600;">ADD PAL</h2>
+<div style="background: #2d2d2d; border-radius: 8px; padding: 8px 12px;">
+<div style="display: flex; gap: 8px; align-items: center;">
+<input id="add-pal-code" inputmode="numeric" maxlength="4" placeholder="Enter PAL Code..." style="flex: 1; min-width: 0; padding: 6px 10px; background: #1a1a1a; border: 1px solid #3d3d3d; border-radius: 6px; color: #e8e8e8; font-size: 13px; height: 32px; box-sizing: border-box;" type="tel"/>
+<button onclick="app.addPal()" style="width: 55px; height: 32px; flex-shrink: 0; background: var(--primary-dark); color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 12px; display: flex; align-items: center; justify-content: center;">
                             Add
                         </button>
-                    </div>
-                </div>
-                <div class="success-message" id="add-pal-success" style="margin-top: 6px;">Pal added!</div>
-                <div class="error-message" id="add-pal-error" style="margin-top: 6px;"></div>
-            </div>
-
-            <!-- MY PALS List - Slim -->
-            <div class="pals-section">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                    <h2 style="font-size: 14px; color: var(--primary-light); font-weight: 600; margin: 0;">MY PALS</h2>
-                    <button onclick="app.refreshAllPals()" 
-                            style="padding: 4px 10px; background: #3d3d3d; color: #e8e8e8; border: none; border-radius: 5px; font-size: 11px; cursor: pointer; font-weight: 600;">
+</div>
+</div>
+<div class="success-message" id="add-pal-success" style="margin-top: 6px;">Pal added!</div>
+<div class="error-message" id="add-pal-error" style="margin-top: 6px;"></div>
+</div>
+<!-- MY PALS List - Slim -->
+<div class="pals-section">
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+<h2 style="font-size: 14px; color: var(--primary-light); font-weight: 600; margin: 0;">MY PALS</h2>
+<button onclick="app.refreshAllPals()" style="padding: 4px 10px; background: #3d3d3d; color: #e8e8e8; border: none; border-radius: 5px; font-size: 11px; cursor: pointer; font-weight: 600;">
                         🔄 Refresh All
                     </button>
-                </div>
-                <div id="pals-list">
-                    <p style="color: #6b7280; text-align: center; padding: 16px 0; font-size: 13px;">No pals yet. Add one above!</p>
-                </div>
-            </div>
-            
-        </div>
-
-        <!-- Leaderboard Screen -->
-        <div id="leaderboard-screen" class="screen">
-            <h1>Leaderboard</h1>
-            <p class="subtitle">Compete with JustStep users worldwide</p>
-
-            <!-- Toggle: Global / Friends -->
-            <div class="leaderboard-toggle" style="display: flex; gap: 8px; margin-bottom: 16px;">
-                <button class="toggle-btn active" id="lb-global-btn" onclick="app.setLeaderboardMode('global')" 
-                        style="flex: 1; padding: 10px; background: var(--primary-dark); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.2s;">
+</div>
+<div id="pals-list">
+<p style="color: #6b7280; text-align: center; padding: 16px 0; font-size: 13px;">No pals yet. Add one above!</p>
+</div>
+</div>
+</div>
+<!-- Leaderboard Screen -->
+<div class="screen" id="leaderboard-screen">
+<h1>Leaderboard</h1>
+<p class="subtitle">Compete with JustStep users worldwide</p>
+<!-- Toggle: Global / Friends -->
+<div class="leaderboard-toggle" style="display: flex; gap: 8px; margin-bottom: 16px;">
+<button class="toggle-btn active" id="lb-global-btn" onclick="app.setLeaderboardMode('global')" style="flex: 1; padding: 10px; background: var(--primary-dark); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.2s;">
                     Global
                 </button>
-                <button class="toggle-btn" id="lb-friends-btn" onclick="app.setLeaderboardMode('friends')" 
-                        style="flex: 1; padding: 10px; background: #2d2d2d; color: #9ca3af; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.2s;">
+<button class="toggle-btn" id="lb-friends-btn" onclick="app.setLeaderboardMode('friends')" style="flex: 1; padding: 10px; background: #2d2d2d; color: #9ca3af; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.2s;">
                     Friends
                 </button>
-            </div>
-
-            <!-- Time Period & Metric Dropdowns -->
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px;">
-                <select id="leaderboard-metric" onchange="app.renderLeaderboard()" 
-                        style="padding: 10px; background: #2d2d2d; border: 1px solid #3d3d3d; border-radius: 8px; color: #e8e8e8; font-size: 14px; cursor: pointer;">
-                    <option value="thisWeekDistance">Distance</option>
-                    <option value="thisWeekSteps">Steps</option>
-                    <option value="weight">Weight</option>
-                </select>
-
-                <select id="leaderboard-period" onchange="app.renderLeaderboard()" 
-                        style="padding: 10px; background: #2d2d2d; border: 1px solid #3d3d3d; border-radius: 8px; color: #e8e8e8; font-size: 14px; cursor: pointer;">
-                    <option value="week">This Week</option>
-                    <option value="month">This Month</option>
-                    <option value="total">All Time</option>
-                </select>
-            </div>
-
-            <!-- Leaderboard List -->
-            <div id="leaderboard-list" style="display: flex; flex-direction: column; gap: 12px;">
-                <p style="color: #6b7280; text-align: center; padding: 20px;">Loading leaderboard...</p>
-            </div>
-            
-        </div>
-    </div>
-
-    <!-- Milestone Notification -->
-    <div class="overlay" id="overlay" onclick="app.closeMilestone()"></div>
-    <div class="milestone-notification" id="milestone-notification">
-        <div class="milestone-icon-large" id="milestone-icon">🎯</div>
-        <div class="milestone-title" id="milestone-title">Milestone Reached</div>
-        <div class="milestone-description" id="milestone-description">Great work!</div>
-        <button class="milestone-close" onclick="app.closeMilestone()">Continue</button>
-    </div>
-
-    <!-- Day Detail Modal -->
-    <div class="overlay" id="day-overlay" onclick="app.closeDayDetail()"></div>
-    <div class="day-detail-modal" id="day-detail-modal">
-        <div class="day-detail-header">
-            <div class="day-detail-date" id="day-detail-date">January 15, 2026</div>
-            <button class="day-detail-close" onclick="app.closeDayDetail()">×</button>
-        </div>
-        <div id="day-detail-content">
-            <!-- Content will be populated dynamically -->
-        </div>
-    </div>
-
-    <!-- Welcome Modal -->
-    <div class="overlay" id="welcome-overlay"></div>
-    <div class="welcome-modal" id="welcome-modal">
-        <div class="welcome-header">
-            <div class="welcome-title">Welcome to <span style="color: white; font-weight: 700;">J</span>ustStep</div>
-        </div>
-        
-        <div class="welcome-content">
+</div>
+<!-- Time Period & Metric Dropdowns -->
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px;">
+<select id="leaderboard-metric" onchange="app.renderLeaderboard()" style="padding: 10px; background: #2d2d2d; border: 1px solid #3d3d3d; border-radius: 8px; color: #e8e8e8; font-size: 14px; cursor: pointer;">
+<option value="thisWeekDistance">Distance</option>
+<option value="thisWeekSteps">Steps</option>
+<option value="weight">Weight</option>
+</select>
+<select id="leaderboard-period" onchange="app.renderLeaderboard()" style="padding: 10px; background: #2d2d2d; border: 1px solid #3d3d3d; border-radius: 8px; color: #e8e8e8; font-size: 14px; cursor: pointer;">
+<option value="week">This Week</option>
+<option value="month">This Month</option>
+<option value="total">All Time</option>
+</select>
+</div>
+<!-- Leaderboard List -->
+<div id="leaderboard-list" style="display: flex; flex-direction: column; gap: 12px;">
+<p style="color: #6b7280; text-align: center; padding: 20px;">Loading leaderboard...</p>
+</div>
+</div>
+</div>
+<!-- Milestone Notification -->
+<div class="overlay" id="overlay" onclick="app.closeMilestone()"></div>
+<div class="milestone-notification" id="milestone-notification">
+<div class="milestone-icon-large" id="milestone-icon">🎯</div>
+<div class="milestone-title" id="milestone-title">Milestone Reached</div>
+<div class="milestone-description" id="milestone-description">Great work!</div>
+<button class="milestone-close" onclick="app.closeMilestone()">Continue</button>
+</div>
+<!-- Day Detail Modal -->
+<div class="overlay" id="day-overlay" onclick="app.closeDayDetail()"></div>
+<div class="day-detail-modal" id="day-detail-modal">
+<div class="day-detail-header">
+<div class="day-detail-date" id="day-detail-date">January 15, 2026</div>
+<button class="day-detail-close" onclick="app.closeDayDetail()">×</button>
+</div>
+<div id="day-detail-content">
+<!-- Content will be populated dynamically -->
+</div>
+</div>
+<!-- Welcome Modal -->
+<div class="overlay" id="welcome-overlay"></div>
+<div class="welcome-modal" id="welcome-modal">
+<div class="welcome-header">
+<div class="welcome-title">Welcome to <span style="color: white; font-weight: 700;">J</span>ustStep</div>
+</div>
+<div class="welcome-content">
             Success isn't comfortable. Every workout, every mile, every rep you log here is a step closer to your goals!
-            <br><br>
-            <span style="color: white; font-weight: 700;">J</span>ust take the next <span style="color: white; font-weight: 700;">S</span>tep.
+            <br/><br/>
+<span style="color: white; font-weight: 700;">J</span>ust take the next <span style="color: white; font-weight: 700;">S</span>tep.
         </div>
-        
-        <div class="welcome-tagline">
+<div class="welcome-tagline">
             Track it. Own it. Grow.
         </div>
-        
-        <a href="https://www.youtube.com/watch?v=ZuHHYRD6AHQ&t=0" target="_blank" class="welcome-video-link">
+<a class="welcome-video-link" href="https://www.youtube.com/watch?v=ZuHHYRD6AHQ&amp;t=0" target="_blank">
             Watch → To Grow, You Must Suffer
         </a>
-        
-        <button class="welcome-button" onclick="app.closeWelcome()">Let's Go</button>
-        
-        <div style="text-align: center; color: #6b7280; font-size: 11px; margin-top: 16px;">
+<button class="welcome-button" onclick="app.closeWelcome()">Let's Go</button>
+<div style="text-align: center; color: #6b7280; font-size: 11px; margin-top: 16px;">
             v1.8.0
         </div>
-    </div>
-
-    <!-- Customize Dashboard Modal -->
-    <div class="overlay" id="customize-overlay" onclick="app.closeCustomizeModal()"></div>
-    <div class="customize-modal" id="customize-modal">
-        <div class="customize-modal-header">⭐ Customize Your Favorites</div>
-        
-        <div class="customize-slot">
-            <label class="customize-slot-label">Favorite 1</label>
-            <select id="custom-slot-1">
-                <optgroup label="─── CARDIO ───">
-                    <option value="biking">Biking</option>
-                    <option value="dog">Dog Walking</option>
-                    <option value="hiking">Hiking</option>
-                    <option value="run">Running</option>
-                    <option value="stairs">Master Stairs</option>
-                    <option value="walk">Walking</option>
-                </optgroup>
-                <optgroup label="─── EXERCISES ───">
-                    <option value="dips">Dips</option>
-                    <option value="pullups">Pull-ups</option>
-                    <option value="pushups">Push-ups</option>
-                    <option value="rollerabs">Roller Abs</option>
-                    <option value="situps">Sit-ups</option>
-                    <option value="squats">Squats</option>
-                </optgroup>
-                <optgroup label="─── TRACKING ───">
-                    <option value="weight">Weight</option>
-                </optgroup>
-            </select>
-        </div>
-        
-        <div class="customize-slot">
-            <label class="customize-slot-label">Favorite 2</label>
-            <select id="custom-slot-2">
-                <optgroup label="─── CARDIO ───">
-                    <option value="biking">Biking</option>
-                    <option value="dog">Dog Walking</option>
-                    <option value="hiking">Hiking</option>
-                    <option value="run">Running</option>
-                    <option value="stairs">Master Stairs</option>
-                    <option value="walk">Walking</option>
-                </optgroup>
-                <optgroup label="─── EXERCISES ───">
-                    <option value="dips">Dips</option>
-                    <option value="pullups">Pull-ups</option>
-                    <option value="pushups">Push-ups</option>
-                    <option value="rollerabs">Roller Abs</option>
-                    <option value="situps">Sit-ups</option>
-                    <option value="squats">Squats</option>
-                </optgroup>
-                <optgroup label="─── TRACKING ───">
-                    <option value="weight">Weight</option>
-                </optgroup>
-            </select>
-        </div>
-        
-        <div class="customize-slot">
-            <label class="customize-slot-label">Favorite 3</label>
-            <select id="custom-slot-3">
-                <optgroup label="─── CARDIO ───">
-                    <option value="biking">Biking</option>
-                    <option value="dog">Dog Walking</option>
-                    <option value="hiking">Hiking</option>
-                    <option value="run">Running</option>
-                    <option value="stairs">Master Stairs</option>
-                    <option value="walk">Walking</option>
-                </optgroup>
-                <optgroup label="─── EXERCISES ───">
-                    <option value="dips">Dips</option>
-                    <option value="pullups">Pull-ups</option>
-                    <option value="pushups">Push-ups</option>
-                    <option value="rollerabs">Roller Abs</option>
-                    <option value="situps">Sit-ups</option>
-                    <option value="squats">Squats</option>
-                </optgroup>
-                <optgroup label="─── TRACKING ───">
-                    <option value="weight">Weight</option>
-                </optgroup>
-            </select>
-        </div>
-        
-        <div class="customize-modal-buttons">
-            <button class="customize-modal-btn cancel" onclick="app.closeCustomizeModal()">Cancel</button>
-            <button class="customize-modal-btn save" onclick="app.saveCustomCards()">Save Favorites</button>
-        </div>
-    </div>
-
-    <!-- Color Palette Modal -->
-    <div id="color-palette-modal" class="modal" style="display: none;">
-        <div class="modal-content" style="max-width: 340px;">
-            <h2 style="margin-bottom: 16px; font-size: 18px;">Select Color</h2>
-            <div id="color-palette-grid" style="display: grid; grid-template-columns: repeat(8, 1fr); gap: 4px; margin-bottom: 16px;">
-                <!-- Colors will be rendered here: 10 rows x 8 columns -->
-            </div>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-                <button onclick="app.closeColorPalette()" 
-                        style="width: 100%; padding: 10px; background: #3d3d3d; color: #e8e8e8; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">
+</div>
+<!-- Customize Dashboard Modal -->
+<div class="overlay" id="customize-overlay" onclick="app.closeCustomizeModal()"></div>
+<div class="customize-modal" id="customize-modal">
+<div class="customize-modal-header">⭐ Customize Your Favorites</div>
+<div class="customize-slot">
+<label class="customize-slot-label">Favorite 1</label>
+<select id="custom-slot-1">
+<optgroup label="─── CARDIO ───">
+<option value="biking">Biking</option>
+<option value="dog">Dog Walking</option>
+<option value="hiking">Hiking</option>
+<option value="run">Running</option>
+<option value="stairs">Master Stairs</option>
+<option value="walk">Walking</option>
+</optgroup>
+<optgroup label="─── EXERCISES ───">
+<option value="dips">Dips</option>
+<option value="pullups">Pull-ups</option>
+<option value="pushups">Push-ups</option>
+<option value="rollerabs">Roller Abs</option>
+<option value="situps">Sit-ups</option>
+<option value="squats">Squats</option>
+</optgroup>
+<optgroup label="─── TRACKING ───">
+<option value="weight">Weight</option>
+</optgroup>
+</select>
+</div>
+<div class="customize-slot">
+<label class="customize-slot-label">Favorite 2</label>
+<select id="custom-slot-2">
+<optgroup label="─── CARDIO ───">
+<option value="biking">Biking</option>
+<option value="dog">Dog Walking</option>
+<option value="hiking">Hiking</option>
+<option value="run">Running</option>
+<option value="stairs">Master Stairs</option>
+<option value="walk">Walking</option>
+</optgroup>
+<optgroup label="─── EXERCISES ───">
+<option value="dips">Dips</option>
+<option value="pullups">Pull-ups</option>
+<option value="pushups">Push-ups</option>
+<option value="rollerabs">Roller Abs</option>
+<option value="situps">Sit-ups</option>
+<option value="squats">Squats</option>
+</optgroup>
+<optgroup label="─── TRACKING ───">
+<option value="weight">Weight</option>
+</optgroup>
+</select>
+</div>
+<div class="customize-slot">
+<label class="customize-slot-label">Favorite 3</label>
+<select id="custom-slot-3">
+<optgroup label="─── CARDIO ───">
+<option value="biking">Biking</option>
+<option value="dog">Dog Walking</option>
+<option value="hiking">Hiking</option>
+<option value="run">Running</option>
+<option value="stairs">Master Stairs</option>
+<option value="walk">Walking</option>
+</optgroup>
+<optgroup label="─── EXERCISES ───">
+<option value="dips">Dips</option>
+<option value="pullups">Pull-ups</option>
+<option value="pushups">Push-ups</option>
+<option value="rollerabs">Roller Abs</option>
+<option value="situps">Sit-ups</option>
+<option value="squats">Squats</option>
+</optgroup>
+<optgroup label="─── TRACKING ───">
+<option value="weight">Weight</option>
+</optgroup>
+</select>
+</div>
+<div class="customize-modal-buttons">
+<button class="customize-modal-btn cancel" onclick="app.closeCustomizeModal()">Cancel</button>
+<button class="customize-modal-btn save" onclick="app.saveCustomCards()">Save Favorites</button>
+</div>
+</div>
+<!-- Color Palette Modal -->
+<div class="modal" id="color-palette-modal" style="display: none;">
+<div class="modal-content" style="max-width: 340px;">
+<h2 style="margin-bottom: 16px; font-size: 18px;">Select Color</h2>
+<div id="color-palette-grid" style="display: grid; grid-template-columns: repeat(8, 1fr); gap: 4px; margin-bottom: 16px;">
+<!-- Colors will be rendered here: 10 rows x 8 columns -->
+</div>
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+<button onclick="app.closeColorPalette()" style="width: 100%; padding: 10px; background: #3d3d3d; color: #e8e8e8; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">
                     Cancel
                 </button>
-                <button onclick="app.confirmColorSelection()" 
-                        style="width: 100%; padding: 10px; background: var(--primary-dark); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">
+<button onclick="app.confirmColorSelection()" style="width: 100%; padding: 10px; background: var(--primary-dark); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">
                     OK
                 </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Color Wheel Modal -->
-    <div id="color-wheel-modal" class="modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1000; align-items: center; justify-content: center;">
-        <div class="modal-content" style="max-width: 360px; text-align: center; background: #1a1a1a; padding: 24px; border-radius: 12px;">
-            <h2 style="margin-bottom: 16px; font-size: 18px; color: #e8e8e8;">Choose Your Color</h2>
-            <div style="display: flex; justify-content: center; margin-bottom: 16px;">
-                <canvas id="color-wheel-canvas" width="280" height="280" style="cursor: crosshair; border-radius: 50%;"></canvas>
-            </div>
-            <div id="selected-color-preview" style="width: 60px; height: 60px; border-radius: 50%; margin: 0 auto 16px; border: 3px solid #3d3d3d; background: #2563eb;"></div>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-                <button onclick="app.closeColorWheel()" 
-                        style="width: 100%; padding: 10px; background: #3d3d3d; color: #e8e8e8; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">
+</div>
+</div>
+</div>
+<!-- Color Wheel Modal -->
+<div class="modal" id="color-wheel-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1000; align-items: center; justify-content: center;">
+<div class="modal-content" style="max-width: 360px; text-align: center; background: #1a1a1a; padding: 24px; border-radius: 12px;">
+<h2 style="margin-bottom: 16px; font-size: 18px; color: #e8e8e8;">Choose Your Color</h2>
+<div style="display: flex; justify-content: center; margin-bottom: 16px;">
+<canvas height="280" id="color-wheel-canvas" style="cursor: crosshair; border-radius: 50%;" width="280"></canvas>
+</div>
+<div id="selected-color-preview" style="width: 60px; height: 60px; border-radius: 50%; margin: 0 auto 16px; border: 3px solid #3d3d3d; background: #2563eb;"></div>
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+<button onclick="app.closeColorWheel()" style="width: 100%; padding: 10px; background: #3d3d3d; color: #e8e8e8; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">
                     Cancel
                 </button>
-                <button onclick="app.confirmColorWheelSelection()" 
-                        style="width: 100%; padding: 10px; background: var(--primary-dark); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">
+<button onclick="app.confirmColorWheelSelection()" style="width: 100%; padding: 10px; background: var(--primary-dark); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">
                     OK
                 </button>
-            </div>
-        </div>
-    </div>
-
-    <script>
+</div>
+</div>
+</div>
+<script>
         // App Version
         const APP_VERSION = '1.8.0';
         
@@ -4433,7 +4331,10 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                 } else if (screenName === 'goals') {
                     this.renderHabits(); // Render habits when viewing Goals
                 } else if (screenName === 'leaderboard') {
-                    this.renderLeaderboard();
+                    // Best-effort sync before loading leaderboard (do not block UI)
+                    this.syncMyStatsToFirebase()
+                        .then(() => this.renderLeaderboard())
+                        .catch(() => this.renderLeaderboard());
                 }
             },
 
@@ -5278,7 +5179,7 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                 this.updatePalsUI();
 
                 // Sync if possible (non-blocking)
-                try { await this.syncStatsToFirebase(); } catch (e) {}
+                try { await this.syncMyStatsToFirebase(); } catch (e) {}
             },
 
             // Toggle Weight leaderboard opt-in.
@@ -5309,7 +5210,7 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                 this.updatePalsUI();
 
                 // Sync if possible (non-blocking)
-                try { await this.syncStatsToFirebase(); } catch (e) {}
+                try { await this.syncMyStatsToFirebase(); } catch (e) {}
             },
 
             // Share my code via text/messaging
@@ -5662,44 +5563,45 @@ async createPalCode() {
     }
 },
             // Sync my stats to Firebase
-            async syncMyStatsToFirebase() {
+                        async syncMyStatsToFirebase() {
                 if (!this.data.pals.myPalCode || !this.db) return;
 
                 try {
                     const stats = this.calculateStats();
                     const monthStats = this.calculateMonthStats();
+
                     const weightStats = this.getWeightStats();
-                const currentWeight = weightStats ? weightStats.current : null;
-                const initialWeight = (this.data.goals.initialWeight !== null && this.data.goals.initialWeight !== undefined && this.data.goals.initialWeight !== '')
-                    ? Number(this.data.goals.initialWeight)
-                    : null;
-                const weightChangeLbsAllTime = this.calculateWeightChangeLbsAllTime();
+                    const currentWeight = (weightStats && weightStats.current !== undefined) ? weightStats.current : null;
+
+                    const initialWeight = (this.data.goals.initialWeight !== null && this.data.goals.initialWeight !== undefined && this.data.goals.initialWeight !== '')
+                        ? Number(this.data.goals.initialWeight)
+                        : null;
+
+                    const weightChangePctAllTime = this.calculateWeightChangePctAllTime();
+                    const weightChangeLbsAllTime = this.calculateWeightChangeLbsAllTime();
                     const weightChangePctThisWeek = this.calculateWeightChangePctForPeriod('week');
                     const weightChangePctThisMonth = this.calculateWeightChangePctForPeriod('month');
                     const weightChangeLbsThisWeek = this.calculateWeightChangeLbsForPeriod('week');
                     const weightChangeLbsThisMonth = this.calculateWeightChangeLbsForPeriod('month');
-                    const today = new Date().toISOString().split('T')[0]; // Get today's date
-                    
-                    const data = {
+
+                    const today = new Date().toISOString().split('T')[0];
+
+                    const payload = {
                         palCode: this.data.pals.myPalCode,
                         displayName: this.data.pals.displayName || this.data.pals.myPalCode,
                         joinedLeaderboard: this.data.pals.joinedLeaderboard || false,
                         joinWeightLeaderboard: this.data.pals.joinWeightLeaderboard || false,
-                        lastActivityDate: today, // Track last activity date for status indicators
+                        lastActivityDate: today,
                         stats: {
-                            // Week totals
                             thisWeekDistance: stats.thisWeekDistance,
                             thisWeekStrengthDays: stats.thisWeekStrengthDays,
                             thisWeekSteps: stats.thisWeekSteps,
-                            // Month totals
                             thisMonthDistance: monthStats.monthDistance,
                             thisMonthStrengthDays: monthStats.monthStrengthDays,
                             thisMonthSteps: monthStats.monthSteps,
-                            // All-time totals
                             totalDistance: stats.totalDistance,
                             totalSteps: stats.totalSteps,
                             totalStrengthDays: stats.totalStrengthDays,
-                            // Strength exercises (week, month, total)
                             thisWeekPushups: stats.thisWeekPushups,
                             thisMonthPushups: monthStats.monthPushups,
                             totalPushups: stats.totalPushups,
@@ -5718,7 +5620,6 @@ async createPalCode() {
                             thisWeekSitups: stats.thisWeekSitups,
                             thisMonthSitups: monthStats.monthSitups,
                             totalSitups: stats.totalSitups,
-                            // Cardio activities (week, month, total)
                             thisWeekRunning: stats.thisWeekRunning,
                             thisMonthRunning: monthStats.monthRunning,
                             totalRunning: stats.totalRunning,
@@ -5734,15 +5635,13 @@ async createPalCode() {
                             thisWeekHiking: stats.thisWeekHiking,
                             thisMonthHiking: monthStats.monthHiking,
                             totalHiking: stats.totalHiking,
-                            // Other (week, month, total)
                             thisWeekStairs: stats.thisWeekStairs,
                             thisMonthStairs: monthStats.monthStairs,
                             totalStairs: stats.totalStairs,
-                            // Weight (signed % change; negative = loss)
-                            weight: weight,
+                            weight: currentWeight,
                             weightChangePctThisWeek: weightChangePctThisWeek,
                             weightChangePctThisMonth: weightChangePctThisMonth,
-                            weightChangePctAllTime: weight,
+                            weightChangePctAllTime: weightChangePctAllTime,
                             weightChangeLbsThisWeek: weightChangeLbsThisWeek,
                             weightChangeLbsThisMonth: weightChangeLbsThisMonth,
                             weightChangeLbsAllTime: weightChangeLbsAllTime
@@ -5750,7 +5649,10 @@ async createPalCode() {
                         lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
                     };
 
-                    await this.db.collection('users').doc(this.data.pals.myPalCode).set({ ...data, palCode: this.data.pals.myPalCode, displayName: (this.data.pals.displayName || '') }, { merge: true });
+                    await this.db.collection('users')
+                        .doc(this.data.pals.myPalCode)
+                        .set(payload, { merge: true });
+
                     console.log('✅ Stats synced to Firebase');
                 } catch (error) {
                     console.error('Error syncing stats:', error);
