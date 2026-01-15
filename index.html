@@ -5251,6 +5251,11 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
 
                 const joined = !!(checkbox && checkbox.checked);
                 this.data.pals.joinedLeaderboard = joined;
+                // Sync leaderboard opt-in to Firebase
+                this.saveData();
+                this.updatePalsUI();
+                this.syncMyProfileToFirebase && this.syncMyProfileToFirebase().catch(err => console.warn('Leaderboard sync failed:', err));
+
 
                 // If leaving leaderboards, also leave weight leaderboard
                 if (!joined) {
@@ -5731,7 +5736,7 @@ async createPalCode() {
                             alert('❌ That PAL Code is already taken. Please choose another one.');
                             continue;
                         }
-                        alert('Error creating PAL Code. Please try again.');
+                        alert('Error creating PAL Code: ' + ((err && (err.code || err.message)) ? (err.code || err.message) : String(err)) + '\n\nIf you are testing on GitHub Pages, this is usually a Firestore permissions/rules issue. Check DevTools Console for details.');
                         return;
                     }
 
@@ -6718,7 +6723,37 @@ async createPalCode() {
         };
 
         // Initialize app when page loads
-        document.addEventListener('DOMContentLoaded', () => {
+        
+    // --- v1.7.0: Sync my PAL profile + leaderboard flags to Firebase (no UI side-effects) ---
+    if (window.app) {
+      window.app.syncMyProfileToFirebase = async function syncMyProfileToFirebase() {
+        try {
+          if (!this.db) return;
+          const code = this.data?.pals?.myPalCode;
+          if (!code) return;
+
+          // Compute latest stats if a helper exists
+          const stats = (typeof this.computeStatsForFirebase === 'function')
+            ? this.computeStatsForFirebase()
+            : (this.data && this.data.stats ? this.data.stats : {});
+
+          const payload = {
+            palCode: code,
+            displayName: (this.data?.pals?.displayName || ''),
+            joinedLeaderboard: !!this.data?.pals?.joinedLeaderboard,
+            joinWeightLeaderboard: !!this.data?.pals?.joinWeightLeaderboard,
+            stats: stats || {},
+            lastUpdated: new Date().toISOString()
+          };
+
+          await this.db.collection('users').doc(code).set(payload, { merge: true });
+        } catch (e) {
+          // do not throw to UI; callers decide how to surface errors
+          console.warn('syncMyProfileToFirebase failed:', e);
+        }
+      };
+    }
+document.addEventListener('DOMContentLoaded', () => {
             app.init();
         });
     </script>
