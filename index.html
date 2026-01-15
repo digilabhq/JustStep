@@ -5731,7 +5731,7 @@ async createPalCode() {
                             alert('❌ That PAL Code is already taken. Please choose another one.');
                             continue;
                         }
-                        alert('Error creating PAL Code. Please try again.');
+                        alert('Error creating PAL Code: ' + ((err && (err.code || err.message)) ? (err.code || err.message) : String(err)) + '\n\nIf you are testing on GitHub Pages, this is usually a Firestore permissions/rules issue. Check DevTools Console for details.');
                         return;
                     }
 
