@@ -2121,6 +2121,7 @@
             </div>
             <div class="app-header-right">
                 <div class="info-icon" onclick="app.showWelcome()" title="About JustStep">i</div>
+                <div class="app-version" id="app-version-display"></div>
             </div>
         </div>
 
@@ -2638,7 +2639,7 @@
         <button class="welcome-button" onclick="app.closeWelcome()">Let's Go</button>
         
         <div style="text-align: center; color: #6b7280; font-size: 11px; margin-top: 16px;">
-            v1.7.0
+            v1.8.0
         </div>
     </div>
 
@@ -2771,7 +2772,7 @@
 
     <script>
         // App Version
-        const APP_VERSION = '1.6.1';
+        const APP_VERSION = '1.8.0';
         
         // Main App Object
         const app = {
@@ -2813,6 +2814,10 @@
 
             // Initialize app
             init() {
+                // Display version in header
+                const vEl = document.getElementById('app-version-display');
+                if (vEl) vEl.textContent = `v${APP_VERSION}`;
+
                 console.log(`%cJustStep v${APP_VERSION}`, 'color: var(--primary); font-weight: bold; font-size: 14px;');
                 
                 // Initialize Firebase
