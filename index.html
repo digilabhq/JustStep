@@ -5589,6 +5589,9 @@ async createPalCode() {
                 const initialWeight = (this.data.goals.initialWeight !== null && this.data.goals.initialWeight !== undefined && this.data.goals.initialWeight !== '')
                     ? Number(this.data.goals.initialWeight)
                     : null;
+                const weightLost = (initialWeight !== null && currentWeight !== null)
+                    ? (initialWeight - currentWeight)
+                    : null;
                 const weightChangeLbsAllTime = this.calculateWeightChangeLbsAllTime();
                 const weightChangePctThisWeek = this.calculateWeightChangePctForPeriod('week');
                 const weightChangePctThisMonth = this.calculateWeightChangePctForPeriod('month');
@@ -5625,7 +5628,7 @@ async createPalCode() {
                     // Weight stats snapshot (leaderboard uses opt-in flag)
                     currentWeight: currentWeight,
                     initialWeight: initialWeight,
-                    weightLost: weight.weightLost,
+                    weightLost: weightLost,
                     weightChangeLbsAllTime: weightChangeLbsAllTime,
                     weightChangePctThisWeek: weightChangePctThisWeek,
                     weightChangePctThisMonth: weightChangePctThisMonth,
