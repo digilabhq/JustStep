@@ -746,7 +746,7 @@
 
         .activity-summary-item {
             display: grid;
-            grid-template-columns: 1fr auto auto auto;
+            grid-template-columns: minmax(120px, 1fr) auto auto auto;
             gap: 12px;
             align-items: center;
             padding: 6px 0;
@@ -1274,7 +1274,7 @@
         }
         
         .leaderboard-item-card.rank-regular .leaderboard-progress-fill {
-            background: linear-gradient(90deg, var(--primary) 0%, #34d399 100%);
+            background: linear-gradient(90deg, var(--primary) 0%, var(--primary-light) 100%);
         }
 
         .leaderboard-item-header {
@@ -4615,14 +4615,14 @@ View your progress in the Habit Report!
                 });
                 
                 const html = `
-                    <div style="display: grid; grid-template-columns: auto 1fr 1fr 1fr; gap: 12px; align-items: center; padding: 8px 0; border-bottom: 1px solid #3d3d3d; font-size: 12px; font-weight: 700; color: #9ca3af;">
+                    <div style="display: grid; grid-template-columns: minmax(180px, 1fr) 1fr 1fr 1fr; gap: 12px; align-items: center; padding: 8px 0; border-bottom: 1px solid #3d3d3d; font-size: 12px; font-weight: 700; color: #9ca3af;">
                         <div></div>
                         <div style="text-align: center;">This Week</div>
                         <div style="text-align: center;">This Month</div>
                         <div style="text-align: center;">All Time</div>
                     </div>
                     ${habitStats.map(habit => `
-                        <div style="display: grid; grid-template-columns: auto 1fr 1fr 1fr; gap: 12px; align-items: center; padding: 8px 0; border-bottom: 1px solid #2d2d2d; font-size: 13px;">
+                        <div style="display: grid; grid-template-columns: minmax(180px, 1fr) 1fr 1fr 1fr; gap: 12px; align-items: center; padding: 8px 0; border-bottom: 1px solid #2d2d2d; font-size: 13px;">
                             <div style="display: flex; align-items: center; gap: 6px;">
                                 <div style="width: 10px; height: 10px; border-radius: 2px; background: ${habit.color}; flex-shrink: 0;"></div>
                                 <span style="color: #e8e8e8; font-weight: 600;">${habit.name}</span>
