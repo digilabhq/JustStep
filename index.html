@@ -261,12 +261,19 @@
 
         .activity-card {
             background: #2d2d2d;
-            border: 2px solid #3d3d3d;
-            border-radius: 16px;
-            padding: 5px;
-            margin-bottom: 12px;
+            border: 1px solid #3d3d3d;
+            border-left: 3px solid var(--primary);
+            border-radius: 8px;
+            padding: 8px;
+            margin-bottom: 6px;
             position: relative;
             animation: slideIn 0.3s ease;
+            transition: all 0.2s;
+        }
+        
+        .activity-card:hover {
+            transform: translateX(2px);
+            border-left-color: var(--primary-light);
         }
 
         @keyframes slideIn {
@@ -283,11 +290,12 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
+            padding: 0 4px;
         }
 
         .activity-card-title {
-            font-size: 13px;
+            font-size: 11px;
             font-weight: 600;
             color: #9ca3af;
             text-transform: uppercase;
@@ -298,20 +306,20 @@
             background: none;
             border: none;
             color: #6b7280;
-            font-size: 20px;
+            font-size: 18px;
             cursor: pointer;
             padding: 0;
-            width: 28px;
-            height: 28px;
+            width: 24px;
+            height: 24px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 6px;
+            border-radius: 4px;
             transition: all 0.2s;
         }
 
         .remove-activity:hover {
-            background: #3d1f1f;
+            background: rgba(239, 68, 68, 0.1);
             color: #ef4444;
         }
 
@@ -331,9 +339,10 @@
 
         /* Accordion Styles */
         .activity-accordion {
-            border: 2px solid #3d3d3d;
-            border-radius: 12px;
+            border: 1px solid #3d3d3d;
+            border-radius: 8px;
             overflow: hidden;
+            background: #1a1a1a;
         }
 
         .accordion-category {
@@ -348,31 +357,32 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 14px;
-            background: #2d2d2d;
+            padding: 8px 10px;
+            background: transparent;
             cursor: pointer;
             user-select: none;
             transition: background 0.2s;
         }
 
         .accordion-header:hover {
-            background: #3d3d3d;
+            background: rgba(16, 185, 129, 0.05);
         }
 
         .accordion-header.active {
-            background: #3d3d3d;
+            background: rgba(16, 185, 129, 0.05);
         }
 
         .accordion-title {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
             color: #e8e8e8;
         }
 
         .accordion-count {
-            font-size: 12px;
+            font-size: 11px;
             color: #6b7280;
             margin-left: 8px;
+            font-weight: 500;
         }
 
         .accordion-arrow {
@@ -471,39 +481,48 @@
             min-width: 40px;
         }
 
+        /* Combined Buttons Row */
+        .combined-buttons-row {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
         .add-activity-button {
-            width: 100%;
+            flex: 1;
             padding: 10px;
-            background: #2d2d2d;
+            background: transparent;
             color: var(--primary-light);
-            border: 2px dashed #3d3d3d;
-            border-radius: 12px;
-            font-size: 15px;
+            border: 1px dashed #3d3d3d;
+            border-radius: 6px;
+            font-size: 14px;
             font-weight: 600;
             cursor: pointer;
-            margin-top: 12px;
             transition: all 0.2s;
             display: flex;
             align-items: center;
             justify-content: center;
         }
+        
+        .add-activity-button:hover {
+            background: rgba(16, 185, 129, 0.05);
+            border-color: var(--primary-light);
+        }
 
         .add-activity-button:active {
             transform: scale(0.98);
-            background: #1e3a5f;
         }
 
         .log-button {
-            width: 100%;
-            padding: 10px;
+            flex: 2;
+            padding: 12px;
             background: var(--primary);
             color: white;
             border: none;
-            border-radius: 12px;
-            font-size: 16px;
+            border-radius: 6px;
+            font-size: 15px;
             font-weight: 600;
             cursor: pointer;
-            margin-top: 12px;
             transition: all 0.2s;
             letter-spacing: 0.3px;
         }
@@ -553,8 +572,9 @@
 
         .stat-card {
             background: #2d2d2d;
-            border: 2px solid #3d3d3d;
-            border-radius: 12px;
+            border: 1px solid #3d3d3d;
+            border-left: 3px solid var(--primary);
+            border-radius: 8px;
             padding: 5px 3px;
             transition: all 0.2s;
             text-align: center;
@@ -570,7 +590,7 @@
         .stat-card#custom-card-1,
         .stat-card#custom-card-2,
         .stat-card#custom-card-3 {
-            border-color: #d4af37;
+            border-left-color: #d4af37;
         }
 
         .stat-star {
@@ -606,10 +626,12 @@
 
         .progress-card {
             background: #2d2d2d;
-            border: 2px solid #3d3d3d;
-            border-radius: 16px;
+            border: 1px solid #3d3d3d;
+            border-left: 3px solid var(--primary);
+            border-radius: 8px;
             padding: 16px;
             margin-bottom: 12px;
+            transition: all 0.2s;
         }
 
         .progress-header {
@@ -724,7 +746,7 @@
 
         .activity-summary-item {
             display: grid;
-            grid-template-columns: 1fr auto auto auto;
+            grid-template-columns: minmax(120px, 1fr) auto auto auto;
             gap: 12px;
             align-items: center;
             padding: 6px 0;
@@ -787,7 +809,7 @@
         .calendar-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            gap: 8px;
+            gap: 6px;
         }
 
         .calendar-day-label {
@@ -805,23 +827,30 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            border-radius: 12px;
+            border-radius: 8px;
             font-size: 14px;
             font-weight: 500;
             background: #2d2d2d;
-            border: 2px solid #3d3d3d;
+            border: 1px solid #3d3d3d;
+            border-left: 3px solid #6b7280;
             position: relative;
             cursor: pointer;
             color: #e8e8e8;
+            transition: all 0.2s;
+        }
+        
+        .calendar-day:hover {
+            transform: translateX(2px);
+            border-left-color: var(--primary-light);
         }
 
         .calendar-day.has-activity {
-            border-color: var(--primary);
-            background: #1e3a5f;
+            border-left-color: var(--primary);
+            background: rgba(30, 58, 95, 0.5);
         }
 
         .calendar-day.today {
-            border-color: var(--primary-light);
+            border-left-color: var(--primary-light);
             font-weight: 700;
         }
 
@@ -853,6 +882,41 @@
         }
 
         /* Goals Screen */
+        .settings-card {
+            background: #2d2d2d;
+            border: 1px solid #3d3d3d;
+            border-left: 3px solid var(--primary);
+            border-radius: 8px;
+            padding: 10px 14px;
+            transition: all 0.2s;
+        }
+        
+        .pals-profile-card {
+            background: var(--card);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-left: 3px solid var(--primary);
+            border-radius: 8px;
+            padding: 8px 12px;
+            margin-bottom: 6px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+            transition: all 0.2s;
+        }
+        
+        .habit-item {
+            background: #2d2d2d;
+            border: 1px solid #3d3d3d;
+            border-left: 3px solid var(--primary);
+            border-radius: 8px;
+            padding: 8px 12px;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        
+        .habit-item:hover {
+            transform: translateX(2px);
+            border-left-color: var(--primary-light);
+        }
+        
         .goal-input {
             margin-bottom: 12px;
         }
@@ -1062,6 +1126,33 @@
             transform: scale(0.98);
             background: #2d2d2d;
         }
+        
+        .habit-add-button {
+            width: 100%;
+            padding: 8px 14px;
+            background: #2d2d2d;
+            color: var(--primary-light);
+            border: 1px solid #3d3d3d;
+            border-left: 3px solid var(--primary);
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .habit-add-button:hover {
+            background: rgba(16, 185, 129, 0.05);
+            border-left-color: var(--primary-light);
+        }
+        
+        .habit-add-button:active {
+            transform: scale(0.98);
+        }
 
         .success-message {
             background: #1e3a5f;
@@ -1109,59 +1200,124 @@
 
         .leaderboard-item-card {
             background: #2d2d2d;
-            border: 2px solid #3d3d3d;
-            border-radius: 12px;
-            padding: 14px;
+            border: 1px solid #3d3d3d;
+            border-left: 3px solid var(--primary);
+            border-radius: 8px;
+            padding: 8px 10px;
             transition: all 0.2s;
+        }
+        
+        .leaderboard-item-card:hover {
+            transform: translateX(2px);
         }
 
         .leaderboard-item-card.highlight {
-            border-color: var(--primary);
-            background: rgba(37, 99, 235, 0.05);
+            background: rgba(16, 185, 129, 0.08);
+        }
+        
+        /* Medal colors for ranks 1-3 */
+        .leaderboard-item-card.rank-1 {
+            border-left-color: #fbbf24;
+        }
+        
+        .leaderboard-item-card.rank-1.highlight {
+            background: rgba(251, 191, 36, 0.08);
+        }
+        
+        .leaderboard-item-card.rank-1 .leaderboard-rank {
+            color: #fbbf24;
+        }
+        
+        .leaderboard-item-card.rank-1 .leaderboard-progress-fill {
+            background: linear-gradient(90deg, #fbbf24 0%, #f59e0b 100%);
+        }
+        
+        .leaderboard-item-card.rank-2 {
+            border-left-color: #9ca3af;
+        }
+        
+        .leaderboard-item-card.rank-2.highlight {
+            background: rgba(156, 163, 175, 0.08);
+        }
+        
+        .leaderboard-item-card.rank-2 .leaderboard-rank {
+            color: #9ca3af;
+        }
+        
+        .leaderboard-item-card.rank-2 .leaderboard-progress-fill {
+            background: linear-gradient(90deg, #d1d5db 0%, #9ca3af 100%);
+        }
+        
+        .leaderboard-item-card.rank-3 {
+            border-left-color: #f97316;
+        }
+        
+        .leaderboard-item-card.rank-3.highlight {
+            background: rgba(249, 115, 22, 0.08);
+        }
+        
+        .leaderboard-item-card.rank-3 .leaderboard-rank {
+            color: #f97316;
+        }
+        
+        .leaderboard-item-card.rank-3 .leaderboard-progress-fill {
+            background: linear-gradient(90deg, #fb923c 0%, #f97316 100%);
+        }
+        
+        /* Rank 4+ use primary green */
+        .leaderboard-item-card.rank-regular {
+            border-left-color: var(--primary);
+        }
+        
+        .leaderboard-item-card.rank-regular.highlight {
+            border-left-color: #34d399;
+        }
+        
+        .leaderboard-item-card.rank-regular .leaderboard-progress-fill {
+            background: linear-gradient(90deg, var(--primary) 0%, var(--primary-light) 100%);
         }
 
         .leaderboard-item-header {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            margin-bottom: 8px;
+            gap: 8px;
+            margin-bottom: 6px;
         }
 
         .leaderboard-rank {
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 700;
             color: #9ca3af;
-            min-width: 30px;
+            min-width: 18px;
         }
 
         .leaderboard-name {
             flex: 1;
-            font-size: 15px;
+            font-size: 13px;
             font-weight: 600;
             color: #e8e8e8;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
         }
 
         .leaderboard-value {
-            font-size: 15px;
+            font-size: 13px;
             font-weight: 700;
-            color: var(--primary-light);
+            color: var(--primary);
         }
 
         .leaderboard-progress-bar {
             width: 100%;
-            height: 6px;
+            height: 3px;
             background: #1a1a1a;
-            border-radius: 3px;
+            border-radius: 2px;
             overflow: hidden;
         }
 
         .leaderboard-progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, var(--primary) 0%, var(--primary-light) 100%);
-            border-radius: 3px;
+            border-radius: 2px;
             transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
@@ -1174,37 +1330,52 @@
         }
 
         .pal-card {
-            background: transparent;
-            border-radius: 8px;
+            background: var(--card);
+            border-radius: 5px;
             padding: 0;
-            margin-bottom: 6px;
-            border: 1px solid #2d2d2d;
+            margin-bottom: 3px;
+            border: 1px solid #3d3d3d;
+            border-left: 2px solid var(--primary);
             transition: all 0.2s;
+            overflow: hidden;
         }
 
         .pal-card:hover {
-            border-color: #3d3d3d;
+            border-left-color: var(--primary-light);
+            background: #333;
+            transform: translateX(2px);
         }
 
         .pal-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 8px 12px;
+            padding: 3px 5px;
+            min-height: 30px;
             cursor: pointer;
             user-select: none;
             transition: background 0.2s;
         }
 
         .pal-header:hover {
-            background: rgba(255, 255, 255, 0.02);
+            background: transparent;
         }
 
         .pal-expand-icon {
-            font-size: 11px;
+            font-size: 14px;
             color: #6b7280;
-            padding: 3px;
-            transition: color 0.2s;
+            margin-left: 6px;
+            flex-shrink: 0;
+            transition: all 0.2s;
+        }
+
+        .pal-card:hover .pal-expand-icon {
+            color: var(--primary-light);
+            transform: translateX(2px);
+        }
+
+        .pal-card.expanded {
+            border-left-color: var(--primary-light);
         }
 
         .pal-card.expanded .pal-expand-icon {
@@ -1212,10 +1383,12 @@
         }
 
         .pal-name {
-            font-size: 14px;
-            font-weight: 500;
+            font-size: 13px;
+            font-weight: 600;
             color: #e8e8e8;
-            letter-spacing: -0.01em;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .pal-code {
@@ -1225,14 +1398,41 @@
             margin-top: 2px;
         }
 
+        .pal-quick-stats {
+            font-size: 10px;
+            color: #6b7280;
+            white-space: nowrap;
+        }
+
+        .pal-divider {
+            color: #4b5563;
+            font-size: 11px;
+            margin: 0 4px;
+        }
+
+        .pal-header-info {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
         .pal-stats-expanded {
             display: none;
-            padding: 0 12px 8px 12px;
-            border-top: 1px solid #2d2d2d;
+            padding: 8px;
+            background: #1a1a1a;
+            border-top: 1px solid #1a1a1a;
         }
 
         .pal-card.expanded .pal-stats-expanded {
             display: block;
+        }
+
+        .pal-id-display {
+            font-size: 10px;
+            color: #6b7280;
+            margin-bottom: 8px;
         }
 
         .pal-activity-report {
@@ -1819,34 +2019,38 @@
         /* Weight Input Styles */
         .weight-input-section {
             background: #2d2d2d;
-            border: 2px solid #3d3d3d;
-            border-radius: 16px;
-            padding: 5px;
-            margin-top: 32px;
+            border: 1px solid #3d3d3d;
+            border-left: 3px solid var(--primary);
+            border-radius: 8px;
+            padding: 10px 12px;
+            margin-top: 12px;
             margin-bottom: 12px;
         }
 
         .weight-input-header {
-            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
             font-weight: 600;
             color: #9ca3af;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
         }
 
         .weight-input-row {
             display: flex;
-            gap: 12px;
+            gap: 8px;
             align-items: center;
         }
 
         .weight-input-field {
             flex: 1;
-            padding: 10px 12px;
-            border: 2px solid #3d3d3d;
-            border-radius: 12px;
-            font-size: 18px;
+            padding: 8px 10px;
+            border: 1px solid #3d3d3d;
+            border-radius: 6px;
+            font-size: 14px;
             font-weight: 600;
             background: #1a1a1a;
             color: #e8e8e8;
@@ -1858,19 +2062,19 @@
         }
 
         .weight-unit-label {
-            font-size: 16px;
+            font-size: 13px;
             font-weight: 600;
-            color: #9ca3af;
-            min-width: 40px;
+            color: #6b7280;
+            min-width: 35px;
         }
 
         .weight-save-btn {
-            padding: 14px 24px;
+            padding: 8px 16px;
             background: var(--primary);
             color: white;
             border: none;
-            border-radius: 12px;
-            font-size: 15px;
+            border-radius: 6px;
+            font-size: 13px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
@@ -1903,6 +2107,267 @@
         .weight-save-btn-subtle:active {
             transform: scale(0.98);
         }
+        
+        /* Weight Info Icon */
+        .weight-info-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: rgba(107, 114, 128, 0.2);
+            color: #9ca3af;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid rgba(107, 114, 128, 0.3);
+        }
+        
+        .weight-info-icon:hover {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--primary);
+            border-color: var(--primary);
+            transform: scale(1.1);
+        }
+        
+        /* Weight Info Modal */
+        .weight-info-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+        
+        .weight-info-modal.active {
+            display: flex;
+        }
+        
+        .weight-info-content {
+            background: #2d2d2d;
+            border: 2px solid var(--primary);
+            border-radius: 12px;
+            padding: 20px;
+            max-width: 400px;
+            width: 100%;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+            animation: slideUp 0.2s ease;
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .weight-info-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        
+        .weight-info-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .weight-info-close {
+            background: none;
+            border: none;
+            color: #6b7280;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 0;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+        
+        .weight-info-close:hover {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+        }
+        
+        .weight-info-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 16px 0;
+        }
+        
+        .weight-info-list li {
+            padding: 8px 0 8px 24px;
+            position: relative;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #e8e8e8;
+        }
+        
+        .weight-info-list li:before {
+            content: "•";
+            position: absolute;
+            left: 8px;
+            color: var(--primary);
+            font-weight: 700;
+        }
+        
+        .weight-info-highlight {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            text-align: center;
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        /* Habit Info Icon & Modal (reuse weight info styles) */
+        .habit-info-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: rgba(107, 114, 128, 0.2);
+            color: #9ca3af;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid rgba(107, 114, 128, 0.3);
+        }
+        
+        .habit-info-icon:hover {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--primary);
+            border-color: var(--primary);
+            transform: scale(1.1);
+        }
+        
+        .habit-info-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+        
+        .habit-info-modal.active {
+            display: flex;
+        }
+        
+        .habit-info-content {
+            background: #2d2d2d;
+            border: 2px solid var(--primary);
+            border-radius: 12px;
+            padding: 20px;
+            max-width: 400px;
+            width: 100%;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+            animation: slideUp 0.2s ease;
+        }
+        
+        .habit-info-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        
+        .habit-info-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .habit-info-close {
+            background: none;
+            border: none;
+            color: #6b7280;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 0;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+        
+        .habit-info-close:hover {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+        }
+        
+        .habit-info-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 16px 0;
+        }
+        
+        .habit-info-list li {
+            padding: 8px 0 8px 24px;
+            position: relative;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #e8e8e8;
+        }
+        
+        .habit-info-list li:before {
+            content: "•";
+            position: absolute;
+            left: 8px;
+            color: var(--primary);
+            font-weight: 700;
+        }
+        
+        .habit-info-highlight {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            text-align: center;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
 
         /* Trending Indicators */
         .trend-indicator {
@@ -1929,10 +2394,12 @@
         /* Bar Graph Comparison Styles */
         .comparison-section {
             background: #2d2d2d;
-            border: 2px solid #3d3d3d;
-            border-radius: 16px;
+            border: 1px solid #3d3d3d;
+            border-left: 3px solid var(--primary);
+            border-radius: 8px;
             padding: 10px;
             margin-bottom: 12px;
+            transition: all 0.2s;
         }
 
         .comparison-header {
@@ -2148,19 +2615,45 @@
 <div class="activities-container" id="activities-container">
 <!-- Activity cards will be added here -->
 </div>
+<div class="combined-buttons-row">
 <button class="add-activity-button" onclick="app.addActivityRow()">
-<span style="font-size: 20px; margin-right: 8px;">+</span>
-                Add Activity
+<span style="font-size: 18px; margin-right: 6px;">+</span>
+                Add
             </button>
 <button class="log-button" onclick="app.saveLog()">Save Activity</button>
+</div>
 <!-- Weight Input Section -->
 <div class="weight-input-section">
-<div class="weight-input-header">Track Weight</div>
+<div class="weight-input-header">
+Track Weight
+<span class="weight-info-icon" onclick="app.toggleWeightInfoModal()" title="Weight tracking tips">ⓘ</span>
+</div>
 <div class="weight-input-row">
 <input class="weight-input-field" id="weight-input" inputmode="decimal" min="0" placeholder="Enter weight" step="0.1" type="number"/>
 <span class="weight-unit-label" id="weight-unit-display">lbs</span>
+<button class="weight-save-btn" onclick="app.logWeight()">Save</button>
 </div>
-<button class="weight-save-btn-subtle" onclick="app.logWeight()">Save</button>
+</div>
+<!-- Weight Info Modal -->
+<div class="weight-info-modal" id="weight-info-modal" onclick="if(event.target === this) app.toggleWeightInfoModal()">
+<div class="weight-info-content">
+<div class="weight-info-header">
+<div class="weight-info-title">
+<span>📊</span>
+Weight Tracking Tips
+</div>
+<button class="weight-info-close" onclick="app.toggleWeightInfoModal()">×</button>
+</div>
+<ul class="weight-info-list">
+<li>Weigh yourself weekly, not daily</li>
+<li>Fridays work great for consistency</li>
+<li>Same time each week (morning is best)</li>
+<li>Daily weight fluctuates 2-5 lbs naturally</li>
+</ul>
+<div class="weight-info-highlight">
+Weekly tracking shows real progress!
+</div>
+</div>
 </div>
 </div>
 <!-- Dashboard Screen -->
@@ -2302,6 +2795,18 @@
 </div>
 </div>
 </div>
+<!-- Habit Report (Collapsible) -->
+<div class="progress-card">
+<div class="activity-report-toggle" id="habit-report-toggle" onclick="app.toggleHabitReport()">
+<span>Habit Report</span>
+<span>▼</span>
+</div>
+<div class="activity-report-content" id="habit-report-content">
+<div class="activity-summary-list" id="habit-summary-list">
+<p style="text-align: center; color: #6b7280; font-size: 14px;">No habits created yet.</p>
+</div>
+</div>
+</div>
 <h2>Recent Milestones</h2>
 <div class="progress-card">
 <div class="milestone-list" id="milestone-list">
@@ -2314,9 +2819,9 @@
 <h1>Goals</h1>
 <p class="subtitle">Customize your goals and preferences</p>
 <!-- Slim compact sections -->
-<div style="display: flex; flex-direction: column; gap: 8px;">
+<div style="display: flex; flex-direction: column; gap: 12px;">
 <!-- Unit Preference - Inline -->
-<div style="background: #2d2d2d; padding: 10px 14px; border-radius: 8px;">
+<div class="settings-card">
 <div style="display: flex; justify-content: space-between; align-items: center;">
 <label style="font-size: 14px; font-weight: 600; color: #e8e8e8;">Unit Preference</label>
 <select id="unit-preference" style="width: 220px; padding: 6px 10px; border: 1px solid #3d3d3d; border-radius: 6px; font-size: 13px; font-weight: 600; background: #1a1a1a; color: #e8e8e8;">
@@ -2326,7 +2831,7 @@
 </div>
 </div>
 <!-- Initial Weight - Inline -->
-<div style="background: #2d2d2d; padding: 10px 14px; border-radius: 8px; margin-bottom: 10px;">
+<div class="settings-card">
 <div style="display: flex; justify-content: space-between; align-items: center;">
 <label style="font-size: 14px; font-weight: 600; color: #e8e8e8;">Initial Weight</label>
 <div style="width: 220px; display: flex; align-items: center; gap: 0; padding: 6px 10px; border: 2px solid #3d3d3d; border-radius: 6px; background: #1a1a1a;">
@@ -2336,7 +2841,7 @@
 </div>
 </div>
 <!-- App Theme - Compact -->
-<div style="background: #2d2d2d; padding: 10px 14px; border-radius: 8px;">
+<div class="settings-card">
 <label style="font-size: 14px; font-weight: 600; color: #e8e8e8; display: block; margin-bottom: 8px;">App Theme</label>
 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
 <button onclick="app.openThemeColorPicker()" style="padding: 8px 12px; background: #1a1a1a; color: #e8e8e8; border: 1px solid #3d3d3d; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 6px;">
@@ -2349,21 +2854,21 @@
 </div>
 </div>
 <!-- Weekly Strength Days Target - Inline -->
-<div style="background: #2d2d2d; padding: 10px 14px; border-radius: 8px;">
+<div class="settings-card">
 <div style="display: flex; justify-content: space-between; align-items: center;">
 <label style="font-size: 14px; font-weight: 600; color: #e8e8e8;">Weekly Strength Days Target</label>
 <input id="workout-frequency" inputmode="numeric" placeholder="5" style="width: 80px; padding: 6px 10px; border: 1px solid #3d3d3d; border-radius: 6px; font-size: 13px; font-weight: 600; background: #1a1a1a; color: #e8e8e8; text-align: center;" type="number" value="5"/>
 </div>
 </div>
 <!-- Monthly Mileage Target - Inline -->
-<div style="background: #2d2d2d; padding: 10px 14px; border-radius: 8px;">
+<div class="settings-card">
 <div style="display: flex; justify-content: space-between; align-items: center;">
 <label style="font-size: 14px; font-weight: 600; color: #e8e8e8;">Monthly Mileage Target</label>
 <input id="monthly-goal" inputmode="numeric" placeholder="35" style="width: 80px; padding: 6px 10px; border: 1px solid #3d3d3d; border-radius: 6px; font-size: 13px; font-weight: 600; background: #1a1a1a; color: #e8e8e8; text-align: center;" type="number" value="35"/>
 </div>
 </div>
 <!-- Annual Mileage Target - Inline -->
-<div style="background: #2d2d2d; padding: 10px 14px; border-radius: 8px;">
+<div class="settings-card">
 <div style="display: flex; justify-content: space-between; align-items: center;">
 <label style="font-size: 14px; font-weight: 600; color: #e8e8e8;">Annual Mileage Target</label>
 <input id="annual-goal" inputmode="numeric" placeholder="420" style="width: 80px; padding: 6px 10px; border: 1px solid #3d3d3d; border-radius: 6px; font-size: 13px; font-weight: 600; background: #1a1a1a; color: #e8e8e8; text-align: center;" type="number" value="420"/>
@@ -2372,20 +2877,46 @@
 </div>
 <!-- Elegant divider line like monthly days section -->
 <div style="margin: 24px 0; border-top: 1px solid #3d3d3d;"></div>
-<!-- Daily Habits Section -->
+<!-- Make it a Habit Section -->
 <div>
 <div style="margin-bottom: 12px;">
-<label style="font-size: 14px; font-weight: 600; color: #e8e8e8; display: block; margin-bottom: 4px;">Daily Habits (Private)</label>
+<label style="font-size: 14px; font-weight: 600; color: #e8e8e8; display: flex; align-items: center; gap: 6px; margin-bottom: 4px;">
+Make it a Habit (Private)
+<span class="habit-info-icon" onclick="app.toggleHabitInfoModal()" title="How habits work">ⓘ</span>
+</label>
 <p style="font-size: 12px; color: #6b7280; margin: 0;">Track up to 3 personal habits - not shared with anyone</p>
 </div>
 <div id="habits-list" style="display: flex; flex-direction: column; gap: 6px;">
 <!-- Habits will be rendered here -->
 </div>
-<button class="export-button" id="add-habit-btn" onclick="app.addHabit()" style="margin-top: 10px; padding: 8px 14px; font-size: 13px;">+ Add Habit</button>
+<button class="habit-add-button" id="add-habit-btn" onclick="app.addHabit()">+ Add Habit</button>
+</div>
+<!-- Habit Info Modal -->
+<div class="habit-info-modal" id="habit-info-modal" onclick="if(event.target === this) app.toggleHabitInfoModal()">
+<div class="habit-info-content">
+<div class="habit-info-header">
+<div class="habit-info-title">
+<span>📝</span>
+Daily Habits
+</div>
+<button class="habit-info-close" onclick="app.toggleHabitInfoModal()">×</button>
+</div>
+<ul class="habit-info-list">
+<li>Track up to 3 habits</li>
+<li>Private - not shared with anyone</li>
+<li>Check off in Calendar tab each day</li>
+<li>Build consistency one day at a time!</li>
+</ul>
+<div class="habit-info-highlight">
+View your progress in the Habit Report!
+</div>
+</div>
 </div>
 <!-- Save Settings -->
-<button class="save-button" onclick="app.saveGoals()" style="margin-top: 24px;">Save Settings</button>
-<div class="success-message" id="settings-success">Settings saved successfully!</div>
+<div class="settings-card" style="margin-top: 12px; text-align: center;">
+<button class="save-button" onclick="app.saveGoals()" style="margin: 0;">Save Settings</button>
+<div class="success-message" id="settings-success" style="margin-top: 8px;">Settings saved successfully!</div>
+</div>
 <!-- Elegant divider line -->
 <div style="margin: 24px 0; border-top: 1px solid #3d3d3d;"></div>
 <!-- Data Import/Export -->
@@ -2404,7 +2935,7 @@
 <div class="pals-section">
 <h2 style="font-size: 14px; margin-bottom: 8px; color: var(--primary-light); font-weight: 600;">MY PROFILE</h2>
 <!-- PAL Code Row -->
-<div style="background: var(--card); border-radius: 8px; padding: 8px 12px; margin-bottom: 6px; border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 2px 6px rgba(0,0,0,0.25);">
+<div class="pals-profile-card">
 <div style="display: flex; align-items: center; gap: 8px;">
 <div style="flex: 1; min-width: 0;">
 <div style="font-size: 12px; color: var(--text); margin-bottom: 4px; font-weight: 600;">PAL Code</div>
@@ -2418,7 +2949,7 @@
 </div>
 </div>
 <!-- Display Name Row -->
-<div style="background: var(--card); border-radius: 8px; padding: 8px 12px; margin-bottom: 6px; border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 2px 6px rgba(0,0,0,0.25);">
+<div class="pals-profile-card">
 <div style="display: flex; align-items: center; gap: 8px;">
 <div style="flex: 1; min-width: 0;">
 <div style="font-size: 12px; color: var(--text); margin-bottom: 4px; font-weight: 600;">Display Name</div>
@@ -2432,11 +2963,11 @@
 </div>
 </div>
 <!-- Show in Leaderboards Toggle -->
-<div style="background: var(--card); border-radius: 8px; padding: 8px 12px; border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 2px 6px rgba(0,0,0,0.25);">
+<div class="pals-profile-card" style="padding: 6px 6px;">
 <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
 <div style="flex: 1; min-width: 0;">
 <span style="font-size: 12px; color: var(--text); font-weight: 600; display: block;">Show in Leaderboards</span>
-<span style="font-size: 11px; color: #6b7280; display: block; margin-top: 4px;">Compete globally with all JustStep users</span>
+<span style="font-size: 11px; color: #6b7280; display: block; margin-top: 1px;">Compete globally with all JustStep users</span>
 </div>
 <div style="width: 55px; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
 <input id="join-leaderboard" onchange="app.toggleLeaderboard()" style="width: 20px; height: 20px; cursor: pointer; margin: 0;" type="checkbox"/>
@@ -2451,11 +2982,23 @@
 </label>
 <div style="font-size: 11px; color: #6b7280; margin-top: 4px;">Requires Initial Weight in Goals and regular weigh-ins.</div>
 </div>
+<!-- Share Weight with Pals Toggle -->
+<div class="pals-profile-card" style="padding: 6px 6px; margin-top: 6px;">
+<label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+<div style="flex: 1; min-width: 0;">
+<span style="font-size: 12px; color: var(--text); font-weight: 600; display: block;">Share Weight with Pals</span>
+<span style="font-size: 11px; color: #6b7280; display: block; margin-top: 1px;">Let your pals see your current weight (not public)</span>
+</div>
+<div style="width: 55px; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
+<input id="share-weight-with-pals" onchange="app.toggleShareWeightWithPals()" style="width: 20px; height: 20px; cursor: pointer; margin: 0;" type="checkbox"/>
+</div>
+</label>
+</div>
 </div>
 <!-- ADD PAL Section - Compact -->
 <div class="pals-section">
 <h2 style="font-size: 14px; margin-bottom: 8px; color: var(--primary-light); font-weight: 600;">ADD PAL</h2>
-<div style="background: #2d2d2d; border-radius: 8px; padding: 8px 12px;">
+<div class="pals-profile-card">
 <div style="display: flex; gap: 8px; align-items: center;">
 <input id="add-pal-code" inputmode="numeric" maxlength="4" placeholder="Enter PAL Code..." style="flex: 1; min-width: 0; padding: 6px 10px; background: #1a1a1a; border: 1px solid #3d3d3d; border-radius: 6px; color: #e8e8e8; font-size: 13px; height: 32px; box-sizing: border-box;" type="tel"/>
 <button onclick="app.addPal()" style="width: 55px; height: 32px; flex-shrink: 0; background: var(--primary-dark); color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 12px; display: flex; align-items: center; justify-content: center;">
@@ -2506,7 +3049,7 @@
 </select>
 </div>
 <!-- Leaderboard List -->
-<div id="leaderboard-list" style="display: flex; flex-direction: column; gap: 12px;">
+<div id="leaderboard-list" style="display: flex; flex-direction: column; gap: 6px;">
 <p style="color: #6b7280; text-align: center; padding: 20px;">Loading leaderboard...</p>
 </div>
 </div>
@@ -2549,7 +3092,7 @@
         </a>
 <button class="welcome-button" onclick="app.closeWelcome()">Let's Go</button>
 <div style="text-align: center; color: #6b7280; font-size: 11px; margin-top: 16px;">
-            v2.0.0
+            v2.1.0
         </div>
 </div>
 <!-- Customize Dashboard Modal -->
@@ -2564,7 +3107,7 @@
 <option value="dog">Dog Walking</option>
 <option value="hiking">Hiking</option>
 <option value="run">Running</option>
-<option value="stairs">Master Stairs</option>
+<option value="stairs">Stairmaster</option>
 <option value="walk">Walking</option>
 </optgroup>
 <optgroup label="─── EXERCISES ───">
@@ -2588,7 +3131,7 @@
 <option value="dog">Dog Walking</option>
 <option value="hiking">Hiking</option>
 <option value="run">Running</option>
-<option value="stairs">Master Stairs</option>
+<option value="stairs">Stairmaster</option>
 <option value="walk">Walking</option>
 </optgroup>
 <optgroup label="─── EXERCISES ───">
@@ -2612,7 +3155,7 @@
 <option value="dog">Dog Walking</option>
 <option value="hiking">Hiking</option>
 <option value="run">Running</option>
-<option value="stairs">Master Stairs</option>
+<option value="stairs">Stairmaster</option>
 <option value="walk">Walking</option>
 </optgroup>
 <optgroup label="─── EXERCISES ───">
@@ -2670,7 +3213,7 @@
 </div>
 <script>
         // App Version
-        const APP_VERSION = '2.0.0';
+        const APP_VERSION = '2.1.0';
         
         // Main App Object
         const app = {
@@ -2685,7 +3228,7 @@
                     weightUnit: 'lbs',
                     initialWeight: null
                 },
-                habits: [], // Daily habits: { id, name, frequency: 'daily'|'weekly', completions: [dates] }
+                habits: [], // Make it a Habit: { id, name, frequency: 'daily'|'weekly', completions: [dates] }
                 milestones: [],
                 currentView: {
                     screen: 'log',
@@ -2701,6 +3244,7 @@
                     displayName: '',
                     joinedLeaderboard: false,
                     joinWeightLeaderboard: false,
+                    shareWeightWithPals: false,
                     friends: [] // Array of {palCode, displayName, stats, lastSync}
                 }
             },
@@ -2883,7 +3427,7 @@
                                 <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'dog', 'Dog Walking')">Dog Walking</div>
                                 <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'hiking', 'Hiking')">Hiking</div>
                                 <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'run', 'Running')">Running</div>
-                                <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'stairs', 'Master Stairs')">Master Stairs</div>
+                                <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'stairs', 'Stairmaster')">Stairmaster</div>
                                 <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'walk', 'Walking')">Walking</div>
                             </div>
                         </div>
@@ -3889,12 +4433,26 @@
 
                 // Render activity summary
                 this.renderActivitySummary();
+                this.renderHabitSummary();
             },
 
             // Toggle activity report expand/collapse
             toggleActivityReport() {
                 const content = document.getElementById('activity-report-content');
                 const toggle = document.getElementById('activity-report-toggle');
+                
+                if (content.classList.contains('expanded')) {
+                    content.classList.remove('expanded');
+                    toggle.querySelector('span:last-child').textContent = '▼';
+                } else {
+                    content.classList.add('expanded');
+                    toggle.querySelector('span:last-child').textContent = '▲';
+                }
+            },
+            
+            toggleHabitReport() {
+                const content = document.getElementById('habit-report-content');
+                const toggle = document.getElementById('habit-report-toggle');
                 
                 if (content.classList.contains('expanded')) {
                     content.classList.remove('expanded');
@@ -4016,6 +4574,67 @@
                     
                     summaryList.innerHTML = html;
                 }
+            },
+            
+            // Render habit summary for calendar screen
+            renderHabitSummary() {
+                const summaryList = document.getElementById('habit-summary-list');
+                
+                if (!this.data.habits || this.data.habits.length === 0) {
+                    summaryList.innerHTML = '<p style="text-align: center; color: #6b7280; font-size: 14px;">No habits created yet.</p>';
+                    return;
+                }
+                
+                const now = new Date();
+                const startOfWeek = new Date(now);
+                startOfWeek.setDate(now.getDate() - now.getDay());
+                startOfWeek.setHours(0, 0, 0, 0);
+                
+                const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+                startOfMonth.setHours(0, 0, 0, 0);
+                
+                const habitStats = this.data.habits.map(habit => {
+                    let weekDays = 0;
+                    let monthDays = 0;
+                    let totalDays = (habit.completions || []).length;
+                    
+                    // Count completions for week and month
+                    (habit.completions || []).forEach(dateStr => {
+                        const logDate = new Date(dateStr + 'T12:00:00');
+                        if (logDate >= startOfWeek) weekDays++;
+                        if (logDate >= startOfMonth) monthDays++;
+                    });
+                    
+                    return {
+                        name: habit.name || 'Unnamed Habit',
+                        color: habit.color || '#10b981',
+                        weekDays,
+                        monthDays,
+                        totalDays
+                    };
+                });
+                
+                const html = `
+                    <div style="display: grid; grid-template-columns: minmax(180px, 1fr) 1fr 1fr 1fr; gap: 12px; align-items: center; padding: 8px 0; border-bottom: 1px solid #3d3d3d; font-size: 12px; font-weight: 700; color: #9ca3af;">
+                        <div></div>
+                        <div style="text-align: center;">This Week</div>
+                        <div style="text-align: center;">This Month</div>
+                        <div style="text-align: center;">All Time</div>
+                    </div>
+                    ${habitStats.map(habit => `
+                        <div style="display: grid; grid-template-columns: minmax(180px, 1fr) 1fr 1fr 1fr; gap: 12px; align-items: center; padding: 8px 0; border-bottom: 1px solid #2d2d2d; font-size: 13px;">
+                            <div style="display: flex; align-items: center; gap: 6px;">
+                                <div style="width: 10px; height: 10px; border-radius: 2px; background: ${habit.color}; flex-shrink: 0;"></div>
+                                <span style="color: #e8e8e8; font-weight: 600;">${habit.name}</span>
+                            </div>
+                            <div style="text-align: center; color: #9ca3af;">${habit.weekDays}/7 days</div>
+                            <div style="text-align: center; color: #9ca3af;">${habit.monthDays}/${new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate()} days</div>
+                            <div style="text-align: center; color: var(--primary); font-weight: 700;">${habit.totalDays} days</div>
+                        </div>
+                    `).join('')}
+                `;
+                
+                summaryList.innerHTML = html;
             },
 
             // Calculate month-to-date stats
@@ -4381,7 +5000,7 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                             'dog': 'Dog Walking',
                             'hiking': 'Hiking',
                             'biking': 'Biking',
-                            'stairs': 'Master Stairs',
+                            'stairs': 'Stairmaster',
                             'steps': 'Steps',
                             'pushups': 'Push-ups',
                             'pullups': 'Pull-ups',
@@ -4491,7 +5110,7 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                 const completedHabits = this.getHabitsForDate(date);
                 
                 if (this.data.habits && this.data.habits.length > 0) {
-                    let habitsHTML = '<h3 style="margin-top: 20px; margin-bottom: 12px; color: #9ca3af; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">DAILY HABITS</h3>';
+                    let habitsHTML = '<h3 style="margin-top: 20px; margin-bottom: 12px; color: #9ca3af; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">HABITS</h3>';
                     
                     habitsHTML += this.data.habits.map(habit => {
                         const isCompleted = completedHabits.some(h => h.id === habit.id);
@@ -4607,6 +5226,20 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                 // Clear input and show success
                 weightInput.value = '';
                 alert(`Weight logged: ${weight} lbs`);
+            },
+            
+            toggleWeightInfoModal() {
+                const modal = document.getElementById('weight-info-modal');
+                if (modal) {
+                    modal.classList.toggle('active');
+                }
+            },
+            
+            toggleHabitInfoModal() {
+                const modal = document.getElementById('habit-info-modal');
+                if (modal) {
+                    modal.classList.toggle('active');
+                }
             },
 
             // Get weight statistics and trends
@@ -5139,6 +5772,16 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                     weightCheckbox.style.cursor = weightCheckbox.disabled ? 'not-allowed' : 'pointer';
                 }
 
+                // Share Weight with Pals checkbox
+                const shareWeightCheckbox = document.getElementById('share-weight-with-pals');
+                if (shareWeightCheckbox) {
+                    // Can share weight with pals if PAL Code exists
+                    shareWeightCheckbox.checked = (this.data.pals.shareWeightWithPals || false) && hasPalCode;
+                    shareWeightCheckbox.disabled = !hasPalCode;
+                    shareWeightCheckbox.style.opacity = shareWeightCheckbox.disabled ? '0.5' : '1';
+                    shareWeightCheckbox.style.cursor = shareWeightCheckbox.disabled ? 'not-allowed' : 'pointer';
+                }
+
                 this.renderPalsList();
                 this.renderLeaderboard();
             },
@@ -5210,6 +5853,27 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                 }
 
                 this.data.pals.joinWeightLeaderboard = !!(weightCheckbox && weightCheckbox.checked);
+                this.saveData();
+                this.updatePalsUI();
+
+                // Sync if possible (non-blocking)
+                try { await this.syncMyStatsToFirebase(); } catch (e) {}
+            },
+
+            // Toggle share weight with pals
+            async toggleShareWeightWithPals() {
+                const checkbox = document.getElementById('share-weight-with-pals');
+                const hasPalCode = !!(this.data.pals && this.data.pals.myPalCode);
+
+                if (!hasPalCode) {
+                    if (checkbox) checkbox.checked = false;
+                    this.data.pals.shareWeightWithPals = false;
+                    this.saveData();
+                    this.updatePalsUI();
+                    return;
+                }
+
+                this.data.pals.shareWeightWithPals = !!(checkbox && checkbox.checked);
                 this.saveData();
                 this.updatePalsUI();
 
@@ -5671,6 +6335,7 @@ async createPalCode() {
                         displayName: this.data.pals.displayName || this.data.pals.myPalCode,
                         joinedLeaderboard: this.data.pals.joinedLeaderboard || false,
                         joinWeightLeaderboard: this.data.pals.joinWeightLeaderboard || false,
+                        shareWeightWithPals: this.data.pals.shareWeightWithPals || false,
                         lastActivityDate: today,
                         stats: {
                             thisWeekDistance: stats.thisWeekDistance,
@@ -5718,7 +6383,8 @@ async createPalCode() {
                             thisWeekStairs: stats.thisWeekStairs,
                             thisMonthStairs: monthStats.monthStairs,
                             totalStairs: stats.totalStairs,
-                            weight: currentWeight,
+                            // Only sync weight if user has opted to share with pals
+                            weight: (this.data.pals.shareWeightWithPals || false) ? currentWeight : null,
                             weightChangePctThisWeek: weightChangePctThisWeek,
                             weightChangePctThisMonth: weightChangePctThisMonth,
                             weightChangePctAllTime: weightChangePctAllTime,
@@ -5792,6 +6458,7 @@ async createPalCode() {
                         palCode: code,
                         displayName: palData.displayName || code,
                         stats: palData.stats || {},
+                        shareWeightWithPals: palData.shareWeightWithPals || false,
                         lastSync: new Date().toISOString()
                     });
 
@@ -5828,6 +6495,7 @@ async createPalCode() {
                         if (friend) {
                             friend.stats = palData.stats || {};
                             friend.displayName = palData.displayName || palCode;
+                            friend.shareWeightWithPals = palData.shareWeightWithPals || false;
                             friend.lastSync = new Date().toISOString();
                             this.saveData();
                             this.updatePalsUI();
@@ -5918,14 +6586,16 @@ async createPalCode() {
                         addItem('Total Distance', stats.thisWeekDistance || 0, stats.thisMonthDistance || 0, stats.totalDistance || 0, ` ${unit}`);
                     }
                     
-                    // Weight row
-                    const weightValue = stats.weight ? (stats.weight > 0 ? `-${stats.weight}` : stats.weight < 0 ? `+${Math.abs(stats.weight)}` : '0') : '0';
-                    activityItems.push({
-                        name: 'Weight',
-                        week: '-',
-                        month: '-',
-                        total: `${weightValue} ${weightUnit}`
-                    });
+                    // Weight row - only show if pal has opted to share weight
+                    if (pal.shareWeightWithPals === true && stats.weight !== null && stats.weight !== undefined) {
+                        const weightValue = stats.weight > 0 ? `-${stats.weight}` : stats.weight < 0 ? `+${Math.abs(stats.weight)}` : '0';
+                        activityItems.push({
+                            name: 'Weight',
+                            week: '-',
+                            month: '-',
+                            total: `${weightValue} ${weightUnit}`
+                        });
+                    }
                     
                     // Build activity table HTML
                     let activityTableHTML = '';
@@ -5950,21 +6620,29 @@ async createPalCode() {
                         `;
                     }
                     
+                    // Quick stats for collapsed view
+                    const stepsValue = stats.thisWeekSteps || 0;
+                    const stepsText = stepsValue >= 1000 ? (stepsValue / 1000).toFixed(1) + 'k' : stepsValue.toString();
+                    const distanceValue = stats.thisWeekDistance || 0;
+                    const distanceText = distanceValue.toFixed(1) + ' mi';
+                    
                     // Return pal card HTML
                     return `
                         <div class="pal-card ${expandedClass}">
                             <div class="pal-header" onclick="app.togglePalExpanded('${pal.palCode}')">
-                                <div>
+                                <div class="pal-header-info">
                                     <div class="pal-name">${pal.displayName}</div>
-                                    <div class="pal-code">${pal.palCode}</div>
+                                    <span class="pal-divider">•</span>
+                                    <div class="pal-quick-stats">${stepsText} steps • ${distanceText}</div>
                                 </div>
                                 <div class="pal-expand-icon">${arrow}</div>
                             </div>
                             <div class="pal-stats-expanded">
+                                <div class="pal-id-display">PAL Code: ${pal.palCode}</div>
                                 ${activityTableHTML}
-                            </div>
-                            <div class="pal-actions">
-                                <button class="pal-btn pal-btn-remove" onclick="app.removePal('${pal.palCode}')">Remove</button>
+                                <div class="pal-actions">
+                                    <button class="pal-btn pal-btn-remove" onclick="app.removePal('${pal.palCode}')">Remove</button>
+                                </div>
                             </div>
                         </div>
                     `;
@@ -6235,6 +6913,18 @@ async createPalCode() {
                         const progressPercent = (rank === '' || maxValue <= 0) ? 0 : ((metric === 'weight' ? Math.abs(Number(p.value ?? 0)) : Number(p.value ?? 0)) / maxValue) * 100;
                         const highlight = p.isMe ? 'highlight' : '';
                         
+                        // Determine rank class for medal colors
+                        let rankClass = '';
+                        if (rank === 1) {
+                            rankClass = 'rank-1';
+                        } else if (rank === 2) {
+                            rankClass = 'rank-2';
+                        } else if (rank === 3) {
+                            rankClass = 'rank-3';
+                        } else if (rank !== '') {
+                            rankClass = 'rank-regular';
+                        }
+                        
                         // Format weight change (% + lbs)
                         let displayValue = p.value;
                         if (metric === 'weight') {
@@ -6254,7 +6944,7 @@ async createPalCode() {
                         }
 
                         return `
-                            <div class="leaderboard-item-card ${highlight}">
+                            <div class="leaderboard-item-card ${rankClass} ${highlight}">
                                 <div class="leaderboard-item-header">
                                     <span class="leaderboard-rank">${rank}</span>
                                     <span class="leaderboard-name">
@@ -6303,7 +6993,7 @@ async createPalCode() {
                 container.innerHTML = this.data.habits.map((habit, index) => {
                     const habitColor = habit.color || '#10b981';
                     return `
-                    <div class="habit-item" id="habit-${habit.id}" style="background: #2d2d2d; padding: 8px 12px; border-radius: 8px;">
+                    <div class="habit-item" id="habit-${habit.id}">
                         <!-- Display Mode -->
                         <div class="habit-display" id="habit-display-${habit.id}">
                             <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -6472,6 +7162,7 @@ async createPalCode() {
                 
                 this.saveData();
                 this.renderCalendar();
+                this.renderHabitSummary();
             },
 
             // Get habits completed on a date
@@ -6696,5 +7387,56 @@ async createPalCode() {
     </div>
   </div>
 </div>
+
+<!-- Service Worker Registration -->
+<script>
+// Register service worker for PWA functionality and auto-updates
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./service-worker.js')
+            .then(registration => {
+                console.log('✅ Service Worker registered successfully');
+                
+                // Check for updates immediately on load
+                registration.update();
+                
+                // Check for updates every 60 seconds (iOS-friendly)
+                setInterval(() => {
+                    registration.update();
+                }, 60000);
+                
+                // Listen for new service worker updates
+                registration.addEventListener('updatefound', () => {
+                    const newWorker = registration.installing;
+                    console.log('🔄 New version found, installing...');
+                    
+                    newWorker.addEventListener('statechange', () => {
+                        if (newWorker.state === 'activated' && !navigator.serviceWorker.controller) {
+                            // First install
+                            console.log('✅ Service Worker activated (first install)');
+                        } else if (newWorker.state === 'activated') {
+                            // Update found - reload to get new version
+                            console.log('🔄 New version activated, reloading...');
+                            window.location.reload();
+                        }
+                    });
+                });
+                
+                // Handle controlling service worker change (for updates)
+                let refreshing = false;
+                navigator.serviceWorker.addEventListener('controllerchange', () => {
+                    if (!refreshing) {
+                        refreshing = true;
+                        console.log('🔄 Controller changed, reloading...');
+                        window.location.reload();
+                    }
+                });
+            })
+            .catch(error => {
+                console.warn('❌ Service Worker registration failed:', error);
+            });
+    });
+}
+</script>
 </body>
 </html>
