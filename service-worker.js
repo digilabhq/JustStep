@@ -1,5 +1,5 @@
 // JustStep Service Worker (safe caching: GET-only)
-const CACHE_NAME = 'juststep-cache-v2.0.0';
+const CACHE_NAME = 'juststep-cache-v2.1.0';
 const FILES_TO_CACHE = [
   './',
   './index.html',
@@ -10,33 +10,40 @@ const FILES_TO_CACHE = [
 ].filter(Boolean);
 
 self.addEventListener('install', (event) => {
-  console.log('Service Worker: Installing');
+  console.log('Service Worker: Installing v2.1.0');
   event.waitUntil(
     caches.open(CACHE_NAME).then(async (cache) => {
       try {
         // Cache core assets; ignore individual failures (e.g., missing icons)
         await Promise.allSettled(FILES_TO_CACHE.map((u) => cache.add(u)));
+        console.log('Service Worker: Assets cached');
       } catch (e) {
         // Non-fatal: app still works online
         console.warn('Service Worker: Cache addAll failed', e);
       }
     })
   );
+  // Force immediate activation - critical for updates
   self.skipWaiting();
 });
 
 self.addEventListener('activate', (event) => {
-  console.log('Service Worker: Activating');
+  console.log('Service Worker: Activating v2.1.0');
   event.waitUntil(
     caches.keys().then((keys) =>
       Promise.all(
         keys.map((key) => {
-          if (key !== CACHE_NAME) return caches.delete(key);
+          if (key !== CACHE_NAME) {
+            console.log('Service Worker: Deleting old cache:', key);
+            return caches.delete(key);
+          }
         })
       )
-    )
+    ).then(() => {
+      console.log('Service Worker: Claiming clients');
+      return self.clients.claim();
+    })
   );
-  self.clients.claim();
 });
 
 self.addEventListener('fetch', (event) => {
