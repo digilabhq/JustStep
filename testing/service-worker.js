@@ -1,69 +1,71 @@
-// JustStep Service Worker (safe caching: GET-only)
-const CACHE_NAME = 'juststep-cache-v2.1.0';
-const FILES_TO_CACHE = [
-  './',
-  './index.html',
-  './manifest.json',
+// service-worker.js
+
+const CACHE_NAME = 'juststep-cache-v2.1.0'; // change this when you want to force a full refresh
+const ASSETS_TO_CACHE = [
   './styles.css',
-  './icon-192.png',
-  './icon-512.png'
-].filter(Boolean);
+  './script.js',
+  './icon.png',
+  './manifest.json'
+];
 
 self.addEventListener('install', (event) => {
-  console.log('Service Worker: Installing');
-  event.waitUntil(
-    caches.open(CACHE_NAME).then(async (cache) => {
-      try {
-        // Cache core assets; ignore individual failures (e.g., missing icons)
-        await Promise.allSettled(FILES_TO_CACHE.map((u) => cache.add(u)));
-      } catch (e) {
-        // Non-fatal: app still works online
-        console.warn('Service Worker: Cache addAll failed', e);
-      }
-    })
-  );
+  // Activate the updated SW ASAP
   self.skipWaiting();
+
+  event.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS_TO_CACHE))
+  );
 });
 
 self.addEventListener('activate', (event) => {
-  console.log('Service Worker: Activating');
+  // Take control immediately and clean old caches
   event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(
-        keys.map((key) => {
-          if (key !== CACHE_NAME) return caches.delete(key);
-        })
+    Promise.all([
+      self.clients.claim(),
+      caches.keys().then((keys) =>
+        Promise.all(keys.map((key) => (key !== CACHE_NAME ? caches.delete(key) : null)))
       )
-    )
+    ])
   );
-  self.clients.claim();
 });
 
 self.addEventListener('fetch', (event) => {
   const req = event.request;
 
-  // IMPORTANT: Never try to cache non-GET requests (Firebase uses POST)
   if (req.method !== 'GET') return;
 
   const url = new URL(req.url);
-
-  // Only cache same-origin assets. Let everything else pass through.
   if (url.origin !== self.location.origin) return;
 
+  const accept = req.headers.get('accept') || '';
+  const isHTML =
+    req.mode === 'navigate' || accept.includes('text/html');
+
+  // 1) HTML/pages: NETWORK FIRST (prevents "stuck" Home Screen app)
+  if (isHTML) {
+    event.respondWith(
+      fetch(req)
+        .then((resp) => {
+          const copy = resp.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(req, copy));
+          return resp;
+        })
+        .catch(() => caches.match(req))
+    );
+    return;
+  }
+
+  // 2) Static assets: CACHE FIRST (fast/offline)
   event.respondWith(
     caches.match(req).then((cached) => {
       if (cached) return cached;
 
-      return fetch(req)
-        .then((resp) => {
-          // Only cache successful, basic responses
-          if (resp && resp.status === 200 && resp.type === 'basic') {
-            const respClone = resp.clone();
-            caches.open(CACHE_NAME).then((cache) => cache.put(req, respClone));
-          }
-          return resp;
-        })
-        .catch(() => cached); // if offline and nothing cached, will return undefined
+      return fetch(req).then((resp) => {
+        if (resp && resp.status === 200 && resp.type === 'basic') {
+          caches.open(CACHE_NAME).then((cache) => cache.put(req, resp.clone()));
+        }
+        return resp;
+      });
     })
   );
 });
