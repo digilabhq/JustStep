@@ -1,5 +1,5 @@
 // JustStep Service Worker (safe caching: GET-only)
-const CACHE_NAME = 'juststep-cache-v2.0.0';
+const CACHE_NAME = 'juststep-cache-v2.1.0';
 const FILES_TO_CACHE = [
   './',
   './index.html',
