@@ -432,6 +432,85 @@
             font-weight: 600;
         }
 
+        /* Sub-Accordion Styles (for nested exercises) */
+        .sub-accordion {
+            border-bottom: 1px solid #2d2d2d;
+        }
+
+        .sub-accordion:last-child {
+            border-bottom: none;
+        }
+
+        .sub-accordion-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 14px;
+            background: transparent;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.2s;
+        }
+
+        .sub-accordion-header:hover {
+            background: #2d2d2d;
+            padding-left: 18px;
+        }
+
+        .sub-accordion-title {
+            font-size: 14px;
+            color: #9ca3af;
+            font-weight: 500;
+        }
+
+        .sub-accordion-arrow {
+            font-size: 10px;
+            color: #6b7280;
+            transition: transform 0.2s;
+        }
+
+        .sub-accordion-header.active .sub-accordion-arrow {
+            transform: rotate(90deg);
+        }
+
+        .sub-accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            background: #1a1a1a;
+        }
+
+        .sub-accordion-content.active {
+            max-height: 600px;
+        }
+
+        .quick-log-btn {
+            width: calc(100% - 28px);
+            margin: 8px 14px;
+            padding: 10px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .quick-log-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .sub-exercise-divider {
+            margin: 8px 14px;
+            padding: 4px 0;
+            font-size: 11px;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
         .activity-type-select {
             width: 100%;
             padding: 10px 12px;
@@ -2606,7 +2685,7 @@
 </div>
 <!-- Daily Logging Screen -->
 <div class="screen active" id="log-screen">
-<h1>Track Activity</h1>
+<h1 style="display: flex; align-items: center; gap: 8px;">Track Activity <span class="info-icon" onclick="app.showTrackInfo()" title="How to track activities">i</span></h1>
 <p class="subtitle">Record today's workout</p>
 <div class="date-selector">
 <span>📅</span>
@@ -2626,7 +2705,7 @@
 <div class="weight-input-section">
 <div class="weight-input-header">
 Track Weight
-<span class="weight-info-icon" onclick="app.toggleWeightInfoModal()" title="Weight tracking tips">ⓘ</span>
+<span class="info-icon" onclick="app.toggleWeightInfoModal()" title="Weight tracking tips" style="margin-left: 6px; transform: scale(0.7);">i</span>
 </div>
 <div class="weight-input-row">
 <input class="weight-input-field" id="weight-input" inputmode="decimal" min="0" placeholder="Enter weight" step="0.1" type="number"/>
@@ -2656,9 +2735,77 @@ Weekly tracking shows real progress!
 </div>
 </div>
 </div>
+<!-- Track Activity Info Modal -->
+<div class="weight-info-modal" id="track-info-modal" onclick="if(event.target === this) app.closeInfoModal('track-info-modal')">
+<div class="weight-info-content">
+<div class="weight-info-header">
+<div class="weight-info-title">
+<span>✅</span>
+Track Activity
+</div>
+<button class="weight-info-close" onclick="app.closeInfoModal('track-info-modal')">×</button>
+</div>
+<div class="weight-info-list" style="padding: 16px; line-height: 1.8;">
+<strong style="color: #60a5fa;">Two ways to log workouts:</strong><br><br>
+• <strong>QUICK LOG:</strong> Log "Arm Day" without tracking individual exercises<br><br>
+• <strong>DETAILED LOG:</strong> Track specific exercises with reps (e.g., Bicep Curls: 20 reps)<br><br>
+<div class="weight-info-highlight">
+Choose what works for your tracking style!
+</div>
+</div>
+</div>
+</div>
+
+<!-- Dashboard Info Modal -->
+<div class="weight-info-modal" id="dashboard-info-modal" onclick="if(event.target === this) app.closeInfoModal('dashboard-info-modal')">
+<div class="weight-info-content">
+<div class="weight-info-header">
+<div class="weight-info-title">
+<span>📈</span>
+Dashboard
+</div>
+<button class="weight-info-close" onclick="app.closeInfoModal('dashboard-info-modal')">×</button>
+</div>
+<div class="weight-info-list" style="padding: 16px; line-height: 1.8;">
+<strong style="color: #60a5fa;">View your fitness trends:</strong><br><br>
+• <strong>Calendar Week:</strong> Sunday - Saturday totals<br><br>
+• <strong>Last 7 Days:</strong> Rolling 7-day window<br><br>
+<div class="weight-info-highlight">
+Track consistency and spot patterns in your training!
+</div>
+</div>
+</div>
+</div>
+
+<!-- Leaderboard Info Modal -->
+<div class="weight-info-modal" id="leaderboard-info-modal" onclick="if(event.target === this) app.closeInfoModal('leaderboard-info-modal')">
+<div class="weight-info-content">
+<div class="weight-info-header">
+<div class="weight-info-title">
+<span>📊</span>
+Leaderboard
+</div>
+<button class="weight-info-close" onclick="app.closeInfoModal('leaderboard-info-modal')">×</button>
+</div>
+<div class="weight-info-list" style="padding: 16px; line-height: 1.8;">
+<strong style="color: #60a5fa;">How rankings work:</strong><br><br>
+• <strong>STEPS:</strong> Total steps in last 7 days<br><br>
+• <strong>DISTANCE:</strong> Total miles/km from all cardio activities in last 7 days<br><br>
+• <strong>WEIGHT:</strong> Weight change (% and lbs) based on selected period (Week/Month/Total)<br><br>
+<strong style="color: #60a5fa;">Activity indicators:</strong><br><br>
+⚡ Updated within 16 hours<br>
+✨ Updated 16-32 hours ago<br>
+💤 Updated 32+ hours ago<br><br>
+<div class="weight-info-highlight">
+Rankings update daily. Add PALs to compete with friends!
+</div>
+</div>
+</div>
+</div>
+
 <!-- Dashboard Screen -->
 <div class="screen" id="dashboard-screen">
-<h1>Dashboard</h1>
+<h1 style="display: flex; align-items: center; gap: 8px;">Dashboard <span class="info-icon" onclick="app.showDashboardInfo()" title="Dashboard explained">i</span></h1>
 <p class="subtitle">Your progress overview</p>
 <div class="stats-toggle">
 <button class="stats-toggle-btn active" onclick="app.setStatsView('week')">This Week</button>
@@ -2694,7 +2841,7 @@ Weekly tracking shows real progress!
 </div>
 <div class="stat-card" id="custom-card-3">
 <div class="stat-value" id="custom-stat-3">0</div>
-<div class="stat-label" id="custom-label-3">Roller Abs</div>
+<div class="stat-label" id="custom-label-3">Ab Wheel Rollout</div>
 <div class="stat-trend" id="custom-trend-3"></div>
 </div>
 </div>
@@ -2880,11 +3027,10 @@ Weekly tracking shows real progress!
 <!-- Make it a Habit Section -->
 <div>
 <div style="margin-bottom: 12px;">
-<label style="font-size: 14px; font-weight: 600; color: #e8e8e8; display: flex; align-items: center; gap: 6px; margin-bottom: 4px;">
+<label style="font-size: 14px; font-weight: 600; color: #e8e8e8; display: flex; align-items: center; gap: 6px; margin-bottom: 0;">
 Make it a Habit (Private)
-<span class="habit-info-icon" onclick="app.toggleHabitInfoModal()" title="How habits work">ⓘ</span>
+<span class="info-icon" onclick="app.toggleHabitInfoModal()" title="How habits work" style="transform: scale(0.7);">i</span>
 </label>
-<p style="font-size: 12px; color: #6b7280; margin: 0;">Track up to 3 personal habits - not shared with anyone</p>
 </div>
 <div id="habits-list" style="display: flex; flex-direction: column; gap: 6px;">
 <!-- Habits will be rendered here -->
@@ -3024,7 +3170,7 @@ View your progress in the Habit Report!
 </div>
 <!-- Leaderboard Screen -->
 <div class="screen" id="leaderboard-screen">
-<h1>Leaderboard</h1>
+<h1 style="display: flex; align-items: center; gap: 8px;">Leaderboard <span class="info-icon" onclick="app.showLeaderboardInfo()" title="How rankings work">i</span></h1>
 <p class="subtitle">Compete with JustStep users worldwide</p>
 <!-- Toggle: Global / Friends -->
 <div class="leaderboard-toggle" style="display: flex; gap: 8px; margin-bottom: 16px;">
@@ -3092,7 +3238,7 @@ View your progress in the Habit Report!
         </a>
 <button class="welcome-button" onclick="app.closeWelcome()">Let's Go</button>
 <div style="text-align: center; color: #6b7280; font-size: 11px; margin-top: 16px;">
-            v2.1.0
+            v2.1.1
         </div>
 </div>
 <!-- Customize Dashboard Modal -->
@@ -3213,7 +3359,7 @@ View your progress in the Habit Report!
 </div>
 <script>
         // App Version
-        const APP_VERSION = '2.1.0';
+        const APP_VERSION = '2.1.1';
         
         // Main App Object
         const app = {
@@ -3266,6 +3412,8 @@ View your progress in the Habit Report!
                 this.initFirebase();
                 
                 this.loadData();
+                // Migrate old exercises to new structure (one-time, automatic)
+                this.migrateOldExercises();
                 // Ensure statsView is set before updating dashboard
                 if (!this.data.currentView.statsView) {
                     this.data.currentView.statsView = 'week';
@@ -3381,6 +3529,32 @@ View your progress in the Habit Report!
                 }
             },
 
+            // Migrate old single exercises to include category field
+            migrateOldExercises() {
+                const exerciseCategoryMap = {
+                    'dips': 'chest',
+                    'pullups': 'back',
+                    'pushups': 'chest',
+                    'rollerabs': 'core',
+                    'situps': 'core',
+                    'squats': 'legs'
+                };
+                
+                let migrated = 0;
+                this.data.activities.forEach(activity => {
+                    // If it's an old exercise type without a category, add one
+                    if (activity.type in exerciseCategoryMap && !activity.category) {
+                        activity.category = exerciseCategoryMap[activity.type];
+                        migrated++;
+                    }
+                });
+                
+                if (migrated > 0) {
+                    this.saveData();
+                    console.log(`✅ Migrated ${migrated} exercises to new structure`);
+                }
+            },
+
             // Save data to localStorage
             saveData() {
                 localStorage.setItem('justStepData', JSON.stringify(this.data));
@@ -3437,37 +3611,143 @@ View your progress in the Habit Report!
                             <div class="accordion-header" onclick="app.toggleAccordion(${this.activityCounter}, 'strength')">
                                 <div>
                                     <span class="accordion-title">Strength</span>
-                                    <span class="accordion-count">(7)</span>
+                                    <span class="accordion-count">(9)</span>
                                 </div>
                                 <span class="accordion-arrow">▼</span>
                             </div>
                             <div class="accordion-content" id="accordion-${this.activityCounter}-strength">
-                                <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'arm', 'Arm Day')">Arm Day</div>
-                                <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'back', 'Back Day')">Back Day</div>
-                                <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'chest', 'Chest Day')">Chest Day</div>
-                                <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'core', 'Core Day')">Core Day</div>
-                                <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'fullbody', 'Full Body Day')">Full Body Day</div>
-                                <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'leg', 'Leg Day')">Leg Day</div>
-                                <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'shoulder', 'Shoulder Day')">Shoulder Day</div>
-                            </div>
-                        </div>
-                        
-                        <!-- Single Exercise Category -->
-                        <div class="accordion-category">
-                            <div class="accordion-header" onclick="app.toggleAccordion(${this.activityCounter}, 'single')">
-                                <div>
-                                    <span class="accordion-title">Single Exercise</span>
-                                    <span class="accordion-count">(6)</span>
+                                <!-- Arm Day -->
+                                <div class="sub-accordion">
+                                    <div class="sub-accordion-header" onclick="app.toggleSubAccordion(${this.activityCounter}, 'arms')">
+                                        <span class="sub-accordion-title">Arm Day</span>
+                                        <span class="sub-accordion-arrow">▶</span>
+                                    </div>
+                                    <div class="sub-accordion-content" id="sub-accordion-${this.activityCounter}-arms">
+                                        <button class="quick-log-btn" onclick="app.selectActivity(${this.activityCounter}, 'arm', 'Arm Day'); event.stopPropagation();">✓ Log "Arm Day"</button>
+                                        <div class="sub-exercise-divider">Or track specific exercise:</div>
+                                        <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'bicepcurls', 'Bicep Curls', 'arms')">Bicep Curls</div>
+                                        <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'forearmcurls', 'Forearm Curls', 'arms')">Forearm Curls</div>
+                                        <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'hammercurls', 'Hammer Curls', 'arms')">Hammer Curls</div>
+                                        <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'tricepdips', 'Tricep Dips', 'arms')">Tricep Dips</div>
+                                        <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'tricepsextensions', 'Triceps Extensions', 'arms')">Triceps Extensions</div>
+                                    </div>
                                 </div>
-                                <span class="accordion-arrow">▼</span>
-                            </div>
-                            <div class="accordion-content" id="accordion-${this.activityCounter}-single">
-                                <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'dips', 'Dips')">Dips</div>
-                                <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'pullups', 'Pull-ups')">Pull-ups</div>
-                                <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'pushups', 'Push-ups')">Push-ups</div>
-                                <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'rollerabs', 'Roller Abs')">Roller Abs</div>
-                                <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'situps', 'Sit-ups')">Sit-ups</div>
-                                <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'squats', 'Squats')">Squats</div>
+                                
+                                <!-- Back Day -->
+                                <div class="sub-accordion">
+                                    <div class="sub-accordion-header" onclick="app.toggleSubAccordion(${this.activityCounter}, 'back')">
+                                        <span class="sub-accordion-title">Back Day</span>
+                                        <span class="sub-accordion-arrow">▶</span>
+                                    </div>
+                                    <div class="sub-accordion-content" id="sub-accordion-${this.activityCounter}-back">
+                                        <button class="quick-log-btn" onclick="app.selectActivity(${this.activityCounter}, 'back', 'Back Day'); event.stopPropagation();">✓ Log "Back Day"</button>
+                                        <div class="sub-exercise-divider">Or track specific exercise:</div>
+                                        <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'deadlifts', 'Deadlifts', 'back')">Deadlifts</div>
+                                        <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'facepulls', 'Face Pulls', 'back')">Face Pulls</div>
+                                        <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'latpulldowns', 'Lat Pulldowns', 'back')">Lat Pulldowns</div>
+                                        <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'pullups', 'Pull-ups', 'back')">Pull-ups</div>
+                                        <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'rows', 'Rows', 'back')">Rows</div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Chest Day -->
+                                <div class="sub-accordion">
+                                    <div class="sub-accordion-header" onclick="app.toggleSubAccordion(${this.activityCounter}, 'chest')">
+                                        <span class="sub-accordion-title">Chest Day</span>
+                                        <span class="sub-accordion-arrow">▶</span>
+                                    </div>
+                                    <div class="sub-accordion-content" id="sub-accordion-${this.activityCounter}-chest">
+                                        <button class="quick-log-btn" onclick="app.selectActivity(${this.activityCounter}, 'chest', 'Chest Day'); event.stopPropagation();">✓ Log "Chest Day"</button>
+                                        <div class="sub-exercise-divider">Or track specific exercise:</div>
+                                        <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'benchpress', 'Bench Press', 'chest')">Bench Press</div>
+                                        <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'chestflys', 'Chest Flys', 'chest')">Chest Flys</div>
+                                        <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'dips', 'Dips', 'chest')">Dips</div>
+                                        <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'inclinepress', 'Incline Press', 'chest')">Incline Press</div>
+                                        <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'pushups', 'Push-ups', 'chest')">Push-ups</div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Core Day -->
+                                <div class="sub-accordion">
+                                    <div class="sub-accordion-header" onclick="app.toggleSubAccordion(${this.activityCounter}, 'core')">
+                                        <span class="sub-accordion-title">Core Day</span>
+                                        <span class="sub-accordion-arrow">▶</span>
+                                    </div>
+                                    <div class="sub-accordion-content" id="sub-accordion-${this.activityCounter}-core">
+                                        <button class="quick-log-btn" onclick="app.selectActivity(${this.activityCounter}, 'core', 'Core Day'); event.stopPropagation();">✓ Log "Core Day"</button>
+                                        <div class="sub-exercise-divider">Or track specific exercise:</div>
+                                        <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'abwheelrollout', 'Ab Wheel Rollout', 'core')">Ab Wheel Rollout</div>
+                                        <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'legraises', 'Leg Raises', 'core')">Leg Raises</div>
+                                        <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'planks', 'Planks', 'core')">Planks</div>
+                                        <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'russiantwists', 'Russian Twists', 'core')">Russian Twists</div>
+                                        <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'situps', 'Sit-ups', 'core')">Sit-ups</div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Full Body Day -->
+                                <div class="sub-accordion">
+                                    <div class="sub-accordion-header" onclick="app.selectActivity(${this.activityCounter}, 'fullbody', 'Full Body Day')">
+                                        <span class="sub-accordion-title">Full Body Day</span>
+                                    </div>
+                                </div>
+                                
+                                <!-- Glutes Day -->
+                                <div class="sub-accordion">
+                                    <div class="sub-accordion-header" onclick="app.toggleSubAccordion(${this.activityCounter}, 'glutes')">
+                                        <span class="sub-accordion-title">Glutes Day</span>
+                                        <span class="sub-accordion-arrow">▶</span>
+                                    </div>
+                                    <div class="sub-accordion-content" id="sub-accordion-${this.activityCounter}-glutes">
+                                        <button class="quick-log-btn" onclick="app.selectActivity(${this.activityCounter}, 'glutes', 'Glutes Day'); event.stopPropagation();">✓ Log "Glutes Day"</button>
+                                        <div class="sub-exercise-divider">Or track specific exercise:</div>
+                                        <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'bulgariansplitsquats', 'Bulgarian Split Squats', 'glutes')">Bulgarian Split Squats</div>
+                                        <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'donkeykicks', 'Donkey Kicks', 'glutes')">Donkey Kicks</div>
+                                        <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'glutebridges', 'Glute Bridges', 'glutes')">Glute Bridges</div>
+                                        <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'hipthrusts', 'Hip Thrusts', 'glutes')">Hip Thrusts</div>
+                                        <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'stepups', 'Step-ups', 'glutes')">Step-ups</div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Leg Day -->
+                                <div class="sub-accordion">
+                                    <div class="sub-accordion-header" onclick="app.toggleSubAccordion(${this.activityCounter}, 'legs')">
+                                        <span class="sub-accordion-title">Leg Day</span>
+                                        <span class="sub-accordion-arrow">▶</span>
+                                    </div>
+                                    <div class="sub-accordion-content" id="sub-accordion-${this.activityCounter}-legs">
+                                        <button class="quick-log-btn" onclick="app.selectActivity(${this.activityCounter}, 'leg', 'Leg Day'); event.stopPropagation();">✓ Log "Leg Day"</button>
+                                        <div class="sub-exercise-divider">Or track specific exercise:</div>
+                                        <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'calfraises', 'Calf Raises', 'legs')">Calf Raises</div>
+                                        <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'legpress', 'Leg Press', 'legs')">Leg Press</div>
+                                        <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'lunges', 'Lunges', 'legs')">Lunges</div>
+                                        <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'romaniandeadlifts', 'Romanian Deadlifts', 'legs')">Romanian Deadlifts</div>
+                                        <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'squats', 'Squats', 'legs')">Squats</div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Shoulder Day -->
+                                <div class="sub-accordion">
+                                    <div class="sub-accordion-header" onclick="app.toggleSubAccordion(${this.activityCounter}, 'shoulders')">
+                                        <span class="sub-accordion-title">Shoulder Day</span>
+                                        <span class="sub-accordion-arrow">▶</span>
+                                    </div>
+                                    <div class="sub-accordion-content" id="sub-accordion-${this.activityCounter}-shoulders">
+                                        <button class="quick-log-btn" onclick="app.selectActivity(${this.activityCounter}, 'shoulder', 'Shoulder Day'); event.stopPropagation();">✓ Log "Shoulder Day"</button>
+                                        <div class="sub-exercise-divider">Or track specific exercise:</div>
+                                        <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'frontraises', 'Front Raises', 'shoulders')">Front Raises</div>
+                                        <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'lateralraises', 'Lateral Raises', 'shoulders')">Lateral Raises</div>
+                                        <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'reardeltflys', 'Rear Delt Flys', 'shoulders')">Rear Delt Flys</div>
+                                        <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'shoulderpress', 'Shoulder Press', 'shoulders')">Shoulder Press</div>
+                                        <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'shrugs', 'Shrugs', 'shoulders')">Shrugs</div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Stretch Day -->
+                                <div class="sub-accordion">
+                                    <div class="sub-accordion-header" onclick="app.selectActivity(${this.activityCounter}, 'stretch', 'Stretch Day')">
+                                        <span class="sub-accordion-title">Stretch Day</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         
@@ -3532,11 +3812,31 @@ View your progress in the Habit Report!
                 content.classList.toggle('active');
             },
 
+            // Toggle sub-accordion for specific exercises
+            toggleSubAccordion(id, subCategory) {
+                const header = event.target.closest('.sub-accordion-header');
+                const content = document.getElementById(`sub-accordion-${id}-${subCategory}`);
+                
+                if (!content) return; // Stretch Day has no sub-content
+                
+                // Toggle this sub-section
+                header.classList.toggle('active');
+                content.classList.toggle('active');
+                
+                // Prevent event from bubbling to parent accordion
+                event.stopPropagation();
+            },
+
             // Select activity from accordion
-            selectActivity(id, activityType, activityName) {
+            selectActivity(id, activityType, activityName, category) {
                 // Store the selected type
                 const accordion = document.getElementById(`accordion-${id}`);
                 accordion.dataset.selectedType = activityType;
+                
+                // Store category if provided (for new sub-exercises)
+                if (category) {
+                    accordion.dataset.selectedCategory = category;
+                }
                 
                 // Update selected display
                 const selectedDiv = document.getElementById(`selected-activity-${id}`);
@@ -3547,13 +3847,19 @@ View your progress in the Habit Report!
                 // Highlight selected item
                 const allItems = accordion.querySelectorAll('.accordion-item');
                 allItems.forEach(item => item.classList.remove('selected'));
-                event.target.classList.add('selected');
+                if (event && event.target) {
+                    event.target.classList.add('selected');
+                }
                 
-                // Close all accordions
+                // Close all accordions and sub-accordions
                 const allContents = accordion.querySelectorAll('.accordion-content');
                 const allHeaders = accordion.querySelectorAll('.accordion-header');
+                const allSubContents = accordion.querySelectorAll('.sub-accordion-content');
+                const allSubHeaders = accordion.querySelectorAll('.sub-accordion-header');
                 allContents.forEach(c => c.classList.remove('active'));
                 allHeaders.forEach(h => h.classList.remove('active'));
+                allSubContents.forEach(c => c.classList.remove('active'));
+                allSubHeaders.forEach(h => h.classList.remove('active'));
                 
                 // HIDE the entire accordion after selection (auto-collapse)
                 accordion.style.display = 'none';
@@ -3628,8 +3934,25 @@ View your progress in the Habit Report!
                         </div>
                     `;
                 }
-                // For push-ups, pull-ups, roller abs, dips, squats, sit-ups
-                else if (['pushups', 'pullups', 'rollerabs', 'dips', 'squats', 'situps'].includes(activityType)) {
+                // For exercises that track reps (all specific exercises + old ones)
+                else if ([
+                    // Old exercises (still supported for backwards compatibility)
+                    'pushups', 'pullups', 'rollerabs', 'dips', 'squats', 'situps',
+                    // New Arm exercises
+                    'bicepcurls', 'forearmcurls', 'hammercurls', 'tricepdips', 'tricepsextensions',
+                    // New Back exercises
+                    'deadlifts', 'facepulls', 'latpulldowns', 'rows',
+                    // New Chest exercises
+                    'benchpress', 'chestflys', 'inclinepress',
+                    // New Core exercises
+                    'abwheelrollout', 'legraises', 'planks', 'russiantwists',
+                    // New Glutes exercises
+                    'bulgariansplitsquats', 'donkeykicks', 'glutebridges', 'hipthrusts', 'stepups',
+                    // New Leg exercises
+                    'calfraises', 'legpress', 'lunges', 'romaniandeadlifts',
+                    // New Shoulder exercises
+                    'frontraises', 'lateralraises', 'reardeltflys', 'shoulderpress', 'shrugs'
+                ].includes(activityType)) {
                     valueContainer.innerHTML = `
                         <div class="activity-value-input">
                             <input type="number" placeholder="0" id="value-${id}" inputmode="numeric" />
@@ -3676,12 +3999,30 @@ View your progress in the Habit Report!
                         type: type,
                         timestamp: new Date(baseTimestamp + i).toISOString() // Add i milliseconds to ensure uniqueness
                     };
+                    
+                    // Add category if it was stored (for new sub-exercises)
+                    const category = accordion.dataset.selectedCategory;
+                    if (category) {
+                        activity.category = category;
+                    }
 
                     // Get value for cardio and reps-based exercises
                     const valueElement = document.getElementById(`value-${i}`);
                     
                     // Define activities that REQUIRE a value
-                    const requiresValue = ['walk', 'run', 'dog', 'hiking', 'biking', 'stairs', 'steps', 'pushups', 'pullups', 'rollerabs', 'dips', 'squats', 'situps'];
+                    const requiresValue = [
+                        'walk', 'run', 'dog', 'hiking', 'biking', 'stairs', 'steps',
+                        // Old exercises
+                        'pushups', 'pullups', 'rollerabs', 'dips', 'squats', 'situps',
+                        // New exercises
+                        'bicepcurls', 'forearmcurls', 'hammercurls', 'tricepdips', 'tricepsextensions',
+                        'deadlifts', 'facepulls', 'latpulldowns', 'rows',
+                        'benchpress', 'chestflys', 'inclinepress',
+                        'abwheelrollout', 'legraises', 'planks', 'russiantwists',
+                        'bulgariansplitsquats', 'donkeykicks', 'glutebridges', 'hipthrusts', 'stepups',
+                        'calfraises', 'legpress', 'lunges', 'romaniandeadlifts',
+                        'frontraises', 'lateralraises', 'reardeltflys', 'shoulderpress', 'shrugs'
+                    ];
                     
                     if (valueElement) {
                         const value = parseFloat(valueElement.value);
@@ -3693,7 +4034,8 @@ View your progress in the Habit Report!
                                 activity.floors = value;
                             } else if (type === 'steps') {
                                 activity.steps = value;
-                            } else if (['pushups', 'pullups', 'rollerabs', 'dips', 'squats', 'situps'].includes(type)) {
+                            } else if (requiresValue.includes(type)) {
+                                // All other exercises use reps
                                 activity.reps = value;
                             }
                         } else if (requiresValue.includes(type)) {
@@ -4174,7 +4516,7 @@ View your progress in the Habit Report!
                         totalValue: stats.totalPullups
                     },
                     'rollerabs': {
-                        label: 'Roller Abs',
+                        label: 'Ab Wheel Rollout',
                         thisWeekValue: stats.thisWeekRollerAbs,
                         prevWeekValue: stats.prevWeekRollerAbs,
                         totalValue: stats.totalRollerAbs
@@ -4487,7 +4829,7 @@ View your progress in the Habit Report!
                 // Strength exercises
                 addItem('Push-ups', stats.thisWeekPushups, monthStats.monthPushups, stats.totalPushups, ' reps');
                 addItem('Pull-ups', stats.thisWeekPullups, monthStats.monthPullups, stats.totalPullups, ' reps');
-                addItem('Roller Abs', stats.thisWeekRollerAbs, monthStats.monthRollerAbs, stats.totalRollerAbs, ' reps');
+                addItem('Ab Wheel Rollout', stats.thisWeekRollerAbs, monthStats.monthRollerAbs, stats.totalRollerAbs, ' reps');
                 addItem('Dips', stats.thisWeekDips, monthStats.monthDips, stats.totalDips, ' reps');
                 addItem('Squats', stats.thisWeekSquats, monthStats.monthSquats, stats.totalSquats, ' reps');
                 addItem('Sit-ups', stats.thisWeekSitups, monthStats.monthSitups, stats.totalSitups, ' reps');
@@ -5004,7 +5346,7 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                             'steps': 'Steps',
                             'pushups': 'Push-ups',
                             'pullups': 'Pull-ups',
-                            'rollerabs': 'Roller Abs',
+                            'rollerabs': 'Ab Wheel Rollout',
                             'dips': 'Dips',
                             'squats': 'Squats',
                             'situps': 'Sit-ups',
@@ -5239,6 +5581,38 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                 const modal = document.getElementById('habit-info-modal');
                 if (modal) {
                     modal.classList.toggle('active');
+                }
+            },
+
+            // Show Track Activity info modal
+            showTrackInfo() {
+                const modal = document.getElementById('track-info-modal');
+                if (modal) {
+                    modal.classList.add('active');
+                }
+            },
+
+            // Show Dashboard info modal
+            showDashboardInfo() {
+                const modal = document.getElementById('dashboard-info-modal');
+                if (modal) {
+                    modal.classList.add('active');
+                }
+            },
+
+            // Show Leaderboard info modal
+            showLeaderboardInfo() {
+                const modal = document.getElementById('leaderboard-info-modal');
+                if (modal) {
+                    modal.classList.add('active');
+                }
+            },
+
+            // Close info modals
+            closeInfoModal(modalId) {
+                const modal = document.getElementById(modalId);
+                if (modal) {
+                    modal.classList.remove('active');
                 }
             },
 
@@ -6543,7 +6917,7 @@ async createPalCode() {
                         addItem('Pull-ups', stats.thisWeekPullups || 0, stats.thisMonthPullups || 0, stats.totalPullups || 0, ' reps');
                     }
                     if (stats.totalRollerAbs > 0 || stats.thisWeekRollerAbs > 0) {
-                        addItem('Roller Abs', stats.thisWeekRollerAbs || 0, stats.thisMonthRollerAbs || 0, stats.totalRollerAbs || 0, ' reps');
+                        addItem('Ab Wheel Rollout', stats.thisWeekRollerAbs || 0, stats.thisMonthRollerAbs || 0, stats.totalRollerAbs || 0, ' reps');
                     }
                     if (stats.totalDips > 0 || stats.thisWeekDips > 0) {
                         addItem('Dips', stats.thisWeekDips || 0, stats.thisMonthDips || 0, stats.totalDips || 0, ' reps');
@@ -6791,12 +7165,33 @@ async createPalCode() {
                     snapshot.docs.forEach(doc => {
                         const data = doc.data();
                         
-                        // Calculate days since last activity
+                        // Calculate days and hours since last activity
                         const lastActivity = data.lastActivityDate || '';
                         const daysInactive = lastActivity ? this.daysBetween(lastActivity, today) : 999;
                         
-                        // REMOVE users with 21+ days of inactivity
+                        // Calculate hours inactive for emoji status
+                        let hoursInactive = 999;
+                        if (lastActivity) {
+                            const lastDate = new Date(lastActivity);
+                            const nowDate = new Date(today);
+                            hoursInactive = Math.floor((nowDate - lastDate) / (1000 * 60 * 60));
+                        }
+                        
+                        // Determine emoji status based on hours
+                        let statusIndicator = '';
+                        if (hoursInactive < 16) {
+                            statusIndicator = '⚡'; // 0-16 hours
+                        } else if (hoursInactive < 32) {
+                            statusIndicator = '✨'; // 16-32 hours
+                        } else {
+                            statusIndicator = '💤'; // 32+ hours (shows in all leaderboards until 21 days)
+                        }
+                        
+                        // REMOVE users with 21+ days of inactivity (from all leaderboards)
                         if (daysInactive >= 21) return;
+                        
+                        // For "This Week" only: hide users inactive 48+ hours (keeps data fresh)
+                        if (period === 'week' && daysInactive >= 2) return;
 
                         // Weight leaderboard is optional per user
                         if (metric === 'weight' && !(data.joinWeightLeaderboard === true)) return;
@@ -6823,22 +7218,16 @@ async createPalCode() {
 
                         }
 
-                        // Determine status indicator
-                        let statusIndicator = '';
-                        if (daysInactive === 0) {
-                            statusIndicator = '⚡'; // Logged today
-                        } else if (daysInactive >= 2) {
-                            statusIndicator = '💤'; // 2-20 days inactive
-                        }
-                        // 1 day = no indicator
-
                         participants.push({
                             palCode: data.palCode,
                             displayName: data.displayName || data.palCode,
                             value: value,
                             valueLbs: valueLbs,
                             isMe: data.palCode === this.data.pals.myPalCode,
-                            statusIndicator: statusIndicator
+                            statusIndicator: statusIndicator, // Emoji based on hours inactive
+                            lastActivityDate: lastActivity,
+                            daysInactive: daysInactive,
+                            hoursInactive: hoursInactive
                         });
                     });
 
@@ -6943,6 +7332,7 @@ async createPalCode() {
                             }
                         }
 
+                        
                         return `
                             <div class="leaderboard-item-card ${rankClass} ${highlight}">
                                 <div class="leaderboard-item-header">
