@@ -16,7 +16,7 @@
         /* Theme Variables */
         :root {
             --primary: #2563eb;
-            --primary-light: #60a5fa;
+            --primary-light: #93c5fd;
             --primary-dark: #1e40af;
             --primary-darker: #1d4ed8;
             --primary-medium: #3b82f6;
@@ -24,7 +24,7 @@
 
         [data-theme="green"] {
             --primary: #10b981;
-            --primary-light: #34d399;
+            --primary-light: #6ee7b7;
             --primary-dark: #059669;
             --primary-darker: #047857;
             --primary-medium: #10b981;
@@ -32,7 +32,7 @@
 
         [data-theme="pink"] {
             --primary: #ec4899;
-            --primary-light: #f472b6;
+            --primary-light: #f9a8d4;
             --primary-dark: #db2777;
             --primary-darker: #be185d;
             --primary-medium: #ec4899;
@@ -40,7 +40,7 @@
 
         [data-theme="purple"] {
             --primary: #8b5cf6;
-            --primary-light: #a78bfa;
+            --primary-light: #c4b5fd;
             --primary-dark: #7c3aed;
             --primary-darker: #6d28d9;
             --primary-medium: #8b5cf6;
@@ -48,7 +48,7 @@
 
         [data-theme="red"] {
             --primary: #ef4444;
-            --primary-light: #f87171;
+            --primary-light: #fca5a5;
             --primary-dark: #dc2626;
             --primary-darker: #b91c1c;
             --primary-medium: #ef4444;
@@ -432,6 +432,85 @@
             font-weight: 600;
         }
 
+        /* Sub-Accordion Styles (for nested exercises) */
+        .sub-accordion {
+            border-bottom: 1px solid #2d2d2d;
+        }
+
+        .sub-accordion:last-child {
+            border-bottom: none;
+        }
+
+        .sub-accordion-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 14px;
+            background: transparent;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.2s;
+        }
+
+        .sub-accordion-header:hover {
+            background: #2d2d2d;
+            padding-left: 18px;
+        }
+
+        .sub-accordion-title {
+            font-size: 14px;
+            color: #9ca3af;
+            font-weight: 500;
+        }
+
+        .sub-accordion-arrow {
+            font-size: 10px;
+            color: #6b7280;
+            transition: transform 0.2s;
+        }
+
+        .sub-accordion-header.active .sub-accordion-arrow {
+            transform: rotate(90deg);
+        }
+
+        .sub-accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            background: #1a1a1a;
+        }
+
+        .sub-accordion-content.active {
+            max-height: 600px;
+        }
+
+        .quick-log-btn {
+            width: calc(100% - 28px);
+            margin: 8px 14px;
+            padding: 10px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .quick-log-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .sub-exercise-divider {
+            margin: 8px 14px;
+            padding: 4px 0;
+            font-size: 11px;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
         .activity-type-select {
             width: 100%;
             padding: 10px 12px;
@@ -664,7 +743,7 @@
 
         .progress-bar-fill {
             height: 100%;
-            background: linear-gradient(90deg, var(--primary) 0%, var(--primary-medium) 100%);
+            background: linear-gradient(90deg, var(--primary-light) 0%, var(--primary) 100%);
             border-radius: 8px;
             transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
             box-shadow: 0 0 10px rgba(37, 99, 235, 0.3);
@@ -710,15 +789,15 @@
             color: #e8e8e8;
         }
 
-        /* Activity Report (Collapsible) */
+        /* Activity Report (Collapsible) - matches Habit Report style */
         .activity-report-toggle {
             display: flex;
             justify-content: space-between;
             align-items: center;
             cursor: pointer;
             user-select: none;
-            font-size: 16px;
-            font-weight: 700;
+            font-size: 18px;
+            font-weight: 600;
             color: #e8e8e8;
             padding: 4px 0;
         }
@@ -738,49 +817,8 @@
         }
 
         .activity-summary-list {
-            margin-top: 12px;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .activity-summary-item {
-            display: grid;
-            grid-template-columns: minmax(120px, 1fr) auto auto auto;
-            gap: 12px;
-            align-items: center;
-            padding: 6px 0;
-            border-bottom: 1px solid #2d2d2d;
-            font-size: 13px;
-        }
-
-        .activity-summary-item:last-child {
-            border-bottom: none;
-        }
-
-        .activity-summary-name {
-            color: #9ca3af;
-            font-weight: 600;
-        }
-
-        .activity-summary-value {
-            color: #e8e8e8;
-            font-weight: 600;
-            text-align: right;
-            min-width: 70px;
-        }
-
-        .activity-summary-value.week {
-            color: #34d399;
-        }
-
-        .activity-summary-value.month {
-            color: var(--primary-light);
-        }
-
-        .activity-summary-value.total {
-            color: #e8e8e8;
-            font-weight: 700;
+            margin-top: 20px;
+            width: 100%;
         }
 
         /* Calendar View */
@@ -1621,8 +1659,8 @@
             left: 50%;
             transform: translate(-50%, -50%);
             background: #2d2d2d;
-            border-radius: 20px;
-            padding: 10px;
+            border-radius: 12px;
+            padding: 16px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             max-width: 360px;
             width: 90%;
@@ -1642,13 +1680,13 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 12px;
-            padding-bottom: 16px;
-            border-bottom: 2px solid #3d3d3d;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #3d3d3d;
         }
 
         .day-detail-date {
-            font-size: 20px;
-            font-weight: 700;
+            font-size: 16px;
+            font-weight: 600;
             color: #e8e8e8;
         }
 
@@ -1659,8 +1697,8 @@
             color: #6b7280;
             cursor: pointer;
             padding: 0;
-            width: 32px;
-            height: 32px;
+            width: 28px;
+            height: 28px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -1677,70 +1715,80 @@
 
         .day-activity-item {
             background: #1a1a1a;
-            padding: 10px;
-            border-radius: 12px;
-            margin-bottom: 12px;
+            padding: 10px 12px;
+            border-radius: 6px;
+            margin-bottom: 6px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border: 1px solid #3d3d3d;
+            border-left: 2px solid var(--primary);
+            transition: all 0.2s;
+        }
+
+        .day-activity-item:hover {
+            background: #252525;
+            border-left-color: var(--primary-light);
         }
 
         .day-activity-info {
             flex: 1;
+            min-width: 0;
         }
 
         .day-activity-type {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 4px;
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 1px;
             text-transform: capitalize;
             color: #e8e8e8;
             background: none !important;
+            line-height: 1.2;
         }
 
         .day-activity-value {
-            font-size: 14px;
+            font-size: 11px;
             color: #9ca3af;
+            line-height: 1.2;
         }
 
         .day-activity-delete {
-            background: #3d1f1f;
+            background: transparent;
             color: #ef4444;
             border: none;
-            padding: 5px 8px;
-            border-radius: 8px;
-            font-size: 13px;
-            font-weight: 600;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 500;
             cursor: pointer;
             transition: all 0.2s;
+            flex-shrink: 0;
         }
 
         .day-activity-delete:hover {
-            background: #4d2626;
-            color: #f87171;
+            background: rgba(239, 68, 68, 0.1);
         }
 
         .day-totals {
-            background: #1e3a5f;
-            padding: 10px;
-            border-radius: 12px;
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+            padding: 10px 12px;
+            border-radius: 6px;
             margin-top: 12px;
         }
 
         .day-totals-title {
-            font-size: 13px;
+            font-size: 10px;
             font-weight: 600;
-            color: var(--primary-light);
-            margin-bottom: 8px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 4px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            line-height: 1.2;
         }
 
         .day-totals-content {
-            font-size: 14px;
-            color: #e8e8e8;
-            line-height: 1.8;
+            font-size: 11px;
+            color: white;
+            line-height: 1.4;
         }
 
         .empty-day {
@@ -1964,19 +2012,33 @@
 
         .customize-slot select {
             width: 100%;
-            padding: 10px 12px;
-            border: 2px solid #3d3d3d;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 600;
-            background: #1a1a1a;
+            padding: 12px;
+            border: 1px solid #3d3d3d;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 400;
+            background: #2d2d2d;
             color: #e8e8e8;
             cursor: pointer;
+            transition: border-color 0.2s;
         }
 
         .customize-slot select:focus {
             outline: none;
             border-color: var(--primary);
+        }
+        
+        .customize-slot select optgroup {
+            color: #9ca3af;
+            font-weight: 600;
+            font-size: 12px;
+            background: #1a1a1a;
+        }
+        
+        .customize-slot select option {
+            color: #e8e8e8;
+            padding: 8px;
+            background: #2d2d2d;
         }
 
         .customize-modal-buttons {
@@ -2458,7 +2520,7 @@
         }
 
         .bar-fill.current-period {
-            background: linear-gradient(90deg, var(--primary) 0%, var(--primary-medium) 100%);
+            background: linear-gradient(90deg, var(--primary-light) 0%, var(--primary) 100%);
         }
 
         .bar-fill.previous-period {
@@ -2469,8 +2531,9 @@
             font-size: 12px;
             font-weight: 700;
             color: #e8e8e8;
-            min-width: 45px;
+            width: 100px;
             text-align: right;
+            flex-shrink: 0;
         }
 
         /* Number Count-Up Animation */
@@ -2606,7 +2669,7 @@
 </div>
 <!-- Daily Logging Screen -->
 <div class="screen active" id="log-screen">
-<h1>Track Activity</h1>
+<h1 style="display: flex; align-items: center; gap: 8px;">Track Activity <span class="info-icon" onclick="app.showTrackInfo()" title="How to track activities">i</span></h1>
 <p class="subtitle">Record today's workout</p>
 <div class="date-selector">
 <span>📅</span>
@@ -2626,7 +2689,7 @@
 <div class="weight-input-section">
 <div class="weight-input-header">
 Track Weight
-<span class="weight-info-icon" onclick="app.toggleWeightInfoModal()" title="Weight tracking tips">ⓘ</span>
+<span class="info-icon" onclick="app.toggleWeightInfoModal()" title="Weight tracking tips" style="margin-left: 6px; transform: scale(0.7);">i</span>
 </div>
 <div class="weight-input-row">
 <input class="weight-input-field" id="weight-input" inputmode="decimal" min="0" placeholder="Enter weight" step="0.1" type="number"/>
@@ -2656,9 +2719,99 @@ Weekly tracking shows real progress!
 </div>
 </div>
 </div>
+<!-- Track Activity Info Modal -->
+<div class="weight-info-modal" id="track-info-modal" onclick="if(event.target === this) app.closeInfoModal('track-info-modal')">
+<div class="weight-info-content">
+<div class="weight-info-header">
+<div class="weight-info-title">
+<span>✅</span>
+Track Activity
+</div>
+<button class="weight-info-close" onclick="app.closeInfoModal('track-info-modal')">×</button>
+</div>
+<div class="weight-info-list" style="padding: 16px; line-height: 1.8;">
+<strong style="color: #60a5fa;">Two ways to log workouts:</strong><br><br>
+• <strong>QUICK LOG:</strong> Log "Arm Day" without tracking individual exercises<br><br>
+• <strong>DETAILED LOG:</strong> Track specific exercises with reps (e.g., Bicep Curls: 20 reps)<br><br>
+<div class="weight-info-highlight">
+Choose what works for your tracking style!
+</div>
+</div>
+</div>
+</div>
+
+<!-- Dashboard Info Modal -->
+<div class="weight-info-modal" id="dashboard-info-modal" onclick="if(event.target === this) app.closeInfoModal('dashboard-info-modal')">
+<div class="weight-info-content">
+<div class="weight-info-header">
+<div class="weight-info-title">
+<span>📈</span>
+Dashboard
+</div>
+<button class="weight-info-close" onclick="app.closeInfoModal('dashboard-info-modal')">×</button>
+</div>
+<div class="weight-info-list" style="padding: 16px; line-height: 1.8;">
+<strong style="color: #60a5fa;">Top Cards:</strong><br><br>
+• <strong>Distance:</strong> Total distance from all cardio<br><br>
+• <strong>Strength Days:</strong> Days with 2+ exercises logged<br><br>
+• <strong>Steps:</strong> Total steps tracked<br><br>
+<strong style="color: #60a5fa;">View Modes:</strong><br><br>
+• <strong>This Week:</strong> (Sun-Today)<br><br>
+• <strong>All Time:</strong> (Total)<br><br>
+<div class="weight-info-highlight">
+Toggle to see weekly or lifetime stats!
+</div>
+</div>
+</div>
+</div>
+
+<!-- Goals Info Modal -->
+<div class="weight-info-modal" id="goals-info-modal" onclick="if(event.target === this) app.closeInfoModal('goals-info-modal')">
+<div class="weight-info-content">
+<div class="weight-info-header">
+<div class="weight-info-title">
+<span>⚙️</span>
+Important Reminder
+</div>
+<button class="weight-info-close" onclick="app.closeInfoModal('goals-info-modal')">×</button>
+</div>
+<div class="weight-info-list" style="padding: 16px; line-height: 1.8;">
+<div class="weight-info-highlight" style="margin-bottom: 0;">
+Always click "Save Settings" after making changes or adding categories/habits!
+</div>
+</div>
+</div>
+</div>
+
+<!-- Leaderboard Info Modal -->
+<div class="weight-info-modal" id="leaderboard-info-modal" onclick="if(event.target === this) app.closeInfoModal('leaderboard-info-modal')">
+<div class="weight-info-content">
+<div class="weight-info-header">
+<div class="weight-info-title">
+<span>📊</span>
+Leaderboard
+</div>
+<button class="weight-info-close" onclick="app.closeInfoModal('leaderboard-info-modal')">×</button>
+</div>
+<div class="weight-info-list" style="padding: 16px; line-height: 1.8;">
+<strong style="color: #60a5fa;">How rankings work:</strong><br><br>
+• <strong>STEPS:</strong> Total steps in last 7 days<br><br>
+• <strong>DISTANCE:</strong> Total miles/km from all cardio activities in last 7 days<br><br>
+• <strong>WEIGHT:</strong> Weight change (% and lbs) based on selected period (Week/Month/Total)<br><br>
+<strong style="color: #60a5fa;">Activity indicators:</strong><br><br>
+⚡ Updated within 16 hours<br>
+✨ Updated 16-32 hours ago<br>
+💤 Updated 32+ hours ago<br><br>
+<div class="weight-info-highlight">
+Rankings update daily. Add PALs to compete with friends!
+</div>
+</div>
+</div>
+</div>
+
 <!-- Dashboard Screen -->
 <div class="screen" id="dashboard-screen">
-<h1>Dashboard</h1>
+<h1 style="display: flex; align-items: center; gap: 8px;">Dashboard <span class="info-icon" onclick="app.showDashboardInfo()" title="Dashboard explained">i</span></h1>
 <p class="subtitle">Your progress overview</p>
 <div class="stats-toggle">
 <button class="stats-toggle-btn active" onclick="app.setStatsView('week')">This Week</button>
@@ -2694,7 +2847,7 @@ Weekly tracking shows real progress!
 </div>
 <div class="stat-card" id="custom-card-3">
 <div class="stat-value" id="custom-stat-3">0</div>
-<div class="stat-label" id="custom-label-3">Roller Abs</div>
+<div class="stat-label" id="custom-label-3">Ab Wheel Rollout</div>
 <div class="stat-trend" id="custom-trend-3"></div>
 </div>
 </div>
@@ -2816,7 +2969,7 @@ Weekly tracking shows real progress!
 </div>
 <!-- Goals Screen -->
 <div class="screen" id="goals-screen">
-<h1>Goals</h1>
+<h1 style="display: flex; align-items: center; gap: 8px;">Goals <span class="info-icon" onclick="app.showGoalsInfo()" title="Important reminder">i</span></h1>
 <p class="subtitle">Customize your goals and preferences</p>
 <!-- Slim compact sections -->
 <div style="display: flex; flex-direction: column; gap: 12px;">
@@ -2876,15 +3029,14 @@ Weekly tracking shows real progress!
 </div>
 </div>
 <!-- Elegant divider line like monthly days section -->
-<div style="margin: 24px 0; border-top: 1px solid #3d3d3d;"></div>
+<div style="margin: 12px 0; border-top: 1px solid #3d3d3d;"></div>
 <!-- Make it a Habit Section -->
 <div>
 <div style="margin-bottom: 12px;">
-<label style="font-size: 14px; font-weight: 600; color: #e8e8e8; display: flex; align-items: center; gap: 6px; margin-bottom: 4px;">
+<label style="font-size: 14px; font-weight: 600; color: #e8e8e8; display: flex; align-items: center; gap: 6px; margin-bottom: 0;">
 Make it a Habit (Private)
-<span class="habit-info-icon" onclick="app.toggleHabitInfoModal()" title="How habits work">ⓘ</span>
+<span class="info-icon" onclick="app.toggleHabitInfoModal()" title="How habits work" style="transform: scale(0.7);">i</span>
 </label>
-<p style="font-size: 12px; color: #6b7280; margin: 0;">Track up to 3 personal habits - not shared with anyone</p>
 </div>
 <div id="habits-list" style="display: flex; flex-direction: column; gap: 6px;">
 <!-- Habits will be rendered here -->
@@ -2912,13 +3064,51 @@ View your progress in the Habit Report!
 </div>
 </div>
 </div>
+<!-- Elegant divider line -->
+<div style="margin: 12px 0; border-top: 1px solid #3d3d3d;"></div>
+<!-- Custom Activity Categories Section -->
+<div>
+<div style="margin-bottom: 12px;">
+<label style="font-size: 14px; font-weight: 600; color: #e8e8e8; display: flex; align-items: center; gap: 6px; margin-bottom: 0;">
+Custom Activity Categories
+<span class="info-icon" onclick="app.toggleCustomCategoryInfoModal()" title="How custom categories work" style="transform: scale(0.7);">i</span>
+</label>
+</div>
+<div id="custom-categories-list" style="display: flex; flex-direction: column; gap: 6px;">
+<!-- Custom categories will be rendered here -->
+</div>
+<button class="habit-add-button" id="add-custom-category-btn" onclick="app.addCustomCategory()">+ Add Custom Category</button>
+</div>
+<!-- Custom Category Info Modal -->
+<div class="habit-info-modal" id="custom-category-info-modal" onclick="if(event.target === this) app.toggleCustomCategoryInfoModal()">
+<div class="habit-info-content">
+<div class="habit-info-header">
+<div class="habit-info-title">
+Custom Categories
+</div>
+<button class="habit-info-close" onclick="app.toggleCustomCategoryInfoModal()">×</button>
+</div>
+<ul class="habit-info-list">
+<li>Create up to 3 custom categories</li>
+<li>Add up to 5 exercises per category</li>
+<li>Track with Reps, Distance, or Log Day</li>
+<li>Use in Favorite Stats cards</li>
+<li>Not shared with PALs</li>
+</ul>
+<div class="habit-info-highlight">
+Perfect for unique exercises not in our list!
+</div>
+</div>
+</div>
+<!-- Elegant divider line -->
+<div style="margin: 12px 0; border-top: 1px solid #3d3d3d;"></div>
 <!-- Save Settings -->
 <div class="settings-card" style="margin-top: 12px; text-align: center;">
 <button class="save-button" onclick="app.saveGoals()" style="margin: 0;">Save Settings</button>
 <div class="success-message" id="settings-success" style="margin-top: 8px;">Settings saved successfully!</div>
 </div>
 <!-- Elegant divider line -->
-<div style="margin: 24px 0; border-top: 1px solid #3d3d3d;"></div>
+<div style="margin: 12px 0; border-top: 1px solid #3d3d3d;"></div>
 <!-- Data Import/Export -->
 <div style="display: flex; flex-direction: column; gap: 8px;">
 <input accept=".json" id="import-file-input" onchange="app.handleImportFile(event)" style="display: none;" type="file"/>
@@ -3024,7 +3214,7 @@ View your progress in the Habit Report!
 </div>
 <!-- Leaderboard Screen -->
 <div class="screen" id="leaderboard-screen">
-<h1>Leaderboard</h1>
+<h1 style="display: flex; align-items: center; gap: 8px;">Leaderboard <span class="info-icon" onclick="app.showLeaderboardInfo()" title="How rankings work">i</span></h1>
 <p class="subtitle">Compete with JustStep users worldwide</p>
 <!-- Toggle: Global / Friends -->
 <div class="leaderboard-toggle" style="display: flex; gap: 8px; margin-bottom: 16px;">
@@ -3092,7 +3282,7 @@ View your progress in the Habit Report!
         </a>
 <button class="welcome-button" onclick="app.closeWelcome()">Let's Go</button>
 <div style="text-align: center; color: #6b7280; font-size: 11px; margin-top: 16px;">
-            v2.1.0
+            v2.1.4
         </div>
 </div>
 <!-- Customize Dashboard Modal -->
@@ -3102,72 +3292,225 @@ View your progress in the Habit Report!
 <div class="customize-slot">
 <label class="customize-slot-label">Favorite 1</label>
 <select id="custom-slot-1">
-<optgroup label="─── CARDIO ───">
+<optgroup label="Quick Log Categories">
+<option value="arm">Arm Day</option>
+<option value="back">Back Day</option>
+<option value="chest">Chest Day</option>
+<option value="core">Core Day</option>
+<option value="fullbody">Full Body Day</option>
+<option value="glutes">Glutes Day</option>
+<option value="leg">Leg Day</option>
+<option value="shoulder">Shoulder Day</option>
+<option value="stretch">Stretch Day</option>
+</optgroup>
+<optgroup label="Arm Day Exercises">
+<option value="arm-bicep-curls">Bicep Curls</option>
+<option value="arm-forearm-curls">Forearm Curls</option>
+<option value="arm-hammer-curls">Hammer Curls</option>
+<option value="arm-tricep-dips">Tricep Dips</option>
+<option value="arm-triceps-extensions">Triceps Extensions</option>
+</optgroup>
+<optgroup label="Back Day Exercises">
+<option value="back-deadlifts">Deadlifts</option>
+<option value="back-face-pulls">Face Pulls</option>
+<option value="back-lat-pulldowns">Lat Pulldowns</option>
+<option value="back-pullups">Pull-ups</option>
+<option value="back-rows">Rows</option>
+</optgroup>
+<optgroup label="Chest Day Exercises">
+<option value="chest-bench-press">Bench Press</option>
+<option value="chest-chest-flys">Chest Flys</option>
+<option value="chest-dips">Dips</option>
+<option value="chest-incline-press">Incline Press</option>
+<option value="chest-pushups">Push-ups</option>
+</optgroup>
+<optgroup label="Core Day Exercises">
+<option value="core-ab-wheel-rollout">Ab Wheel Rollout</option>
+<option value="core-leg-raises">Leg Raises</option>
+<option value="core-planks">Planks</option>
+<option value="core-russian-twists">Russian Twists</option>
+<option value="core-situps">Sit-ups</option>
+</optgroup>
+<optgroup label="Glutes Day Exercises">
+<option value="glutes-bulgarian-split-squats">Bulgarian Split Squats</option>
+<option value="glutes-donkey-kicks">Donkey Kicks</option>
+<option value="glutes-glute-bridges">Glute Bridges</option>
+<option value="glutes-hip-thrusts">Hip Thrusts</option>
+<option value="glutes-step-ups">Step-ups</option>
+</optgroup>
+<optgroup label="Leg Day Exercises">
+<option value="legs-calf-raises">Calf Raises</option>
+<option value="legs-leg-press">Leg Press</option>
+<option value="legs-lunges">Lunges</option>
+<option value="legs-romanian-deadlifts">Romanian Deadlifts</option>
+<option value="legs-squats">Squats</option>
+</optgroup>
+<optgroup label="Shoulder Day Exercises">
+<option value="shoulder-front-raises">Front Raises</option>
+<option value="shoulder-lateral-raises">Lateral Raises</option>
+<option value="shoulder-rear-delt-flys">Rear Delt Flys</option>
+<option value="shoulder-shoulder-press">Shoulder Press</option>
+<option value="shoulder-shrugs">Shrugs</option>
+</optgroup>
+<optgroup label="Cardio">
 <option value="biking">Biking</option>
 <option value="dog">Dog Walking</option>
 <option value="hiking">Hiking</option>
 <option value="run">Running</option>
-<option value="stairs">Stairmaster</option>
 <option value="walk">Walking</option>
 </optgroup>
-<optgroup label="─── EXERCISES ───">
-<option value="dips">Dips</option>
-<option value="pullups">Pull-ups</option>
-<option value="pushups">Push-ups</option>
-<option value="rollerabs">Roller Abs</option>
-<option value="situps">Sit-ups</option>
-<option value="squats">Squats</option>
-</optgroup>
-<optgroup label="─── TRACKING ───">
-<option value="weight">Weight</option>
+<optgroup label="Other">
+<option value="stairs">Stairmaster</option>
 </optgroup>
 </select>
 </div>
 <div class="customize-slot">
 <label class="customize-slot-label">Favorite 2</label>
 <select id="custom-slot-2">
-<optgroup label="─── CARDIO ───">
+<optgroup label="Quick Log Categories">
+<option value="arm">Arm Day</option>
+<option value="back">Back Day</option>
+<option value="chest">Chest Day</option>
+<option value="core">Core Day</option>
+<option value="fullbody">Full Body Day</option>
+<option value="glutes">Glutes Day</option>
+<option value="leg">Leg Day</option>
+<option value="shoulder">Shoulder Day</option>
+<option value="stretch">Stretch Day</option>
+</optgroup>
+<optgroup label="Arm Day Exercises">
+<option value="arm-bicep-curls">Bicep Curls</option>
+<option value="arm-forearm-curls">Forearm Curls</option>
+<option value="arm-hammer-curls">Hammer Curls</option>
+<option value="arm-tricep-dips">Tricep Dips</option>
+<option value="arm-triceps-extensions">Triceps Extensions</option>
+</optgroup>
+<optgroup label="Back Day Exercises">
+<option value="back-deadlifts">Deadlifts</option>
+<option value="back-face-pulls">Face Pulls</option>
+<option value="back-lat-pulldowns">Lat Pulldowns</option>
+<option value="back-pullups">Pull-ups</option>
+<option value="back-rows">Rows</option>
+</optgroup>
+<optgroup label="Chest Day Exercises">
+<option value="chest-bench-press">Bench Press</option>
+<option value="chest-chest-flys">Chest Flys</option>
+<option value="chest-dips">Dips</option>
+<option value="chest-incline-press">Incline Press</option>
+<option value="chest-pushups">Push-ups</option>
+</optgroup>
+<optgroup label="Core Day Exercises">
+<option value="core-ab-wheel-rollout">Ab Wheel Rollout</option>
+<option value="core-leg-raises">Leg Raises</option>
+<option value="core-planks">Planks</option>
+<option value="core-russian-twists">Russian Twists</option>
+<option value="core-situps">Sit-ups</option>
+</optgroup>
+<optgroup label="Glutes Day Exercises">
+<option value="glutes-bulgarian-split-squats">Bulgarian Split Squats</option>
+<option value="glutes-donkey-kicks">Donkey Kicks</option>
+<option value="glutes-glute-bridges">Glute Bridges</option>
+<option value="glutes-hip-thrusts">Hip Thrusts</option>
+<option value="glutes-step-ups">Step-ups</option>
+</optgroup>
+<optgroup label="Leg Day Exercises">
+<option value="legs-calf-raises">Calf Raises</option>
+<option value="legs-leg-press">Leg Press</option>
+<option value="legs-lunges">Lunges</option>
+<option value="legs-romanian-deadlifts">Romanian Deadlifts</option>
+<option value="legs-squats">Squats</option>
+</optgroup>
+<optgroup label="Shoulder Day Exercises">
+<option value="shoulder-front-raises">Front Raises</option>
+<option value="shoulder-lateral-raises">Lateral Raises</option>
+<option value="shoulder-rear-delt-flys">Rear Delt Flys</option>
+<option value="shoulder-shoulder-press">Shoulder Press</option>
+<option value="shoulder-shrugs">Shrugs</option>
+</optgroup>
+<optgroup label="Cardio">
 <option value="biking">Biking</option>
 <option value="dog">Dog Walking</option>
 <option value="hiking">Hiking</option>
 <option value="run">Running</option>
-<option value="stairs">Stairmaster</option>
 <option value="walk">Walking</option>
 </optgroup>
-<optgroup label="─── EXERCISES ───">
-<option value="dips">Dips</option>
-<option value="pullups">Pull-ups</option>
-<option value="pushups">Push-ups</option>
-<option value="rollerabs">Roller Abs</option>
-<option value="situps">Sit-ups</option>
-<option value="squats">Squats</option>
-</optgroup>
-<optgroup label="─── TRACKING ───">
-<option value="weight">Weight</option>
+<optgroup label="Other">
+<option value="stairs">Stairmaster</option>
 </optgroup>
 </select>
 </div>
 <div class="customize-slot">
 <label class="customize-slot-label">Favorite 3</label>
 <select id="custom-slot-3">
-<optgroup label="─── CARDIO ───">
+<optgroup label="Quick Log Categories">
+<option value="arm">Arm Day</option>
+<option value="back">Back Day</option>
+<option value="chest">Chest Day</option>
+<option value="core">Core Day</option>
+<option value="fullbody">Full Body Day</option>
+<option value="glutes">Glutes Day</option>
+<option value="leg">Leg Day</option>
+<option value="shoulder">Shoulder Day</option>
+<option value="stretch">Stretch Day</option>
+</optgroup>
+<optgroup label="Arm Day Exercises">
+<option value="arm-bicep-curls">Bicep Curls</option>
+<option value="arm-forearm-curls">Forearm Curls</option>
+<option value="arm-hammer-curls">Hammer Curls</option>
+<option value="arm-tricep-dips">Tricep Dips</option>
+<option value="arm-triceps-extensions">Triceps Extensions</option>
+</optgroup>
+<optgroup label="Back Day Exercises">
+<option value="back-deadlifts">Deadlifts</option>
+<option value="back-face-pulls">Face Pulls</option>
+<option value="back-lat-pulldowns">Lat Pulldowns</option>
+<option value="back-pullups">Pull-ups</option>
+<option value="back-rows">Rows</option>
+</optgroup>
+<optgroup label="Chest Day Exercises">
+<option value="chest-bench-press">Bench Press</option>
+<option value="chest-chest-flys">Chest Flys</option>
+<option value="chest-dips">Dips</option>
+<option value="chest-incline-press">Incline Press</option>
+<option value="chest-pushups">Push-ups</option>
+</optgroup>
+<optgroup label="Core Day Exercises">
+<option value="core-ab-wheel-rollout">Ab Wheel Rollout</option>
+<option value="core-leg-raises">Leg Raises</option>
+<option value="core-planks">Planks</option>
+<option value="core-russian-twists">Russian Twists</option>
+<option value="core-situps">Sit-ups</option>
+</optgroup>
+<optgroup label="Glutes Day Exercises">
+<option value="glutes-bulgarian-split-squats">Bulgarian Split Squats</option>
+<option value="glutes-donkey-kicks">Donkey Kicks</option>
+<option value="glutes-glute-bridges">Glute Bridges</option>
+<option value="glutes-hip-thrusts">Hip Thrusts</option>
+<option value="glutes-step-ups">Step-ups</option>
+</optgroup>
+<optgroup label="Leg Day Exercises">
+<option value="legs-calf-raises">Calf Raises</option>
+<option value="legs-leg-press">Leg Press</option>
+<option value="legs-lunges">Lunges</option>
+<option value="legs-romanian-deadlifts">Romanian Deadlifts</option>
+<option value="legs-squats">Squats</option>
+</optgroup>
+<optgroup label="Shoulder Day Exercises">
+<option value="shoulder-front-raises">Front Raises</option>
+<option value="shoulder-lateral-raises">Lateral Raises</option>
+<option value="shoulder-rear-delt-flys">Rear Delt Flys</option>
+<option value="shoulder-shoulder-press">Shoulder Press</option>
+<option value="shoulder-shrugs">Shrugs</option>
+</optgroup>
+<optgroup label="Cardio">
 <option value="biking">Biking</option>
 <option value="dog">Dog Walking</option>
 <option value="hiking">Hiking</option>
 <option value="run">Running</option>
-<option value="stairs">Stairmaster</option>
 <option value="walk">Walking</option>
 </optgroup>
-<optgroup label="─── EXERCISES ───">
-<option value="dips">Dips</option>
-<option value="pullups">Pull-ups</option>
-<option value="pushups">Push-ups</option>
-<option value="rollerabs">Roller Abs</option>
-<option value="situps">Sit-ups</option>
-<option value="squats">Squats</option>
-</optgroup>
-<optgroup label="─── TRACKING ───">
-<option value="weight">Weight</option>
+<optgroup label="Other">
+<option value="stairs">Stairmaster</option>
 </optgroup>
 </select>
 </div>
@@ -3197,9 +3540,14 @@ View your progress in the Habit Report!
 <div class="modal" id="color-wheel-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1000; align-items: center; justify-content: center;">
 <div class="modal-content" style="max-width: 360px; text-align: center; background: #1a1a1a; padding: 24px; border-radius: 12px;">
 <h2 style="margin-bottom: 16px; font-size: 18px; color: #e8e8e8;">Choose Your Color</h2>
-<div style="display: flex; justify-content: center; margin-bottom: 16px;">
+<div style="display: flex; justify-content: center; margin-bottom: 16px; position: relative;">
 <canvas height="280" id="color-wheel-canvas" style="cursor: crosshair; border-radius: 50%;" width="280"></canvas>
+<!-- Magnifier Overlay -->
+<div id="color-magnifier" style="display: none; position: absolute; width: 120px; height: 120px; border: 4px solid white; border-radius: 50%; pointer-events: none; box-shadow: 0 4px 12px rgba(0,0,0,0.5); z-index: 10;">
+<canvas id="magnifier-canvas" width="120" height="120" style="border-radius: 50%;"></canvas>
 </div>
+</div>
+<div id="magnifier-instruction" style="display: none; font-size: 12px; color: #9ca3af; margin-bottom: 8px;">Drag to fine-tune your color</div>
 <div id="selected-color-preview" style="width: 60px; height: 60px; border-radius: 50%; margin: 0 auto 16px; border: 3px solid #3d3d3d; background: #2563eb;"></div>
 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
 <button onclick="app.closeColorWheel()" style="width: 100%; padding: 10px; background: #3d3d3d; color: #e8e8e8; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">
@@ -3213,7 +3561,7 @@ View your progress in the Habit Report!
 </div>
 <script>
         // App Version
-        const APP_VERSION = '2.1.0';
+        const APP_VERSION = '2.1.4';
         
         // Main App Object
         const app = {
@@ -3229,6 +3577,7 @@ View your progress in the Habit Report!
                     initialWeight: null
                 },
                 habits: [], // Make it a Habit: { id, name, frequency: 'daily'|'weekly', completions: [dates] }
+                customCategories: [], // Custom Activity Categories: { id, name, exercises: [{id, name, trackingType: 'reps'|'distance'|'logday'}] }
                 milestones: [],
                 currentView: {
                     screen: 'log',
@@ -3250,6 +3599,7 @@ View your progress in the Habit Report!
             },
             activityCounter: 0,
             habitCounter: 0,
+            customCategoryCounter: 0,
             leaderboardMode: 'global', // 'global' or 'friends'
             firebase: null, // Firebase instance
             db: null, // Firestore instance
@@ -3266,6 +3616,13 @@ View your progress in the Habit Report!
                 this.initFirebase();
                 
                 this.loadData();
+                
+                // Initialize stat label with user's unit preference
+                const unit = this.data.goals.unitPreference === 'km' ? 'km' : 'miles';
+                document.getElementById('stat-miles-label').textContent = `Distance (${unit})`;
+                
+                // Migrate old exercises to new structure (one-time, automatic)
+                this.migrateOldExercises();
                 // Ensure statsView is set before updating dashboard
                 if (!this.data.currentView.statsView) {
                     this.data.currentView.statsView = 'week';
@@ -3288,6 +3645,7 @@ View your progress in the Habit Report!
                 this.renderCalendar();
                 this.updateGoalsUI();
                 this.initHabits(); // Initialize habits
+                this.initCustomCategories(); // Initialize custom categories
                 this.updatePalsUI();
                 this.loadTheme();
                 this.registerServiceWorker();
@@ -3381,6 +3739,32 @@ View your progress in the Habit Report!
                 }
             },
 
+            // Migrate old single exercises to include category field
+            migrateOldExercises() {
+                const exerciseCategoryMap = {
+                    'dips': 'chest',
+                    'pullups': 'back',
+                    'pushups': 'chest',
+                    'rollerabs': 'core',
+                    'situps': 'core',
+                    'squats': 'legs'
+                };
+                
+                let migrated = 0;
+                this.data.activities.forEach(activity => {
+                    // If it's an old exercise type without a category, add one
+                    if (activity.type in exerciseCategoryMap && !activity.category) {
+                        activity.category = exerciseCategoryMap[activity.type];
+                        migrated++;
+                    }
+                });
+                
+                if (migrated > 0) {
+                    this.saveData();
+                    console.log(`✅ Migrated ${migrated} exercises to new structure`);
+                }
+            },
+
             // Save data to localStorage
             saveData() {
                 localStorage.setItem('justStepData', JSON.stringify(this.data));
@@ -3437,37 +3821,47 @@ View your progress in the Habit Report!
                             <div class="accordion-header" onclick="app.toggleAccordion(${this.activityCounter}, 'strength')">
                                 <div>
                                     <span class="accordion-title">Strength</span>
-                                    <span class="accordion-count">(7)</span>
+                                    <span class="accordion-count">(9)</span>
                                 </div>
                                 <span class="accordion-arrow">▼</span>
                             </div>
                             <div class="accordion-content" id="accordion-${this.activityCounter}-strength">
-                                <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'arm', 'Arm Day')">Arm Day</div>
-                                <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'back', 'Back Day')">Back Day</div>
-                                <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'chest', 'Chest Day')">Chest Day</div>
-                                <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'core', 'Core Day')">Core Day</div>
-                                <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'fullbody', 'Full Body Day')">Full Body Day</div>
-                                <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'leg', 'Leg Day')">Leg Day</div>
-                                <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'shoulder', 'Shoulder Day')">Shoulder Day</div>
-                            </div>
-                        </div>
-                        
-                        <!-- Single Exercise Category -->
-                        <div class="accordion-category">
-                            <div class="accordion-header" onclick="app.toggleAccordion(${this.activityCounter}, 'single')">
-                                <div>
-                                    <span class="accordion-title">Single Exercise</span>
-                                    <span class="accordion-count">(6)</span>
+                                <div class="accordion-item" onclick="app.openExerciseModal(${this.activityCounter}, 'arm', 'Arm Day')">
+                                    <span>Arm Day</span>
+                                    <span style="float: right; color: #9ca3af;">→</span>
                                 </div>
-                                <span class="accordion-arrow">▼</span>
-                            </div>
-                            <div class="accordion-content" id="accordion-${this.activityCounter}-single">
-                                <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'dips', 'Dips')">Dips</div>
-                                <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'pullups', 'Pull-ups')">Pull-ups</div>
-                                <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'pushups', 'Push-ups')">Push-ups</div>
-                                <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'rollerabs', 'Roller Abs')">Roller Abs</div>
-                                <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'situps', 'Sit-ups')">Sit-ups</div>
-                                <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'squats', 'Squats')">Squats</div>
+                                <div class="accordion-item" onclick="app.openExerciseModal(${this.activityCounter}, 'back', 'Back Day')">
+                                    <span>Back Day</span>
+                                    <span style="float: right; color: #9ca3af;">→</span>
+                                </div>
+                                <div class="accordion-item" onclick="app.openExerciseModal(${this.activityCounter}, 'chest', 'Chest Day')">
+                                    <span>Chest Day</span>
+                                    <span style="float: right; color: #9ca3af;">→</span>
+                                </div>
+                                <div class="accordion-item" onclick="app.openExerciseModal(${this.activityCounter}, 'core', 'Core Day')">
+                                    <span>Core Day</span>
+                                    <span style="float: right; color: #9ca3af;">→</span>
+                                </div>
+                                <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'fullbody', 'Full Body Day')">
+                                    <span>Full Body Day</span>
+                                    <span style="float: right; color: #9ca3af;">→</span>
+                                </div>
+                                <div class="accordion-item" onclick="app.openExerciseModal(${this.activityCounter}, 'glutes', 'Glutes Day')">
+                                    <span>Glutes Day</span>
+                                    <span style="float: right; color: #9ca3af;">→</span>
+                                </div>
+                                <div class="accordion-item" onclick="app.openExerciseModal(${this.activityCounter}, 'leg', 'Leg Day')">
+                                    <span>Leg Day</span>
+                                    <span style="float: right; color: #9ca3af;">→</span>
+                                </div>
+                                <div class="accordion-item" onclick="app.openExerciseModal(${this.activityCounter}, 'shoulder', 'Shoulder Day')">
+                                    <span>Shoulder Day</span>
+                                    <span style="float: right; color: #9ca3af;">→</span>
+                                </div>
+                                <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'stretch', 'Stretch Day')">
+                                    <span>Stretch Day</span>
+                                    <span style="float: right; color: #9ca3af;">→</span>
+                                </div>
                             </div>
                         </div>
                         
@@ -3506,6 +3900,75 @@ View your progress in the Habit Report!
                 `;
                 
                 container.appendChild(activityCard);
+                
+                // Add custom categories dynamically as top-level categories
+                this.addCustomCategoriesToActivityCard(this.activityCounter);
+            },
+
+            // Add custom categories to activity card as top-level categories with theme-colored arrow
+            addCustomCategoriesToActivityCard(activityId) {
+                if (!this.data.customCategories || this.data.customCategories.length === 0) return;
+                
+                const accordion = document.getElementById(`accordion-${activityId}`);
+                if (!accordion) return;
+                
+                // Add each custom category as a top-level category
+                this.data.customCategories.forEach(category => {
+                    if (!category.exercises || category.exercises.length === 0) return;
+                    
+                    const categoryDiv = document.createElement('div');
+                    categoryDiv.className = 'accordion-category';
+                    categoryDiv.setAttribute('data-custom-category', 'true'); // Mark as custom
+                    
+                    const exerciseCount = category.exercises.length;
+                    
+                    let categoryHTML = `
+                        <div class="accordion-header" onclick="app.toggleAccordion(${activityId}, 'custom-${category.id}')">
+                            <div>
+                                <span class="accordion-title">${category.name}</span>
+                                <span class="accordion-count">(${exerciseCount})</span>
+                            </div>
+                            <span class="accordion-arrow" style="color: var(--primary);">▼</span>
+                        </div>
+                        <div class="accordion-content" id="accordion-${activityId}-custom-${category.id}">
+                    `;
+                    
+                    // Add exercises with arrow and modal trigger
+                    category.exercises.forEach(ex => {
+                        categoryHTML += `
+                            <div class="accordion-item" onclick="app.selectCustomExercise(${activityId}, ${category.id}, ${ex.id}, '${ex.name}', '${ex.trackingType}')">
+                                <span>${ex.name}</span>
+                                <span style="float: right; color: #9ca3af;">→</span>
+                            </div>
+                        `;
+                    });
+                    
+                    categoryHTML += '</div>';
+                    categoryDiv.innerHTML = categoryHTML;
+                    accordion.appendChild(categoryDiv);
+                });
+            },
+
+            // Refresh custom categories in all existing activity rows
+            refreshActivityRows() {
+                // Find all activity accordions (only the main accordion containers, not nested ones)
+                const logScreen = document.getElementById('log-screen');
+                const activityCards = logScreen.querySelectorAll('[id^="accordion-"]:not([id*="-cardio"]):not([id*="-strength"]):not([id*="-steps"]):not([id*="-custom"])');
+                
+                activityCards.forEach(accordion => {
+                    // Extract activity ID from accordion id (e.g., "accordion-1" -> "1")
+                    const activityId = parseInt(accordion.id.replace('accordion-', ''));
+                    
+                    // Skip if not a number (means it's a nested accordion)
+                    if (isNaN(activityId)) return;
+                    
+                    // Remove all existing custom category accordions using data attribute
+                    const customCategories = accordion.querySelectorAll('[data-custom-category="true"]');
+                    customCategories.forEach(cat => cat.remove());
+                    
+                    // Re-add custom categories
+                    this.addCustomCategoriesToActivityCard(activityId);
+                });
             },
 
             // Toggle accordion section
@@ -3532,11 +3995,151 @@ View your progress in the Habit Report!
                 content.classList.toggle('active');
             },
 
+            // Toggle sub-accordion for specific exercises
+            toggleSubAccordion(id, subCategory) {
+                const header = event.target.closest('.sub-accordion-header');
+                const content = document.getElementById(`sub-accordion-${id}-${subCategory}`);
+                
+                if (!content) return; // Stretch Day has no sub-content
+                
+                // Toggle this sub-section
+                header.classList.toggle('active');
+                content.classList.toggle('active');
+                
+                // Prevent event from bubbling to parent accordion
+                event.stopPropagation();
+            },
+
+            // Open exercise modal for category with sub-exercises
+            openExerciseModal(activityId, categoryType, categoryName) {
+                // Define exercises for each category
+                const exerciseMap = {
+                    'arm': {
+                        exercises: [
+                            { type: 'bicepcurls', name: 'Bicep Curls', category: 'arms' },
+                            { type: 'forearmcurls', name: 'Forearm Curls', category: 'arms' },
+                            { type: 'hammercurls', name: 'Hammer Curls', category: 'arms' },
+                            { type: 'tricepdips', name: 'Tricep Dips', category: 'arms' },
+                            { type: 'tricepsextensions', name: 'Triceps Extensions', category: 'arms' }
+                        ]
+                    },
+                    'back': {
+                        exercises: [
+                            { type: 'deadlifts', name: 'Deadlifts', category: 'back' },
+                            { type: 'facepulls', name: 'Face Pulls', category: 'back' },
+                            { type: 'latpulldowns', name: 'Lat Pulldowns', category: 'back' },
+                            { type: 'pullups', name: 'Pull-ups', category: 'back' },
+                            { type: 'rows', name: 'Rows', category: 'back' }
+                        ]
+                    },
+                    'chest': {
+                        exercises: [
+                            { type: 'benchpress', name: 'Bench Press', category: 'chest' },
+                            { type: 'chestflys', name: 'Chest Flys', category: 'chest' },
+                            { type: 'dips', name: 'Dips', category: 'chest' },
+                            { type: 'inclinepress', name: 'Incline Press', category: 'chest' },
+                            { type: 'pushups', name: 'Push-ups', category: 'chest' }
+                        ]
+                    },
+                    'core': {
+                        exercises: [
+                            { type: 'abwheelrollout', name: 'Ab Wheel Rollout', category: 'core' },
+                            { type: 'legraises', name: 'Leg Raises', category: 'core' },
+                            { type: 'planks', name: 'Planks', category: 'core' },
+                            { type: 'russiantwists', name: 'Russian Twists', category: 'core' },
+                            { type: 'situps', name: 'Sit-ups', category: 'core' }
+                        ]
+                    },
+                    'glutes': {
+                        exercises: [
+                            { type: 'bulgariansplitsquats', name: 'Bulgarian Split Squats', category: 'glutes' },
+                            { type: 'donkeykicks', name: 'Donkey Kicks', category: 'glutes' },
+                            { type: 'glutebridges', name: 'Glute Bridges', category: 'glutes' },
+                            { type: 'hipthrusts', name: 'Hip Thrusts', category: 'glutes' },
+                            { type: 'stepups', name: 'Step-ups', category: 'glutes' }
+                        ]
+                    },
+                    'leg': {
+                        exercises: [
+                            { type: 'calfraises', name: 'Calf Raises', category: 'legs' },
+                            { type: 'legpress', name: 'Leg Press', category: 'legs' },
+                            { type: 'lunges', name: 'Lunges', category: 'legs' },
+                            { type: 'romaniandeadlifts', name: 'Romanian Deadlifts', category: 'legs' },
+                            { type: 'squats', name: 'Squats', category: 'legs' }
+                        ]
+                    },
+                    'shoulder': {
+                        exercises: [
+                            { type: 'frontraises', name: 'Front Raises', category: 'shoulders' },
+                            { type: 'lateralraises', name: 'Lateral Raises', category: 'shoulders' },
+                            { type: 'reardeltflys', name: 'Rear Delt Flys', category: 'shoulders' },
+                            { type: 'shoulderpress', name: 'Shoulder Press', category: 'shoulders' },
+                            { type: 'shrugs', name: 'Shrugs', category: 'shoulders' }
+                        ]
+                    }
+                };
+
+                const categoryData = exerciseMap[categoryType];
+                if (!categoryData) return;
+
+                // Build modal HTML
+                let modalHTML = `
+                    <div class="overlay" id="exercise-modal-overlay" onclick="app.closeExerciseModal()" style="display: block;"></div>
+                    <div class="customize-modal" id="exercise-modal" style="display: block; max-width: 400px;">
+                        <div class="customize-modal-header">${categoryName} <button onclick="app.closeExerciseModal()" style="float: right; background: none; border: none; color: #e8e8e8; font-size: 24px; cursor: pointer; padding: 0; line-height: 1;">×</button></div>
+                        <button onclick="app.selectActivity(${activityId}, '${categoryType}', '${categoryName}'); app.closeExerciseModal();" 
+                                style="width: 100%; padding: 12px; background: var(--primary-dark); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px; margin-bottom: 16px;">
+                            ✓ Log "${categoryName}"
+                        </button>
+                        <div style="color: #9ca3af; font-size: 12px; margin-bottom: 12px; text-align: center;">Or track specific exercise:</div>
+                        <div style="display: flex; flex-direction: column; gap: 6px;">
+                `;
+
+                categoryData.exercises.forEach(ex => {
+                    modalHTML += `
+                        <div class="accordion-item" onclick="app.selectActivity(${activityId}, '${ex.type}', '${ex.name}', '${ex.category}'); app.closeExerciseModal();" style="cursor: pointer;">
+                            ${ex.name}
+                        </div>
+                    `;
+                });
+
+                modalHTML += `
+                        </div>
+                    </div>
+                `;
+
+                document.body.insertAdjacentHTML('beforeend', modalHTML);
+            },
+
+            // Close exercise modal
+            closeExerciseModal() {
+                const overlay = document.getElementById('exercise-modal-overlay');
+                const modal = document.getElementById('exercise-modal');
+                if (overlay) overlay.remove();
+                if (modal) modal.remove();
+            },
+
+            // Select custom exercise (for custom categories)
+            selectCustomExercise(activityId, categoryId, exerciseId, exerciseName, trackingType) {
+                const exerciseKey = `custom-${categoryId}-${exerciseId}`;
+                this.selectActivity(activityId, exerciseKey, exerciseName, `custom-${categoryId}`, trackingType);
+            },
+
             // Select activity from accordion
-            selectActivity(id, activityType, activityName) {
+            selectActivity(id, activityType, activityName, category, trackingType) {
                 // Store the selected type
                 const accordion = document.getElementById(`accordion-${id}`);
                 accordion.dataset.selectedType = activityType;
+                
+                // Store category if provided (for new sub-exercises)
+                if (category) {
+                    accordion.dataset.selectedCategory = category;
+                }
+                
+                // Store trackingType if provided (for custom exercises)
+                if (trackingType) {
+                    accordion.dataset.trackingType = trackingType;
+                }
                 
                 // Update selected display
                 const selectedDiv = document.getElementById(`selected-activity-${id}`);
@@ -3547,19 +4150,25 @@ View your progress in the Habit Report!
                 // Highlight selected item
                 const allItems = accordion.querySelectorAll('.accordion-item');
                 allItems.forEach(item => item.classList.remove('selected'));
-                event.target.classList.add('selected');
+                if (event && event.target) {
+                    event.target.classList.add('selected');
+                }
                 
-                // Close all accordions
+                // Close all accordions and sub-accordions
                 const allContents = accordion.querySelectorAll('.accordion-content');
                 const allHeaders = accordion.querySelectorAll('.accordion-header');
+                const allSubContents = accordion.querySelectorAll('.sub-accordion-content');
+                const allSubHeaders = accordion.querySelectorAll('.sub-accordion-header');
                 allContents.forEach(c => c.classList.remove('active'));
                 allHeaders.forEach(h => h.classList.remove('active'));
+                allSubContents.forEach(c => c.classList.remove('active'));
+                allSubHeaders.forEach(h => h.classList.remove('active'));
                 
                 // HIDE the entire accordion after selection (auto-collapse)
                 accordion.style.display = 'none';
                 
                 // Update value inputs
-                this.updateActivityInputs(id, activityType);
+                this.updateActivityInputs(id, activityType, trackingType);
             },
 
             // Re-open accordion to change selection
@@ -3592,12 +4201,35 @@ View your progress in the Habit Report!
             },
 
             // Update activity inputs based on type
-            updateActivityInputs(id, activityType) {
+            updateActivityInputs(id, activityType, trackingType) {
                 const valueContainer = document.getElementById(`value-input-${id}`);
                 const unit = this.data.goals.unitPreference === 'km' ? 'km' : 'miles';
                 
                 if (!activityType) {
                     valueContainer.innerHTML = '';
+                    return;
+                }
+                
+                // Handle custom exercises with explicit trackingType
+                if (trackingType) {
+                    if (trackingType === 'reps') {
+                        valueContainer.innerHTML = `
+                            <div class="activity-value-input">
+                                <input type="number" placeholder="0" id="value-${id}" inputmode="numeric" />
+                                <span class="unit">reps</span>
+                            </div>
+                        `;
+                    } else if (trackingType === 'distance') {
+                        valueContainer.innerHTML = `
+                            <div class="activity-value-input">
+                                <input type="number" step="0.1" placeholder="0.0" id="value-${id}" inputmode="decimal" />
+                                <span class="unit">${unit}</span>
+                            </div>
+                        `;
+                    } else if (trackingType === 'logday') {
+                        // No input needed for log day
+                        valueContainer.innerHTML = '';
+                    }
                     return;
                 }
                 
@@ -3628,8 +4260,25 @@ View your progress in the Habit Report!
                         </div>
                     `;
                 }
-                // For push-ups, pull-ups, roller abs, dips, squats, sit-ups
-                else if (['pushups', 'pullups', 'rollerabs', 'dips', 'squats', 'situps'].includes(activityType)) {
+                // For exercises that track reps (all specific exercises + old ones)
+                else if ([
+                    // Old exercises (still supported for backwards compatibility)
+                    'pushups', 'pullups', 'rollerabs', 'dips', 'squats', 'situps',
+                    // New Arm exercises
+                    'bicepcurls', 'forearmcurls', 'hammercurls', 'tricepdips', 'tricepsextensions',
+                    // New Back exercises
+                    'deadlifts', 'facepulls', 'latpulldowns', 'rows',
+                    // New Chest exercises
+                    'benchpress', 'chestflys', 'inclinepress',
+                    // New Core exercises
+                    'abwheelrollout', 'legraises', 'planks', 'russiantwists',
+                    // New Glutes exercises
+                    'bulgariansplitsquats', 'donkeykicks', 'glutebridges', 'hipthrusts', 'stepups',
+                    // New Leg exercises
+                    'calfraises', 'legpress', 'lunges', 'romaniandeadlifts',
+                    // New Shoulder exercises
+                    'frontraises', 'lateralraises', 'reardeltflys', 'shoulderpress', 'shrugs'
+                ].includes(activityType)) {
                     valueContainer.innerHTML = `
                         <div class="activity-value-input">
                             <input type="number" placeholder="0" id="value-${id}" inputmode="numeric" />
@@ -3676,12 +4325,30 @@ View your progress in the Habit Report!
                         type: type,
                         timestamp: new Date(baseTimestamp + i).toISOString() // Add i milliseconds to ensure uniqueness
                     };
+                    
+                    // Add category if it was stored (for new sub-exercises)
+                    const category = accordion.dataset.selectedCategory;
+                    if (category) {
+                        activity.category = category;
+                    }
 
                     // Get value for cardio and reps-based exercises
                     const valueElement = document.getElementById(`value-${i}`);
                     
                     // Define activities that REQUIRE a value
-                    const requiresValue = ['walk', 'run', 'dog', 'hiking', 'biking', 'stairs', 'steps', 'pushups', 'pullups', 'rollerabs', 'dips', 'squats', 'situps'];
+                    const requiresValue = [
+                        'walk', 'run', 'dog', 'hiking', 'biking', 'stairs', 'steps',
+                        // Old exercises
+                        'pushups', 'pullups', 'rollerabs', 'dips', 'squats', 'situps',
+                        // New exercises
+                        'bicepcurls', 'forearmcurls', 'hammercurls', 'tricepdips', 'tricepsextensions',
+                        'deadlifts', 'facepulls', 'latpulldowns', 'rows',
+                        'benchpress', 'chestflys', 'inclinepress',
+                        'abwheelrollout', 'legraises', 'planks', 'russiantwists',
+                        'bulgariansplitsquats', 'donkeykicks', 'glutebridges', 'hipthrusts', 'stepups',
+                        'calfraises', 'legpress', 'lunges', 'romaniandeadlifts',
+                        'frontraises', 'lateralraises', 'reardeltflys', 'shoulderpress', 'shrugs'
+                    ];
                     
                     if (valueElement) {
                         const value = parseFloat(valueElement.value);
@@ -3693,7 +4360,8 @@ View your progress in the Habit Report!
                                 activity.floors = value;
                             } else if (type === 'steps') {
                                 activity.steps = value;
-                            } else if (['pushups', 'pullups', 'rollerabs', 'dips', 'squats', 'situps'].includes(type)) {
+                            } else if (requiresValue.includes(type)) {
+                                // All other exercises use reps
                                 activity.reps = value;
                             }
                         } else if (requiresValue.includes(type)) {
@@ -3880,6 +4548,19 @@ View your progress in the Habit Report!
                 let strengthDaysTotal = new Set();
                 let strengthDaysThisWeek = new Set();
                 let strengthDaysPrevWeek = new Set();
+                
+                // Track parent category days (for favorite cards)
+                const parentCategoryDays = {
+                    arm: { total: new Set(), thisWeek: new Set(), prevWeek: new Set() },
+                    back: { total: new Set(), thisWeek: new Set(), prevWeek: new Set() },
+                    chest: { total: new Set(), thisWeek: new Set(), prevWeek: new Set() },
+                    core: { total: new Set(), thisWeek: new Set(), prevWeek: new Set() },
+                    fullbody: { total: new Set(), thisWeek: new Set(), prevWeek: new Set() },
+                    glutes: { total: new Set(), thisWeek: new Set(), prevWeek: new Set() },
+                    leg: { total: new Set(), thisWeek: new Set(), prevWeek: new Set() },
+                    shoulder: { total: new Set(), thisWeek: new Set(), prevWeek: new Set() },
+                    stretch: { total: new Set(), thisWeek: new Set(), prevWeek: new Set() }
+                };
 
                 // ============================================
                 // PROCESS ALL ACTIVITIES
@@ -3965,11 +4646,83 @@ View your progress in the Habit Report!
                         }
                     }
 
+                    // ========== PARENT CATEGORY TRACKING (for favorite cards) ==========
+                    // Track days when each parent category was logged
+                    if (['arm', 'back', 'chest', 'core', 'fullbody', 'glutes', 'leg', 'shoulder', 'stretch'].includes(activity.type)) {
+                        parentCategoryDays[activity.type].total.add(activity.date);
+                        if (isThisWeek) parentCategoryDays[activity.type].thisWeek.add(activity.date);
+                        if (isPrevWeek) parentCategoryDays[activity.type].prevWeek.add(activity.date);
+                    }
+                    // Also track if this is a sub-exercise (e.g., 'arm-bicep-curls' with category='arm')
+                    if (activity.category && ['arm', 'back', 'chest', 'core', 'glutes', 'legs', 'shoulder'].includes(activity.category)) {
+                        const cat = activity.category === 'legs' ? 'leg' : activity.category;
+                        parentCategoryDays[cat].total.add(activity.date);
+                        if (isThisWeek) parentCategoryDays[cat].thisWeek.add(activity.date);
+                        if (isPrevWeek) parentCategoryDays[cat].prevWeek.add(activity.date);
+                    }
+
                     // ========== STRENGTH DAYS ==========
-                    if (['arm', 'back', 'chest', 'core', 'fullbody', 'leg', 'shoulder'].includes(activity.type)) {
-                        strengthDaysTotal.add(activity.date);
-                        if (isThisWeek) strengthDaysThisWeek.add(activity.date);
-                        if (isPrevWeek) strengthDaysPrevWeek.add(activity.date);
+                    // Count days with 2+ strength exercises (parent categories OR sub-exercises with category='strength')
+                    // We'll process this after the loop to check the count per day
+                });
+
+                // ============================================
+                // COUNT STRENGTH DAYS (2+ exercises per day)
+                // ============================================
+                const strengthExercisesByDate = {
+                    total: {},
+                    thisWeek: {},
+                    prevWeek: {}
+                };
+                
+                this.data.activities.forEach(activity => {
+                    const activityDate = new Date(activity.date + 'T12:00:00');
+                    const isThisWeek = activityDate >= thisWeekStart && activityDate <= now;
+                    const isPrevWeek = activityDate >= prevWeekStart && activityDate <= prevWeekEnd;
+                    
+                    // Check if this is a strength activity (parent category OR sub-exercise)
+                    const isStrengthParent = ['arm', 'back', 'chest', 'core', 'fullbody', 'glutes', 'leg', 'shoulder'].includes(activity.type);
+                    const isStrengthSub = activity.category && ['arm', 'back', 'chest', 'core', 'glutes', 'legs', 'shoulder'].includes(activity.category);
+                    
+                    if (isStrengthParent || isStrengthSub) {
+                        // Count exercises per date
+                        if (!strengthExercisesByDate.total[activity.date]) {
+                            strengthExercisesByDate.total[activity.date] = 0;
+                        }
+                        strengthExercisesByDate.total[activity.date]++;
+                        
+                        if (isThisWeek) {
+                            if (!strengthExercisesByDate.thisWeek[activity.date]) {
+                                strengthExercisesByDate.thisWeek[activity.date] = 0;
+                            }
+                            strengthExercisesByDate.thisWeek[activity.date]++;
+                        }
+                        
+                        if (isPrevWeek) {
+                            if (!strengthExercisesByDate.prevWeek[activity.date]) {
+                                strengthExercisesByDate.prevWeek[activity.date] = 0;
+                            }
+                            strengthExercisesByDate.prevWeek[activity.date]++;
+                        }
+                    }
+                });
+                
+                // Only count days with 2+ exercises
+                Object.keys(strengthExercisesByDate.total).forEach(date => {
+                    if (strengthExercisesByDate.total[date] >= 2) {
+                        strengthDaysTotal.add(date);
+                    }
+                });
+                
+                Object.keys(strengthExercisesByDate.thisWeek).forEach(date => {
+                    if (strengthExercisesByDate.thisWeek[date] >= 2) {
+                        strengthDaysThisWeek.add(date);
+                    }
+                });
+                
+                Object.keys(strengthExercisesByDate.prevWeek).forEach(date => {
+                    if (strengthExercisesByDate.prevWeek[date] >= 2) {
+                        strengthDaysPrevWeek.add(date);
                     }
                 });
 
@@ -4065,9 +4818,115 @@ View your progress in the Habit Report!
                     thisWeekStrengthDays: strengthDaysThisWeek.size,
                     prevWeekStrengthDays: strengthDaysPrevWeek.size,
                     
+                    // Parent Category Days (for favorite cards)
+                    armDays: parentCategoryDays.arm.total.size,
+                    thisWeekArmDays: parentCategoryDays.arm.thisWeek.size,
+                    prevWeekArmDays: parentCategoryDays.arm.prevWeek.size,
+                    backDays: parentCategoryDays.back.total.size,
+                    thisWeekBackDays: parentCategoryDays.back.thisWeek.size,
+                    prevWeekBackDays: parentCategoryDays.back.prevWeek.size,
+                    chestDays: parentCategoryDays.chest.total.size,
+                    thisWeekChestDays: parentCategoryDays.chest.thisWeek.size,
+                    prevWeekChestDays: parentCategoryDays.chest.prevWeek.size,
+                    coreDays: parentCategoryDays.core.total.size,
+                    thisWeekCoreDays: parentCategoryDays.core.thisWeek.size,
+                    prevWeekCoreDays: parentCategoryDays.core.prevWeek.size,
+                    fullbodyDays: parentCategoryDays.fullbody.total.size,
+                    thisWeekFullbodyDays: parentCategoryDays.fullbody.thisWeek.size,
+                    prevWeekFullbodyDays: parentCategoryDays.fullbody.prevWeek.size,
+                    glutesDays: parentCategoryDays.glutes.total.size,
+                    thisWeekGlutesDays: parentCategoryDays.glutes.thisWeek.size,
+                    prevWeekGlutesDays: parentCategoryDays.glutes.prevWeek.size,
+                    legDays: parentCategoryDays.leg.total.size,
+                    thisWeekLegDays: parentCategoryDays.leg.thisWeek.size,
+                    prevWeekLegDays: parentCategoryDays.leg.prevWeek.size,
+                    shoulderDays: parentCategoryDays.shoulder.total.size,
+                    thisWeekShoulderDays: parentCategoryDays.shoulder.thisWeek.size,
+                    prevWeekShoulderDays: parentCategoryDays.shoulder.prevWeek.size,
+                    stretchDays: parentCategoryDays.stretch.total.size,
+                    thisWeekStretchDays: parentCategoryDays.stretch.thisWeek.size,
+                    prevWeekStretchDays: parentCategoryDays.stretch.prevWeek.size,
+                    
                     // Weight data
                     currentWeight: this.getWeightStats().current
                 };
+            },
+
+            // Calculate stats for a custom exercise
+            getCustomExerciseStats(categoryId, exerciseId) {
+                const now = new Date();
+                now.setHours(23, 59, 59, 999);
+                
+                // THIS CALENDAR WEEK (Sunday - Today)
+                const thisWeekStart = new Date(now);
+                thisWeekStart.setDate(now.getDate() - now.getDay());
+                thisWeekStart.setHours(0, 0, 0, 0);
+                
+                // PREVIOUS CALENDAR WEEK (Last Sunday - Last Saturday)
+                const prevWeekStart = new Date(thisWeekStart);
+                prevWeekStart.setDate(prevWeekStart.getDate() - 7);
+                prevWeekStart.setHours(0, 0, 0, 0);
+                
+                const prevWeekEnd = new Date(thisWeekStart);
+                prevWeekEnd.setDate(prevWeekEnd.getDate() - 1);
+                prevWeekEnd.setHours(23, 59, 59, 999);
+                
+                let total = 0;
+                let thisWeek = 0;
+                let prevWeek = 0;
+                const uniqueDaysTotal = new Set();
+                const uniqueDaysThisWeek = new Set();
+                const uniqueDaysPrevWeek = new Set();
+                
+                // Get exercise to check trackingType
+                let exerciseTrackingType = 'reps';
+                const category = this.data.customCategories?.find(c => c.id === categoryId);
+                if (category) {
+                    const exercise = category.exercises?.find(e => e.id === exerciseId);
+                    if (exercise) exerciseTrackingType = exercise.trackingType;
+                }
+                
+                // Sum up values for this custom exercise
+                this.data.activities.forEach(activity => {
+                    const activityDate = new Date(activity.date + 'T00:00:00');
+                    const customKey = `custom-${categoryId}-${exerciseId}`;
+                    
+                    if (activity.type === customKey) {
+                        if (exerciseTrackingType === 'logday') {
+                            // Count unique days
+                            uniqueDaysTotal.add(activity.date);
+                            if (activityDate >= thisWeekStart && activityDate <= now) {
+                                uniqueDaysThisWeek.add(activity.date);
+                            }
+                            if (activityDate >= prevWeekStart && activityDate <= prevWeekEnd) {
+                                uniqueDaysPrevWeek.add(activity.date);
+                            }
+                        } else if (activity.reps) {
+                            // Sum reps or distance
+                            const value = parseFloat(activity.reps) || 0;
+                            total += value;
+                            
+                            if (activityDate >= thisWeekStart && activityDate <= now) {
+                                thisWeek += value;
+                            }
+                            
+                            if (activityDate >= prevWeekStart && activityDate <= prevWeekEnd) {
+                                prevWeek += value;
+                            }
+                        }
+                    }
+                });
+                
+                // Return days for logday, values for reps/distance
+                if (exerciseTrackingType === 'logday') {
+                    return { 
+                        total: uniqueDaysTotal.size, 
+                        thisWeek: uniqueDaysThisWeek.size, 
+                        prevWeek: uniqueDaysPrevWeek.size 
+                    };
+                } else {
+                    return { total, thisWeek, prevWeek };
+                }
             },
 
             // Update dashboard (FIXED: toggle buttons sync with data + custom cards)
@@ -4104,7 +4963,7 @@ View your progress in the Habit Report!
                     const workoutsTrend = workoutsValue > 0 ? this.getTrendIndicator(workoutsValue, stats.prevWeekStrengthDays) : '';
                     const stepsTrend = stepsValue > 0 ? this.getTrendIndicator(stepsValue, stats.prevWeekSteps) : '';
                     
-                    document.getElementById('stat-miles-label').textContent = unit;
+                    document.getElementById('stat-miles-label').textContent = `Distance (${unit})`;
                     document.getElementById('stat-workouts-label').textContent = 'Strength Days';
                     document.getElementById('stat-steps-label').textContent = 'Steps';
                     
@@ -4113,7 +4972,7 @@ View your progress in the Habit Report!
                     document.getElementById('stat-steps-trend').innerHTML = stepsTrend;
                 } else {
                     // All Time view: No trends
-                    document.getElementById('stat-miles-label').textContent = unit;
+                    document.getElementById('stat-miles-label').textContent = `Distance (${unit})`;
                     document.getElementById('stat-workouts-label').textContent = 'Strength Days';
                     document.getElementById('stat-steps-label').textContent = 'Steps';
                     
@@ -4174,7 +5033,7 @@ View your progress in the Habit Report!
                         totalValue: stats.totalPullups
                     },
                     'rollerabs': {
-                        label: 'Roller Abs',
+                        label: 'Ab Wheel Rollout',
                         thisWeekValue: stats.thisWeekRollerAbs,
                         prevWeekValue: stats.prevWeekRollerAbs,
                         totalValue: stats.totalRollerAbs
@@ -4234,14 +5093,126 @@ View your progress in the Habit Report!
                         prevWeekValue: stats.prevWeekStairs,
                         totalValue: stats.totalStairs
                     },
-                    // Weight tracking (special case)
-                    'weight': {
-                        label: 'Weight (lbs)',
-                        thisWeekValue: stats.currentWeight || 0,
-                        prevWeekValue: 0, // Weight uses its own trend logic
-                        totalValue: stats.currentWeight || 0
-                    }
+                    
+                    // ========== PARENT CATEGORIES (day counts) ==========
+                    'arm': {
+                        label: 'Arm Day',
+                        thisWeekValue: stats.thisWeekArmDays,
+                        prevWeekValue: stats.prevWeekArmDays,
+                        totalValue: stats.armDays
+                    },
+                    'back': {
+                        label: 'Back Day',
+                        thisWeekValue: stats.thisWeekBackDays,
+                        prevWeekValue: stats.prevWeekBackDays,
+                        totalValue: stats.backDays
+                    },
+                    'chest': {
+                        label: 'Chest Day',
+                        thisWeekValue: stats.thisWeekChestDays,
+                        prevWeekValue: stats.prevWeekChestDays,
+                        totalValue: stats.chestDays
+                    },
+                    'core': {
+                        label: 'Core Day',
+                        thisWeekValue: stats.thisWeekCoreDays,
+                        prevWeekValue: stats.prevWeekCoreDays,
+                        totalValue: stats.coreDays
+                    },
+                    'fullbody': {
+                        label: 'Full Body Day',
+                        thisWeekValue: stats.thisWeekFullbodyDays,
+                        prevWeekValue: stats.prevWeekFullbodyDays,
+                        totalValue: stats.fullbodyDays
+                    },
+                    'glutes': {
+                        label: 'Glutes Day',
+                        thisWeekValue: stats.thisWeekGlutesDays,
+                        prevWeekValue: stats.prevWeekGlutesDays,
+                        totalValue: stats.glutesDays
+                    },
+                    'leg': {
+                        label: 'Leg Day',
+                        thisWeekValue: stats.thisWeekLegDays,
+                        prevWeekValue: stats.prevWeekLegDays,
+                        totalValue: stats.legDays
+                    },
+                    'shoulder': {
+                        label: 'Shoulder Day',
+                        thisWeekValue: stats.thisWeekShoulderDays,
+                        prevWeekValue: stats.prevWeekShoulderDays,
+                        totalValue: stats.shoulderDays
+                    },
+                    'stretch': {
+                        label: 'Stretch Day',
+                        thisWeekValue: stats.thisWeekStretchDays,
+                        prevWeekValue: stats.prevWeekStretchDays,
+                        totalValue: stats.stretchDays
+                    },
+                    
+                    // ========== SUB-EXERCISES (mapped to parent stats - same as parent for now) ==========
+                    // Arm Day sub-exercises
+                    'arm-bicep-curls': { label: 'Bicep Curls', thisWeekValue: stats.thisWeekArmDays, prevWeekValue: stats.prevWeekArmDays, totalValue: stats.armDays },
+                    'arm-forearm-curls': { label: 'Forearm Curls', thisWeekValue: stats.thisWeekArmDays, prevWeekValue: stats.prevWeekArmDays, totalValue: stats.armDays },
+                    'arm-hammer-curls': { label: 'Hammer Curls', thisWeekValue: stats.thisWeekArmDays, prevWeekValue: stats.prevWeekArmDays, totalValue: stats.armDays },
+                    'arm-tricep-dips': { label: 'Tricep Dips', thisWeekValue: stats.thisWeekArmDays, prevWeekValue: stats.prevWeekArmDays, totalValue: stats.armDays },
+                    'arm-triceps-extensions': { label: 'Triceps Extensions', thisWeekValue: stats.thisWeekArmDays, prevWeekValue: stats.prevWeekArmDays, totalValue: stats.armDays },
+                    // Back Day sub-exercises
+                    'back-deadlifts': { label: 'Deadlifts', thisWeekValue: stats.thisWeekBackDays, prevWeekValue: stats.prevWeekBackDays, totalValue: stats.backDays },
+                    'back-face-pulls': { label: 'Face Pulls', thisWeekValue: stats.thisWeekBackDays, prevWeekValue: stats.prevWeekBackDays, totalValue: stats.backDays },
+                    'back-lat-pulldowns': { label: 'Lat Pulldowns', thisWeekValue: stats.thisWeekBackDays, prevWeekValue: stats.prevWeekBackDays, totalValue: stats.backDays },
+                    'back-pullups': { label: 'Pull-ups', thisWeekValue: stats.thisWeekPullups, prevWeekValue: stats.prevWeekPullups, totalValue: stats.totalPullups },
+                    'back-rows': { label: 'Rows', thisWeekValue: stats.thisWeekBackDays, prevWeekValue: stats.prevWeekBackDays, totalValue: stats.backDays },
+                    // Chest Day sub-exercises
+                    'chest-bench-press': { label: 'Bench Press', thisWeekValue: stats.thisWeekChestDays, prevWeekValue: stats.prevWeekChestDays, totalValue: stats.chestDays },
+                    'chest-chest-flys': { label: 'Chest Flys', thisWeekValue: stats.thisWeekChestDays, prevWeekValue: stats.prevWeekChestDays, totalValue: stats.chestDays },
+                    'chest-dips': { label: 'Dips', thisWeekValue: stats.thisWeekDips, prevWeekValue: stats.prevWeekDips, totalValue: stats.totalDips },
+                    'chest-incline-press': { label: 'Incline Press', thisWeekValue: stats.thisWeekChestDays, prevWeekValue: stats.prevWeekChestDays, totalValue: stats.chestDays },
+                    'chest-pushups': { label: 'Push-ups', thisWeekValue: stats.thisWeekPushups, prevWeekValue: stats.prevWeekPushups, totalValue: stats.totalPushups },
+                    // Core Day sub-exercises
+                    'core-ab-wheel-rollout': { label: 'Ab Wheel Rollout', thisWeekValue: stats.thisWeekRollerAbs, prevWeekValue: stats.prevWeekRollerAbs, totalValue: stats.totalRollerAbs },
+                    'core-leg-raises': { label: 'Leg Raises', thisWeekValue: stats.thisWeekCoreDays, prevWeekValue: stats.prevWeekCoreDays, totalValue: stats.coreDays },
+                    'core-planks': { label: 'Planks', thisWeekValue: stats.thisWeekCoreDays, prevWeekValue: stats.prevWeekCoreDays, totalValue: stats.coreDays },
+                    'core-russian-twists': { label: 'Russian Twists', thisWeekValue: stats.thisWeekCoreDays, prevWeekValue: stats.prevWeekCoreDays, totalValue: stats.coreDays },
+                    'core-situps': { label: 'Sit-ups', thisWeekValue: stats.thisWeekSitups, prevWeekValue: stats.prevWeekSitups, totalValue: stats.totalSitups },
+                    // Glutes Day sub-exercises
+                    'glutes-bulgarian-split-squats': { label: 'Bulgarian Split Squats', thisWeekValue: stats.thisWeekGlutesDays, prevWeekValue: stats.prevWeekGlutesDays, totalValue: stats.glutesDays },
+                    'glutes-donkey-kicks': { label: 'Donkey Kicks', thisWeekValue: stats.thisWeekGlutesDays, prevWeekValue: stats.prevWeekGlutesDays, totalValue: stats.glutesDays },
+                    'glutes-glute-bridges': { label: 'Glute Bridges', thisWeekValue: stats.thisWeekGlutesDays, prevWeekValue: stats.prevWeekGlutesDays, totalValue: stats.glutesDays },
+                    'glutes-hip-thrusts': { label: 'Hip Thrusts', thisWeekValue: stats.thisWeekGlutesDays, prevWeekValue: stats.prevWeekGlutesDays, totalValue: stats.glutesDays },
+                    'glutes-step-ups': { label: 'Step-ups', thisWeekValue: stats.thisWeekGlutesDays, prevWeekValue: stats.prevWeekGlutesDays, totalValue: stats.glutesDays },
+                    // Leg Day sub-exercises
+                    'legs-calf-raises': { label: 'Calf Raises', thisWeekValue: stats.thisWeekLegDays, prevWeekValue: stats.prevWeekLegDays, totalValue: stats.legDays },
+                    'legs-leg-press': { label: 'Leg Press', thisWeekValue: stats.thisWeekLegDays, prevWeekValue: stats.prevWeekLegDays, totalValue: stats.legDays },
+                    'legs-lunges': { label: 'Lunges', thisWeekValue: stats.thisWeekLegDays, prevWeekValue: stats.prevWeekLegDays, totalValue: stats.legDays },
+                    'legs-romanian-deadlifts': { label: 'Romanian Deadlifts', thisWeekValue: stats.thisWeekLegDays, prevWeekValue: stats.prevWeekLegDays, totalValue: stats.legDays },
+                    'legs-squats': { label: 'Squats', thisWeekValue: stats.thisWeekSquats, prevWeekValue: stats.prevWeekSquats, totalValue: stats.totalSquats },
+                    // Shoulder Day sub-exercises
+                    'shoulder-front-raises': { label: 'Front Raises', thisWeekValue: stats.thisWeekShoulderDays, prevWeekValue: stats.prevWeekShoulderDays, totalValue: stats.shoulderDays },
+                    'shoulder-lateral-raises': { label: 'Lateral Raises', thisWeekValue: stats.thisWeekShoulderDays, prevWeekValue: stats.prevWeekShoulderDays, totalValue: stats.shoulderDays },
+                    'shoulder-rear-delt-flys': { label: 'Rear Delt Flys', thisWeekValue: stats.thisWeekShoulderDays, prevWeekValue: stats.prevWeekShoulderDays, totalValue: stats.shoulderDays },
+                    'shoulder-shoulder-press': { label: 'Shoulder Press', thisWeekValue: stats.thisWeekShoulderDays, prevWeekValue: stats.prevWeekShoulderDays, totalValue: stats.shoulderDays },
+                    'shoulder-shrugs': { label: 'Shrugs', thisWeekValue: stats.thisWeekShoulderDays, prevWeekValue: stats.prevWeekShoulderDays, totalValue: stats.shoulderDays }
                 };
+
+                // ========== ADD CUSTOM CATEGORY EXERCISES TO STAT MAP ==========
+                if (this.data.customCategories && this.data.customCategories.length > 0) {
+                    this.data.customCategories.forEach(category => {
+                        if (category.exercises && category.exercises.length > 0) {
+                            category.exercises.forEach(ex => {
+                                const key = `custom-${category.id}-${ex.id}`;
+                                // Calculate stats for this custom exercise
+                                const customStats = this.getCustomExerciseStats(category.id, ex.id);
+                                statMap[key] = {
+                                    label: ex.name,
+                                    thisWeekValue: customStats.thisWeek,
+                                    prevWeekValue: customStats.prevWeek,
+                                    totalValue: customStats.total
+                                };
+                            });
+                        }
+                    });
+                }
 
                 // ========== RENDER EACH CUSTOM CARD ==========
                 for (let i = 0; i < 3; i++) {
@@ -4290,6 +5261,9 @@ View your progress in the Habit Report!
 
             // Open customize modal
             openCustomizeModal() {
+                // Add custom category exercises to dropdowns dynamically
+                this.populateCustomCategoriesInDropdowns();
+                
                 // Set current selections in dropdowns
                 for (let i = 0; i < 3; i++) {
                     const select = document.getElementById(`custom-slot-${i + 1}`);
@@ -4298,6 +5272,39 @@ View your progress in the Habit Report!
                 
                 document.getElementById('customize-overlay').classList.add('show');
                 document.getElementById('customize-modal').classList.add('show');
+            },
+
+            // Populate custom category exercises in all dropdowns
+            populateCustomCategoriesInDropdowns() {
+                // Remove existing custom category optgroups first
+                for (let i = 1; i <= 3; i++) {
+                    const select = document.getElementById(`custom-slot-${i}`);
+                    const existingCustomGroups = select.querySelectorAll('optgroup[data-custom="true"]');
+                    existingCustomGroups.forEach(g => g.remove());
+                }
+                
+                // Add custom categories if any exist
+                if (this.data.customCategories && this.data.customCategories.length > 0) {
+                    this.data.customCategories.forEach(category => {
+                        if (category.exercises && category.exercises.length > 0) {
+                            for (let i = 1; i <= 3; i++) {
+                                const select = document.getElementById(`custom-slot-${i}`);
+                                const optgroup = document.createElement('optgroup');
+                                optgroup.label = `${category.name} (Custom)`;
+                                optgroup.setAttribute('data-custom', 'true');
+                                
+                                category.exercises.forEach(ex => {
+                                    const option = document.createElement('option');
+                                    option.value = `custom-${category.id}-${ex.id}`;
+                                    option.textContent = ex.name;
+                                    optgroup.appendChild(option);
+                                });
+                                
+                                select.appendChild(optgroup);
+                            }
+                        }
+                    });
+                }
             },
 
             // Close customize modal
@@ -4487,7 +5494,7 @@ View your progress in the Habit Report!
                 // Strength exercises
                 addItem('Push-ups', stats.thisWeekPushups, monthStats.monthPushups, stats.totalPushups, ' reps');
                 addItem('Pull-ups', stats.thisWeekPullups, monthStats.monthPullups, stats.totalPullups, ' reps');
-                addItem('Roller Abs', stats.thisWeekRollerAbs, monthStats.monthRollerAbs, stats.totalRollerAbs, ' reps');
+                addItem('Ab Wheel Rollout', stats.thisWeekRollerAbs, monthStats.monthRollerAbs, stats.totalRollerAbs, ' reps');
                 addItem('Dips', stats.thisWeekDips, monthStats.monthDips, stats.totalDips, ' reps');
                 addItem('Squats', stats.thisWeekSquats, monthStats.monthSquats, stats.totalSquats, ' reps');
                 addItem('Sit-ups', stats.thisWeekSitups, monthStats.monthSitups, stats.totalSitups, ' reps');
@@ -4549,28 +5556,76 @@ View your progress in the Habit Report!
                     });
                 }
                 
-                if (summaryItems.length === 0) {
+                // Custom category exercises (separate array for display after divider)
+                const customItems = [];
+                if (this.data.customCategories && this.data.customCategories.length > 0) {
+                    this.data.customCategories.forEach(category => {
+                        if (category.exercises && category.exercises.length > 0) {
+                            category.exercises.forEach(ex => {
+                                const exerciseKey = `custom-${category.id}-${ex.id}`;
+                                
+                                // Calculate stats for this custom exercise
+                                const weekStats = this.getCustomExerciseStats(exerciseKey, 'week');
+                                const monthStatsCustom = this.getCustomExerciseStats(exerciseKey, 'month');
+                                const totalStatsCustom = this.getCustomExerciseStats(exerciseKey, 'total');
+                                
+                                // Only add if there's activity
+                                if (totalStatsCustom.value > 0) {
+                                    const suffix = ex.trackingType === 'reps' ? ' reps' : 
+                                                   ex.trackingType === 'distance' ? ` ${unit}` : 
+                                                   ' days';
+                                    
+                                    customItems.push({
+                                        name: ex.name,
+                                        week: weekStats.value > 0 ? `${weekStats.value.toLocaleString()}${suffix}` : '-',
+                                        month: monthStatsCustom.value > 0 ? `${monthStatsCustom.value.toLocaleString()}${suffix}` : '-',
+                                        total: `${totalStatsCustom.value.toLocaleString()}${suffix}`,
+                                        isCustom: true
+                                    });
+                                }
+                            });
+                        }
+                    });
+                }
+                
+                if (summaryItems.length === 0 && customItems.length === 0) {
                     summaryList.innerHTML = '<p style="text-align: center; color: #6b7280; font-size: 14px; padding: 20px 0;">No activities logged yet.</p>';
                 } else {
-                    // Header row
+                    // Match Habit Report format exactly - using grid layout
                     let html = `
-                        <div class="activity-summary-item" style="font-weight: 700; color: #9ca3af; font-size: 12px; text-transform: uppercase; border-bottom: 2px solid #3d3d3d;">
+                        <div style="display: grid; grid-template-columns: minmax(180px, 1fr) 1fr 1fr 1fr; gap: 12px; align-items: center; padding: 8px 0; border-bottom: 1px solid #3d3d3d; font-size: 12px; font-weight: 700; color: #9ca3af;">
                             <div>Activity</div>
-                            <div class="activity-summary-value week">Week</div>
-                            <div class="activity-summary-value month">Month</div>
-                            <div class="activity-summary-value total">All-Time</div>
+                            <div style="text-align: center;">This Week</div>
+                            <div style="text-align: center;">This Month</div>
+                            <div style="text-align: center;">All Time</div>
                         </div>
                     `;
                     
-                    // Data rows
+                    // Regular activity data rows
                     html += summaryItems.map(item => `
-                        <div class="activity-summary-item">
-                            <div class="activity-summary-name">${item.name}</div>
-                            <div class="activity-summary-value week">${item.week}</div>
-                            <div class="activity-summary-value month">${item.month}</div>
-                            <div class="activity-summary-value total">${item.total}</div>
+                        <div style="display: grid; grid-template-columns: minmax(180px, 1fr) 1fr 1fr 1fr; gap: 12px; align-items: center; padding: 8px 0; border-bottom: 1px solid #2d2d2d; font-size: 13px;">
+                            <div style="color: #9ca3af;">${item.name}</div>
+                            <div style="text-align: center; color: var(--primary); font-weight: 700;">${item.week}</div>
+                            <div style="text-align: center; color: var(--primary-light); font-weight: 700;">${item.month}</div>
+                            <div style="text-align: center; color: #9ca3af; font-weight: 700;">${item.total}</div>
                         </div>
                     `).join('');
+                    
+                    // Add custom categories after divider if they exist
+                    if (customItems.length > 0) {
+                        // Add divider line
+                        html += `<div style="margin: 12px 0; border-top: 1px solid #3d3d3d;"></div>`;
+                        
+                        // Custom activity data rows with gold text for activity name
+                        html += customItems.map(item => `
+                            <div style="display: grid; grid-template-columns: minmax(180px, 1fr) 1fr 1fr 1fr; gap: 12px; align-items: center; padding: 8px 0; border-bottom: 1px solid #2d2d2d; font-size: 13px;">
+                                <div style="color: #d4af37;">${item.name}</div>
+                                <div style="text-align: center; color: var(--primary); font-weight: 700;">${item.week}</div>
+                                <div style="text-align: center; color: var(--primary-light); font-weight: 700;">${item.month}</div>
+                                <div style="text-align: center; color: #9ca3af; font-weight: 700;">${item.total}</div>
+                            </div>
+                        `).join('');
+                    }
                     
                     summaryList.innerHTML = html;
                 }
@@ -4627,9 +5682,9 @@ View your progress in the Habit Report!
                                 <div style="width: 10px; height: 10px; border-radius: 2px; background: ${habit.color}; flex-shrink: 0;"></div>
                                 <span style="color: #e8e8e8; font-weight: 600;">${habit.name}</span>
                             </div>
-                            <div style="text-align: center; color: #9ca3af;">${habit.weekDays}/7 days</div>
-                            <div style="text-align: center; color: #9ca3af;">${habit.monthDays}/${new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate()} days</div>
-                            <div style="text-align: center; color: var(--primary); font-weight: 700;">${habit.totalDays} days</div>
+                            <div style="text-align: center; color: var(--primary); font-weight: 700;">${habit.weekDays}/7 days</div>
+                            <div style="text-align: center; color: var(--primary-light); font-weight: 700;">${habit.monthDays}/${new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate()} days</div>
+                            <div style="text-align: center; color: #9ca3af; font-weight: 700;">${habit.totalDays} days</div>
                         </div>
                     `).join('')}
                 `;
@@ -4738,6 +5793,42 @@ View your progress in the Habit Report!
                 this.renderCalendar();
             },
 
+            // Get custom exercise stats for a specific time period
+            getCustomExerciseStats(exerciseKey, period) {
+                const now = new Date();
+                let startDate;
+                
+                if (period === 'week') {
+                    startDate = new Date(now);
+                    startDate.setDate(now.getDate() - now.getDay());
+                    startDate.setHours(0, 0, 0, 0);
+                } else if (period === 'month') {
+                    startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+                } else {
+                    // 'total' - all time
+                    startDate = new Date(0);
+                }
+                
+                const activities = this.data.activities.filter(a => {
+                    const actDate = new Date(a.date + 'T12:00:00');
+                    return a.type === exerciseKey && actDate >= startDate;
+                });
+                
+                // Sum up values based on tracking type
+                let totalValue = 0;
+                activities.forEach(a => {
+                    if (a.reps) {
+                        totalValue += a.reps;
+                    } else if (a.distance) {
+                        totalValue += a.distance;
+                    } else {
+                        totalValue += 1; // logday - count days
+                    }
+                });
+                
+                return { value: totalValue };
+            },
+
             // Update goals UI
             updateGoalsUI() {
                 const setVal = (id, val) => {
@@ -4799,6 +5890,7 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                 // Refresh PALS eligibility toggles (e.g., weight leaderboard gating)
                 this.updatePalsUI();
                 this.renderHabits(); // Re-render to return to display mode
+                this.refreshActivityRows(); // Refresh custom categories in activity rows
                 
                 const successMsg = document.getElementById('settings-success');
                 successMsg.classList.add('show');
@@ -5004,7 +6096,7 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                             'steps': 'Steps',
                             'pushups': 'Push-ups',
                             'pullups': 'Pull-ups',
-                            'rollerabs': 'Roller Abs',
+                            'rollerabs': 'Ab Wheel Rollout',
                             'dips': 'Dips',
                             'squats': 'Squats',
                             'situps': 'Sit-ups',
@@ -5239,6 +6331,46 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                 const modal = document.getElementById('habit-info-modal');
                 if (modal) {
                     modal.classList.toggle('active');
+                }
+            },
+
+            // Show Track Activity info modal
+            showTrackInfo() {
+                const modal = document.getElementById('track-info-modal');
+                if (modal) {
+                    modal.classList.add('active');
+                }
+            },
+
+            // Show Dashboard info modal
+            showDashboardInfo() {
+                const modal = document.getElementById('dashboard-info-modal');
+                if (modal) {
+                    modal.classList.add('active');
+                }
+            },
+
+            // Show Goals info modal
+            showGoalsInfo() {
+                const modal = document.getElementById('goals-info-modal');
+                if (modal) {
+                    modal.classList.add('active');
+                }
+            },
+
+            // Show Leaderboard info modal
+            showLeaderboardInfo() {
+                const modal = document.getElementById('leaderboard-info-modal');
+                if (modal) {
+                    modal.classList.add('active');
+                }
+            },
+
+            // Close info modals
+            closeInfoModal(modalId) {
+                const modal = document.getElementById(modalId);
+                if (modal) {
+                    modal.classList.remove('active');
                 }
             },
 
@@ -6543,7 +7675,7 @@ async createPalCode() {
                         addItem('Pull-ups', stats.thisWeekPullups || 0, stats.thisMonthPullups || 0, stats.totalPullups || 0, ' reps');
                     }
                     if (stats.totalRollerAbs > 0 || stats.thisWeekRollerAbs > 0) {
-                        addItem('Roller Abs', stats.thisWeekRollerAbs || 0, stats.thisMonthRollerAbs || 0, stats.totalRollerAbs || 0, ' reps');
+                        addItem('Ab Wheel Rollout', stats.thisWeekRollerAbs || 0, stats.thisMonthRollerAbs || 0, stats.totalRollerAbs || 0, ' reps');
                     }
                     if (stats.totalDips > 0 || stats.thisWeekDips > 0) {
                         addItem('Dips', stats.thisWeekDips || 0, stats.thisMonthDips || 0, stats.totalDips || 0, ' reps');
@@ -6791,12 +7923,33 @@ async createPalCode() {
                     snapshot.docs.forEach(doc => {
                         const data = doc.data();
                         
-                        // Calculate days since last activity
+                        // Calculate days and hours since last activity
                         const lastActivity = data.lastActivityDate || '';
                         const daysInactive = lastActivity ? this.daysBetween(lastActivity, today) : 999;
                         
-                        // REMOVE users with 21+ days of inactivity
+                        // Calculate hours inactive for emoji status
+                        let hoursInactive = 999;
+                        if (lastActivity) {
+                            const lastDate = new Date(lastActivity);
+                            const nowDate = new Date(today);
+                            hoursInactive = Math.floor((nowDate - lastDate) / (1000 * 60 * 60));
+                        }
+                        
+                        // Determine emoji status based on hours
+                        let statusIndicator = '';
+                        if (hoursInactive < 16) {
+                            statusIndicator = '⚡'; // 0-16 hours
+                        } else if (hoursInactive < 32) {
+                            statusIndicator = '✨'; // 16-32 hours
+                        } else {
+                            statusIndicator = '💤'; // 32+ hours (shows in all leaderboards until 21 days)
+                        }
+                        
+                        // REMOVE users with 21+ days of inactivity (from all leaderboards)
                         if (daysInactive >= 21) return;
+                        
+                        // For "This Week" only: hide users inactive 48+ hours (keeps data fresh)
+                        if (period === 'week' && daysInactive >= 2) return;
 
                         // Weight leaderboard is optional per user
                         if (metric === 'weight' && !(data.joinWeightLeaderboard === true)) return;
@@ -6823,22 +7976,16 @@ async createPalCode() {
 
                         }
 
-                        // Determine status indicator
-                        let statusIndicator = '';
-                        if (daysInactive === 0) {
-                            statusIndicator = '⚡'; // Logged today
-                        } else if (daysInactive >= 2) {
-                            statusIndicator = '💤'; // 2-20 days inactive
-                        }
-                        // 1 day = no indicator
-
                         participants.push({
                             palCode: data.palCode,
                             displayName: data.displayName || data.palCode,
                             value: value,
                             valueLbs: valueLbs,
                             isMe: data.palCode === this.data.pals.myPalCode,
-                            statusIndicator: statusIndicator
+                            statusIndicator: statusIndicator, // Emoji based on hours inactive
+                            lastActivityDate: lastActivity,
+                            daysInactive: daysInactive,
+                            hoursInactive: hoursInactive
                         });
                     });
 
@@ -6943,6 +8090,7 @@ async createPalCode() {
                             }
                         }
 
+                        
                         return `
                             <div class="leaderboard-item-card ${rankClass} ${highlight}">
                                 <div class="leaderboard-item-header">
@@ -7171,6 +8319,358 @@ async createPalCode() {
                 return this.data.habits.filter(h => h.completions && h.completions.includes(dateStr));
             },
 
+            // ========== CUSTOM CATEGORY FUNCTIONS ==========
+            
+            // Initialize custom categories
+            initCustomCategories() {
+                if (!this.data.customCategories) {
+                    this.data.customCategories = [];
+                }
+                this.renderCustomCategories();
+            },
+
+            // Render custom categories list
+            renderCustomCategories() {
+                const container = document.getElementById('custom-categories-list');
+                const addBtn = document.getElementById('add-custom-category-btn');
+                
+                if (!this.data.customCategories || this.data.customCategories.length === 0) {
+                    container.innerHTML = '<p style="color: #6b7280; text-align: center; padding: 8px 0; font-size: 13px;">No custom categories yet</p>';
+                    if (addBtn) addBtn.style.display = 'block';
+                    return;
+                }
+                
+                // Show/hide add button based on limit
+                if (addBtn) {
+                    addBtn.style.display = this.data.customCategories.length >= 3 ? 'none' : 'block';
+                }
+                
+                let html = '';
+                this.data.customCategories.forEach(category => {
+                    const exerciseCount = category.exercises ? category.exercises.length : 0;
+                    html += `
+                        <div class="habit-item">
+                            <div id="category-display-${category.id}" style="display: flex; flex-direction: column; gap: 4px;">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div style="flex: 1;">
+                                        <div style="font-weight: 600; color: #e8e8e8; font-size: 13px;">${category.name}</div>
+                                        <div style="font-size: 11px; color: #9ca3af;">${exerciseCount}/5 exercises</div>
+                                    </div>
+                                    <div style="display: flex; gap: 4px;">
+                                        <button onclick="app.renameCategoryName(${category.id})" style="padding: 4px 8px; background: #3d3d3d; color: #e8e8e8; border: none; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: 600;">
+                                            Edit
+                                        </button>
+                                        <button onclick="app.manageExercises(${category.id})" style="padding: 4px 8px; background: #3d3d3d; color: #e8e8e8; border: none; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: 600;">
+                                            Manage
+                                        </button>
+                                        <button onclick="app.removeCustomCategory(${category.id})" style="padding: 4px 8px; background: #7f1d1d; color: #fca5a5; border: none; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: 600;">
+                                            Delete
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                container.innerHTML = html;
+            },
+
+            // Add custom category
+            addCustomCategory() {
+                if (this.data.customCategories.length >= 3) {
+                    alert('Maximum 3 custom categories reached!');
+                    return;
+                }
+                
+                let name = prompt('Enter category name (letters only, max 20 chars):');
+                if (name === null) return;
+                name = name.trim();
+                
+                // Validate: letters only, max 20 chars
+                if (!name) {
+                    alert('Category name is required.');
+                    return;
+                }
+                if (!/^[a-zA-Z\s]+$/.test(name)) {
+                    alert('Category name must contain letters only.');
+                    return;
+                }
+                if (name.length > 20) {
+                    alert('Category name must be 20 characters or less.');
+                    return;
+                }
+                
+                const newCategory = {
+                    id: Date.now(),
+                    name,
+                    exercises: []
+                };
+                
+                this.data.customCategories.push(newCategory);
+                this.saveData();
+                this.renderCustomCategories();
+            },
+
+            // Remove custom category
+            removeCustomCategory(id) {
+                if (confirm('Delete this custom category and all its exercises?')) {
+                    this.data.customCategories = this.data.customCategories.filter(c => c.id !== id);
+                    this.saveData();
+                    this.renderCustomCategories();
+                    this.updateDashboard();
+                }
+            },
+
+            // Manage exercises in category
+            manageExercises(categoryId) {
+                const category = this.data.customCategories.find(c => c.id === categoryId);
+                if (!category) return;
+                
+                // Create modal content
+                let html = `
+                    <div class="overlay" id="manage-exercises-overlay" onclick="app.closeManageExercises()" style="display: block;"></div>
+                    <div class="customize-modal" id="manage-exercises-modal" style="display: block;">
+                        <div class="customize-modal-header">✏️ Manage: ${category.name}</div>
+                        <div style="max-height: 400px; overflow-y: auto; margin-bottom: 12px;">
+                `;
+                
+                // Show existing exercises
+                if (category.exercises && category.exercises.length > 0) {
+                    category.exercises.forEach(ex => {
+                        const trackingLabel = ex.trackingType === 'reps' ? 'Reps' : ex.trackingType === 'distance' ? 'Distance' : 'Log Day';
+                        html += `
+                            <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px; background: #2d2d2d; border-radius: 6px; margin-bottom: 6px;">
+                                <div>
+                                    <div style="font-weight: 600; color: #e8e8e8; font-size: 13px;">${ex.name}</div>
+                                    <div style="font-size: 11px; color: #9ca3af;">(${trackingLabel})</div>
+                                </div>
+                                <div style="display: flex; gap: 4px;">
+                                    <button onclick="app.renameExercise(${categoryId}, ${ex.id})" style="padding: 4px 8px; background: #3d3d3d; color: #e8e8e8; border: none; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: 600;">
+                                        Edit
+                                    </button>
+                                    <button onclick="app.removeExercise(${categoryId}, ${ex.id})" style="padding: 4px 8px; background: #7f1d1d; color: #fca5a5; border: none; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: 600;">
+                                        Delete
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+                    });
+                } else {
+                    html += '<p style="color: #6b7280; text-align: center; padding: 16px 0; font-size: 13px;">No exercises yet</p>';
+                }
+                
+                html += '</div>';
+                
+                // Add exercise button
+                if (!category.exercises || category.exercises.length < 5) {
+                    html += `
+                        <button onclick="app.addExerciseToCategory(${categoryId})" style="width: 100%; padding: 10px; background: var(--primary-dark); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; margin-bottom: 8px;">
+                            + Add Exercise
+                        </button>
+                    `;
+                }
+                
+                html += `
+                    <button onclick="app.closeManageExercises()" style="width: 100%; padding: 10px; background: #3d3d3d; color: #e8e8e8; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">
+                        Done
+                    </button>
+                    </div>
+                `;
+                
+                // Add to page
+                document.body.insertAdjacentHTML('beforeend', html);
+            },
+
+            // Close manage exercises modal
+            closeManageExercises() {
+                const overlay = document.getElementById('manage-exercises-overlay');
+                const modal = document.getElementById('manage-exercises-modal');
+                if (overlay) overlay.remove();
+                if (modal) modal.remove();
+            },
+
+            // Add exercise to category
+            addExerciseToCategory(categoryId) {
+                const category = this.data.customCategories.find(c => c.id === categoryId);
+                if (!category) return;
+                
+                if (category.exercises && category.exercises.length >= 5) {
+                    alert('Maximum 5 exercises per category reached!');
+                    return;
+                }
+                
+                let name = prompt('Enter exercise name (letters only, max 20 chars):');
+                if (name === null) return;
+                name = name.trim();
+                
+                // Validate
+                if (!name) {
+                    alert('Exercise name is required.');
+                    return;
+                }
+                if (!/^[a-zA-Z\s]+$/.test(name)) {
+                    alert('Exercise name must contain letters only.');
+                    return;
+                }
+                if (name.length > 20) {
+                    alert('Exercise name must be 20 characters or less.');
+                    return;
+                }
+                
+                // Show tracking type selection modal
+                this.showTrackingTypeModal(categoryId, name);
+            },
+
+            // Show tracking type selection modal
+            showTrackingTypeModal(categoryId, exerciseName) {
+                const html = `
+                    <div class="overlay" id="tracking-type-overlay" onclick="app.closeTrackingTypeModal()" style="display: block;"></div>
+                    <div class="customize-modal" id="tracking-type-modal" style="display: block; max-width: 320px;">
+                        <div class="customize-modal-header">Track With</div>
+                        <p style="color: #9ca3af; font-size: 13px; margin-bottom: 16px; text-align: center;">
+                            How do you want to track "${exerciseName}"?
+                        </p>
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                            <button onclick="app.confirmTrackingType(${categoryId}, '${exerciseName}', 'reps')" 
+                                    style="width: 100%; padding: 12px; background: var(--primary-dark); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px;">
+                                Reps
+                            </button>
+                            <button onclick="app.confirmTrackingType(${categoryId}, '${exerciseName}', 'distance')" 
+                                    style="width: 100%; padding: 12px; background: var(--primary-dark); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px;">
+                                Distance
+                            </button>
+                            <button onclick="app.confirmTrackingType(${categoryId}, '${exerciseName}', 'logday')" 
+                                    style="width: 100%; padding: 12px; background: var(--primary-dark); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px;">
+                                Log Day
+                            </button>
+                            <button onclick="app.closeTrackingTypeModal()" 
+                                    style="width: 100%; padding: 10px; background: #3d3d3d; color: #e8e8e8; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                `;
+                document.body.insertAdjacentHTML('beforeend', html);
+            },
+
+            // Close tracking type modal
+            closeTrackingTypeModal() {
+                const overlay = document.getElementById('tracking-type-overlay');
+                const modal = document.getElementById('tracking-type-modal');
+                if (overlay) overlay.remove();
+                if (modal) modal.remove();
+            },
+
+            // Confirm tracking type and create exercise
+            confirmTrackingType(categoryId, exerciseName, trackingType) {
+                const category = this.data.customCategories.find(c => c.id === categoryId);
+                if (!category) return;
+                
+                const newExercise = {
+                    id: Date.now(),
+                    name: exerciseName,
+                    trackingType
+                };
+                
+                if (!category.exercises) category.exercises = [];
+                category.exercises.push(newExercise);
+                this.saveData();
+                
+                // Close tracking modal
+                this.closeTrackingTypeModal();
+                
+                // Refresh manage exercises modal
+                this.closeManageExercises();
+                this.manageExercises(categoryId);
+                this.renderCustomCategories();
+            },
+
+            // Remove exercise from category
+            removeExercise(categoryId, exerciseId) {
+                const category = this.data.customCategories.find(c => c.id === categoryId);
+                if (!category) return;
+                
+                if (confirm('Delete this exercise?')) {
+                    category.exercises = category.exercises.filter(e => e.id !== exerciseId);
+                    this.saveData();
+                    
+                    // Refresh modal
+                    this.closeManageExercises();
+                    this.manageExercises(categoryId);
+                    this.renderCustomCategories();
+                    this.updateDashboard();
+                }
+            },
+
+            // Rename category name
+            renameCategoryName(categoryId) {
+                const category = this.data.customCategories.find(c => c.id === categoryId);
+                if (!category) return;
+                
+                let newName = prompt('Enter new category name (letters only, max 20 chars):', category.name);
+                if (newName === null) return;
+                newName = newName.trim();
+                
+                // Validate
+                if (!newName) {
+                    alert('Category name is required.');
+                    return;
+                }
+                if (!/^[a-zA-Z\s]+$/.test(newName)) {
+                    alert('Category name must contain letters only.');
+                    return;
+                }
+                if (newName.length > 20) {
+                    alert('Category name must be 20 characters or less.');
+                    return;
+                }
+                
+                category.name = newName;
+                this.saveData();
+                this.renderCustomCategories();
+            },
+
+            // Rename exercise
+            renameExercise(categoryId, exerciseId) {
+                const category = this.data.customCategories.find(c => c.id === categoryId);
+                if (!category) return;
+                
+                const exercise = category.exercises.find(e => e.id === exerciseId);
+                if (!exercise) return;
+                
+                let newName = prompt('Enter new exercise name (letters only, max 20 chars):', exercise.name);
+                if (newName === null) return;
+                newName = newName.trim();
+                
+                // Validate
+                if (!newName) {
+                    alert('Exercise name is required.');
+                    return;
+                }
+                if (!/^[a-zA-Z\s]+$/.test(newName)) {
+                    alert('Exercise name must contain letters only.');
+                    return;
+                }
+                if (newName.length > 20) {
+                    alert('Exercise name must be 20 characters or less.');
+                    return;
+                }
+                
+                exercise.name = newName;
+                this.saveData();
+                
+                // Refresh modal
+                this.closeManageExercises();
+                this.manageExercises(categoryId);
+                this.renderCustomCategories();
+            },
+
+            // Toggle custom category info modal
+            toggleCustomCategoryInfoModal() {
+                const modal = document.getElementById('custom-category-info-modal');
+                modal.classList.toggle('active');
+            },
+
             // Theme Functions
             loadTheme() {
                 const savedTheme = localStorage.getItem('appTheme') || 'blue';
@@ -7220,35 +8720,200 @@ async createPalCode() {
                 const centerY = canvas.height / 2;
                 const radius = canvas.width / 2;
                 
-                // Draw color wheel
-                for (let angle = 0; angle < 360; angle++) {
-                    const startAngle = (angle - 1) * Math.PI / 180;
-                    const endAngle = angle * Math.PI / 180;
-                    
-                    ctx.beginPath();
-                    ctx.moveTo(centerX, centerY);
-                    ctx.arc(centerX, centerY, radius, startAngle, endAngle);
-                    ctx.closePath();
-                    
-                    const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, radius);
-                    gradient.addColorStop(0, 'white');
-                    gradient.addColorStop(0.7, `hsl(${angle}, 100%, 50%)`);
-                    gradient.addColorStop(1, `hsl(${angle}, 100%, 30%)`);
-                    
-                    ctx.fillStyle = gradient;
-                    ctx.fill();
+                // Create image data for pixel-by-pixel drawing (no banding!)
+                const imageData = ctx.createImageData(canvas.width, canvas.height);
+                const data = imageData.data;
+                
+                // Draw color wheel pixel by pixel - Option B gradient
+                for (let x = 0; x < canvas.width; x++) {
+                    for (let y = 0; y < canvas.height; y++) {
+                        const dx = x - centerX;
+                        const dy = y - centerY;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+                        
+                        // Skip pixels outside circle
+                        if (distance > radius) {
+                            continue;
+                        }
+                        
+                        // Calculate angle (hue) - 0 to 360
+                        let angle = Math.atan2(dy, dx) * 180 / Math.PI;
+                        if (angle < 0) angle += 360;
+                        
+                        // Calculate distance ratio (0 = center, 1 = edge)
+                        const distanceRatio = distance / radius;
+                        
+                        // Option B gradient: Light color center → Pure color → Dark edge
+                        let saturation, lightness;
+                        
+                        if (distanceRatio < 0.6) {
+                            // Center to 60%: Light color (80% sat, 70% light) → Pure color (100% sat, 50% light)
+                            const t = distanceRatio / 0.6;
+                            saturation = 80 + (20 * t); // 80% → 100%
+                            lightness = 70 - (20 * t);  // 70% → 50%
+                        } else {
+                            // 60% to edge: Pure color (100% sat, 50% light) → Dark (100% sat, 30% light)
+                            const t = (distanceRatio - 0.6) / 0.4;
+                            saturation = 100;
+                            lightness = 50 - (20 * t);  // 50% → 30%
+                        }
+                        
+                        // Convert HSL to RGB
+                        const rgb = this.hslToRgb(angle / 360, saturation / 100, lightness / 100);
+                        
+                        // Set pixel
+                        const pixelIndex = (y * canvas.width + x) * 4;
+                        data[pixelIndex] = rgb[0];     // R
+                        data[pixelIndex + 1] = rgb[1]; // G
+                        data[pixelIndex + 2] = rgb[2]; // B
+                        data[pixelIndex + 3] = 255;    // A
+                    }
                 }
                 
-                // Add click listener
-                canvas.onclick = (e) => this.handleColorWheelClick(e);
+                // Put the image data on canvas
+                ctx.putImageData(imageData, 0, 0);
+                
+                // Add magnifier event listeners
+                this.isColorWheelDragging = false;
+                
+                const startMagnifier = (e) => {
+                    e.preventDefault();
+                    this.isColorWheelDragging = true;
+                    this.updateMagnifier(e);
+                };
+                
+                const moveMagnifier = (e) => {
+                    if (this.isColorWheelDragging) {
+                        e.preventDefault();
+                        this.updateMagnifier(e);
+                    }
+                };
+                
+                const endMagnifier = (e) => {
+                    if (this.isColorWheelDragging) {
+                        e.preventDefault();
+                        this.isColorWheelDragging = false;
+                        this.hideMagnifier();
+                        this.handleColorWheelClick(e);
+                    }
+                };
+                
+                // Mouse events
+                canvas.onmousedown = startMagnifier;
+                canvas.onmousemove = moveMagnifier;
+                canvas.onmouseup = endMagnifier;
+                canvas.onmouseleave = () => {
+                    this.isColorWheelDragging = false;
+                    this.hideMagnifier();
+                };
+                
+                // Touch events
+                canvas.ontouchstart = startMagnifier;
+                canvas.ontouchmove = moveMagnifier;
+                canvas.ontouchend = endMagnifier;
             },
             
-            // Handle color wheel click
+            // Update magnifier position and content
+            updateMagnifier(event) {
+                const canvas = this.colorWheelCanvas;
+                const rect = canvas.getBoundingClientRect();
+                
+                // Get position (handle both mouse and touch)
+                let clientX, clientY;
+                if (event.touches && event.touches[0]) {
+                    clientX = event.touches[0].clientX;
+                    clientY = event.touches[0].clientY;
+                } else {
+                    clientX = event.clientX;
+                    clientY = event.clientY;
+                }
+                
+                const x = clientX - rect.left;
+                const y = clientY - rect.top;
+                
+                const centerX = canvas.width / 2;
+                const centerY = canvas.height / 2;
+                
+                // Check if within circle
+                const dx = x - centerX;
+                const dy = y - centerY;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                const radius = canvas.width / 2;
+                
+                if (distance > radius) return;
+                
+                // Show magnifier and instruction
+                const magnifier = document.getElementById('color-magnifier');
+                const instruction = document.getElementById('magnifier-instruction');
+                magnifier.style.display = 'block';
+                instruction.style.display = 'block';
+                
+                // Position magnifier (offset so finger doesn't cover it)
+                const magnifierSize = 120;
+                const offsetY = -magnifierSize - 20; // Above finger
+                magnifier.style.left = `${x - magnifierSize / 2}px`;
+                magnifier.style.top = `${y + offsetY}px`;
+                
+                // Draw magnified content
+                const magnifierCanvas = document.getElementById('magnifier-canvas');
+                const magnifierCtx = magnifierCanvas.getContext('2d');
+                
+                // Clear magnifier
+                magnifierCtx.clearRect(0, 0, magnifierSize, magnifierSize);
+                
+                // Calculate source area (3x zoom)
+                const sourceSize = magnifierSize / 3;
+                const sourceX = x - sourceSize / 2;
+                const sourceY = y - sourceSize / 2;
+                
+                // Draw magnified section
+                magnifierCtx.drawImage(
+                    canvas,
+                    sourceX, sourceY, sourceSize, sourceSize,
+                    0, 0, magnifierSize, magnifierSize
+                );
+                
+                // Draw center crosshair
+                magnifierCtx.strokeStyle = 'white';
+                magnifierCtx.lineWidth = 2;
+                magnifierCtx.beginPath();
+                magnifierCtx.moveTo(magnifierSize / 2 - 10, magnifierSize / 2);
+                magnifierCtx.lineTo(magnifierSize / 2 + 10, magnifierSize / 2);
+                magnifierCtx.moveTo(magnifierSize / 2, magnifierSize / 2 - 10);
+                magnifierCtx.lineTo(magnifierSize / 2, magnifierSize / 2 + 10);
+                magnifierCtx.stroke();
+                
+                // Update color preview
+                const imageData = this.colorWheelCtx.getImageData(x, y, 1, 1);
+                const pixel = imageData.data;
+                const color = `#${this.rgbToHex(pixel[0], pixel[1], pixel[2])}`;
+                this.selectedColor = color;
+                document.getElementById('selected-color-preview').style.background = color;
+            },
+            
+            // Hide magnifier
+            hideMagnifier() {
+                document.getElementById('color-magnifier').style.display = 'none';
+                document.getElementById('magnifier-instruction').style.display = 'none';
+            },
+            
+            // Handle color wheel click (for final selection)
             handleColorWheelClick(event) {
                 const canvas = this.colorWheelCanvas;
                 const rect = canvas.getBoundingClientRect();
-                const x = event.clientX - rect.left;
-                const y = event.clientY - rect.top;
+                
+                // Get position (handle both mouse and touch)
+                let clientX, clientY;
+                if (event.changedTouches && event.changedTouches[0]) {
+                    clientX = event.changedTouches[0].clientX;
+                    clientY = event.changedTouches[0].clientY;
+                } else {
+                    clientX = event.clientX;
+                    clientY = event.clientY;
+                }
+                
+                const x = clientX - rect.left;
+                const y = clientY - rect.top;
                 
                 const centerX = canvas.width / 2;
                 const centerY = canvas.height / 2;
@@ -7261,13 +8926,40 @@ async createPalCode() {
                 
                 if (distance > radius) return; // Outside circle
                 
-                // Get color at click position
-                const imageData = this.colorWheelCtx.getImageData(x, y, 1, 1);
-                const pixel = imageData.data;
-                const color = `#${this.rgbToHex(pixel[0], pixel[1], pixel[2])}`;
+                // Color already set by updateMagnifier, just confirm it's set
+                if (!this.selectedColor) {
+                    const imageData = this.colorWheelCtx.getImageData(x, y, 1, 1);
+                    const pixel = imageData.data;
+                    const color = `#${this.rgbToHex(pixel[0], pixel[1], pixel[2])}`;
+                    this.selectedColor = color;
+                    document.getElementById('selected-color-preview').style.background = color;
+                }
+            },
+            
+            // Convert HSL to RGB
+            hslToRgb(h, s, l) {
+                let r, g, b;
                 
-                this.selectedColor = color;
-                document.getElementById('selected-color-preview').style.background = color;
+                if (s === 0) {
+                    r = g = b = l; // Achromatic
+                } else {
+                    const hue2rgb = (p, q, t) => {
+                        if (t < 0) t += 1;
+                        if (t > 1) t -= 1;
+                        if (t < 1/6) return p + (q - p) * 6 * t;
+                        if (t < 1/2) return q;
+                        if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+                        return p;
+                    };
+                    
+                    const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+                    const p = 2 * l - q;
+                    r = hue2rgb(p, q, h + 1/3);
+                    g = hue2rgb(p, q, h);
+                    b = hue2rgb(p, q, h - 1/3);
+                }
+                
+                return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
             },
             
             // Convert RGB to Hex
@@ -7319,6 +9011,11 @@ async createPalCode() {
                 const g = parseInt(color.slice(3, 5), 16);
                 const b = parseInt(color.slice(5, 7), 16);
                 
+                // Calculate lighter shade (add 30% towards white)
+                const lighterR = Math.min(255, Math.floor(r + (255 - r) * 0.3));
+                const lighterG = Math.min(255, Math.floor(g + (255 - g) * 0.3));
+                const lighterB = Math.min(255, Math.floor(b + (255 - b) * 0.3));
+                
                 // Calculate darker shades
                 const darkerR = Math.floor(r * 0.8);
                 const darkerG = Math.floor(g * 0.8);
@@ -7330,7 +9027,7 @@ async createPalCode() {
                 
                 // Apply to CSS variables
                 document.documentElement.style.setProperty('--primary', color);
-                document.documentElement.style.setProperty('--primary-light', color);
+                document.documentElement.style.setProperty('--primary-light', `rgb(${lighterR}, ${lighterG}, ${lighterB})`);
                 document.documentElement.style.setProperty('--primary-dark', `rgb(${darkerR}, ${darkerG}, ${darkerB})`);
                 document.documentElement.style.setProperty('--primary-darker', `rgb(${darkestR}, ${darkestG}, ${darkestB})`);
             },
