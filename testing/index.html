@@ -2765,6 +2765,24 @@ Toggle to see weekly or lifetime stats!
 </div>
 </div>
 
+<!-- Goals Info Modal -->
+<div class="weight-info-modal" id="goals-info-modal" onclick="if(event.target === this) app.closeInfoModal('goals-info-modal')">
+<div class="weight-info-content">
+<div class="weight-info-header">
+<div class="weight-info-title">
+<span>⚙️</span>
+Important Reminder
+</div>
+<button class="weight-info-close" onclick="app.closeInfoModal('goals-info-modal')">×</button>
+</div>
+<div class="weight-info-list" style="padding: 16px; line-height: 1.8;">
+<div class="weight-info-highlight" style="margin-bottom: 0;">
+Always click "Save Settings" after making changes or adding categories/habits!
+</div>
+</div>
+</div>
+</div>
+
 <!-- Leaderboard Info Modal -->
 <div class="weight-info-modal" id="leaderboard-info-modal" onclick="if(event.target === this) app.closeInfoModal('leaderboard-info-modal')">
 <div class="weight-info-content">
@@ -2951,7 +2969,7 @@ Rankings update daily. Add PALs to compete with friends!
 </div>
 <!-- Goals Screen -->
 <div class="screen" id="goals-screen">
-<h1>Goals</h1>
+<h1 style="display: flex; align-items: center; gap: 8px;">Goals <span class="info-icon" onclick="app.showGoalsInfo()" title="Important reminder">i</span></h1>
 <p class="subtitle">Customize your goals and preferences</p>
 <!-- Slim compact sections -->
 <div style="display: flex; flex-direction: column; gap: 12px;">
@@ -3264,7 +3282,7 @@ Perfect for unique exercises not in our list!
         </a>
 <button class="welcome-button" onclick="app.closeWelcome()">Let's Go</button>
 <div style="text-align: center; color: #6b7280; font-size: 11px; margin-top: 16px;">
-            v2.1.2
+            v2.1.3
         </div>
 </div>
 <!-- Customize Dashboard Modal -->
@@ -3543,7 +3561,7 @@ Perfect for unique exercises not in our list!
 </div>
 <script>
         // App Version
-        const APP_VERSION = '2.1.2';
+        const APP_VERSION = '2.1.3';
         
         // Main App Object
         const app = {
@@ -3900,6 +3918,7 @@ Perfect for unique exercises not in our list!
                     
                     const categoryDiv = document.createElement('div');
                     categoryDiv.className = 'accordion-category';
+                    categoryDiv.setAttribute('data-custom-category', 'true'); // Mark as custom
                     
                     const exerciseCount = category.exercises.length;
                     
@@ -3927,6 +3946,28 @@ Perfect for unique exercises not in our list!
                     categoryHTML += '</div>';
                     categoryDiv.innerHTML = categoryHTML;
                     accordion.appendChild(categoryDiv);
+                });
+            },
+
+            // Refresh custom categories in all existing activity rows
+            refreshActivityRows() {
+                // Find all activity accordions (only the main accordion containers, not nested ones)
+                const logScreen = document.getElementById('log-screen');
+                const activityCards = logScreen.querySelectorAll('[id^="accordion-"]:not([id*="-cardio"]):not([id*="-strength"]):not([id*="-steps"]):not([id*="-custom"])');
+                
+                activityCards.forEach(accordion => {
+                    // Extract activity ID from accordion id (e.g., "accordion-1" -> "1")
+                    const activityId = parseInt(accordion.id.replace('accordion-', ''));
+                    
+                    // Skip if not a number (means it's a nested accordion)
+                    if (isNaN(activityId)) return;
+                    
+                    // Remove all existing custom category accordions using data attribute
+                    const customCategories = accordion.querySelectorAll('[data-custom-category="true"]');
+                    customCategories.forEach(cat => cat.remove());
+                    
+                    // Re-add custom categories
+                    this.addCustomCategoriesToActivityCard(activityId);
                 });
             },
 
@@ -5765,6 +5806,7 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                 // Refresh PALS eligibility toggles (e.g., weight leaderboard gating)
                 this.updatePalsUI();
                 this.renderHabits(); // Re-render to return to display mode
+                this.refreshActivityRows(); // Refresh custom categories in activity rows
                 
                 const successMsg = document.getElementById('settings-success');
                 successMsg.classList.add('show');
@@ -6219,6 +6261,14 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
             // Show Dashboard info modal
             showDashboardInfo() {
                 const modal = document.getElementById('dashboard-info-modal');
+                if (modal) {
+                    modal.classList.add('active');
+                }
+            },
+
+            // Show Goals info modal
+            showGoalsInfo() {
+                const modal = document.getElementById('goals-info-modal');
                 if (modal) {
                     modal.classList.add('active');
                 }
@@ -8223,6 +8273,9 @@ async createPalCode() {
                                         <div style="font-size: 11px; color: #9ca3af;">${exerciseCount}/5 exercises</div>
                                     </div>
                                     <div style="display: flex; gap: 4px;">
+                                        <button onclick="app.renameCategoryName(${category.id})" style="padding: 4px 8px; background: #3d3d3d; color: #e8e8e8; border: none; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: 600;">
+                                            Edit
+                                        </button>
                                         <button onclick="app.manageExercises(${category.id})" style="padding: 4px 8px; background: #3d3d3d; color: #e8e8e8; border: none; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: 600;">
                                             Manage
                                         </button>
@@ -8307,9 +8360,14 @@ async createPalCode() {
                                     <div style="font-weight: 600; color: #e8e8e8; font-size: 13px;">${ex.name}</div>
                                     <div style="font-size: 11px; color: #9ca3af;">(${trackingLabel})</div>
                                 </div>
-                                <button onclick="app.removeExercise(${categoryId}, ${ex.id})" style="padding: 4px 8px; background: #7f1d1d; color: #fca5a5; border: none; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: 600;">
-                                    Delete
-                                </button>
+                                <div style="display: flex; gap: 4px;">
+                                    <button onclick="app.renameExercise(${categoryId}, ${ex.id})" style="padding: 4px 8px; background: #3d3d3d; color: #e8e8e8; border: none; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: 600;">
+                                        Edit
+                                    </button>
+                                    <button onclick="app.removeExercise(${categoryId}, ${ex.id})" style="padding: 4px 8px; background: #7f1d1d; color: #fca5a5; border: none; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: 600;">
+                                        Delete
+                                    </button>
+                                </div>
                             </div>
                         `;
                     });
@@ -8458,6 +8516,69 @@ async createPalCode() {
                     this.renderCustomCategories();
                     this.updateDashboard();
                 }
+            },
+
+            // Rename category name
+            renameCategoryName(categoryId) {
+                const category = this.data.customCategories.find(c => c.id === categoryId);
+                if (!category) return;
+                
+                let newName = prompt('Enter new category name (letters only, max 20 chars):', category.name);
+                if (newName === null) return;
+                newName = newName.trim();
+                
+                // Validate
+                if (!newName) {
+                    alert('Category name is required.');
+                    return;
+                }
+                if (!/^[a-zA-Z\s]+$/.test(newName)) {
+                    alert('Category name must contain letters only.');
+                    return;
+                }
+                if (newName.length > 20) {
+                    alert('Category name must be 20 characters or less.');
+                    return;
+                }
+                
+                category.name = newName;
+                this.saveData();
+                this.renderCustomCategories();
+            },
+
+            // Rename exercise
+            renameExercise(categoryId, exerciseId) {
+                const category = this.data.customCategories.find(c => c.id === categoryId);
+                if (!category) return;
+                
+                const exercise = category.exercises.find(e => e.id === exerciseId);
+                if (!exercise) return;
+                
+                let newName = prompt('Enter new exercise name (letters only, max 20 chars):', exercise.name);
+                if (newName === null) return;
+                newName = newName.trim();
+                
+                // Validate
+                if (!newName) {
+                    alert('Exercise name is required.');
+                    return;
+                }
+                if (!/^[a-zA-Z\s]+$/.test(newName)) {
+                    alert('Exercise name must contain letters only.');
+                    return;
+                }
+                if (newName.length > 20) {
+                    alert('Exercise name must be 20 characters or less.');
+                    return;
+                }
+                
+                exercise.name = newName;
+                this.saveData();
+                
+                // Refresh modal
+                this.closeManageExercises();
+                this.manageExercises(categoryId);
+                this.renderCustomCategories();
             },
 
             // Toggle custom category info modal
