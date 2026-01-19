@@ -3282,7 +3282,7 @@ Perfect for unique exercises not in our list!
         </a>
 <button class="welcome-button" onclick="app.closeWelcome()">Let's Go</button>
 <div style="text-align: center; color: #6b7280; font-size: 11px; margin-top: 16px;">
-            v2.1.3
+            v2.1.4
         </div>
 </div>
 <!-- Customize Dashboard Modal -->
@@ -3561,7 +3561,7 @@ Perfect for unique exercises not in our list!
 </div>
 <script>
         // App Version
-        const APP_VERSION = '2.1.3';
+        const APP_VERSION = '2.1.4';
         
         // Main App Object
         const app = {
@@ -5556,7 +5556,39 @@ Perfect for unique exercises not in our list!
                     });
                 }
                 
-                if (summaryItems.length === 0) {
+                // Custom category exercises (separate array for display after divider)
+                const customItems = [];
+                if (this.data.customCategories && this.data.customCategories.length > 0) {
+                    this.data.customCategories.forEach(category => {
+                        if (category.exercises && category.exercises.length > 0) {
+                            category.exercises.forEach(ex => {
+                                const exerciseKey = `custom-${category.id}-${ex.id}`;
+                                
+                                // Calculate stats for this custom exercise
+                                const weekStats = this.getCustomExerciseStats(exerciseKey, 'week');
+                                const monthStatsCustom = this.getCustomExerciseStats(exerciseKey, 'month');
+                                const totalStatsCustom = this.getCustomExerciseStats(exerciseKey, 'total');
+                                
+                                // Only add if there's activity
+                                if (totalStatsCustom.value > 0) {
+                                    const suffix = ex.trackingType === 'reps' ? ' reps' : 
+                                                   ex.trackingType === 'distance' ? ` ${unit}` : 
+                                                   ' days';
+                                    
+                                    customItems.push({
+                                        name: ex.name,
+                                        week: weekStats.value > 0 ? `${weekStats.value.toLocaleString()}${suffix}` : '-',
+                                        month: monthStatsCustom.value > 0 ? `${monthStatsCustom.value.toLocaleString()}${suffix}` : '-',
+                                        total: `${totalStatsCustom.value.toLocaleString()}${suffix}`,
+                                        isCustom: true
+                                    });
+                                }
+                            });
+                        }
+                    });
+                }
+                
+                if (summaryItems.length === 0 && customItems.length === 0) {
                     summaryList.innerHTML = '<p style="text-align: center; color: #6b7280; font-size: 14px; padding: 20px 0;">No activities logged yet.</p>';
                 } else {
                     // Match Habit Report format exactly - using grid layout
@@ -5569,7 +5601,7 @@ Perfect for unique exercises not in our list!
                         </div>
                     `;
                     
-                    // Data rows - new color scheme: All three columns bold
+                    // Regular activity data rows
                     html += summaryItems.map(item => `
                         <div style="display: grid; grid-template-columns: minmax(180px, 1fr) 1fr 1fr 1fr; gap: 12px; align-items: center; padding: 8px 0; border-bottom: 1px solid #2d2d2d; font-size: 13px;">
                             <div style="color: #9ca3af;">${item.name}</div>
@@ -5578,6 +5610,22 @@ Perfect for unique exercises not in our list!
                             <div style="text-align: center; color: #9ca3af; font-weight: 700;">${item.total}</div>
                         </div>
                     `).join('');
+                    
+                    // Add custom categories after divider if they exist
+                    if (customItems.length > 0) {
+                        // Add divider line
+                        html += `<div style="margin: 12px 0; border-top: 1px solid #3d3d3d;"></div>`;
+                        
+                        // Custom activity data rows with gold text for activity name
+                        html += customItems.map(item => `
+                            <div style="display: grid; grid-template-columns: minmax(180px, 1fr) 1fr 1fr 1fr; gap: 12px; align-items: center; padding: 8px 0; border-bottom: 1px solid #2d2d2d; font-size: 13px;">
+                                <div style="color: #d4af37;">${item.name}</div>
+                                <div style="text-align: center; color: var(--primary); font-weight: 700;">${item.week}</div>
+                                <div style="text-align: center; color: var(--primary-light); font-weight: 700;">${item.month}</div>
+                                <div style="text-align: center; color: #9ca3af; font-weight: 700;">${item.total}</div>
+                            </div>
+                        `).join('');
+                    }
                     
                     summaryList.innerHTML = html;
                 }
@@ -5743,6 +5791,42 @@ Perfect for unique exercises not in our list!
                     this.data.currentView.calendarYear--;
                 }
                 this.renderCalendar();
+            },
+
+            // Get custom exercise stats for a specific time period
+            getCustomExerciseStats(exerciseKey, period) {
+                const now = new Date();
+                let startDate;
+                
+                if (period === 'week') {
+                    startDate = new Date(now);
+                    startDate.setDate(now.getDate() - now.getDay());
+                    startDate.setHours(0, 0, 0, 0);
+                } else if (period === 'month') {
+                    startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+                } else {
+                    // 'total' - all time
+                    startDate = new Date(0);
+                }
+                
+                const activities = this.data.activities.filter(a => {
+                    const actDate = new Date(a.date + 'T12:00:00');
+                    return a.type === exerciseKey && actDate >= startDate;
+                });
+                
+                // Sum up values based on tracking type
+                let totalValue = 0;
+                activities.forEach(a => {
+                    if (a.reps) {
+                        totalValue += a.reps;
+                    } else if (a.distance) {
+                        totalValue += a.distance;
+                    } else {
+                        totalValue += 1; // logday - count days
+                    }
+                });
+                
+                return { value: totalValue };
             },
 
             // Update goals UI
