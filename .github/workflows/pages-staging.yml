@@ -1,0 +1,50 @@
+name: Publish main + testing to Pages
+
+on:
+  push:
+    branches: [main, testing]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo (required for deploy action)
+        uses: actions/checkout@v4
+
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: main_src
+
+      - name: Checkout testing
+        uses: actions/checkout@v4
+        with:
+          ref: testing
+          path: test_src
+
+      - name: Build publish folder
+        run: |
+          rm -rf publish
+          mkdir -p publish/testing
+
+          rsync -av --delete \
+            --exclude ".git" \
+            --exclude ".github" \
+            main_src/ publish/
+
+          rsync -av --delete \
+            --exclude ".git" \
+            --exclude ".github" \
+            test_src/ publish/testing/
+
+      - name: Deploy to gh-pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
+          folder: publish
+          clean: true
