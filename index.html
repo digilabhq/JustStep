@@ -3282,7 +3282,7 @@ Perfect for unique exercises not in our list!
         </a>
 <button class="welcome-button" onclick="app.closeWelcome()">Let's Go</button>
 <div style="text-align: center; color: #6b7280; font-size: 11px; margin-top: 16px;">
-            v2.1.4
+            v2.1.6
         </div>
 </div>
 <!-- Customize Dashboard Modal -->
@@ -3561,7 +3561,7 @@ Perfect for unique exercises not in our list!
 </div>
 <script>
         // App Version
-        const APP_VERSION = '2.1.4';
+        const APP_VERSION = '2.1.6';
         
         // Main App Object
         const app = {
@@ -4335,6 +4335,9 @@ Perfect for unique exercises not in our list!
                     // Get value for cardio and reps-based exercises
                     const valueElement = document.getElementById(`value-${i}`);
                     
+                    // Get trackingType from accordion dataset (for custom exercises)
+                    const trackingType = accordion.dataset.trackingType;
+                    
                     // Define activities that REQUIRE a value
                     const requiresValue = [
                         'walk', 'run', 'dog', 'hiking', 'biking', 'stairs', 'steps',
@@ -4350,6 +4353,10 @@ Perfect for unique exercises not in our list!
                         'frontraises', 'lateralraises', 'reardeltflys', 'shoulderpress', 'shrugs'
                     ];
                     
+                    // Check if custom exercise requires value based on trackingType
+                    const isCustomExercise = type && type.startsWith('custom-');
+                    const customRequiresValue = isCustomExercise && trackingType && (trackingType === 'reps' || trackingType === 'distance');
+                    
                     if (valueElement) {
                         const value = parseFloat(valueElement.value);
                         if (value && value > 0) {
@@ -4360,21 +4367,27 @@ Perfect for unique exercises not in our list!
                                 activity.floors = value;
                             } else if (type === 'steps') {
                                 activity.steps = value;
+                            } else if (isCustomExercise && trackingType === 'distance') {
+                                // Custom exercise with distance tracking
+                                activity.distance = this.data.goals.unitPreference === 'miles' ? value * 1.60934 : value;
+                            } else if (isCustomExercise && trackingType === 'reps') {
+                                // Custom exercise with reps tracking
+                                activity.reps = value;
                             } else if (requiresValue.includes(type)) {
-                                // All other exercises use reps
+                                // All other standard exercises use reps
                                 activity.reps = value;
                             }
-                        } else if (requiresValue.includes(type)) {
+                        } else if (requiresValue.includes(type) || customRequiresValue) {
                             // ONLY skip if this activity type requires a value but none was entered
                             continue;
                         }
-                    } else if (requiresValue.includes(type)) {
+                    } else if (requiresValue.includes(type) || customRequiresValue) {
                         // No value element found, but activity requires value - skip it
                         continue;
                     }
                     // If we reach here, either:
                     // 1. Activity has a valid value, OR
-                    // 2. Activity doesn't require a value (like Strength Days)
+                    // 2. Activity doesn't require a value (like Strength Days or custom logday exercises)
 
                     activities.push(activity);
                 }
@@ -4627,7 +4640,7 @@ Perfect for unique exercises not in our list!
                             totalPullups += activity.reps;
                             if (isThisWeek) thisWeekPullups += activity.reps;
                             if (isPrevWeek) prevWeekPullups += activity.reps;
-                        } else if (activity.type === 'rollerabs') {
+                        } else if (activity.type === 'rollerabs' || activity.type === 'abwheelrollout') {
                             totalRollerAbs += activity.reps;
                             if (isThisWeek) thisWeekRollerAbs += activity.reps;
                             if (isPrevWeek) prevWeekRollerAbs += activity.reps;
@@ -4886,10 +4899,12 @@ Perfect for unique exercises not in our list!
                     if (exercise) exerciseTrackingType = exercise.trackingType;
                 }
                 
+                // Build the key we're looking for
+                const customKey = `custom-${categoryId}-${exerciseId}`;
+                
                 // Sum up values for this custom exercise
                 this.data.activities.forEach(activity => {
                     const activityDate = new Date(activity.date + 'T00:00:00');
-                    const customKey = `custom-${categoryId}-${exerciseId}`;
                     
                     if (activity.type === customKey) {
                         if (exerciseTrackingType === 'logday') {
@@ -4901,8 +4916,20 @@ Perfect for unique exercises not in our list!
                             if (activityDate >= prevWeekStart && activityDate <= prevWeekEnd) {
                                 uniqueDaysPrevWeek.add(activity.date);
                             }
-                        } else if (activity.reps) {
-                            // Sum reps or distance
+                        } else if (exerciseTrackingType === 'distance' && activity.distance) {
+                            // Sum distance
+                            const value = parseFloat(activity.distance) || 0;
+                            total += value;
+                            
+                            if (activityDate >= thisWeekStart && activityDate <= now) {
+                                thisWeek += value;
+                            }
+                            
+                            if (activityDate >= prevWeekStart && activityDate <= prevWeekEnd) {
+                                prevWeek += value;
+                            }
+                        } else if (exerciseTrackingType === 'reps' && activity.reps) {
+                            // Sum reps
                             const value = parseFloat(activity.reps) || 0;
                             total += value;
                             
@@ -4924,7 +4951,20 @@ Perfect for unique exercises not in our list!
                         thisWeek: uniqueDaysThisWeek.size, 
                         prevWeek: uniqueDaysPrevWeek.size 
                     };
+                } else if (exerciseTrackingType === 'distance') {
+                    // Convert km to miles if user preference is miles
+                    const KM_TO_MILES = 1.60934;
+                    if (this.data.goals.unitPreference === 'miles') {
+                        return {
+                            total: Math.round((total / KM_TO_MILES) * 10) / 10,
+                            thisWeek: Math.round((thisWeek / KM_TO_MILES) * 10) / 10,
+                            prevWeek: Math.round((prevWeek / KM_TO_MILES) * 10) / 10
+                        };
+                    } else {
+                        return { total, thisWeek, prevWeek };
+                    }
                 } else {
+                    // Reps - return as-is
                     return { total, thisWeek, prevWeek };
                 }
             },
@@ -5205,9 +5245,9 @@ Perfect for unique exercises not in our list!
                                 const customStats = this.getCustomExerciseStats(category.id, ex.id);
                                 statMap[key] = {
                                     label: ex.name,
-                                    thisWeekValue: customStats.thisWeek,
-                                    prevWeekValue: customStats.prevWeek,
-                                    totalValue: customStats.total
+                                    thisWeekValue: customStats.thisWeek || 0,
+                                    prevWeekValue: customStats.prevWeek || 0,
+                                    totalValue: customStats.total || 0
                                 };
                             });
                         }
@@ -5220,8 +5260,8 @@ Perfect for unique exercises not in our list!
                     const cardData = statMap[cardType];
                     
                     if (cardData) {
-                        // Display value: this week or all time
-                        const value = isWeekView ? cardData.thisWeekValue : cardData.totalValue;
+                        // Display value: this week or all time (with fallback to 0)
+                        const value = isWeekView ? (cardData.thisWeekValue || 0) : (cardData.totalValue || 0);
                         const element = document.getElementById(`custom-stat-${i + 1}`);
                         const labelElement = document.getElementById(`custom-label-${i + 1}`);
                         const trendElement = document.getElementById(`custom-trend-${i + 1}`);
@@ -5229,8 +5269,27 @@ Perfect for unique exercises not in our list!
                         // Animate the display value
                         this.animateCountUp(element, value);
                         
-                        // Set label
-                        labelElement.textContent = cardData.label;
+                        // Set label with unit for distance-based custom exercises
+                        let displayLabel = cardData.label;
+                        
+                        // Check if this is a custom exercise with distance tracking
+                        if (cardType && cardType.startsWith('custom-')) {
+                            const parts = cardType.split('-');
+                            if (parts.length === 3) {
+                                const categoryId = parseInt(parts[1]);
+                                const exerciseId = parseInt(parts[2]);
+                                const category = this.data.customCategories?.find(c => c.id === categoryId);
+                                if (category) {
+                                    const exercise = category.exercises?.find(e => e.id === exerciseId);
+                                    if (exercise && exercise.trackingType === 'distance') {
+                                        const unit = this.data.goals.unitPreference === 'km' ? 'km' : 'miles';
+                                        displayLabel = `${cardData.label} (${unit})`;
+                                    }
+                                }
+                            }
+                        }
+                        
+                        labelElement.textContent = displayLabel;
                         
                         // ========== TRENDING (Week View Only) ==========
                         if (isWeekView) {
@@ -5248,7 +5307,7 @@ Perfect for unique exercises not in our list!
                                 trendElement.innerHTML = trendHTML;
                             } else {
                                 // v1.5.2: Compare THIS WEEK vs PREVIOUS WEEK
-                                const trendHTML = value > 0 ? this.getTrendIndicator(value, cardData.prevWeekValue) : '';
+                                const trendHTML = value > 0 ? this.getTrendIndicator(value, cardData.prevWeekValue || 0) : '';
                                 trendElement.innerHTML = trendHTML;
                             }
                         } else {
@@ -5565,9 +5624,9 @@ Perfect for unique exercises not in our list!
                                 const exerciseKey = `custom-${category.id}-${ex.id}`;
                                 
                                 // Calculate stats for this custom exercise
-                                const weekStats = this.getCustomExerciseStats(exerciseKey, 'week');
-                                const monthStatsCustom = this.getCustomExerciseStats(exerciseKey, 'month');
-                                const totalStatsCustom = this.getCustomExerciseStats(exerciseKey, 'total');
+                                const weekStats = this.getCustomExerciseStatsByPeriod(exerciseKey, 'week');
+                                const monthStatsCustom = this.getCustomExerciseStatsByPeriod(exerciseKey, 'month');
+                                const totalStatsCustom = this.getCustomExerciseStatsByPeriod(exerciseKey, 'total');
                                 
                                 // Only add if there's activity
                                 if (totalStatsCustom.value > 0) {
@@ -5794,7 +5853,7 @@ Perfect for unique exercises not in our list!
             },
 
             // Get custom exercise stats for a specific time period
-            getCustomExerciseStats(exerciseKey, period) {
+            getCustomExerciseStatsByPeriod(exerciseKey, period) {
                 const now = new Date();
                 let startDate;
                 
@@ -6051,6 +6110,93 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                 }
             },
 
+            // Get display name for any activity type (handles old, new, and custom exercises)
+            getActivityDisplayName(activity) {
+                // Standard activity names mapping (handles old and new exercise names)
+                const activityNames = {
+                    'walk': 'Walking',
+                    'run': 'Running',
+                    'dog': 'Dog Walking',
+                    'hiking': 'Hiking',
+                    'biking': 'Biking',
+                    'stairs': 'Stairmaster',
+                    'steps': 'Steps',
+                    'pushups': 'Push-ups',
+                    'pullups': 'Pull-ups',
+                    'rollerabs': 'Ab Wheel Rollout',
+                    'abwheelrollout': 'Ab Wheel Rollout',
+                    'dips': 'Dips',
+                    'squats': 'Squats',
+                    'situps': 'Sit-ups',
+                    'leg': 'Leg Day',
+                    'chest': 'Chest Day',
+                    'shoulder': 'Shoulder Day',
+                    'core': 'Core Day',
+                    'arm': 'Arm Day',
+                    'back': 'Back Day',
+                    'fullbody': 'Full Body Day',
+                    'stretch': 'Stretch Day',
+                    // New detailed exercises
+                    'bicepcurls': 'Bicep Curls',
+                    'forearmcurls': 'Forearm Curls',
+                    'hammercurls': 'Hammer Curls',
+                    'tricepdips': 'Tricep Dips',
+                    'tricepsextensions': 'Triceps Extensions',
+                    'deadlifts': 'Deadlifts',
+                    'facepulls': 'Face Pulls',
+                    'latpulldowns': 'Lat Pulldowns',
+                    'rows': 'Rows',
+                    'benchpress': 'Bench Press',
+                    'chestflys': 'Chest Flys',
+                    'inclinepress': 'Incline Press',
+                    'legraises': 'Leg Raises',
+                    'planks': 'Planks',
+                    'russiantwists': 'Russian Twists',
+                    'bulgariansplitsquats': 'Bulgarian Split Squats',
+                    'donkeykicks': 'Donkey Kicks',
+                    'glutebridges': 'Glute Bridges',
+                    'hipthrusts': 'Hip Thrusts',
+                    'stepups': 'Step-Ups',
+                    'calfraises': 'Calf Raises',
+                    'legpress': 'Leg Press',
+                    'lunges': 'Lunges',
+                    'romaniandeadlifts': 'Romanian Deadlifts',
+                    'frontraises': 'Front Raises',
+                    'lateralraises': 'Lateral Raises',
+                    'reardeltflys': 'Rear Delt Flys',
+                    'shoulderpress': 'Shoulder Press',
+                    'shrugs': 'Shrugs'
+                };
+                
+                // Check if it's a standard activity
+                if (activityNames[activity.type]) {
+                    return activityNames[activity.type];
+                }
+                
+                // Check if it's a custom exercise (format: custom-categoryId-exerciseId)
+                if (activity.type && activity.type.startsWith('custom-')) {
+                    const parts = activity.type.split('-');
+                    if (parts.length === 3) {
+                        const categoryId = parseInt(parts[1]);
+                        const exerciseId = parseInt(parts[2]);
+                        
+                        // Look up the exercise name in customCategories
+                        if (this.data.customCategories && this.data.customCategories.length > 0) {
+                            const category = this.data.customCategories.find(c => c.id === categoryId);
+                            if (category && category.exercises) {
+                                const exercise = category.exercises.find(e => e.id === exerciseId);
+                                if (exercise && exercise.name) {
+                                    return exercise.name;
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                // Fallback to the raw type
+                return activity.type;
+            },
+
             // Show day detail modal
             showDayDetail(date) {
                 const activities = this.data.activities.filter(a => a.date === date);
@@ -6085,30 +6231,10 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                     let totalStairs = 0;
                     let workoutCount = 0;
                     
+                    // Track custom exercises dynamically by their ID key
+                    const customExerciseTotals = {};
+                    
                     const activityHTML = activities.map((activity, index) => {
-                        const activityNames = {
-                            'walk': 'Walking',
-                            'run': 'Running',
-                            'dog': 'Dog Walking',
-                            'hiking': 'Hiking',
-                            'biking': 'Biking',
-                            'stairs': 'Stairmaster',
-                            'steps': 'Steps',
-                            'pushups': 'Push-ups',
-                            'pullups': 'Pull-ups',
-                            'rollerabs': 'Ab Wheel Rollout',
-                            'dips': 'Dips',
-                            'squats': 'Squats',
-                            'situps': 'Sit-ups',
-                            'leg': 'Leg Day',
-                            'chest': 'Chest Day',
-                            'shoulder': 'Shoulder Day',
-                            'core': 'Core Day',
-                            'arm': 'Arm Day',
-                            'back': 'Back Day',
-                            'fullbody': 'Full Body Day'
-                        };
-                        
                         let valueText = '';
                         if (activity.distance) {
                             const displayDistance = this.data.goals.unitPreference === 'miles' 
@@ -6127,10 +6253,20 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                             // Track by type
                             if (activity.type === 'pushups') totalPushups += activity.reps;
                             else if (activity.type === 'pullups') totalPullups += activity.reps;
-                            else if (activity.type === 'rollerabs') totalRollerAbs += activity.reps;
+                            else if (activity.type === 'rollerabs' || activity.type === 'abwheelrollout') totalRollerAbs += activity.reps;
                             else if (activity.type === 'dips') totalDips += activity.reps;
                             else if (activity.type === 'squats') totalSquats += activity.reps;
                             else if (activity.type === 'situps') totalSitups += activity.reps;
+                            else if (activity.type && activity.type.startsWith('custom-')) {
+                                // Custom exercise with reps
+                                if (!customExerciseTotals[activity.type]) {
+                                    customExerciseTotals[activity.type] = {
+                                        name: this.getActivityDisplayName(activity),
+                                        reps: 0
+                                    };
+                                }
+                                customExerciseTotals[activity.type].reps += activity.reps;
+                            }
                         } else {
                             valueText = 'Completed';
                             workoutCount++;
@@ -6139,7 +6275,7 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                         return `
                             <div class="day-activity-item" data-activity-index="${this.data.activities.indexOf(activity)}">
                                 <div class="day-activity-info">
-                                    <div class="day-activity-type">${activityNames[activity.type] || activity.type}</div>
+                                    <div class="day-activity-type">${this.getActivityDisplayName(activity)}</div>
                                     <div class="day-activity-value">${valueText}</div>
                                 </div>
                                 <button class="day-activity-delete" onclick="app.deleteActivity(${this.data.activities.indexOf(activity)})">Delete</button>
@@ -6165,7 +6301,7 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                         totals.push(`${totalPullups} pull-ups`);
                     }
                     if (totalRollerAbs > 0) {
-                        totals.push(`${totalRollerAbs} roller abs`);
+                        totals.push(`${totalRollerAbs} ab wheel rollout`);
                     }
                     if (totalDips > 0) {
                         totals.push(`${totalDips} dips`);
@@ -6179,6 +6315,15 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                     if (totalStairs > 0) {
                         totals.push(`${totalStairs} floors`);
                     }
+                    
+                    // Add custom exercise totals dynamically
+                    Object.keys(customExerciseTotals).forEach(key => {
+                        const custom = customExerciseTotals[key];
+                        if (custom.reps > 0) {
+                            totals.push(`${custom.reps} ${custom.name.toLowerCase()}`);
+                        }
+                    });
+                    
                     if (workoutCount > 0) {
                         totals.push(`${workoutCount} exercise${workoutCount > 1 ? 's' : ''}`);
                     }
