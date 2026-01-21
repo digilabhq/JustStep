@@ -3282,7 +3282,7 @@ Perfect for unique exercises not in our list!
         </a>
 <button class="welcome-button" onclick="app.closeWelcome()">Let's Go</button>
 <div style="text-align: center; color: #6b7280; font-size: 11px; margin-top: 16px;">
-            v2.1.5
+            v2.1.6
         </div>
 </div>
 <!-- Customize Dashboard Modal -->
@@ -3561,7 +3561,7 @@ Perfect for unique exercises not in our list!
 </div>
 <script>
         // App Version
-        const APP_VERSION = '2.1.5';
+        const APP_VERSION = '2.1.6';
         
         // Main App Object
         const app = {
@@ -4951,7 +4951,20 @@ Perfect for unique exercises not in our list!
                         thisWeek: uniqueDaysThisWeek.size, 
                         prevWeek: uniqueDaysPrevWeek.size 
                     };
+                } else if (exerciseTrackingType === 'distance') {
+                    // Convert km to miles if user preference is miles
+                    const KM_TO_MILES = 1.60934;
+                    if (this.data.goals.unitPreference === 'miles') {
+                        return {
+                            total: Math.round((total / KM_TO_MILES) * 10) / 10,
+                            thisWeek: Math.round((thisWeek / KM_TO_MILES) * 10) / 10,
+                            prevWeek: Math.round((prevWeek / KM_TO_MILES) * 10) / 10
+                        };
+                    } else {
+                        return { total, thisWeek, prevWeek };
+                    }
                 } else {
+                    // Reps - return as-is
                     return { total, thisWeek, prevWeek };
                 }
             },
@@ -5256,8 +5269,27 @@ Perfect for unique exercises not in our list!
                         // Animate the display value
                         this.animateCountUp(element, value);
                         
-                        // Set label
-                        labelElement.textContent = cardData.label;
+                        // Set label with unit for distance-based custom exercises
+                        let displayLabel = cardData.label;
+                        
+                        // Check if this is a custom exercise with distance tracking
+                        if (cardType && cardType.startsWith('custom-')) {
+                            const parts = cardType.split('-');
+                            if (parts.length === 3) {
+                                const categoryId = parseInt(parts[1]);
+                                const exerciseId = parseInt(parts[2]);
+                                const category = this.data.customCategories?.find(c => c.id === categoryId);
+                                if (category) {
+                                    const exercise = category.exercises?.find(e => e.id === exerciseId);
+                                    if (exercise && exercise.trackingType === 'distance') {
+                                        const unit = this.data.goals.unitPreference === 'km' ? 'km' : 'miles';
+                                        displayLabel = `${cardData.label} (${unit})`;
+                                    }
+                                }
+                            }
+                        }
+                        
+                        labelElement.textContent = displayLabel;
                         
                         // ========== TRENDING (Week View Only) ==========
                         if (isWeekView) {
