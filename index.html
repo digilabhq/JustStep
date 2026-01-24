@@ -3282,7 +3282,7 @@ Perfect for unique exercises not in our list!
         </a>
 <button class="welcome-button" onclick="app.closeWelcome()">Let's Go</button>
 <div style="text-align: center; color: #6b7280; font-size: 11px; margin-top: 16px;">
-            v2.1.6
+            v2.1.7
         </div>
 </div>
 <!-- Customize Dashboard Modal -->
@@ -3561,7 +3561,7 @@ Perfect for unique exercises not in our list!
 </div>
 <script>
         // App Version
-        const APP_VERSION = '2.1.6';
+        const APP_VERSION = '2.1.7';
         
         // Main App Object
         const app = {
@@ -6626,39 +6626,70 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                 if (!this.data.weights || this.data.weights.length === 0) return null;
 
                 const now = new Date();
-                const start = new Date(now);
-                const end = new Date(now);
+                const thisStart = new Date(now);
+                const thisEnd = new Date(now);
 
                 if (period === 'week') {
-                    // Sunday-start week: Sunday 00:00 to Saturday 23:59:59
-                    const day = start.getDay(); // 0 = Sunday
-                    start.setDate(start.getDate() - day);
-                    start.setHours(0, 0, 0, 0);
+                    // This week: Sunday 00:00 to Saturday 23:59:59
+                    const day = thisStart.getDay(); // 0 = Sunday
+                    thisStart.setDate(thisStart.getDate() - day);
+                    thisStart.setHours(0, 0, 0, 0);
 
-                    end.setTime(start.getTime());
-                    end.setDate(start.getDate() + 7);
+                    thisEnd.setTime(thisStart.getTime());
+                    thisEnd.setDate(thisStart.getDate() + 7);
                 } else if (period === 'month') {
-                    start.setDate(1);
-                    start.setHours(0, 0, 0, 0);
+                    // This month: 1st day 00:00 to last day 23:59:59
+                    thisStart.setDate(1);
+                    thisStart.setHours(0, 0, 0, 0);
 
-                    end.setFullYear(start.getFullYear(), start.getMonth() + 1, 1);
-                    end.setHours(0, 0, 0, 0);
+                    thisEnd.setFullYear(thisStart.getFullYear(), thisStart.getMonth() + 1, 1);
+                    thisEnd.setHours(0, 0, 0, 0);
                 } else {
                     return null;
                 }
 
-                const inRange = this.data.weights
+                // Get latest weight from THIS period
+                const thisWeights = this.data.weights
                     .map(w => ({...w, _d: new Date(w.date + 'T00:00:00')}))
-                    .filter(w => w._d >= start && w._d < end)
+                    .filter(w => w._d >= thisStart && w._d < thisEnd)
                     .sort((a, b) => a._d - b._d);
 
-                if (inRange.length === 0) return null;
+                if (thisWeights.length === 0) return null;
 
-                const first = inRange[0].weight;
-                const last = inRange[inRange.length - 1].weight;
-                if (!first || first <= 0 || !last || last <= 0) return null;
+                const currentWeight = thisWeights[thisWeights.length - 1].weight;
 
-                const pct = ((last - first) / first) * 100;
+                // Get latest weight from LAST period
+                const lastStart = new Date(thisStart);
+                const lastEnd = new Date(thisStart);
+
+                if (period === 'week') {
+                    lastStart.setDate(lastStart.getDate() - 7);
+                } else if (period === 'month') {
+                    lastStart.setMonth(lastStart.getMonth() - 1);
+                }
+
+                const lastWeights = this.data.weights
+                    .map(w => ({...w, _d: new Date(w.date + 'T00:00:00')}))
+                    .filter(w => w._d >= lastStart && w._d < lastEnd)
+                    .sort((a, b) => a._d - b._d);
+
+                let previousWeight;
+
+                if (lastWeights.length === 0) {
+                    // Fallback: Use earliest weight entry ever (for new users or first period)
+                    const allWeights = [...this.data.weights]
+                        .map(w => ({...w, _d: new Date(w.date + 'T00:00:00')}))
+                        .sort((a, b) => a._d - b._d);
+                    
+                    if (allWeights.length === 0) return null;
+                    previousWeight = allWeights[0].weight;
+                } else {
+                    previousWeight = lastWeights[lastWeights.length - 1].weight;
+                }
+
+                if (!previousWeight || previousWeight <= 0 || !currentWeight || currentWeight <= 0) return null;
+
+                const pct = ((currentWeight - previousWeight) / previousWeight) * 100;
                 return Math.round(pct * 10) / 10;
             },
 
@@ -6677,45 +6708,76 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                 return Math.round(delta * 10) / 10; // 1 decimal
             },
 
-            // Signed weight change in lbs within a period window (week/month); uses first vs last in-range
+            // Signed weight change in lbs within a period window (week/month); compares this period vs last period
             calculateWeightChangeLbsForPeriod(period) {
                 if (!this.data.weights || this.data.weights.length === 0) return null;
 
                 const now = new Date();
-                const start = new Date(now);
-                const end = new Date(now);
+                const thisStart = new Date(now);
+                const thisEnd = new Date(now);
 
                 if (period === 'week') {
-                    // Sunday-start week: Sunday 00:00 to Saturday 23:59:59
-                    const day = start.getDay(); // 0 = Sunday
-                    start.setDate(start.getDate() - day);
-                    start.setHours(0, 0, 0, 0);
+                    // This week: Sunday 00:00 to Saturday 23:59:59
+                    const day = thisStart.getDay(); // 0 = Sunday
+                    thisStart.setDate(thisStart.getDate() - day);
+                    thisStart.setHours(0, 0, 0, 0);
 
-                    end.setTime(start.getTime());
-                    end.setDate(start.getDate() + 7);
+                    thisEnd.setTime(thisStart.getTime());
+                    thisEnd.setDate(thisStart.getDate() + 7);
                 } else if (period === 'month') {
-                    start.setDate(1);
-                    start.setHours(0, 0, 0, 0);
+                    // This month: 1st day 00:00 to last day 23:59:59
+                    thisStart.setDate(1);
+                    thisStart.setHours(0, 0, 0, 0);
 
-                    end.setMonth(start.getMonth() + 1);
-                    end.setDate(1);
-                    end.setHours(0, 0, 0, 0);
+                    thisEnd.setMonth(thisStart.getMonth() + 1);
+                    thisEnd.setDate(1);
+                    thisEnd.setHours(0, 0, 0, 0);
                 } else {
                     return null;
                 }
 
-                const inRange = this.data.weights
+                // Get latest weight from THIS period
+                const thisWeights = this.data.weights
                     .map(w => ({...w, _d: new Date(w.date + 'T00:00:00')}))
-                    .filter(w => w._d >= start && w._d < end)
+                    .filter(w => w._d >= thisStart && w._d < thisEnd)
                     .sort((a, b) => a._d - b._d);
 
-                if (inRange.length === 0) return null;
+                if (thisWeights.length === 0) return null;
 
-                const first = inRange[0].weight;
-                const last = inRange[inRange.length - 1].weight;
-                if (!first || first <= 0 || !last || last <= 0) return null;
+                const currentWeight = thisWeights[thisWeights.length - 1].weight;
 
-                const delta = last - first;
+                // Get latest weight from LAST period
+                const lastStart = new Date(thisStart);
+                const lastEnd = new Date(thisStart);
+
+                if (period === 'week') {
+                    lastStart.setDate(lastStart.getDate() - 7);
+                } else if (period === 'month') {
+                    lastStart.setMonth(lastStart.getMonth() - 1);
+                }
+
+                const lastWeights = this.data.weights
+                    .map(w => ({...w, _d: new Date(w.date + 'T00:00:00')}))
+                    .filter(w => w._d >= lastStart && w._d < lastEnd)
+                    .sort((a, b) => a._d - b._d);
+
+                let previousWeight;
+
+                if (lastWeights.length === 0) {
+                    // Fallback: Use earliest weight entry ever (for new users or first period)
+                    const allWeights = [...this.data.weights]
+                        .map(w => ({...w, _d: new Date(w.date + 'T00:00:00')}))
+                        .sort((a, b) => a._d - b._d);
+                    
+                    if (allWeights.length === 0) return null;
+                    previousWeight = allWeights[0].weight;
+                } else {
+                    previousWeight = lastWeights[lastWeights.length - 1].weight;
+                }
+
+                if (!previousWeight || previousWeight <= 0 || !currentWeight || currentWeight <= 0) return null;
+
+                const delta = currentWeight - previousWeight;
                 return Math.round(delta * 10) / 10;
             },
 // Animate count-up for numbers
@@ -7864,13 +7926,22 @@ async createPalCode() {
                     }
                     
                     // Weight row - only show if pal has opted to share weight
-                    if (pal.shareWeightWithPals === true && stats.weight !== null && stats.weight !== undefined) {
-                        const weightValue = stats.weight > 0 ? `-${stats.weight}` : stats.weight < 0 ? `+${Math.abs(stats.weight)}` : '0';
+                    if (pal.shareWeightWithPals === true) {
+                        const weekChange = stats.weightChangeLbsThisWeek !== null && stats.weightChangeLbsThisWeek !== undefined ? stats.weightChangeLbsThisWeek : null;
+                        const monthChange = stats.weightChangeLbsThisMonth !== null && stats.weightChangeLbsThisMonth !== undefined ? stats.weightChangeLbsThisMonth : null;
+                        const totalChange = stats.weightChangeLbsAllTime !== null && stats.weightChangeLbsAllTime !== undefined ? stats.weightChangeLbsAllTime : null;
+                        
+                        const formatChange = (val) => {
+                            if (val === null || val === undefined) return '-';
+                            if (val === 0) return '0.0 lbs';
+                            return `${val > 0 ? '+' : ''}${val} lbs`;
+                        };
+                        
                         activityItems.push({
                             name: 'Weight',
-                            week: '-',
-                            month: '-',
-                            total: `${weightValue} ${weightUnit}`
+                            week: formatChange(weekChange),
+                            month: formatChange(monthChange),
+                            total: formatChange(totalChange)
                         });
                     }
                     
