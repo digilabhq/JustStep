@@ -1,5 +1,5 @@
 // JustStep Service Worker (safe caching: GET-only)
-const CACHE_NAME = 'juststep-cache-v2.1.6';
+const CACHE_NAME = 'juststep-cache-v2.1.7';
 const FILES_TO_CACHE = [
   './',
   './index.html',
@@ -10,7 +10,7 @@ const FILES_TO_CACHE = [
 ].filter(Boolean);
 
 self.addEventListener('install', (event) => {
-  console.log('Service Worker: Installing v2.1.6');
+  console.log('Service Worker: Installing v2.1.7');
   event.waitUntil(
     caches.open(CACHE_NAME).then(async (cache) => {
       try {
@@ -28,7 +28,7 @@ self.addEventListener('install', (event) => {
 });
 
 self.addEventListener('activate', (event) => {
-  console.log('Service Worker: Activating v2.1.6');
+  console.log('Service Worker: Activating v2.1.7');
   event.waitUntil(
     caches.keys().then((keys) =>
       Promise.all(
