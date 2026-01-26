@@ -2671,12 +2671,25 @@
             width: 100%;
             max-width: 480px;
             max-height: 90vh;
-            overflow-y: auto;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
             animation: slideUp 0.3s ease;
         }
         
-        .weekly-report-header {
+        
+        .weekly-report-body {
+            flex: 1 1 auto;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .weekly-report-footer {
+            flex: 0 0 auto;
+        }
+.weekly-report-header {
             background: var(--bg-elevated);
             padding: 20px 24px;
             border-bottom: 1px solid var(--border);
@@ -2814,9 +2827,11 @@
             color: var(--text-secondary);
             text-align: left;
             min-width: 0;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
+            /* Allow full names to display (wrap instead of truncating) */
+            white-space: normal;
+            overflow: visible;
+            text-overflow: clip;
+            word-break: break-word;
         }
         
         .weekly-report-stat-value {
@@ -2828,6 +2843,7 @@
             align-items: baseline;
             justify-content: flex-end;
             gap: 6px;
+            font-size: 9px;
         }
         
         
@@ -2854,7 +2870,7 @@
             border: 1px solid var(--border);
             border-radius: 8px;
             color: var(--text);
-            font-size: 12px;
+            font-size: 0.5em;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s ease;
@@ -3526,7 +3542,7 @@ Perfect for unique exercises not in our list!
         </a>
 <button class="welcome-button" onclick="app.closeWelcome()">Let's Go</button>
 <div style="text-align: center; color: #6b7280; font-size: 11px; margin-top: 16px;">
-            v2.1.8
+            v2.1.9
         </div>
 </div>
 <!-- Customize Dashboard Modal -->
@@ -3805,7 +3821,7 @@ Perfect for unique exercises not in our list!
 </div>
 <script>
         // App Version
-        const APP_VERSION = '2.1.8';
+        const APP_VERSION = '2.1.9';
         
         // Main App Object
         const app = {
@@ -4164,6 +4180,8 @@ Perfect for unique exercises not in our list!
                     
                     <div id="value-input-${this.activityCounter}">
                         <!-- Value input will be inserted here -->
+                    </div>
+                    </div>
                     </div>
                 `;
                 
@@ -7071,6 +7089,7 @@ const endOfWeek = new Date(startOfWeek);
                 
                 // Generate HTML
                 let html = `
+                    <div class="weekly-report-shell">
                     <div class="weekly-report-header">
                         <button class="weekly-report-nav-btn" onclick="app.navigateWeeklyReport(-1)" aria-label="Previous week">←</button>
                         <div style="flex: 1; text-align: center;">
@@ -7079,10 +7098,11 @@ const endOfWeek = new Date(startOfWeek);
                         </div>
                         <button class="weekly-report-nav-btn" onclick="app.navigateWeeklyReport(1)" ${isCurrentWeek ? 'disabled' : ''} aria-label="Next week">→</button>
                     </div>
+                    <div class="weekly-report-body">
                     
                     <div class="weekly-report-chart-section">
                         <div class="weekly-report-chart-title">Daily Steps</div>
-                        <div style="max-width: 50%; margin: 0 auto;">
+                        <div style="max-width: 62.5%; margin: 0 auto;">
                             <div style="display: flex; gap: 8px; align-items: stretch;">
                                 <div class="weekly-report-chart" style="flex: 1; position: relative;">
                 `;
@@ -7117,8 +7137,8 @@ const endOfWeek = new Date(startOfWeek);
                             left: 0;
                             right: 0;
                             bottom: ${peakPercent}%;
-                            border-top: 1px dashed #6b7280;
-                            opacity: 0.5;
+                            border-top: 1px dashed rgba(255,255,255,0.9);
+                            opacity: 0.9;
                             pointer-events: none;
                             z-index: 0;
                         "></div>
@@ -7139,7 +7159,7 @@ const endOfWeek = new Date(startOfWeek);
                                 bottom: 0;
                                 width: 4px;
                                 height: ${Math.max(lastHeight, 8)}%;
-                                border: 1px dashed var(--primary-light);
+                                border: 1px dashed rgba(255,255,255,0.85);
                                 border-bottom: none;
                                 border-radius: 4px 4px 0 0;
                                 opacity: 0.5;
@@ -7230,6 +7250,8 @@ const endOfWeek = new Date(startOfWeek);
                         </div>
                     </div>
                     
+                    </div>
+                    <div class="weekly-report-footer">
                     <div class="weekly-report-actions">
                         <button class="weekly-report-action-btn" onclick="app.closeWeeklyReport()">Dismiss</button>
                         <button class="weekly-report-action-btn" onclick="app.closeWeeklyReport(); app.showScreen('calendar')">Go to Calendar</button>
