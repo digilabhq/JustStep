@@ -2681,15 +2681,24 @@
         }
         
         
-        .weekly-report-body {
+        
+        .weekly-report-shell {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            min-height: 0;
+        }
+.weekly-report-body {
             flex: 1 1 auto;
+            min-height: 0;
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
-                    min-height: 0;
+            padding-bottom: 8px;
         }
 
         .weekly-report-footer {
             flex: 0 0 auto;
+            min-height: 0;
         }
 .weekly-report-header {
             background: var(--bg-elevated);
@@ -3544,7 +3553,7 @@ Perfect for unique exercises not in our list!
         </a>
 <button class="welcome-button" onclick="app.closeWelcome()">Let's Go</button>
 <div style="text-align: center; color: #6b7280; font-size: 11px; margin-top: 16px;">
-            v2.2.0
+            v2.2.1
         </div>
 </div>
 <!-- Customize Dashboard Modal -->
@@ -3823,7 +3832,7 @@ Perfect for unique exercises not in our list!
 </div>
 <script>
         // App Version
-        const APP_VERSION = '2.2.0';
+        const APP_VERSION = '2.2.1';
         
         // Main App Object
         const app = {
