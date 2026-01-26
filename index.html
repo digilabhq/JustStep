@@ -708,7 +708,7 @@
             border: 1px solid #3d3d3d;
             border-left: 3px solid var(--primary);
             border-radius: 8px;
-            padding: 16px;
+            padding: 8px;
             margin-bottom: 12px;
             transition: all 0.2s;
         }
@@ -808,7 +808,8 @@
 
         .activity-report-content {
             max-height: 0;
-            overflow: hidden;
+            overflow-y: hidden;
+            overflow-x: visible;
             transition: max-height 0.3s ease;
         }
 
@@ -2640,6 +2641,239 @@
         .weight-entry-delete:hover {
             background: #4d2626;
         }
+        
+        /* Weekly Report Modal */
+        .weekly-report-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(4px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .weekly-report-modal.active {
+            display: flex;
+        }
+        
+        .weekly-report-container {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--primary);
+            border-radius: 12px;
+            width: 100%;
+            max-width: 480px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+            animation: slideUp 0.3s ease;
+        }
+        
+        .weekly-report-header {
+            background: var(--bg-elevated);
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        .weekly-report-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        
+        .weekly-report-date {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--primary-light);
+            letter-spacing: 1px;
+        }
+        
+        
+
+        .weekly-report-nav-btn {
+            background: none;
+            border: none;
+            color: var(--primary-light);
+            font-size: 16px;
+            padding: 4px 6px;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .weekly-report-nav-btn:disabled {
+            color: #6b7280;
+            opacity: 0.6;
+            cursor: default;
+        }
+.weekly-report-chart-section {
+            background: var(--bg);
+            padding: 24px 20px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .weekly-report-chart-title {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            text-align: center;
+        }
+        
+        .weekly-report-chart {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            height: 100px;
+            margin-bottom: 12px;
+            padding: 0 20px;
+            gap: 8px;
+        }
+        
+        .weekly-report-chart-bar-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            height: 100%;
+        }
+        
+        .weekly-report-chart-bar {
+            width: 4px;
+            background: linear-gradient(180deg, var(--primary-light) 0%, var(--primary) 100%);
+            border-radius: 4px 4px 0 0;
+            min-height: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+        }
+        
+        .weekly-report-chart-labels {
+            display: flex;
+            justify-content: space-around;
+            font-size: 11px;
+            color: var(--text-tertiary);
+            font-weight: 600;
+            padding: 0 20px;
+            gap: 8px;
+        }
+        
+        .weekly-report-chart-labels span {
+            flex: 1;
+            text-align: center;
+        }
+        
+        .weekly-report-stats-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1px;
+            background: var(--border);
+        }
+        
+        .weekly-report-stat-column {
+            background: var(--bg);
+            padding: 24px 20px;
+        }
+        
+        .weekly-report-stat-column-title {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            letter-spacing: 2px;
+            margin-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 8px;
+            text-transform: uppercase;
+        }
+        
+        .weekly-report-stat-item {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            gap: 12px;
+            margin-bottom: 10px;
+            font-size: 13px;
+            align-items: baseline;
+        }
+        
+        .weekly-report-stat-label {
+            color: var(--text-secondary);
+            text-align: left;
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        .weekly-report-stat-value {
+            color: var(--primary-light);
+            font-weight: 700;
+            text-align: right;
+            white-space: nowrap;
+            display: flex;
+            align-items: baseline;
+            justify-content: flex-end;
+            gap: 6px;
+        }
+        
+        
+        .weekly-report-stat-comp {
+            font-size: 0.75em;
+            margin-left: 0;
+            line-height: 1;
+            white-space: nowrap;
+        }
+.weekly-report-actions {
+            background: var(--bg-elevated);
+            padding: 16px 20px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 10px;
+            position: sticky;
+            bottom: 0;
+        }
+        
+        .weekly-report-action-btn {
+            flex: 1;
+            padding: 12px;
+            background: var(--border);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .weekly-report-action-btn:hover {
+            background: #4d4d4d;
+            border-color: #5d5d5d;
+        }
+        
+        .weekly-report-action-btn.primary {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+        
+        .weekly-report-action-btn.primary:hover {
+            opacity: 0.9;
+        }
     </style>
 </head>
 <body>
@@ -2809,6 +3043,13 @@ Rankings update daily. Add PALs to compete with friends!
 </div>
 </div>
 
+<!-- Weekly Report Modal -->
+<div class="weekly-report-modal" id="weekly-report-modal" onclick="if(event.target === this) app.closeWeeklyReport()">
+    <div class="weekly-report-container" id="weekly-report-content">
+        <!-- Content will be dynamically generated -->
+    </div>
+</div>
+
 <!-- Dashboard Screen -->
 <div class="screen" id="dashboard-screen">
 <h1 style="display: flex; align-items: center; gap: 8px;">Dashboard <span class="info-icon" onclick="app.showDashboardInfo()" title="Dashboard explained">i</span></h1>
@@ -2851,7 +3092,10 @@ Rankings update daily. Add PALs to compete with friends!
 <div class="stat-trend" id="custom-trend-3"></div>
 </div>
 </div>
-<button class="customize-dashboard-btn" onclick="app.openCustomizeModal()">Customize Favorites</button>
+<div style="display: flex; gap: 12px; margin-bottom: 20px;">
+    <button class="customize-dashboard-btn" onclick="app.openCustomizeModal()" style="flex: 1; margin: 0; background: #2d2d2d; border: 1px solid #3d3d3d; border-radius: 8px; padding: 12px 16px; color: #d4af37;">Customize Favorites</button>
+    <button class="customize-dashboard-btn" onclick="app.showWeeklyReport()" style="flex: 1; margin: 0; background: var(--primary); border: 1px solid var(--primary); border-radius: 8px; padding: 12px 16px; color: white;">Weekly Report</button>
+</div>
 <!-- Comparison Bar Graphs -->
 <div class="comparison-section">
 <div class="comparison-header">Progress Comparison</div>
@@ -3267,12 +3511,12 @@ Perfect for unique exercises not in our list!
 <div class="overlay" id="welcome-overlay"></div>
 <div class="welcome-modal" id="welcome-modal">
 <div class="welcome-header">
-<div class="welcome-title">Welcome to <span style="color: white; font-weight: 700;">J</span>ustStep</div>
+<div class="welcome-title">Welcome to <span style="color: var(--primary); font-weight: 700;">J</span>ustStep</div>
 </div>
 <div class="welcome-content">
             Success isn't comfortable. Every workout, every mile, every rep you log here is a step closer to your goals!
             <br/><br/>
-<span style="color: white; font-weight: 700;">J</span>ust take the next <span style="color: white; font-weight: 700;">S</span>tep.
+<span style="color: var(--primary); font-weight: 700;">J</span>ust take the next <span style="color: var(--primary); font-weight: 700;">S</span>tep.
         </div>
 <div class="welcome-tagline">
             Track it. Own it. Grow.
@@ -3282,7 +3526,7 @@ Perfect for unique exercises not in our list!
         </a>
 <button class="welcome-button" onclick="app.closeWelcome()">Let's Go</button>
 <div style="text-align: center; color: #6b7280; font-size: 11px; margin-top: 16px;">
-            v2.1.7
+            v2.1.8
         </div>
 </div>
 <!-- Customize Dashboard Modal -->
@@ -3561,7 +3805,7 @@ Perfect for unique exercises not in our list!
 </div>
 <script>
         // App Version
-        const APP_VERSION = '2.1.7';
+        const APP_VERSION = '2.1.8';
         
         // Main App Object
         const app = {
@@ -3693,6 +3937,30 @@ Perfect for unique exercises not in our list!
                 // Save today's date so we don't show again until tomorrow
                 const today = new Date().toDateString();
                 localStorage.setItem('lastWelcomeShown', today);
+                
+                // Check if we should show Sunday weekly report
+                this.checkSundayWeeklyReport();
+            },
+            
+            // Check if we should show the weekly report (Sundays only)
+            checkSundayWeeklyReport() {
+                const now = new Date();
+
+                // Only show on Sundays (day 0)
+                if (now.getDay() !== 0) return;
+
+                // Today's Sunday date (YYYY-MM-DD)
+                const sundayDate = now.toISOString().split('T')[0];
+
+                // Check if we already showed the report for this Sunday
+                const lastShownSunday = localStorage.getItem('lastWeeklyReportSunday');
+
+                if (lastShownSunday !== sundayDate) {
+                    // Show the weekly report after the welcome closes (brief delay)
+                    setTimeout(() => {
+                        this.showWeeklyReport();
+                    }, 500);
+                }
             },
 
             // Load data from localStorage
@@ -5528,6 +5796,16 @@ Perfect for unique exercises not in our list!
                     toggle.querySelector('span:last-child').textContent = '▲';
                 }
             },
+            
+            // Format large numbers with k/M suffix for display
+            formatCompactNumber(value) {
+                if (value >= 1000000) {
+                    return (value / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+                } else if (value >= 1000) {
+                    return (value / 1000).toFixed(1).replace(/\.0$/, '') + 'k';
+                }
+                return value.toLocaleString();
+            },
 
             // Render activity summary for calendar screen (month + all-time)
             renderActivitySummary() {
@@ -5543,9 +5821,9 @@ Perfect for unique exercises not in our list!
                     if (totalValue > 0) {
                         summaryItems.push({
                             name,
-                            week: weekValue > 0 ? `${weekValue.toLocaleString()}${suffix}` : '-',
-                            month: monthValue > 0 ? `${monthValue.toLocaleString()}${suffix}` : '-',
-                            total: `${totalValue.toLocaleString()}${suffix}`
+                            week: weekValue > 0 ? `${this.formatCompactNumber(weekValue)}${suffix}` : '-',
+                            month: monthValue > 0 ? `${this.formatCompactNumber(monthValue)}${suffix}` : '-',
+                            total: `${this.formatCompactNumber(totalValue)}${suffix}`
                         });
                     }
                 };
@@ -5562,41 +5840,41 @@ Perfect for unique exercises not in our list!
                 if (stats.totalRunning > 0) {
                     summaryItems.push({
                         name: 'Running',
-                        week: stats.thisWeekRunning > 0 ? `${stats.thisWeekRunning} ${unit}` : '-',
-                        month: monthStats.monthRunning > 0 ? `${monthStats.monthRunning} ${unit}` : '-',
-                        total: `${stats.totalRunning} ${unit}`
+                        week: stats.thisWeekRunning > 0 ? `${this.formatCompactNumber(stats.thisWeekRunning)} ${unit}` : '-',
+                        month: monthStats.monthRunning > 0 ? `${this.formatCompactNumber(monthStats.monthRunning)} ${unit}` : '-',
+                        total: `${this.formatCompactNumber(stats.totalRunning)} ${unit}`
                     });
                 }
                 if (stats.totalWalking > 0) {
                     summaryItems.push({
                         name: 'Walking',
-                        week: stats.thisWeekWalking > 0 ? `${stats.thisWeekWalking} ${unit}` : '-',
-                        month: monthStats.monthWalking > 0 ? `${monthStats.monthWalking} ${unit}` : '-',
-                        total: `${stats.totalWalking} ${unit}`
+                        week: stats.thisWeekWalking > 0 ? `${this.formatCompactNumber(stats.thisWeekWalking)} ${unit}` : '-',
+                        month: monthStats.monthWalking > 0 ? `${this.formatCompactNumber(monthStats.monthWalking)} ${unit}` : '-',
+                        total: `${this.formatCompactNumber(stats.totalWalking)} ${unit}`
                     });
                 }
                 if (stats.totalBiking > 0) {
                     summaryItems.push({
                         name: 'Biking',
-                        week: stats.thisWeekBiking > 0 ? `${stats.thisWeekBiking} ${unit}` : '-',
-                        month: monthStats.monthBiking > 0 ? `${monthStats.monthBiking} ${unit}` : '-',
-                        total: `${stats.totalBiking} ${unit}`
+                        week: stats.thisWeekBiking > 0 ? `${this.formatCompactNumber(stats.thisWeekBiking)} ${unit}` : '-',
+                        month: monthStats.monthBiking > 0 ? `${this.formatCompactNumber(monthStats.monthBiking)} ${unit}` : '-',
+                        total: `${this.formatCompactNumber(stats.totalBiking)} ${unit}`
                     });
                 }
                 if (stats.totalDogWalk > 0) {
                     summaryItems.push({
                         name: 'Dog Walking',
-                        week: stats.thisWeekDogWalk > 0 ? `${stats.thisWeekDogWalk} ${unit}` : '-',
-                        month: monthStats.monthDogWalk > 0 ? `${monthStats.monthDogWalk} ${unit}` : '-',
-                        total: `${stats.totalDogWalk} ${unit}`
+                        week: stats.thisWeekDogWalk > 0 ? `${this.formatCompactNumber(stats.thisWeekDogWalk)} ${unit}` : '-',
+                        month: monthStats.monthDogWalk > 0 ? `${this.formatCompactNumber(monthStats.monthDogWalk)} ${unit}` : '-',
+                        total: `${this.formatCompactNumber(stats.totalDogWalk)} ${unit}`
                     });
                 }
                 if (stats.totalHiking > 0) {
                     summaryItems.push({
                         name: 'Hiking',
-                        week: stats.thisWeekHiking > 0 ? `${stats.thisWeekHiking} ${unit}` : '-',
-                        month: monthStats.monthHiking > 0 ? `${monthStats.monthHiking} ${unit}` : '-',
-                        total: `${stats.totalHiking} ${unit}`
+                        week: stats.thisWeekHiking > 0 ? `${this.formatCompactNumber(stats.thisWeekHiking)} ${unit}` : '-',
+                        month: monthStats.monthHiking > 0 ? `${this.formatCompactNumber(monthStats.monthHiking)} ${unit}` : '-',
+                        total: `${this.formatCompactNumber(stats.totalHiking)} ${unit}`
                     });
                 }
                 
@@ -5609,9 +5887,9 @@ Perfect for unique exercises not in our list!
                 if (stats.totalDistance > 0) {
                     summaryItems.push({
                         name: 'Total Distance',
-                        week: stats.thisWeekDistance > 0 ? `${stats.thisWeekDistance} ${unit}` : '-',
-                        month: monthStats.monthDistance > 0 ? `${monthStats.monthDistance} ${unit}` : '-',
-                        total: `${stats.totalDistance} ${unit}`
+                        week: stats.thisWeekDistance > 0 ? `${this.formatCompactNumber(stats.thisWeekDistance)} ${unit}` : '-',
+                        month: monthStats.monthDistance > 0 ? `${this.formatCompactNumber(monthStats.monthDistance)} ${unit}` : '-',
+                        total: `${this.formatCompactNumber(stats.totalDistance)} ${unit}`
                     });
                 }
                 
@@ -5636,9 +5914,9 @@ Perfect for unique exercises not in our list!
                                     
                                     customItems.push({
                                         name: ex.name,
-                                        week: weekStats.value > 0 ? `${weekStats.value.toLocaleString()}${suffix}` : '-',
-                                        month: monthStatsCustom.value > 0 ? `${monthStatsCustom.value.toLocaleString()}${suffix}` : '-',
-                                        total: `${totalStatsCustom.value.toLocaleString()}${suffix}`,
+                                        week: weekStats.value > 0 ? `${this.formatCompactNumber(weekStats.value)}${suffix}` : '-',
+                                        month: monthStatsCustom.value > 0 ? `${this.formatCompactNumber(monthStatsCustom.value)}${suffix}` : '-',
+                                        total: `${this.formatCompactNumber(totalStatsCustom.value)}${suffix}`,
                                         isCustom: true
                                     });
                                 }
@@ -5651,22 +5929,26 @@ Perfect for unique exercises not in our list!
                     summaryList.innerHTML = '<p style="text-align: center; color: #6b7280; font-size: 14px; padding: 20px 0;">No activities logged yet.</p>';
                 } else {
                     // Match Habit Report format exactly - using grid layout
+                    const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+                                       'July', 'August', 'September', 'October', 'November', 'December'];
+                    const displayedMonthName = monthNames[this.data.currentView.calendarMonth];
+                    
                     let html = `
-                        <div style="display: grid; grid-template-columns: minmax(180px, 1fr) 1fr 1fr 1fr; gap: 12px; align-items: center; padding: 8px 0; border-bottom: 1px solid #3d3d3d; font-size: 12px; font-weight: 700; color: #9ca3af;">
-                            <div>Activity</div>
-                            <div style="text-align: center;">This Week</div>
-                            <div style="text-align: center;">This Month</div>
-                            <div style="text-align: center;">All Time</div>
+                        <div style="display: grid; grid-template-columns: 1.3fr 1fr 1fr 1fr; gap: 8px; align-items: center; padding: 8px 0; border-bottom: 1px solid #3d3d3d; font-size: 11px; font-weight: 700; color: #9ca3af;">
+                            <div style="text-align: left; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Activity</div>
+                            <div style="text-align: right; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Current Week</div>
+                            <div style="text-align: right; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${displayedMonthName}</div>
+                            <div style="text-align: right; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">All Time</div>
                         </div>
                     `;
                     
                     // Regular activity data rows
                     html += summaryItems.map(item => `
-                        <div style="display: grid; grid-template-columns: minmax(180px, 1fr) 1fr 1fr 1fr; gap: 12px; align-items: center; padding: 8px 0; border-bottom: 1px solid #2d2d2d; font-size: 13px;">
-                            <div style="color: #9ca3af;">${item.name}</div>
-                            <div style="text-align: center; color: var(--primary); font-weight: 700;">${item.week}</div>
-                            <div style="text-align: center; color: var(--primary-light); font-weight: 700;">${item.month}</div>
-                            <div style="text-align: center; color: #9ca3af; font-weight: 700;">${item.total}</div>
+                        <div style="display: grid; grid-template-columns: 1.3fr 1fr 1fr 1fr; gap: 8px; align-items: center; padding: 8px 0; border-bottom: 1px solid #2d2d2d; font-size: 12px;">
+                            <div style="color: #9ca3af; text-align: left; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${item.name}</div>
+                            <div style="text-align: right; color: var(--primary); font-weight: 700; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${item.week}</div>
+                            <div style="text-align: right; color: var(--primary-light); font-weight: 700; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${item.month}</div>
+                            <div style="text-align: right; color: #9ca3af; font-weight: 700; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${item.total}</div>
                         </div>
                     `).join('');
                     
@@ -5677,11 +5959,11 @@ Perfect for unique exercises not in our list!
                         
                         // Custom activity data rows with gold text for activity name
                         html += customItems.map(item => `
-                            <div style="display: grid; grid-template-columns: minmax(180px, 1fr) 1fr 1fr 1fr; gap: 12px; align-items: center; padding: 8px 0; border-bottom: 1px solid #2d2d2d; font-size: 13px;">
-                                <div style="color: #d4af37;">${item.name}</div>
-                                <div style="text-align: center; color: var(--primary); font-weight: 700;">${item.week}</div>
-                                <div style="text-align: center; color: var(--primary-light); font-weight: 700;">${item.month}</div>
-                                <div style="text-align: center; color: #9ca3af; font-weight: 700;">${item.total}</div>
+                            <div style="display: grid; grid-template-columns: 1.3fr 1fr 1fr 1fr; gap: 8px; align-items: center; padding: 8px 0; border-bottom: 1px solid #2d2d2d; font-size: 12px;">
+                                <div style="color: #d4af37; text-align: left; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${item.name}</div>
+                                <div style="text-align: right; color: var(--primary); font-weight: 700; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${item.week}</div>
+                                <div style="text-align: right; color: var(--primary-light); font-weight: 700; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${item.month}</div>
+                                <div style="text-align: right; color: #9ca3af; font-weight: 700; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${item.total}</div>
                             </div>
                         `).join('');
                     }
@@ -5699,13 +5981,24 @@ Perfect for unique exercises not in our list!
                     return;
                 }
                 
+                // Current week calculation (always real-world current week)
                 const now = new Date();
                 const startOfWeek = new Date(now);
                 startOfWeek.setDate(now.getDate() - now.getDay());
                 startOfWeek.setHours(0, 0, 0, 0);
                 
-                const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+                // Use displayed calendar month (not current real-world month)
+                const year = this.data.currentView.calendarYear;
+                const month = this.data.currentView.calendarMonth;
+                const startOfMonth = new Date(year, month, 1);
                 startOfMonth.setHours(0, 0, 0, 0);
+                const endOfMonth = new Date(year, month + 1, 0);
+                endOfMonth.setHours(23, 59, 59, 999);
+                
+                // Get month name for header
+                const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+                                   'July', 'August', 'September', 'October', 'November', 'December'];
+                const displayedMonthName = monthNames[month];
                 
                 const habitStats = this.data.habits.map(habit => {
                     let weekDays = 0;
@@ -5716,7 +6009,7 @@ Perfect for unique exercises not in our list!
                     (habit.completions || []).forEach(dateStr => {
                         const logDate = new Date(dateStr + 'T12:00:00');
                         if (logDate >= startOfWeek) weekDays++;
-                        if (logDate >= startOfMonth) monthDays++;
+                        if (logDate >= startOfMonth && logDate <= endOfMonth) monthDays++;
                     });
                     
                     return {
@@ -5729,21 +6022,21 @@ Perfect for unique exercises not in our list!
                 });
                 
                 const html = `
-                    <div style="display: grid; grid-template-columns: minmax(180px, 1fr) 1fr 1fr 1fr; gap: 12px; align-items: center; padding: 8px 0; border-bottom: 1px solid #3d3d3d; font-size: 12px; font-weight: 700; color: #9ca3af;">
-                        <div></div>
-                        <div style="text-align: center;">This Week</div>
-                        <div style="text-align: center;">This Month</div>
-                        <div style="text-align: center;">All Time</div>
+                    <div style="display: grid; grid-template-columns: 1.3fr 1fr 1fr 1fr; gap: 8px; align-items: center; padding: 8px 0; border-bottom: 1px solid #3d3d3d; font-size: 11px; font-weight: 700; color: #9ca3af;">
+                        <div style="text-align: left; min-width: 0;"></div>
+                        <div style="text-align: right; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Current Week</div>
+                        <div style="text-align: right; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${displayedMonthName}</div>
+                        <div style="text-align: right; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">All Time</div>
                     </div>
                     ${habitStats.map(habit => `
-                        <div style="display: grid; grid-template-columns: minmax(180px, 1fr) 1fr 1fr 1fr; gap: 12px; align-items: center; padding: 8px 0; border-bottom: 1px solid #2d2d2d; font-size: 13px;">
-                            <div style="display: flex; align-items: center; gap: 6px;">
+                        <div style="display: grid; grid-template-columns: 1.3fr 1fr 1fr 1fr; gap: 8px; align-items: center; padding: 8px 0; border-bottom: 1px solid #2d2d2d; font-size: 12px;">
+                            <div style="display: flex; align-items: center; gap: 6px; min-width: 0; overflow: hidden;">
                                 <div style="width: 10px; height: 10px; border-radius: 2px; background: ${habit.color}; flex-shrink: 0;"></div>
-                                <span style="color: #e8e8e8; font-weight: 600;">${habit.name}</span>
+                                <span style="color: #e8e8e8; font-weight: 600; font-size: 11px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${habit.name}</span>
                             </div>
-                            <div style="text-align: center; color: var(--primary); font-weight: 700;">${habit.weekDays}/7 days</div>
-                            <div style="text-align: center; color: var(--primary-light); font-weight: 700;">${habit.monthDays}/${new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate()} days</div>
-                            <div style="text-align: center; color: #9ca3af; font-weight: 700;">${habit.totalDays} days</div>
+                            <div style="text-align: right; color: var(--primary); font-weight: 700; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${habit.weekDays}/7</div>
+                            <div style="text-align: right; color: var(--primary-light); font-weight: 700; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${habit.monthDays}/${endOfMonth.getDate()}</div>
+                            <div style="text-align: right; color: #9ca3af; font-weight: 700; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${habit.totalDays}</div>
                         </div>
                     `).join('')}
                 `;
@@ -5753,10 +6046,15 @@ Perfect for unique exercises not in our list!
 
             // Calculate month-to-date stats
             calculateMonthStats() {
-                const now = new Date();
-                now.setHours(23, 59, 59, 999); // Set to end of today for comparisons
-                const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+                // Use the displayed calendar month, not the current real-world month
+                const year = this.data.currentView.calendarYear;
+                const month = this.data.currentView.calendarMonth;
+                
+                const startOfMonth = new Date(year, month, 1);
                 startOfMonth.setHours(0, 0, 0, 0);
+                
+                const endOfMonth = new Date(year, month + 1, 0);
+                endOfMonth.setHours(23, 59, 59, 999);
                 
                 let monthDistance = 0;
                 let monthPushups = 0;
@@ -5776,7 +6074,7 @@ Perfect for unique exercises not in our list!
                 
                 this.data.activities.forEach(activity => {
                     const activityDate = new Date(activity.date + 'T12:00:00');
-                    const isThisMonth = activityDate >= startOfMonth && activityDate <= now;
+                    const isThisMonth = activityDate >= startOfMonth && activityDate <= endOfMonth;
                     
                     if (isThisMonth) {
                         // Distance
@@ -5856,21 +6154,32 @@ Perfect for unique exercises not in our list!
             getCustomExerciseStatsByPeriod(exerciseKey, period) {
                 const now = new Date();
                 let startDate;
+                let endDate;
                 
                 if (period === 'week') {
                     startDate = new Date(now);
                     startDate.setDate(now.getDate() - now.getDay());
                     startDate.setHours(0, 0, 0, 0);
+                    endDate = new Date(now);
+                    endDate.setHours(23, 59, 59, 999);
                 } else if (period === 'month') {
-                    startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+                    // Use the displayed calendar month, not current real-world month
+                    const year = this.data.currentView.calendarYear;
+                    const month = this.data.currentView.calendarMonth;
+                    startDate = new Date(year, month, 1);
+                    startDate.setHours(0, 0, 0, 0);
+                    endDate = new Date(year, month + 1, 0);
+                    endDate.setHours(23, 59, 59, 999);
                 } else {
                     // 'total' - all time
                     startDate = new Date(0);
+                    endDate = new Date(now);
+                    endDate.setHours(23, 59, 59, 999);
                 }
                 
                 const activities = this.data.activities.filter(a => {
                     const actDate = new Date(a.date + 'T12:00:00');
-                    return a.type === exerciseKey && actDate >= startDate;
+                    return a.type === exerciseKey && actDate >= startDate && actDate <= endDate;
                 });
                 
                 // Sum up values based on tracking type
@@ -6087,11 +6396,31 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                 });
                 document.getElementById(`${screenName}-screen`).classList.add('active');
                 
-                // Update tabs
+                // Update tabs - find the correct tab by screen name
                 document.querySelectorAll('.nav-tab').forEach(tab => {
                     tab.classList.remove('active');
                 });
-                event.target.classList.add('active');
+                
+                // Map screen names to tab text for matching
+                const screenToTabText = {
+                    'log': 'Tracker',
+                    'dashboard': 'Dashboard',
+                    'calendar': 'Calendar',
+                    'goals': 'Goals',
+                    'pals': 'Pals',
+                    'leaderboard': 'Leaderboard'
+                };
+                
+                // Find and activate the correct tab
+                const tabText = screenToTabText[screenName];
+                if (tabText) {
+                    const tabs = document.querySelectorAll('.nav-tab');
+                    tabs.forEach(tab => {
+                        if (tab.textContent.trim() === tabText) {
+                            tab.classList.add('active');
+                        }
+                    });
+                }
                 
                 this.data.currentView.screen = screenName;
 
@@ -6477,6 +6806,490 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                 if (modal) {
                     modal.classList.toggle('active');
                 }
+            },
+            
+            // Weekly Report Functions
+            showWeeklyReport(weekStartDate) {
+                // Store navigation state (Sunday start date in local time)
+                const now = new Date();
+                const currentWeekStart = new Date(now);
+                currentWeekStart.setDate(now.getDate() - now.getDay());
+                currentWeekStart.setHours(0, 0, 0, 0);
+
+                let targetStart = currentWeekStart;
+                if (weekStartDate) {
+                    const d = typeof weekStartDate === 'string'
+                        ? new Date(weekStartDate + 'T00:00:00')
+                        : new Date(weekStartDate);
+                    d.setHours(0, 0, 0, 0);
+                    d.setDate(d.getDate() - d.getDay());
+                    targetStart = d;
+                }
+
+                this.weeklyReportViewStart = targetStart.toISOString().split('T')[0];
+
+                this.renderWeeklyReport(this.weeklyReportViewStart);
+                const modal = document.getElementById('weekly-report-modal');
+                if (modal) {
+                    modal.classList.add('active');
+                    document.body.style.overflow = 'hidden'; // Prevent background scrolling
+                }
+            },
+
+            navigateWeeklyReport(direction) {
+                // direction: -1 previous week, +1 next week
+                const now = new Date();
+                const currentWeekStart = new Date(now);
+                currentWeekStart.setDate(now.getDate() - now.getDay());
+                currentWeekStart.setHours(0, 0, 0, 0);
+
+                const base = this.weeklyReportViewStart
+                    ? new Date(this.weeklyReportViewStart + 'T00:00:00')
+                    : new Date(currentWeekStart);
+
+                base.setHours(0, 0, 0, 0);
+                base.setDate(base.getDate() + (direction * 7));
+
+                // Do not allow navigating past the current week
+                if (base > currentWeekStart) {
+                    base.setTime(currentWeekStart.getTime());
+                }
+
+                this.weeklyReportViewStart = base.toISOString().split('T')[0];
+                this.renderWeeklyReport(this.weeklyReportViewStart);
+            },
+
+            closeWeeklyReport() {
+                const modal = document.getElementById('weekly-report-modal');
+                if (modal) {
+                    modal.classList.remove('active');
+                    document.body.style.overflow = ''; // Restore scrolling
+                }
+
+                // Mark this Sunday's report as seen (only when today is Sunday)
+                const now = new Date();
+                if (now.getDay() === 0) {
+                    const sundayDate = now.toISOString().split('T')[0];
+                    localStorage.setItem('lastWeeklyReportSunday', sundayDate);
+                }
+            },
+
+            renderWeeklyReport(weekStartDate) {
+                const container = document.getElementById('weekly-report-content');
+                if (!container) return;
+                
+                // Calculate week range (Sunday to Saturday)
+                const now = new Date();
+                const currentWeekStart = new Date(now);
+                currentWeekStart.setDate(now.getDate() - now.getDay());
+                currentWeekStart.setHours(0, 0, 0, 0);
+
+                let startOfWeek = new Date(currentWeekStart);
+                if (weekStartDate) {
+                    const d = typeof weekStartDate === 'string'
+                        ? new Date(weekStartDate + 'T00:00:00')
+                        : new Date(weekStartDate);
+                    d.setHours(0, 0, 0, 0);
+                    d.setDate(d.getDate() - d.getDay());
+                    startOfWeek = d;
+                }
+
+                // Keep navigation state in sync
+                this.weeklyReportViewStart = startOfWeek.toISOString().split('T')[0];
+const endOfWeek = new Date(startOfWeek);
+                endOfWeek.setDate(startOfWeek.getDate() + 6);
+                endOfWeek.setHours(23, 59, 59, 999);
+                
+                // Calculate last week range
+                const lastWeekStart = new Date(startOfWeek);
+                lastWeekStart.setDate(lastWeekStart.getDate() - 7);
+                const lastWeekEnd = new Date(endOfWeek);
+                lastWeekEnd.setDate(lastWeekEnd.getDate() - 7);
+                
+                // Format date range
+                const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                const startMonth = monthNames[startOfWeek.getMonth()];
+                const endMonth = monthNames[endOfWeek.getMonth()];
+                const startDay = startOfWeek.getDate();
+                const endDay = endOfWeek.getDate();
+                const year = endOfWeek.getFullYear();
+                
+                const dateRange = startMonth === endMonth 
+                    ? `${startMonth} ${startDay}-${endDay}, ${year}`
+                    : `${startMonth} ${startDay} - ${endMonth} ${endDay}, ${year}`;
+                
+
+                const isCurrentWeek = startOfWeek.getTime() === currentWeekStart.getTime();
+                // Get activities for this week and last week
+                const thisWeekActivities = this.data.activities.filter(a => {
+                    const actDate = new Date(a.date + 'T12:00:00');
+                    return actDate >= startOfWeek && actDate <= endOfWeek;
+                });
+                
+                const lastWeekActivities = this.data.activities.filter(a => {
+                    const actDate = new Date(a.date + 'T12:00:00');
+                    return actDate >= lastWeekStart && actDate <= lastWeekEnd;
+                });
+                
+                // Calculate chart data - STEPS ONLY (not distance)
+                const thisWeekSteps = [0, 0, 0, 0, 0, 0, 0]; // Sun-Sat
+                const lastWeekSteps = [0, 0, 0, 0, 0, 0, 0];
+                
+                thisWeekActivities.forEach(a => {
+                    if (a.steps) {
+                        const actDate = new Date(a.date + 'T12:00:00');
+                        const dayIndex = actDate.getDay();
+                        thisWeekSteps[dayIndex] += a.steps;
+                    }
+                });
+                
+                lastWeekActivities.forEach(a => {
+                    if (a.steps) {
+                        const actDate = new Date(a.date + 'T12:00:00');
+                        const dayIndex = actDate.getDay();
+                        lastWeekSteps[dayIndex] += a.steps;
+                    }
+                });
+                
+                const maxChartValue = Math.max(...thisWeekSteps, ...lastWeekSteps, 1);
+                
+                // Aggregate activities by type for THIS WEEK
+                const thisWeekTotals = {};
+                thisWeekActivities.forEach(a => {
+                    const key = a.type;
+                    if (!thisWeekTotals[key]) {
+                        thisWeekTotals[key] = { steps: 0, distance: 0, reps: 0, floors: 0, days: new Set() };
+                    }
+                    if (a.steps) thisWeekTotals[key].steps += a.steps;
+                    if (a.distance) thisWeekTotals[key].distance += a.distance;
+                    if (a.reps) thisWeekTotals[key].reps += a.reps;
+                    if (a.floors) thisWeekTotals[key].floors += a.floors;
+                    thisWeekTotals[key].days.add(a.date);
+                });
+                
+                // Aggregate activities by type for LAST WEEK
+                const lastWeekTotals = {};
+                lastWeekActivities.forEach(a => {
+                    const key = a.type;
+                    if (!lastWeekTotals[key]) {
+                        lastWeekTotals[key] = { steps: 0, distance: 0, reps: 0, floors: 0, days: new Set() };
+                    }
+                    if (a.steps) lastWeekTotals[key].steps += a.steps;
+                    if (a.distance) lastWeekTotals[key].distance += a.distance;
+                    if (a.reps) lastWeekTotals[key].reps += a.reps;
+                    if (a.floors) lastWeekTotals[key].floors += a.floors;
+                    lastWeekTotals[key].days.add(a.date);
+                });
+                
+                // Get unit preference
+                const unit = this.data.goals.unitPreference === 'km' ? 'km' : 'miles';
+                
+                // Build activity lists with comparisons
+                const cardioActivities = [];
+                const strengthActivities = [];
+                
+                Object.keys(thisWeekTotals).forEach(activityType => {
+                    const thisWeek = thisWeekTotals[activityType];
+                    const lastWeek = lastWeekTotals[activityType] || { steps: 0, distance: 0, reps: 0, floors: 0, days: new Set() };
+                    const activityName = this.getActivityTypeName(activityType);
+                    
+                    // Skip activities that ONLY have steps (steps shown in chart only, not in lists)
+                    const hasOnlySteps = thisWeek.steps > 0 && 
+                                        thisWeek.distance === 0 && 
+                                        thisWeek.reps === 0 && 
+                                        thisWeek.floors === 0;
+                    if (hasOnlySteps) {
+                        return; // This is a steps-only activity, skip it
+                    }
+                    
+                    // CARDIO: Distance-based (NOT STEPS), Stairs
+                    if (thisWeek.distance > 0) {
+                        let thisDistance = thisWeek.distance;
+                        let lastDistance = lastWeek.distance;
+                        if (this.data.goals.unitPreference === 'miles') {
+                            thisDistance = thisDistance / 1.60934;
+                            lastDistance = lastDistance / 1.60934;
+                        }
+                        
+                        const diff = thisDistance - lastDistance;
+                        const comparison = diff > 0 ? `+${diff.toFixed(1)}` : diff < 0 ? diff.toFixed(1) : '=';
+                        
+                        cardioActivities.push({
+                            name: activityName,
+                            value: thisDistance.toFixed(1),
+                            unit: unit,
+                            comparison: comparison,
+                            isIncrease: diff > 0,
+                            isDecrease: diff < 0
+                        });
+                    }
+                    
+                    if (thisWeek.floors > 0) {
+                        const diff = thisWeek.floors - lastWeek.floors;
+                        const comparison = diff > 0 ? `+${diff}` : diff < 0 ? `${diff}` : '=';
+                        
+                        cardioActivities.push({
+                            name: activityName,
+                            value: thisWeek.floors.toLocaleString(),
+                            unit: thisWeek.floors === 1 ? 'floor' : 'floors',
+                            comparison: comparison,
+                            isIncrease: diff > 0,
+                            isDecrease: diff < 0
+                        });
+                    }
+                    
+                    // STRENGTH: Reps-based, Log days
+                    if (thisWeek.reps > 0) {
+                        const diff = thisWeek.reps - lastWeek.reps;
+                        const comparison = diff > 0 ? `+${diff}` : diff < 0 ? `${diff}` : '=';
+                        
+                        strengthActivities.push({
+                            name: activityName,
+                            value: thisWeek.reps.toLocaleString(),
+                            unit: 'reps',
+                            comparison: comparison,
+                            isIncrease: diff > 0,
+                            isDecrease: diff < 0
+                        });
+                    }
+                    
+                    // Log day activities (only if no reps/distance/floors/steps)
+                    if (thisWeek.days.size > 0 && thisWeek.reps === 0 && thisWeek.distance === 0 && thisWeek.floors === 0 && thisWeek.steps === 0) {
+                        const diff = thisWeek.days.size - lastWeek.days.size;
+                        const comparison = diff > 0 ? `+${diff}` : diff < 0 ? `${diff}` : '=';
+                        
+                        strengthActivities.push({
+                            name: activityName,
+                            value: thisWeek.days.size,
+                            unit: thisWeek.days.size === 1 ? 'day' : 'days',
+                            comparison: comparison,
+                            isIncrease: diff > 0,
+                            isDecrease: diff < 0
+                        });
+                    }
+                });
+                
+                // Generate HTML
+                let html = `
+                    <div class="weekly-report-header">
+                        <button class="weekly-report-nav-btn" onclick="app.navigateWeeklyReport(-1)" aria-label="Previous week">←</button>
+                        <div style="flex: 1; text-align: center;">
+                            <div class="weekly-report-title">Weekly Summary Ready</div>
+                            <div class="weekly-report-date">${dateRange}</div>
+                        </div>
+                        <button class="weekly-report-nav-btn" onclick="app.navigateWeeklyReport(1)" ${isCurrentWeek ? 'disabled' : ''} aria-label="Next week">→</button>
+                    </div>
+                    
+                    <div class="weekly-report-chart-section">
+                        <div class="weekly-report-chart-title">Daily Steps</div>
+                        <div style="max-width: 50%; margin: 0 auto;">
+                            <div style="display: flex; gap: 8px; align-items: stretch;">
+                                <div class="weekly-report-chart" style="flex: 1; position: relative;">
+                `;
+                
+                // Calculate raw max and round UP to next 2k increment
+                const rawMax = Math.max(...thisWeekSteps, ...lastWeekSteps, 1);
+                const scaledMax = Math.max(Math.ceil(rawMax / 2000) * 2000, 2000); // Minimum 2k scale
+                
+                // Find last week's peak for reference line
+                const lastWeekPeak = Math.max(...lastWeekSteps);
+                
+                // Generate Y-axis labels (5 ticks: 0%, 25%, 50%, 75%, 100%)
+                const yAxisLabels = [];
+                for (let i = 4; i >= 0; i--) {
+                    const value = (scaledMax * i) / 4;
+                    let label = '0';
+                    if (value >= 1000) {
+                        label = (value / 1000).toFixed(0) + 'k';
+                    } else if (value > 0) {
+                        label = Math.round(value).toString();
+                    }
+                    yAxisLabels.push({ value, label, percent: (i * 25) });
+                }
+                
+                // Add reference line at last week's peak
+                const peakPercent = scaledMax > 0 ? (lastWeekPeak / scaledMax * 100) : 0;
+                
+                if (lastWeekPeak > 0) {
+                    html += `
+                        <div style="
+                            position: absolute;
+                            left: 0;
+                            right: 0;
+                            bottom: ${peakPercent}%;
+                            border-top: 1px dashed #6b7280;
+                            opacity: 0.5;
+                            pointer-events: none;
+                            z-index: 0;
+                        "></div>
+                    `;
+                }
+                
+                // Generate overlaid bars (use scaledMax for height calculations)
+                thisWeekSteps.forEach((thisValue, index) => {
+                    const lastValue = lastWeekSteps[index];
+                    const thisHeight = scaledMax > 0 ? (thisValue / scaledMax * 100) : 0;
+                    const lastHeight = scaledMax > 0 ? (lastValue / scaledMax * 100) : 0;
+                    
+                    html += `
+                        <div class="weekly-report-chart-bar-container" style="position: relative;">
+                            ${lastValue > 0 ? `
+                            <div style="
+                                position: absolute;
+                                bottom: 0;
+                                width: 4px;
+                                height: ${Math.max(lastHeight, 8)}%;
+                                border: 1px dashed var(--primary-light);
+                                border-bottom: none;
+                                border-radius: 4px 4px 0 0;
+                                opacity: 0.5;
+                                box-sizing: border-box;
+                            "></div>
+                            ` : ''}
+                            ${thisValue > 0 ? `
+                            <div class="weekly-report-chart-bar" style="height: ${Math.max(thisHeight, 8)}%; position: relative; z-index: 1;"></div>
+                            ` : ''}
+                        </div>
+                    `;
+                });
+                
+                html += `
+                            </div>
+                            <div style="display: flex; flex-direction: column; justify-content: space-between; padding: 0 4px; font-size: 9px; color: #6b7280; font-weight: 600; min-width: 32px; text-align: left;">
+                `;
+                
+                // Add Y-axis labels
+                yAxisLabels.forEach(tick => {
+                    html += `<div style="line-height: 1;">${tick.label}</div>`;
+                });
+                
+                html += `
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 8px; padding: 0 20px;">
+                            <div style="flex: 1; display: flex; justify-content: space-around; gap: 8px;">
+                                <span style="flex: 1; text-align: center; font-size: 11px; color: #6b7280; font-weight: 600;">S</span>
+                                <span style="flex: 1; text-align: center; font-size: 11px; color: #6b7280; font-weight: 600;">M</span>
+                                <span style="flex: 1; text-align: center; font-size: 11px; color: #6b7280; font-weight: 600;">T</span>
+                                <span style="flex: 1; text-align: center; font-size: 11px; color: #6b7280; font-weight: 600;">W</span>
+                                <span style="flex: 1; text-align: center; font-size: 11px; color: #6b7280; font-weight: 600;">T</span>
+                                <span style="flex: 1; text-align: center; font-size: 11px; color: #6b7280; font-weight: 600;">F</span>
+                                <span style="flex: 1; text-align: center; font-size: 11px; color: #6b7280; font-weight: 600;">S</span>
+                            </div>
+                            <div style="min-width: 32px;"></div>
+                        </div>
+                        </div>
+                    </div>
+                    
+                    <div class="weekly-report-stats-section">
+                        <div class="weekly-report-stat-column">
+                            <div class="weekly-report-stat-column-title">Cardio</div>
+                `;
+                
+                if (cardioActivities.length === 0) {
+                    html += `<div class="weekly-report-stat-item"><span class="weekly-report-stat-label" style="color: #6b7280;">No cardio logged</span></div>`;
+                } else {
+                    cardioActivities.forEach(item => {
+                        const compColor = item.isIncrease ? '#10b981' : item.isDecrease ? '#ef4444' : 'var(--primary-light)';
+                        html += `
+                            <div class="weekly-report-stat-item">
+                                <span class="weekly-report-stat-label" title="${item.name}">${item.name}</span>
+                                <span class="weekly-report-stat-value">
+                                    ${item.value} ${item.unit}
+                                    <span class="weekly-report-stat-comp" style="color: ${compColor};">${item.comparison}</span>
+                                </span>
+                            </div>
+                        `;
+                    });
+                }
+                
+                html += `
+                        </div>
+                        <div class="weekly-report-stat-column">
+                            <div class="weekly-report-stat-column-title">Strength</div>
+                `;
+                
+                if (strengthActivities.length === 0) {
+                    html += `<div class="weekly-report-stat-item"><span class="weekly-report-stat-label" style="color: #6b7280;">No strength logged</span></div>`;
+                } else {
+                    strengthActivities.forEach(item => {
+                        const compColor = item.isIncrease ? '#10b981' : item.isDecrease ? '#ef4444' : 'var(--primary-light)';
+                        html += `
+                            <div class="weekly-report-stat-item">
+                                <span class="weekly-report-stat-label" title="${item.name}">${item.name}</span>
+                                <span class="weekly-report-stat-value">
+                                    ${item.value} ${item.unit}
+                                    <span class="weekly-report-stat-comp" style="color: ${compColor};">${item.comparison}</span>
+                                </span>
+                            </div>
+                        `;
+                    });
+                }
+                
+                html += `
+                        </div>
+                    </div>
+                    
+                    <div class="weekly-report-actions">
+                        <button class="weekly-report-action-btn" onclick="app.closeWeeklyReport()">Dismiss</button>
+                        <button class="weekly-report-action-btn" onclick="app.closeWeeklyReport(); app.showScreen('calendar')">Go to Calendar</button>
+                        <button class="weekly-report-action-btn primary" onclick="app.saveWeeklyReportImage()">Save Image</button>
+                    </div>
+                `;
+                
+                container.innerHTML = html;
+            },
+            
+            getActivityTypeName(type) {
+                // Map activity types to display names
+                const nameMap = {
+                    'run': 'Running',
+                    'walk': 'Walking',
+                    'biking': 'Biking',
+                    'dog': 'Dog Walking',
+                    'hiking': 'Hiking',
+                    'pushups': 'Push-ups',
+                    'pullups': 'Pull-ups',
+                    'rollerabs': 'Ab Wheel Rollout',
+                    'dips': 'Dips',
+                    'squats': 'Squats',
+                    'situps': 'Sit-ups',
+                    'arm': 'Arm Day',
+                    'back': 'Back Day',
+                    'chest': 'Chest Day',
+                    'core': 'Core Day',
+                    'fullbody': 'Full Body',
+                    'leg': 'Leg Day',
+                    'shoulder': 'Shoulder Day',
+                    'stairs': 'Stairs'
+                };
+                
+                // Check if it's a custom exercise
+                if (type && type.startsWith && type.startsWith('custom-')) {
+                    const parts = type.split('-');
+                    if (parts.length === 3) {
+                        const categoryIdNum = parseInt(parts[1], 10);
+                        const exerciseIdNum = parseInt(parts[2], 10);
+                        const categoryIdStr = parts[1];
+                        const exerciseIdStr = parts[2];
+
+                        const category = this.data.customCategories?.find(c => String(c.id) === categoryIdStr || c.id === categoryIdNum);
+                        if (category) {
+                            const exercise = category.exercises?.find(e => String(e.id) === exerciseIdStr || e.id === exerciseIdNum);
+                            if (exercise) {
+                                return exercise.name;
+                            }
+                        }
+                    }
+                }
+                
+                return nameMap[type] || (type ? type.charAt(0).toUpperCase() + type.slice(1) : 'Unknown');
+            },
+            
+            saveWeeklyReportImage() {
+                alert('Save Image feature coming soon! This will capture the report as a PNG.');
+                // TODO: Implement html2canvas or similar library
+                this.closeWeeklyReport();
             },
 
             // Show Track Activity info modal
