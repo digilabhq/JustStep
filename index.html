@@ -2671,6 +2671,7 @@
             width: 100%;
             max-width: 480px;
             max-height: 90vh;
+            height: 90vh;
             overflow: hidden;
             display: flex;
             flex-direction: column;
@@ -2684,6 +2685,7 @@
             flex: 1 1 auto;
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
+                    min-height: 0;
         }
 
         .weekly-report-footer {
@@ -3542,7 +3544,7 @@ Perfect for unique exercises not in our list!
         </a>
 <button class="welcome-button" onclick="app.closeWelcome()">Let's Go</button>
 <div style="text-align: center; color: #6b7280; font-size: 11px; margin-top: 16px;">
-            v2.1.9
+            v2.2.0
         </div>
 </div>
 <!-- Customize Dashboard Modal -->
@@ -3821,7 +3823,7 @@ Perfect for unique exercises not in our list!
 </div>
 <script>
         // App Version
-        const APP_VERSION = '2.1.9';
+        const APP_VERSION = '2.2.0';
         
         // Main App Object
         const app = {
