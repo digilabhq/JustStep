@@ -96,32 +96,30 @@
 
         /* App Logo Header */
         .app-header {
-            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-darker) 100%);
-            padding: 10px 14px;
+            background: #08090b;
+            border-bottom: 1px solid #1e2127;
+            padding: 12px 16px;
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: space-between;
             position: sticky;
             top: 0;
-            gap: 8px;
             z-index: 101;
-            box-shadow: 0 2px 8px rgba(30, 64, 175, 0.3);
         }
 
         .app-header-left {
             display: flex;
             align-items: center;
-            justify-content: center;
-            flex: 1;
         }
 
         .app-header-right {
-            position: absolute;
-            right: 14px;
-            top: 50%;
-            transform: translateY(-45%);
             display: flex;
             align-items: center;
+            gap: 10px;
+        }
+
+        .app-name .wordmark-accent {
+            color: var(--primary);
         }
 
         .info-icon {
@@ -224,6 +222,12 @@
             letter-spacing: -0.5px;
         }
 
+        /* v3.0: identical heading rhythm on every tab */
+        .screen > h1 {
+            min-height: 36px;
+            margin: 4px 0 8px;
+        }
+
         h2 {
             font-size: 20px;
             font-weight: 600;
@@ -268,7 +272,6 @@
         .activity-card {
             background: #101216;
             border: 1px solid #1e2127;
-            border-left: 3px solid var(--primary);
             border-radius: 12px;
             padding: 8px;
             margin-bottom: 6px;
@@ -278,8 +281,7 @@
         }
         
         .activity-card:hover {
-            transform: translateX(2px);
-            border-left-color: var(--primary-light);
+            border-color: #2a2e36;
         }
 
         @keyframes slideIn {
@@ -346,7 +348,8 @@
         /* v3.0 Midnight Athlete: bottom nav, today screen, heatmap, crew */
         .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; display: flex; align-items: center; background: rgba(11, 13, 16, 0.96); border-top: 1px solid #1e2127; padding: 8px 6px calc(10px + env(safe-area-inset-bottom)); z-index: 900; backdrop-filter: blur(10px); }
         .bottom-nav-item { flex: 1; text-align: center; background: none; border: none; color: #565b63; cursor: pointer; font-family: inherit; padding: 2px 0; }
-        .bottom-nav-item .bn-icon { font-size: 21px; line-height: 1; display: block; }
+        .bottom-nav-item .bn-icon { display: block; height: 22px; }
+        .bottom-nav-item .bn-icon svg { width: 22px; height: 22px; display: inline-block; }
         .bottom-nav-item .bn-label { font-size: 9.5px; margin-top: 3px; display: block; letter-spacing: 0.3px; }
         .bottom-nav-item.active { color: var(--primary); }
         .bottom-nav-plus { flex: 0 0 66px; display: flex; justify-content: center; }
@@ -423,7 +426,6 @@
         .value-entry-card {
             background: #101216;
             border: 1px solid #1e2127;
-            border-left: 3px solid var(--primary);
             border-radius: 12px;
             padding: 12px;
             margin-top: 14px;
@@ -517,7 +519,6 @@
             transform: translateX(-50%) translateY(12px);
             background: #08090b;
             border: 1px solid #1e2127;
-            border-left: 3px solid var(--primary);
             color: #eceff1;
             font-size: 13px;
             font-weight: 500;
@@ -869,7 +870,6 @@
         .stat-card {
             background: #101216;
             border: 1px solid #1e2127;
-            border-left: 3px solid var(--primary);
             border-radius: 12px;
             padding: 5px 3px;
             transition: all 0.2s;
@@ -880,13 +880,6 @@
             align-items: center;
             min-height: 60px;
             aspect-ratio: 1.4 / 1;
-        }
-
-        /* Gold border for custom/favorite cards */
-        .stat-card#custom-card-1,
-        .stat-card#custom-card-2,
-        .stat-card#custom-card-3 {
-            border-left-color: #d4af37;
         }
 
         .stat-star {
@@ -923,7 +916,6 @@
         .progress-card {
             background: #101216;
             border: 1px solid #1e2127;
-            border-left: 3px solid var(--primary);
             border-radius: 12px;
             padding: 8px;
             margin-bottom: 12px;
@@ -1141,7 +1133,6 @@
         .settings-card {
             background: #101216;
             border: 1px solid #1e2127;
-            border-left: 3px solid var(--primary);
             border-radius: 12px;
             padding: 10px 14px;
             transition: all 0.2s;
@@ -1150,7 +1141,6 @@
         .pals-profile-card {
             background: var(--card);
             border: 1px solid rgba(255,255,255,0.08);
-            border-left: 3px solid var(--primary);
             border-radius: 12px;
             padding: 8px 12px;
             margin-bottom: 6px;
@@ -1161,7 +1151,6 @@
         .habit-item {
             background: #101216;
             border: 1px solid #1e2127;
-            border-left: 3px solid var(--primary);
             border-radius: 12px;
             padding: 8px 12px;
             transition: all 0.2s;
@@ -1170,7 +1159,6 @@
         
         .habit-item:hover {
             transform: translateX(2px);
-            border-left-color: var(--primary-light);
         }
         
         .goal-input {
@@ -1389,7 +1377,6 @@
             background: #101216;
             color: var(--primary-light);
             border: 1px solid #1e2127;
-            border-left: 3px solid var(--primary);
             border-radius: 12px;
             font-size: 13px;
             font-weight: 600;
@@ -1403,7 +1390,6 @@
         
         .habit-add-button:hover {
             background: rgba(16, 185, 129, 0.05);
-            border-left-color: var(--primary-light);
         }
         
         .habit-add-button:active {
@@ -1457,7 +1443,6 @@
         .leaderboard-item-card {
             background: #101216;
             border: 1px solid #1e2127;
-            border-left: 3px solid var(--primary);
             border-radius: 12px;
             padding: 8px 10px;
             transition: all 0.2s;
@@ -1522,7 +1507,6 @@
         
         /* Rank 4+ use primary green */
         .leaderboard-item-card.rank-regular {
-            border-left-color: var(--primary);
         }
         
         .leaderboard-item-card.rank-regular.highlight {
@@ -1591,13 +1575,11 @@
             padding: 0;
             margin-bottom: 3px;
             border: 1px solid #1e2127;
-            border-left: 2px solid var(--primary);
             transition: all 0.2s;
             overflow: hidden;
         }
 
         .pal-card:hover {
-            border-left-color: var(--primary-light);
             background: #333;
             transform: translateX(2px);
         }
@@ -1631,7 +1613,6 @@
         }
 
         .pal-card.expanded {
-            border-left-color: var(--primary-light);
         }
 
         .pal-card.expanded .pal-expand-icon {
@@ -1939,13 +1920,11 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-left: 2px solid var(--primary);
             transition: all 0.2s;
         }
 
         .day-activity-item:hover {
             background: #0d0f12;
-            border-left-color: var(--primary-light);
         }
 
         .day-activity-info {
@@ -2300,7 +2279,6 @@
         .weight-input-section {
             background: #101216;
             border: 1px solid #1e2127;
-            border-left: 3px solid var(--primary);
             border-radius: 12px;
             padding: 10px 12px;
             margin-top: 12px;
@@ -2675,7 +2653,6 @@
         .comparison-section {
             background: #101216;
             border: 1px solid #1e2127;
-            border-left: 3px solid var(--primary);
             border-radius: 12px;
             padding: 10px;
             margin-bottom: 12px;
@@ -2883,7 +2860,6 @@
         .weekly-report-container {
             background: var(--bg);
             border: 1px solid var(--border);
-            border-left: 4px solid var(--primary);
             border-radius: 12px;
             width: 100%;
             max-width: 480px;
@@ -3125,20 +3101,19 @@
 <!-- App Header -->
 <div class="app-header">
 <div class="app-header-left">
-<span class="app-name">JustStep</span>
+<span class="app-name" onclick="app.showWelcome()" style="cursor: pointer;" title="About JustStep">Just<span class="wordmark-accent">Step</span></span>
 </div>
 <div class="app-header-right">
-<div class="info-icon" onclick="app.showWelcome()" title="About JustStep">i</div>
-<div class="profile-icon" onclick="app.showScreen('goals')" title="Goals &amp; Settings">⚙</div>
+<div class="profile-icon" onclick="app.showScreen('goals')" title="Goals &amp; Settings"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1 1.56V21a2 2 0 1 1-4 0v-.09a1.7 1.7 0 0 0-1-1.56 1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.7 1.7 0 0 0 .34-1.87 1.7 1.7 0 0 0-1.56-1H3a2 2 0 1 1 0-4h.09a1.7 1.7 0 0 0 1.56-1 1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.7 1.7 0 0 0 1.87.34h.01a1.7 1.7 0 0 0 1-1.56V3a2 2 0 1 1 4 0v.09a1.7 1.7 0 0 0 1 1.56 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.7 1.7 0 0 0-.34 1.87v.01a1.7 1.7 0 0 0 1.56 1H21a2 2 0 1 1 0 4h-.09a1.7 1.7 0 0 0-1.56 1z"/></svg></div>
 </div>
 </div>
 <!-- Bottom navigation (v3.0) -->
 <div class="bottom-nav">
-<button class="bottom-nav-item active" data-screen="today" onclick="app.showScreen('today')"><span class="bn-icon">⚡</span><span class="bn-label">Today</span></button>
-<button class="bottom-nav-item" data-screen="progress" onclick="app.showScreen('progress')"><span class="bn-icon">📈</span><span class="bn-label">Progress</span></button>
+<button class="bottom-nav-item active" data-screen="today" onclick="app.showScreen('today')"><span class="bn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12c2-2.96 0-7-1-8 0 3.04-1.96 4.4-3 6-1.6 2.46-1 5.5 1 7.5s5.5 2 7.5 0c2.5-2.5 1.5-6-1.5-8.5 0 2-1 3-3 3z"/></svg></span><span class="bn-label">Today</span></button>
+<button class="bottom-nav-item" data-screen="progress" onclick="app.showScreen('progress')"><span class="bn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="12" width="4" height="8" rx="1"/><rect x="10" y="8" width="4" height="12" rx="1"/><rect x="17" y="4" width="4" height="16" rx="1"/></svg></span><span class="bn-label">Progress</span></button>
 <div class="bottom-nav-plus"><button onclick="app.showScreen('log')" aria-label="Log activity">+</button></div>
-<button class="bottom-nav-item" data-screen="crew" onclick="app.showScreen('crew')"><span class="bn-icon">👥</span><span class="bn-label">Crew</span></button>
-<button class="bottom-nav-item" data-screen="weight" onclick="app.showScreen('weight')"><span class="bn-icon">⚖️</span><span class="bn-label">Weight</span></button>
+<button class="bottom-nav-item" data-screen="crew" onclick="app.showScreen('crew')"><span class="bn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="3"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><circle cx="17" cy="7" r="2.5"/><path d="M21 21v-2a3.5 3.5 0 0 0-2.5-3.3"/></svg></span><span class="bn-label">Crew</span></button>
+<button class="bottom-nav-item" data-screen="weight" onclick="app.showScreen('weight')"><span class="bn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18"/><path d="M8 21h8"/><path d="M4 7h16"/><path d="M6 7l-2.5 6a3 3 0 0 0 5 0L6 7z"/><path d="M18 7l-2.5 6a3 3 0 0 0 5 0L18 7z"/></svg></span><span class="bn-label">Weight</span></button>
 </div>
 <!-- Daily Logging Screen -->
 <!-- Today Screen (v3.0 home) -->
@@ -3226,7 +3201,7 @@
 <div><div style="font-size: 13px; font-weight: 600; color: #eceff1;">Weekly report card</div><div style="font-size: 11px; color: #7d838c;">Share last week with the crew</div></div>
 <button onclick="app.shareReportCard()" style="padding: 9px 14px; background: var(--primary); color: var(--on-accent); border: none; border-radius: 12px; font-weight: 600; font-size: 12px; cursor: pointer; font-family: inherit;">Share</button>
 </div>
-<h1 style="display: flex; align-items: center; gap: 8px;">Dashboard <span class="info-icon" onclick="app.showDashboardInfo()" title="Dashboard explained">i</span></h1>
+<h2 style="display: flex; align-items: center; gap: 8px; margin-top: 4px;">Dashboard <span class="info-icon" onclick="app.showDashboardInfo()" title="Dashboard explained">i</span></h2>
 <p class="subtitle">Your progress overview</p>
 <div class="stats-toggle">
 <button class="stats-toggle-btn active" onclick="app.setStatsView('week')">This Week</button>
@@ -3267,7 +3242,7 @@
 </div>
 </div>
 <div style="display: flex; gap: 12px; margin-bottom: 20px;">
-    <button class="customize-dashboard-btn" onclick="app.openCustomizeModal()" style="flex: 1; margin: 0; background: #101216; border: 1px solid #1e2127; border-radius: 12px; padding: 12px 16px; color: #d4af37;">Customize Favorites</button>
+    <button class="customize-dashboard-btn" onclick="app.openCustomizeModal()" style="flex: 1; margin: 0; background: #101216; border: 1px solid #1e2127; border-radius: 12px; padding: 12px 16px; color: #eceff1;">Customize Favorites</button>
     <button class="customize-dashboard-btn" onclick="app.showWeeklyReport()" style="flex: 1; margin: 0; background: var(--primary); border: 1px solid var(--primary); border-radius: 12px; padding: 12px 16px; color: white;">Weekly Report</button>
 </div>
 <!-- Comparison Bar Graphs -->
@@ -3338,7 +3313,6 @@
 <div class="progress-details">
 <span id="annual-progress-current">0</span>
 <span id="annual-progress-goal">420</span>
-</div>
 </div>
 </div>
 <div style="height: 8px;"></div>
@@ -3547,6 +3521,7 @@ Rankings update daily. Add PALs to compete with friends!
 <button class="swatch" data-theme="cyan" style="background: #22d3ee;" onclick="app.setTheme('cyan')" aria-label="Cyan"></button>
 <button class="swatch" data-theme="orange" style="background: #ff7a1a;" onclick="app.setTheme('orange')" aria-label="Orange"></button>
 <button class="swatch" data-theme="magenta" style="background: #f043c8;" onclick="app.setTheme('magenta')" aria-label="Magenta"></button>
+<button class="swatch" id="swatch-custom" style="background: conic-gradient(#ff4040, #ffb040, #e8f540, #40f57a, #40c8ff, #8040ff, #ff40c8, #ff4040);" onclick="app.openThemeColorPicker()" aria-label="Custom color"></button>
 </div>
 </div>
 <!-- Weekly Strength Days Target - Inline -->
@@ -3655,6 +3630,7 @@ Perfect for unique exercises not in our list!
 <!-- Data Import/Export -->
 <div style="display: flex; flex-direction: column; gap: 8px;">
 <input accept=".json" id="import-file-input" onchange="app.handleImportFile(event)" style="display: none;" type="file"/>
+<button class="export-button" onclick="app.showWelcome()" style="padding: 8px 14px; font-size: 13px;">About JustStep</button>
 <button class="export-button" onclick="document.getElementById('import-file-input').click()" style="padding: 8px 14px; font-size: 13px;">Import Data</button>
 <button class="export-button" onclick="app.exportData()" style="padding: 8px 14px; font-size: 13px;">Export All Data</button>
 </div>
@@ -3662,7 +3638,7 @@ Perfect for unique exercises not in our list!
 </div>
 <!-- Crew Screen (v3.0: pals + feed + challenges + leaderboard) -->
 <div class="screen" id="crew-screen">
-<h1>Pals</h1>
+<h1>Crew</h1>
 <p class="subtitle">Share your fitness journey with friends</p>
 <!-- MY PROFILE Section - Slim Design -->
 <div class="pals-section">
@@ -3754,7 +3730,6 @@ Perfect for unique exercises not in our list!
 <p style="color: #6b7280; text-align: center; padding: 16px 0; font-size: 13px;">No pals yet. Add one above!</p>
 </div>
 </div>
-</div>
 <div class="today-card" id="crew-feed-card" style="margin-top: 16px;">
 <div class="today-card-title">Crew activity</div>
 <div id="crew-feed-list" style="font-size: 12px; color: #7d838c;">Add pals to see their activity here.</div>
@@ -3768,7 +3743,7 @@ Perfect for unique exercises not in our list!
 <div id="challenges-list" style="font-size: 12px; color: #7d838c;">No active challenges. Start one and make the crew suffer together.</div>
 </div>
 <div style="height: 8px;"></div>
-<h1 style="display: flex; align-items: center; gap: 8px;">Leaderboard <span class="info-icon" onclick="app.showLeaderboardInfo()" title="How rankings work">i</span></h1>
+<h2 style="display: flex; align-items: center; gap: 8px; margin-top: 4px;">Leaderboard <span class="info-icon" onclick="app.showLeaderboardInfo()" title="How rankings work">i</span></h2>
 <p class="subtitle">Compete with JustStep users worldwide</p>
 <!-- Toggle: Global / Friends -->
 <div class="leaderboard-toggle" style="display: flex; gap: 8px; margin-bottom: 16px;">
@@ -4092,24 +4067,19 @@ Perfect for unique exercises not in our list!
 </div>
 <!-- Color Wheel Modal -->
 <div class="modal" id="color-wheel-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1000; align-items: center; justify-content: center;">
-<div class="modal-content" style="max-width: 360px; text-align: center; background: #08090b; padding: 24px; border-radius: 12px;">
-<h2 style="margin-bottom: 16px; font-size: 18px; color: #eceff1;">Choose Your Color</h2>
-<div style="display: flex; justify-content: center; margin-bottom: 16px; position: relative;">
-<canvas height="280" id="color-wheel-canvas" style="cursor: crosshair; border-radius: 50%;" width="280"></canvas>
-<!-- Magnifier Overlay -->
-<div id="color-magnifier" style="display: none; position: absolute; width: 120px; height: 120px; border: 4px solid white; border-radius: 50%; pointer-events: none; box-shadow: 0 4px 12px rgba(0,0,0,0.5); z-index: 10;">
-<canvas id="magnifier-canvas" width="120" height="120" style="border-radius: 50%;"></canvas>
+<div class="modal-content" style="max-width: 320px; width: calc(100% - 40px); background: #0d0f12; border: 1px solid #1e2127; padding: 20px; border-radius: 18px;">
+<h2 style="margin-bottom: 14px; font-size: 16px; color: #eceff1;">Pick a color</h2>
+<canvas id="sv-canvas" width="280" height="170" style="width: 100%; height: 170px; border-radius: 12px; cursor: crosshair; touch-action: none; display: block;"></canvas>
+<div style="position: relative; margin-top: 14px;">
+<canvas id="hue-canvas" width="280" height="16" style="width: 100%; height: 16px; border-radius: 999px; cursor: pointer; touch-action: none; display: block;"></canvas>
 </div>
+<div style="display: flex; align-items: center; gap: 10px; margin-top: 14px;">
+<div id="selected-color-preview" style="width: 40px; height: 40px; border-radius: 50%; border: 2px solid #1e2127; background: #c8f549; flex: 0 0 auto;"></div>
+<input id="hex-input" maxlength="7" spellcheck="false" style="flex: 1; min-width: 0; background: #08090b; border: 1px solid #1e2127; border-radius: 12px; color: #eceff1; padding: 9px 12px; font-size: 14px; font-family: inherit; text-transform: lowercase;" value="#c8f549"/>
 </div>
-<div id="magnifier-instruction" style="display: none; font-size: 12px; color: #9ca3af; margin-bottom: 8px;">Drag to fine-tune your color</div>
-<div id="selected-color-preview" style="width: 60px; height: 60px; border-radius: 50%; margin: 0 auto 16px; border: 3px solid #1e2127; background: #2563eb;"></div>
-<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-<button onclick="app.closeColorWheel()" style="width: 100%; padding: 10px; background: #1e2127; color: #eceff1; border: none; border-radius: 12px; cursor: pointer; font-weight: 600;">
-                    Cancel
-                </button>
-<button onclick="app.confirmColorWheelSelection()" style="width: 100%; padding: 10px; background: var(--primary-dark); color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: 600;">
-                    OK
-                </button>
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 16px;">
+<button onclick="app.closeColorWheel()" style="width: 100%; padding: 10px; background: #1e2127; color: #eceff1; border: none; border-radius: 12px; cursor: pointer; font-weight: 600; font-family: inherit;">Cancel</button>
+<button onclick="app.confirmColorWheelSelection()" style="width: 100%; padding: 10px; background: var(--primary); color: var(--on-accent); border: none; border-radius: 12px; cursor: pointer; font-weight: 600; font-family: inherit;">Apply</button>
 </div>
 </div>
 </div>
@@ -4183,15 +4153,17 @@ Perfect for unique exercises not in our list!
                 if (!this.data.currentView.statsView) {
                     this.data.currentView.statsView = 'week';
                 }
-                // Apply saved theme color
+                // v3.0: legacy custom wheel colors set inline CSS vars that would
+                // permanently shadow the swatch themes — migrate them to the
+                // nearest swatch once, then clear the legacy value.
                 if (this.data.themeColor) {
-                    if (this.data.themeColor.startsWith('#')) {
-                        // Custom hex color
-                        this.applyCustomThemeColor(this.data.themeColor);
-                    } else {
-                        // Predefined theme name
-                        this.applyTheme(this.data.themeColor);
+                    const legacy = this.data.themeColor;
+                    if (typeof legacy === 'string' && legacy.startsWith('#')) {
+                        // Full-spectrum accents are supported again — keep their exact color
+                        localStorage.setItem('appTheme', legacy);
                     }
+                    this.data.themeColor = null;
+                    this.saveData();
                 }
                 this.checkWelcome();
                 this.setupLogDate();
@@ -5067,7 +5039,82 @@ Perfect for unique exercises not in our list!
 
             getAccentHex() {
                 const t = localStorage.getItem('appTheme') || 'volt';
+                if (t.startsWith('#')) return this._customAccent || t;
                 return this._accentHexByTheme[t] || this._accentHexByTheme.volt;
+            },
+
+            // ---------- Custom accent (full spectrum) ----------
+            _hexToRgb(hex) {
+                const m = /^#?([0-9a-f]{6})$/i.exec(hex || '');
+                if (!m) return null;
+                const n = parseInt(m[1], 16);
+                return { r: n >> 16, g: (n >> 8) & 255, b: n & 255 };
+            },
+
+            _rgbToHex(r, g, b) {
+                const c = (v) => Math.max(0, Math.min(255, Math.round(v))).toString(16).padStart(2, '0');
+                return `#${c(r)}${c(g)}${c(b)}`;
+            },
+
+            _luminance(r, g, b) {
+                return (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
+            },
+
+            // Apply any hex as the app accent: derive the full shade set,
+            // guard against colors invisible on the near-black background,
+            // and pick a readable text color for accent-filled buttons.
+            applyCustomAccent(hex) {
+                let rgb = this._hexToRgb(hex);
+                if (!rgb) return false;
+
+                // Guardrail: lift colors too dark to read on #08090b
+                let guard = 0;
+                while (this._luminance(rgb.r, rgb.g, rgb.b) < 0.16 && guard < 24) {
+                    rgb = { r: rgb.r + (255 - rgb.r) * 0.12, g: rgb.g + (255 - rgb.g) * 0.12, b: rgb.b + (255 - rgb.b) * 0.12 };
+                    guard++;
+                }
+                const main = this._rgbToHex(rgb.r, rgb.g, rgb.b);
+                const mix = (f, toWhite) => this._rgbToHex(
+                    toWhite ? rgb.r + (255 - rgb.r) * f : rgb.r * f,
+                    toWhite ? rgb.g + (255 - rgb.g) * f : rgb.g * f,
+                    toWhite ? rgb.b + (255 - rgb.b) * f : rgb.b * f
+                );
+                const root = document.documentElement.style;
+                root.setProperty('--primary', main);
+                root.setProperty('--primary-light', mix(0.35, true));
+                root.setProperty('--primary-medium', mix(0.9, false));
+                root.setProperty('--primary-dark', mix(0.35, false));
+                root.setProperty('--primary-darker', mix(0.24, false));
+                root.setProperty('--on-accent', this._luminance(rgb.r, rgb.g, rgb.b) > 0.45 ? mix(0.14, false) : '#ffffff');
+
+                document.documentElement.removeAttribute('data-theme');
+                document.querySelectorAll('.swatch').forEach(sw => sw.classList.remove('active'));
+                const custom = document.getElementById('swatch-custom');
+                if (custom) { custom.classList.add('active'); custom.style.background = main; }
+                this._customAccent = main;
+                return true;
+            },
+
+            setCustomAccent(hex) {
+                if (!this.applyCustomAccent(hex)) return;
+                localStorage.setItem('appTheme', this._customAccent);
+                this.scheduleSync();
+            },
+
+            // Map an arbitrary hex (legacy color-wheel choice) to the closest swatch
+            nearestSwatch(hex) {
+                const m = /^#?([0-9a-f]{6})$/i.exec(hex || '');
+                if (!m) return 'volt';
+                const n = parseInt(m[1], 16);
+                const r = n >> 16, g = (n >> 8) & 255, b = n & 255;
+                let best = 'volt', bestD = Infinity;
+                Object.entries(this._accentHexByTheme).forEach(([name, h]) => {
+                    const v = parseInt(h.slice(1), 16);
+                    const dr = r - (v >> 16), dg = g - ((v >> 8) & 255), db = b - (v & 255);
+                    const d = dr * dr + dg * dg + db * db;
+                    if (d < bestD) { bestD = d; best = name; }
+                });
+                return best;
             },
 
             getSundayStart(d) {
@@ -10729,6 +10776,11 @@ async createPalCode() {
             // Theme Functions
             loadTheme() {
                 let saved = localStorage.getItem('appTheme') || 'volt';
+                // Custom spectrum color persists as a hex value
+                if (saved.startsWith('#')) {
+                    if (this.applyCustomAccent(saved)) return;
+                    saved = 'volt';
+                }
                 // v3.0 migration: map legacy themes to the nearest new swatch
                 const legacyMap = { green: 'volt', pink: 'magenta', purple: 'magenta', red: 'orange', blue: 'blue' };
                 if (!this._accentHexByTheme[saved]) {
@@ -10746,6 +10798,13 @@ async createPalCode() {
             },
 
             applyTheme(theme) {
+                // Inline overrides from a custom accent always beat stylesheet
+                // themes — clear them so named swatches actually apply
+                ['--primary', '--primary-light', '--primary-dark', '--primary-darker', '--primary-medium', '--on-accent']
+                    .forEach(v => document.documentElement.style.removeProperty(v));
+                this._customAccent = null;
+                const custom = document.getElementById('swatch-custom');
+                if (custom) custom.style.background = 'conic-gradient(#ff4040, #ffb040, #e8f540, #40f57a, #40c8ff, #8040ff, #ff40c8, #ff4040)';
                 document.documentElement.removeAttribute('data-theme');
                 if (theme !== 'volt') {
                     document.documentElement.setAttribute('data-theme', theme);
@@ -10755,242 +10814,139 @@ async createPalCode() {
                 });
             },
 
-            // Color Palette Functions
-            // Color Wheel Implementation
-            selectedColor: '#2563eb',
+            // ---------- Color picker (HSV: hue strip + saturation/brightness square) ----------
+            selectedColor: '#c8f549',
             currentColorCallback: null,
-            colorWheelCanvas: null,
-            colorWheelCtx: null,
-            
-            // Draw color wheel on canvas
-            drawColorWheel() {
-                const canvas = document.getElementById('color-wheel-canvas');
-                if (!canvas) return;
-                
-                this.colorWheelCanvas = canvas;
-                this.colorWheelCtx = canvas.getContext('2d');
-                
-                const ctx = this.colorWheelCtx;
-                const centerX = canvas.width / 2;
-                const centerY = canvas.height / 2;
-                const radius = canvas.width / 2;
-                
-                // Create image data for pixel-by-pixel drawing (no banding!)
-                const imageData = ctx.createImageData(canvas.width, canvas.height);
-                const data = imageData.data;
-                
-                // Draw color wheel pixel by pixel - Option B gradient
-                for (let x = 0; x < canvas.width; x++) {
-                    for (let y = 0; y < canvas.height; y++) {
-                        const dx = x - centerX;
-                        const dy = y - centerY;
-                        const distance = Math.sqrt(dx * dx + dy * dy);
-                        
-                        // Skip pixels outside circle
-                        if (distance > radius) {
-                            continue;
-                        }
-                        
-                        // Calculate angle (hue) - 0 to 360
-                        let angle = Math.atan2(dy, dx) * 180 / Math.PI;
-                        if (angle < 0) angle += 360;
-                        
-                        // Calculate distance ratio (0 = center, 1 = edge)
-                        const distanceRatio = distance / radius;
-                        
-                        // Option B gradient: Light color center → Pure color → Dark edge
-                        let saturation, lightness;
-                        
-                        if (distanceRatio < 0.6) {
-                            // Center to 60%: Light color (80% sat, 70% light) → Pure color (100% sat, 50% light)
-                            const t = distanceRatio / 0.6;
-                            saturation = 80 + (20 * t); // 80% → 100%
-                            lightness = 70 - (20 * t);  // 70% → 50%
-                        } else {
-                            // 60% to edge: Pure color (100% sat, 50% light) → Dark (100% sat, 30% light)
-                            const t = (distanceRatio - 0.6) / 0.4;
-                            saturation = 100;
-                            lightness = 50 - (20 * t);  // 50% → 30%
-                        }
-                        
-                        // Convert HSL to RGB
-                        const rgb = this.hslToRgb(angle / 360, saturation / 100, lightness / 100);
-                        
-                        // Set pixel
-                        const pixelIndex = (y * canvas.width + x) * 4;
-                        data[pixelIndex] = rgb[0];     // R
-                        data[pixelIndex + 1] = rgb[1]; // G
-                        data[pixelIndex + 2] = rgb[2]; // B
-                        data[pixelIndex + 3] = 255;    // A
-                    }
-                }
-                
-                // Put the image data on canvas
-                ctx.putImageData(imageData, 0, 0);
-                
-                // Add magnifier event listeners
-                this.isColorWheelDragging = false;
-                
-                const startMagnifier = (e) => {
-                    e.preventDefault();
-                    this.isColorWheelDragging = true;
-                    this.updateMagnifier(e);
-                };
-                
-                const moveMagnifier = (e) => {
-                    if (this.isColorWheelDragging) {
-                        e.preventDefault();
-                        this.updateMagnifier(e);
-                    }
-                };
-                
-                const endMagnifier = (e) => {
-                    if (this.isColorWheelDragging) {
-                        e.preventDefault();
-                        this.isColorWheelDragging = false;
-                        this.hideMagnifier();
-                        this.handleColorWheelClick(e);
-                    }
-                };
-                
-                // Mouse events
-                canvas.onmousedown = startMagnifier;
-                canvas.onmousemove = moveMagnifier;
-                canvas.onmouseup = endMagnifier;
-                canvas.onmouseleave = () => {
-                    this.isColorWheelDragging = false;
-                    this.hideMagnifier();
-                };
-                
-                // Touch events
-                canvas.ontouchstart = startMagnifier;
-                canvas.ontouchmove = moveMagnifier;
-                canvas.ontouchend = endMagnifier;
+            _pick: { h: 74, s: 0.7, v: 0.96 },
+
+            _hsvToRgb(h, s, v) {
+                const c = v * s, x = c * (1 - Math.abs(((h / 60) % 2) - 1)), m = v - c;
+                let r = 0, g = 0, b = 0;
+                if (h < 60) [r, g, b] = [c, x, 0];
+                else if (h < 120) [r, g, b] = [x, c, 0];
+                else if (h < 180) [r, g, b] = [0, c, x];
+                else if (h < 240) [r, g, b] = [0, x, c];
+                else if (h < 300) [r, g, b] = [x, 0, c];
+                else [r, g, b] = [c, 0, x];
+                return [Math.round((r + m) * 255), Math.round((g + m) * 255), Math.round((b + m) * 255)];
             },
-            
-            // Update magnifier position and content
-            updateMagnifier(event) {
-                const canvas = this.colorWheelCanvas;
-                const rect = canvas.getBoundingClientRect();
-                
-                // Get position (handle both mouse and touch)
-                let clientX, clientY;
-                if (event.touches && event.touches[0]) {
-                    clientX = event.touches[0].clientX;
-                    clientY = event.touches[0].clientY;
-                } else {
-                    clientX = event.clientX;
-                    clientY = event.clientY;
+
+            _rgbToHsv(r, g, b) {
+                r /= 255; g /= 255; b /= 255;
+                const max = Math.max(r, g, b), min = Math.min(r, g, b), d = max - min;
+                let h = 0;
+                if (d) {
+                    if (max === r) h = 60 * (((g - b) / d) % 6);
+                    else if (max === g) h = 60 * ((b - r) / d + 2);
+                    else h = 60 * ((r - g) / d + 4);
                 }
-                
-                const x = clientX - rect.left;
-                const y = clientY - rect.top;
-                
-                const centerX = canvas.width / 2;
-                const centerY = canvas.height / 2;
-                
-                // Check if within circle
-                const dx = x - centerX;
-                const dy = y - centerY;
-                const distance = Math.sqrt(dx * dx + dy * dy);
-                const radius = canvas.width / 2;
-                
-                if (distance > radius) return;
-                
-                // Show magnifier and instruction
-                const magnifier = document.getElementById('color-magnifier');
-                const instruction = document.getElementById('magnifier-instruction');
-                magnifier.style.display = 'block';
-                instruction.style.display = 'block';
-                
-                // Position magnifier (offset so finger doesn't cover it)
-                const magnifierSize = 120;
-                const offsetY = -magnifierSize - 20; // Above finger
-                magnifier.style.left = `${x - magnifierSize / 2}px`;
-                magnifier.style.top = `${y + offsetY}px`;
-                
-                // Draw magnified content
-                const magnifierCanvas = document.getElementById('magnifier-canvas');
-                const magnifierCtx = magnifierCanvas.getContext('2d');
-                
-                // Clear magnifier
-                magnifierCtx.clearRect(0, 0, magnifierSize, magnifierSize);
-                
-                // Calculate source area (3x zoom)
-                const sourceSize = magnifierSize / 3;
-                const sourceX = x - sourceSize / 2;
-                const sourceY = y - sourceSize / 2;
-                
-                // Draw magnified section
-                magnifierCtx.drawImage(
-                    canvas,
-                    sourceX, sourceY, sourceSize, sourceSize,
-                    0, 0, magnifierSize, magnifierSize
-                );
-                
-                // Draw center crosshair
-                magnifierCtx.strokeStyle = 'white';
-                magnifierCtx.lineWidth = 2;
-                magnifierCtx.beginPath();
-                magnifierCtx.moveTo(magnifierSize / 2 - 10, magnifierSize / 2);
-                magnifierCtx.lineTo(magnifierSize / 2 + 10, magnifierSize / 2);
-                magnifierCtx.moveTo(magnifierSize / 2, magnifierSize / 2 - 10);
-                magnifierCtx.lineTo(magnifierSize / 2, magnifierSize / 2 + 10);
-                magnifierCtx.stroke();
-                
-                // Update color preview
-                const imageData = this.colorWheelCtx.getImageData(x, y, 1, 1);
-                const pixel = imageData.data;
-                const color = `#${this.rgbToHex(pixel[0], pixel[1], pixel[2])}`;
-                this.selectedColor = color;
-                document.getElementById('selected-color-preview').style.background = color;
+                if (h < 0) h += 360;
+                return { h, s: max ? d / max : 0, v: max };
             },
-            
-            // Hide magnifier
-            hideMagnifier() {
-                document.getElementById('color-magnifier').style.display = 'none';
-                document.getElementById('magnifier-instruction').style.display = 'none';
+
+            _drawHueStrip() {
+                const c = document.getElementById('hue-canvas');
+                if (!c) return;
+                const ctx = c.getContext && c.getContext('2d');
+                if (!ctx) return;
+                const g = ctx.createLinearGradient(0, 0, c.width, 0);
+                for (let i = 0; i <= 6; i++) g.addColorStop(i / 6, `hsl(${i * 60}, 100%, 50%)`);
+                ctx.fillStyle = g;
+                ctx.fillRect(0, 0, c.width, c.height);
+                // marker
+                const x = (this._pick.h / 360) * c.width;
+                ctx.fillStyle = '#08090b';
+                ctx.fillRect(x - 2.5, 0, 5, c.height);
+                ctx.fillStyle = '#ffffff';
+                ctx.fillRect(x - 1.5, 1, 3, c.height - 2);
             },
-            
-            // Handle color wheel click (for final selection)
-            handleColorWheelClick(event) {
-                const canvas = this.colorWheelCanvas;
-                const rect = canvas.getBoundingClientRect();
-                
-                // Get position (handle both mouse and touch)
-                let clientX, clientY;
-                if (event.changedTouches && event.changedTouches[0]) {
-                    clientX = event.changedTouches[0].clientX;
-                    clientY = event.changedTouches[0].clientY;
-                } else {
-                    clientX = event.clientX;
-                    clientY = event.clientY;
-                }
-                
-                const x = clientX - rect.left;
-                const y = clientY - rect.top;
-                
-                const centerX = canvas.width / 2;
-                const centerY = canvas.height / 2;
-                
-                // Check if click is within circle
-                const dx = x - centerX;
-                const dy = y - centerY;
-                const distance = Math.sqrt(dx * dx + dy * dy);
-                const radius = canvas.width / 2;
-                
-                if (distance > radius) return; // Outside circle
-                
-                // Color already set by updateMagnifier, just confirm it's set
-                if (!this.selectedColor) {
-                    const imageData = this.colorWheelCtx.getImageData(x, y, 1, 1);
-                    const pixel = imageData.data;
-                    const color = `#${this.rgbToHex(pixel[0], pixel[1], pixel[2])}`;
-                    this.selectedColor = color;
-                    document.getElementById('selected-color-preview').style.background = color;
+
+            _drawSVSquare() {
+                const c = document.getElementById('sv-canvas');
+                if (!c) return;
+                const ctx = c.getContext && c.getContext('2d');
+                if (!ctx) return;
+                const [hr, hg, hb] = this._hsvToRgb(this._pick.h, 1, 1);
+                ctx.fillStyle = `rgb(${hr},${hg},${hb})`;
+                ctx.fillRect(0, 0, c.width, c.height);
+                const white = ctx.createLinearGradient(0, 0, c.width, 0);
+                white.addColorStop(0, 'rgba(255,255,255,1)');
+                white.addColorStop(1, 'rgba(255,255,255,0)');
+                ctx.fillStyle = white;
+                ctx.fillRect(0, 0, c.width, c.height);
+                const black = ctx.createLinearGradient(0, 0, 0, c.height);
+                black.addColorStop(0, 'rgba(0,0,0,0)');
+                black.addColorStop(1, 'rgba(0,0,0,1)');
+                ctx.fillStyle = black;
+                ctx.fillRect(0, 0, c.width, c.height);
+                // marker ring
+                const x = this._pick.s * c.width;
+                const y = (1 - this._pick.v) * c.height;
+                ctx.beginPath();
+                ctx.arc(x, y, 7, 0, Math.PI * 2);
+                ctx.strokeStyle = '#ffffff';
+                ctx.lineWidth = 2.5;
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.arc(x, y, 8.5, 0, Math.PI * 2);
+                ctx.strokeStyle = 'rgba(0,0,0,0.6)';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+            },
+
+            _pickerRefresh(fromHexInput) {
+                const [r, g, b] = this._hsvToRgb(this._pick.h, this._pick.s, this._pick.v);
+                this.selectedColor = this._rgbToHex(r, g, b);
+                const prev = document.getElementById('selected-color-preview');
+                if (prev) prev.style.background = this.selectedColor;
+                const hexInput = document.getElementById('hex-input');
+                if (hexInput && !fromHexInput) hexInput.value = this.selectedColor;
+                this._drawHueStrip();
+                this._drawSVSquare();
+            },
+
+            _bindPickerEvents() {
+                if (this._pickerBound) return;
+                this._pickerBound = true;
+                const sv = document.getElementById('sv-canvas');
+                const hue = document.getElementById('hue-canvas');
+                const hexInput = document.getElementById('hex-input');
+                if (!sv || !hue) return;
+
+                const track = (canvas, onPoint) => {
+                    let active = false;
+                    const handle = (e) => {
+                        const rect = canvas.getBoundingClientRect();
+                        const px = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+                        const py = Math.max(0, Math.min(1, (e.clientY - rect.top) / rect.height));
+                        onPoint(px, py);
+                    };
+                    canvas.addEventListener('pointerdown', (e) => { active = true; canvas.setPointerCapture(e.pointerId); handle(e); });
+                    canvas.addEventListener('pointermove', (e) => { if (active) handle(e); });
+                    canvas.addEventListener('pointerup', () => { active = false; });
+                    canvas.addEventListener('pointercancel', () => { active = false; });
+                };
+
+                track(sv, (px, py) => {
+                    this._pick.s = px;
+                    this._pick.v = 1 - py;
+                    this._pickerRefresh();
+                });
+                track(hue, (px) => {
+                    this._pick.h = px * 360;
+                    this._pickerRefresh();
+                });
+
+                if (hexInput) {
+                    hexInput.addEventListener('input', () => {
+                        const rgb = this._hexToRgb(hexInput.value.trim());
+                        if (!rgb) return;
+                        this._pick = this._rgbToHsv(rgb.r, rgb.g, rgb.b);
+                        this._pickerRefresh(true);
+                    });
                 }
             },
-            
+
             // Convert HSL to RGB
             hslToRgb(h, s, l) {
                 let r, g, b;
@@ -11030,9 +10986,12 @@ async createPalCode() {
                 this.currentColorCallback = callback;
                 const modal = document.getElementById('color-wheel-modal');
                 modal.style.display = 'flex';
-                
-                // Draw wheel after modal is visible
-                setTimeout(() => this.drawColorWheel(), 50);
+
+                // Seed from the current accent so tweaking starts where you are
+                const rgb = this._hexToRgb(this.getAccentHex());
+                if (rgb) this._pick = this._rgbToHsv(rgb.r, rgb.g, rgb.b);
+                this._bindPickerEvents();
+                setTimeout(() => this._pickerRefresh(), 30);
             },
             
             // Confirm color wheel selection
@@ -11049,13 +11008,10 @@ async createPalCode() {
                 this.currentColorCallback = null;
             },
             
-            // Open theme color picker
+            // Open theme color picker (full spectrum wheel)
             openThemeColorPicker() {
                 this.openColorWheel((color) => {
-                    // Apply theme with selected color
-                    this.applyCustomThemeColor(color);
-                    this.data.themeColor = color; // Save as hex color
-                    this.saveData();
+                    this.setCustomAccent(color);
                 });
             },
             
@@ -11087,24 +11043,12 @@ async createPalCode() {
                 document.documentElement.style.setProperty('--primary-darker', `rgb(${darkestR}, ${darkestG}, ${darkestB})`);
             },
 
-            // Reset theme to default blue
+            // Reset theme to default volt
             resetThemeToDefault() {
-                // Clear custom theme color
-                this.data.themeColor = 'blue';
+                this.data.themeColor = null;
                 this.saveData();
-                
-                // Remove all theme attributes and custom styles
-                document.documentElement.removeAttribute('data-theme');
-                document.documentElement.style.removeProperty('--primary');
-                document.documentElement.style.removeProperty('--primary-light');
-                document.documentElement.style.removeProperty('--primary-dark');
-                document.documentElement.style.removeProperty('--primary-darker');
-                
-                // Apply default blue theme
-                this.applyTheme('blue');
-                
-                // Show confirmation
-                alert('Theme reset to default blue!');
+                this.setTheme('volt');
+                this.showToast('Theme reset to volt');
             },
             
             // Open habit color picker
