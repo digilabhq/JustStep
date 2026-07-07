@@ -9,49 +9,55 @@
 <meta content="var(--primary)" name="theme-color"/>
 <title>JustStep</title>
 <link href="manifest.json" rel="manifest"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 <style>
         /* Theme Variables */
         :root {
-            --primary: #2563eb;
-            --primary-light: #93c5fd;
-            --primary-dark: #1e40af;
-            --primary-darker: #1d4ed8;
-            --primary-medium: #3b82f6;
+            --primary: #c8f549;
+            --primary-light: #dcf98a;
+            --primary-dark: #46531c;
+            --primary-darker: #333d14;
+            --primary-medium: #b5e63b;
+            --on-accent: #1b2410;
         }
 
-        [data-theme="green"] {
-            --primary: #10b981;
-            --primary-light: #6ee7b7;
-            --primary-dark: #059669;
-            --primary-darker: #047857;
-            --primary-medium: #10b981;
+        [data-theme="blue"] {
+            --primary: #4d9fff;
+            --primary-light: #9cc8ff;
+            --primary-dark: #1d4f8c;
+            --primary-darker: #163b69;
+            --primary-medium: #3b8ef0;
+            --on-accent: #06192e;
         }
 
-        [data-theme="pink"] {
-            --primary: #ec4899;
-            --primary-light: #f9a8d4;
-            --primary-dark: #db2777;
-            --primary-darker: #be185d;
-            --primary-medium: #ec4899;
+        [data-theme="cyan"] {
+            --primary: #22d3ee;
+            --primary-light: #7deffb;
+            --primary-dark: #10586b;
+            --primary-darker: #0b4150;
+            --primary-medium: #1cbedb;
+            --on-accent: #042a33;
         }
 
-        [data-theme="purple"] {
-            --primary: #8b5cf6;
-            --primary-light: #c4b5fd;
-            --primary-dark: #7c3aed;
-            --primary-darker: #6d28d9;
-            --primary-medium: #8b5cf6;
+        [data-theme="orange"] {
+            --primary: #ff7a1a;
+            --primary-light: #ffab6b;
+            --primary-dark: #7a3c0e;
+            --primary-darker: #5c2d0a;
+            --primary-medium: #f06f12;
+            --on-accent: #2b1404;
         }
 
-        [data-theme="red"] {
-            --primary: #ef4444;
-            --primary-light: #fca5a5;
-            --primary-dark: #dc2626;
-            --primary-darker: #b91c1c;
-            --primary-medium: #ef4444;
+        [data-theme="magenta"] {
+            --primary: #f043c8;
+            --primary-light: #f78ede;
+            --primary-dark: #75215f;
+            --primary-darker: #571747;
+            --primary-medium: #de35b7;
+            --on-accent: #330627;
         }
 
         * {
@@ -72,9 +78,9 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: #1a1a1a;
-            color: #e8e8e8;
+            font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #08090b;
+            color: #eceff1;
             line-height: 1.6;
             overflow-x: hidden;
         }
@@ -82,7 +88,7 @@
         .app-container {
             max-width: 500px;
             margin: 0 auto;
-            background: #1a1a1a;
+            background: #08090b;
             min-height: 100vh;
             position: relative;
             padding-bottom: 70px;
@@ -160,8 +166,8 @@
 
         /* Navigation */
         .nav-container {
-            background: #2d2d2d;
-            border-bottom: 1px solid #3d3d3d;
+            background: #101216;
+            border-bottom: 1px solid #1e2127;
             position: sticky;
             top: 56px;
             z-index: 100;
@@ -172,7 +178,7 @@
         }
 
         .nav-tabs.first-row {
-            border-bottom: 1px solid #3d3d3d;
+            border-bottom: 1px solid #1e2127;
         }
 
         .nav-tab {
@@ -233,7 +239,7 @@
 
         /* Daily Logging Screen */
         .date-selector {
-            background: #2d2d2d;
+            background: #101216;
             padding: 5px 8px;
             border-radius: 12px;
             margin-bottom: 12px;
@@ -251,7 +257,7 @@
             background: none;
             font-size: 16px;
             font-weight: 600;
-            color: #e8e8e8;
+            color: #eceff1;
             color-scheme: dark;
         }
 
@@ -260,10 +266,10 @@
         }
 
         .activity-card {
-            background: #2d2d2d;
-            border: 1px solid #3d3d3d;
+            background: #101216;
+            border: 1px solid #1e2127;
             border-left: 3px solid var(--primary);
-            border-radius: 8px;
+            border-radius: 12px;
             padding: 8px;
             margin-bottom: 6px;
             position: relative;
@@ -326,16 +332,60 @@
         .activity-type-select {
             width: 100%;
             padding: 12px;
-            border: 2px solid #3d3d3d;
+            border: 2px solid #1e2127;
             border-radius: 12px;
-            background: #1a1a1a;
-            color: #e8e8e8;
+            background: #08090b;
+            color: #eceff1;
             font-size: 15px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
             color-scheme: dark;
         }
+
+        /* v3.0 Midnight Athlete: bottom nav, today screen, heatmap, crew */
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; display: flex; align-items: center; background: rgba(11, 13, 16, 0.96); border-top: 1px solid #1e2127; padding: 8px 6px calc(10px + env(safe-area-inset-bottom)); z-index: 900; backdrop-filter: blur(10px); }
+        .bottom-nav-item { flex: 1; text-align: center; background: none; border: none; color: #565b63; cursor: pointer; font-family: inherit; padding: 2px 0; }
+        .bottom-nav-item .bn-icon { font-size: 21px; line-height: 1; display: block; }
+        .bottom-nav-item .bn-label { font-size: 9.5px; margin-top: 3px; display: block; letter-spacing: 0.3px; }
+        .bottom-nav-item.active { color: var(--primary); }
+        .bottom-nav-plus { flex: 0 0 66px; display: flex; justify-content: center; }
+        .bottom-nav-plus button { width: 54px; height: 54px; border-radius: 50%; background: var(--primary); color: var(--on-accent); border: 4px solid #08090b; font-size: 28px; line-height: 1; cursor: pointer; margin-top: -30px; font-family: inherit; font-weight: 600; }
+        .profile-icon { width: 32px; height: 32px; border-radius: 50%; background: #16181c; border: 1px solid #1e2127; color: #7d838c; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 15px; }
+        .today-hero { background: #101216; border-radius: 18px; padding: 16px; display: flex; align-items: center; gap: 16px; margin-bottom: 12px; }
+        .today-hero-copy { flex: 1; min-width: 0; }
+        .today-hero-line1 { font-size: 14px; font-weight: 600; color: #eceff1; }
+        .today-hero-sub { font-size: 12px; color: #7d838c; margin-top: 2px; }
+        .week-segs { display: flex; gap: 5px; margin-top: 10px; }
+        .week-seg { flex: 1; height: 6px; border-radius: 3px; background: #1e2127; }
+        .week-seg.hit { background: var(--primary); }
+        .today-stat-row { display: flex; gap: 10px; margin-bottom: 12px; }
+        .today-stat { flex: 1; background: #101216; border-radius: 14px; padding: 12px; }
+        .today-stat .ts-label { font-size: 11px; color: #7d838c; }
+        .today-stat .ts-value { font-size: 20px; font-weight: 600; color: #eceff1; margin-top: 2px; }
+        .today-stat.accent .ts-value { color: var(--primary); }
+        .today-card { background: #101216; border-radius: 18px; padding: 14px 16px; margin-bottom: 12px; }
+        .today-card-title { font-size: 12px; color: #7d838c; margin-bottom: 8px; }
+        .pr-chip { background: var(--primary-darker); color: var(--primary); font-size: 10px; padding: 3px 8px; border-radius: 999px; font-weight: 600; }
+        .heatmap-grid { display: flex; gap: 3px; overflow-x: auto; padding-bottom: 4px; }
+        .heatmap-col { display: flex; flex-direction: column; gap: 3px; }
+        .heatmap-cell { width: 11px; height: 11px; border-radius: 3px; background: #16181c; flex: 0 0 auto; }
+        .heatmap-cell.l1 { background: var(--primary-darker); }
+        .heatmap-cell.l2 { background: var(--primary-dark); }
+        .heatmap-cell.l3 { background: var(--primary-medium); }
+        .heatmap-cell.l4 { background: var(--primary); }
+        .swatch-row { display: flex; gap: 10px; }
+        .swatch { width: 38px; height: 38px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; padding: 0; }
+        .swatch.active { border-color: #eceff1; }
+        .feed-row { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid #16181c; }
+        .feed-row:last-child { border-bottom: none; }
+        .feed-left { display: flex; align-items: center; gap: 9px; min-width: 0; }
+        .feed-avatar { width: 28px; height: 28px; border-radius: 50%; background: #1e2127; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 600; flex: 0 0 auto; }
+        .feed-text { font-size: 12px; color: #b6bcc4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .kudos-btn { background: #16181c; border: 1px solid #1e2127; border-radius: 999px; padding: 3px 10px; font-size: 11px; color: #7d838c; cursor: pointer; flex: 0 0 auto; }
+        .kudos-btn.given { border-color: var(--primary); color: var(--primary); }
+        .challenge-bar-track { background: #1e2127; border-radius: 999px; height: 8px; overflow: hidden; margin-top: 4px; }
+        .challenge-bar-fill { height: 100%; border-radius: 999px; }
 
         /* Quick chips, value entry, today's log, toasts (v2.2.2) */
         .section-label-mini {
@@ -354,9 +404,9 @@
         }
 
         .quick-chip {
-            background: #2d2d2d;
-            border: 1px solid #3d3d3d;
-            color: #e8e8e8;
+            background: #101216;
+            border: 1px solid #1e2127;
+            color: #eceff1;
             border-radius: 999px;
             padding: 8px 14px;
             font-size: 13px;
@@ -371,10 +421,10 @@
         }
 
         .value-entry-card {
-            background: #2d2d2d;
-            border: 1px solid #3d3d3d;
+            background: #101216;
+            border: 1px solid #1e2127;
             border-left: 3px solid var(--primary);
-            border-radius: 8px;
+            border-radius: 12px;
             padding: 12px;
             margin-top: 14px;
         }
@@ -396,9 +446,9 @@
             flex: 1;
             padding: 10px;
             background: none;
-            border: 1px solid #3d3d3d;
+            border: 1px solid #1e2127;
             color: #9ca3af;
-            border-radius: 8px;
+            border-radius: 12px;
             font-weight: 600;
             cursor: pointer;
         }
@@ -409,7 +459,7 @@
             background: var(--primary-dark);
             border: none;
             color: white;
-            border-radius: 8px;
+            border-radius: 12px;
             font-weight: 700;
             cursor: pointer;
         }
@@ -418,9 +468,9 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: #2d2d2d;
-            border: 1px solid #3d3d3d;
-            border-radius: 8px;
+            background: #101216;
+            border: 1px solid #1e2127;
+            border-radius: 12px;
             padding: 10px 12px;
             margin-bottom: 6px;
         }
@@ -436,7 +486,7 @@
         .todays-log-name {
             font-size: 13px;
             font-weight: 600;
-            color: #e8e8e8;
+            color: #eceff1;
         }
 
         .todays-log-value {
@@ -465,14 +515,14 @@
             left: 50%;
             bottom: 24px;
             transform: translateX(-50%) translateY(12px);
-            background: #1a1a1a;
-            border: 1px solid #3d3d3d;
+            background: #08090b;
+            border: 1px solid #1e2127;
             border-left: 3px solid var(--primary);
-            color: #e8e8e8;
+            color: #eceff1;
             font-size: 13px;
             font-weight: 500;
             padding: 12px 16px;
-            border-radius: 10px;
+            border-radius: 14px;
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
             display: flex;
             align-items: center;
@@ -506,14 +556,14 @@
 
         /* Accordion Styles */
         .activity-accordion {
-            border: 1px solid #3d3d3d;
-            border-radius: 8px;
+            border: 1px solid #1e2127;
+            border-radius: 12px;
             overflow: hidden;
-            background: #1a1a1a;
+            background: #08090b;
         }
 
         .accordion-category {
-            border-bottom: 1px solid #2d2d2d;
+            border-bottom: 1px solid #101216;
         }
 
         .accordion-category:last-child {
@@ -542,7 +592,7 @@
         .accordion-title {
             font-size: 13px;
             font-weight: 600;
-            color: #e8e8e8;
+            color: #eceff1;
         }
 
         .accordion-count {
@@ -567,7 +617,7 @@
             max-height: 0;
             overflow: hidden;
             transition: max-height 0.3s ease;
-            background: #1a1a1a;
+            background: #08090b;
         }
 
         .accordion-content.active {
@@ -576,7 +626,7 @@
 
         .accordion-item {
             padding: 10px 14px;
-            border-bottom: 1px solid #2d2d2d;
+            border-bottom: 1px solid #101216;
             cursor: pointer;
             transition: all 0.2s;
             font-size: 14px;
@@ -588,8 +638,8 @@
         }
 
         .accordion-item:hover {
-            background: #2d2d2d;
-            color: #e8e8e8;
+            background: #101216;
+            color: #eceff1;
             padding-left: 18px;
         }
 
@@ -601,7 +651,7 @@
 
         /* Sub-Accordion Styles (for nested exercises) */
         .sub-accordion {
-            border-bottom: 1px solid #2d2d2d;
+            border-bottom: 1px solid #101216;
         }
 
         .sub-accordion:last-child {
@@ -620,7 +670,7 @@
         }
 
         .sub-accordion-header:hover {
-            background: #2d2d2d;
+            background: #101216;
             padding-left: 18px;
         }
 
@@ -644,7 +694,7 @@
             max-height: 0;
             overflow: hidden;
             transition: max-height 0.3s ease;
-            background: #1a1a1a;
+            background: #08090b;
         }
 
         .sub-accordion-content.active {
@@ -658,7 +708,7 @@
             background: var(--primary);
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 12px;
             font-size: 13px;
             font-weight: 600;
             cursor: pointer;
@@ -681,12 +731,12 @@
         .activity-type-select {
             width: 100%;
             padding: 10px 12px;
-            border: 2px solid #3d3d3d;
+            border: 2px solid #1e2127;
             border-radius: 12px;
             font-size: 16px;
             font-weight: 600;
-            background: #2d2d2d;
-            color: #e8e8e8;
+            background: #101216;
+            color: #eceff1;
             margin-bottom: 12px;
             cursor: pointer;
         }
@@ -705,12 +755,12 @@
         .activity-value-input input {
             flex: 1;
             padding: 10px 12px;
-            border: 2px solid #3d3d3d;
+            border: 2px solid #1e2127;
             border-radius: 12px;
             font-size: 18px;
             font-weight: 600;
-            background: #2d2d2d;
-            color: #e8e8e8;
+            background: #101216;
+            color: #eceff1;
             color-scheme: dark;
         }
 
@@ -739,7 +789,7 @@
             padding: 10px;
             background: transparent;
             color: var(--primary-light);
-            border: 1px dashed #3d3d3d;
+            border: 1px dashed #1e2127;
             border-radius: 6px;
             font-size: 14px;
             font-weight: 600;
@@ -817,10 +867,10 @@
         }
 
         .stat-card {
-            background: #2d2d2d;
-            border: 1px solid #3d3d3d;
+            background: #101216;
+            border: 1px solid #1e2127;
             border-left: 3px solid var(--primary);
-            border-radius: 8px;
+            border-radius: 12px;
             padding: 5px 3px;
             transition: all 0.2s;
             text-align: center;
@@ -848,7 +898,7 @@
         .stat-value {
             font-size: 18px;
             font-weight: 700;
-            color: #e8e8e8;
+            color: #eceff1;
             margin-bottom: 3px;
             text-align: center;
             line-height: 1;
@@ -871,10 +921,10 @@
         }
 
         .progress-card {
-            background: #2d2d2d;
-            border: 1px solid #3d3d3d;
+            background: #101216;
+            border: 1px solid #1e2127;
             border-left: 3px solid var(--primary);
-            border-radius: 8px;
+            border-radius: 12px;
             padding: 8px;
             margin-bottom: 12px;
             transition: all 0.2s;
@@ -890,7 +940,7 @@
         .progress-title {
             font-size: 16px;
             font-weight: 600;
-            color: #e8e8e8;
+            color: #eceff1;
         }
 
         .progress-percentage {
@@ -902,8 +952,8 @@
         .progress-bar-bg {
             width: 100%;
             height: 8px;
-            background: #3d3d3d;
-            border-radius: 8px;
+            background: #1e2127;
+            border-radius: 12px;
             overflow: hidden;
             margin-bottom: 12px;
         }
@@ -911,7 +961,7 @@
         .progress-bar-fill {
             height: 100%;
             background: linear-gradient(90deg, var(--primary-light) 0%, var(--primary) 100%);
-            border-radius: 8px;
+            border-radius: 12px;
             transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
             box-shadow: 0 0 10px rgba(37, 99, 235, 0.3);
         }
@@ -931,7 +981,7 @@
             display: flex;
             align-items: center;
             padding: 12px 0;
-            border-bottom: 1px solid #3d3d3d;
+            border-bottom: 1px solid #1e2127;
         }
 
         .milestone-item:last-child {
@@ -953,7 +1003,7 @@
         .milestone-text {
             font-size: 14px;
             font-weight: 500;
-            color: #e8e8e8;
+            color: #eceff1;
         }
 
         /* Activity Report (Collapsible) - matches Habit Report style */
@@ -965,7 +1015,7 @@
             user-select: none;
             font-size: 18px;
             font-weight: 600;
-            color: #e8e8e8;
+            color: #eceff1;
             padding: 4px 0;
         }
 
@@ -1033,15 +1083,15 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            border-radius: 8px;
+            border-radius: 12px;
             font-size: 14px;
             font-weight: 500;
-            background: #2d2d2d;
-            border: 1px solid #3d3d3d;
+            background: #101216;
+            border: 1px solid #1e2127;
             border-left: 3px solid #6b7280;
             position: relative;
             cursor: pointer;
-            color: #e8e8e8;
+            color: #eceff1;
             transition: all 0.2s;
         }
         
@@ -1089,10 +1139,10 @@
 
         /* Goals Screen */
         .settings-card {
-            background: #2d2d2d;
-            border: 1px solid #3d3d3d;
+            background: #101216;
+            border: 1px solid #1e2127;
             border-left: 3px solid var(--primary);
-            border-radius: 8px;
+            border-radius: 12px;
             padding: 10px 14px;
             transition: all 0.2s;
         }
@@ -1101,7 +1151,7 @@
             background: var(--card);
             border: 1px solid rgba(255,255,255,0.08);
             border-left: 3px solid var(--primary);
-            border-radius: 8px;
+            border-radius: 12px;
             padding: 8px 12px;
             margin-bottom: 6px;
             box-shadow: 0 2px 6px rgba(0,0,0,0.25);
@@ -1109,10 +1159,10 @@
         }
         
         .habit-item {
-            background: #2d2d2d;
-            border: 1px solid #3d3d3d;
+            background: #101216;
+            border: 1px solid #1e2127;
             border-left: 3px solid var(--primary);
-            border-radius: 8px;
+            border-radius: 12px;
             padding: 8px 12px;
             transition: all 0.2s;
             cursor: pointer;
@@ -1131,7 +1181,7 @@
             display: block;
             font-size: 14px;
             font-weight: 600;
-            color: #e8e8e8;
+            color: #eceff1;
             margin-bottom: 8px;
         }
 
@@ -1144,12 +1194,12 @@
         .goal-input input, .goal-input select {
             width: 100%;
             padding: 10px 12px;
-            border: 2px solid #3d3d3d;
+            border: 2px solid #1e2127;
             border-radius: 12px;
             font-size: 16px;
             font-weight: 600;
-            background: #2d2d2d;
-            color: #e8e8e8;
+            background: #101216;
+            color: #eceff1;
             color-scheme: dark;
         }
 
@@ -1166,8 +1216,8 @@
             align-items: center;
             gap: 8px;
             padding: 12px 6px;
-            border: 2px solid #3d3d3d;
-            border-radius: 8px;
+            border: 2px solid #1e2127;
+            border-radius: 12px;
             cursor: pointer;
             transition: all 0.2s;
             background: transparent;
@@ -1197,13 +1247,13 @@
         }
 
         .theme-option.active span {
-            color: #e8e8e8;
+            color: #eceff1;
         }
 
         .save-button {
             width: 100%;
             padding: 10px;
-            background: #1a1a1a;
+            background: #08090b;
             color: white;
             border: none;
             border-radius: 12px;
@@ -1222,7 +1272,7 @@
         .info-box {
             margin-top: 32px;
             padding: 5px;
-            background: #2d2d2d;
+            background: #101216;
             border-radius: 12px;
         }
 
@@ -1259,7 +1309,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: #2d2d2d;
+            background: #101216;
             border-radius: 20px;
             padding: 20px;
             text-align: center;
@@ -1306,7 +1356,7 @@
         .milestone-close {
             width: 100%;
             padding: 10px;
-            background: #2d2d2d;
+            background: #101216;
             border: none;
             border-radius: 12px;
             font-size: 15px;
@@ -1317,9 +1367,9 @@
         .export-button {
             width: 100%;
             padding: 10px;
-            background: #2d2d2d;
-            color: #e8e8e8;
-            border: 2px solid #3d3d3d;
+            background: #101216;
+            color: #eceff1;
+            border: 2px solid #1e2127;
             border-radius: 12px;
             font-size: 16px;
             font-weight: 600;
@@ -1330,17 +1380,17 @@
 
         .export-button:active {
             transform: scale(0.98);
-            background: #2d2d2d;
+            background: #101216;
         }
         
         .habit-add-button {
             width: 100%;
             padding: 8px 14px;
-            background: #2d2d2d;
+            background: #101216;
             color: var(--primary-light);
-            border: 1px solid #3d3d3d;
+            border: 1px solid #1e2127;
             border-left: 3px solid var(--primary);
-            border-radius: 8px;
+            border-radius: 12px;
             font-size: 13px;
             font-weight: 600;
             cursor: pointer;
@@ -1401,14 +1451,14 @@
         }
 
         .leaderboard-toggle .toggle-btn:hover {
-            background: #3d3d3d;
+            background: #1e2127;
         }
 
         .leaderboard-item-card {
-            background: #2d2d2d;
-            border: 1px solid #3d3d3d;
+            background: #101216;
+            border: 1px solid #1e2127;
             border-left: 3px solid var(--primary);
-            border-radius: 8px;
+            border-radius: 12px;
             padding: 8px 10px;
             transition: all 0.2s;
         }
@@ -1501,7 +1551,7 @@
             flex: 1;
             font-size: 13px;
             font-weight: 600;
-            color: #e8e8e8;
+            color: #eceff1;
             display: flex;
             align-items: center;
             gap: 4px;
@@ -1516,7 +1566,7 @@
         .leaderboard-progress-bar {
             width: 100%;
             height: 3px;
-            background: #1a1a1a;
+            background: #08090b;
             border-radius: 2px;
             overflow: hidden;
         }
@@ -1529,7 +1579,7 @@
 
         /* PALS Section */
         .pals-section {
-            background: #2d2d2d;
+            background: #101216;
             border-radius: 16px;
             padding: 16px;
             margin-bottom: 16px;
@@ -1540,7 +1590,7 @@
             border-radius: 5px;
             padding: 0;
             margin-bottom: 3px;
-            border: 1px solid #3d3d3d;
+            border: 1px solid #1e2127;
             border-left: 2px solid var(--primary);
             transition: all 0.2s;
             overflow: hidden;
@@ -1591,7 +1641,7 @@
         .pal-name {
             font-size: 13px;
             font-weight: 600;
-            color: #e8e8e8;
+            color: #eceff1;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -1627,8 +1677,8 @@
         .pal-stats-expanded {
             display: none;
             padding: 8px;
-            background: #1a1a1a;
-            border-top: 1px solid #1a1a1a;
+            background: #08090b;
+            border-top: 1px solid #08090b;
         }
 
         .pal-card.expanded .pal-stats-expanded {
@@ -1651,7 +1701,7 @@
             grid-template-columns: 1fr auto auto auto;
             gap: 12px;
             padding: 4px 0;
-            border-bottom: 1px solid #2d2d2d;
+            border-bottom: 1px solid #101216;
             font-weight: 600;
             color: #6b7280;
             font-size: 11px;
@@ -1664,7 +1714,7 @@
             grid-template-columns: 1fr auto auto auto;
             gap: 16px;
             padding: 8px 0;
-            border-bottom: 1px solid #1a1a1a;
+            border-bottom: 1px solid #08090b;
             font-size: 13px;
         }
 
@@ -1698,7 +1748,7 @@
         }
 
         .pal-activity-col-value.pal-total {
-            color: #e8e8e8;
+            color: #eceff1;
             font-weight: 600;
         }
 
@@ -1711,7 +1761,7 @@
         .pal-btn {
             flex: 1;
             padding: 6px 12px;
-            border: 1px solid #3d3d3d;
+            border: 1px solid #1e2127;
             background: transparent;
             border-radius: 6px;
             font-size: 12px;
@@ -1745,7 +1795,7 @@
             padding: 10px;
             background: transparent;
             color: var(--primary-light);
-            border: 1px solid #2d2d2d;
+            border: 1px solid #101216;
             border-radius: 6px;
             font-size: 13px;
             font-weight: 500;
@@ -1756,7 +1806,7 @@
 
         .refresh-all-btn:hover {
             background: rgba(96, 165, 250, 0.05);
-            border-color: #3d3d3d;
+            border-color: #1e2127;
         }
 
         .refresh-all-btn:active {
@@ -1766,7 +1816,7 @@
         .refresh-all-btn:disabled {
             background: transparent;
             color: #4b5563;
-            border-color: #2d2d2d;
+            border-color: #101216;
             cursor: not-allowed;
         }
         }
@@ -1776,16 +1826,16 @@
             align-items: center;
             gap: 12px;
             background: transparent;
-            border-radius: 8px;
+            border-radius: 12px;
             padding: 12px 14px;
             margin-bottom: 6px;
-            border: 1px solid #2d2d2d;
+            border: 1px solid #101216;
             transition: all 0.15s;
         }
 
         .leaderboard-item:hover {
             background: rgba(255, 255, 255, 0.02);
-            border-color: #3d3d3d;
+            border-color: #1e2127;
         }
 
         .leaderboard-rank {
@@ -1802,7 +1852,7 @@
         .leaderboard-name {
             font-size: 14px;
             font-weight: 500;
-            color: #e8e8e8;
+            color: #eceff1;
             letter-spacing: -0.01em;
         }
 
@@ -1826,7 +1876,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: #2d2d2d;
+            background: #101216;
             border-radius: 12px;
             padding: 16px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
@@ -1849,13 +1899,13 @@
             align-items: center;
             margin-bottom: 12px;
             padding-bottom: 10px;
-            border-bottom: 1px solid #3d3d3d;
+            border-bottom: 1px solid #1e2127;
         }
 
         .day-detail-date {
             font-size: 16px;
             font-weight: 600;
-            color: #e8e8e8;
+            color: #eceff1;
         }
 
         .day-detail-close {
@@ -1874,7 +1924,7 @@
         }
 
         .day-detail-close:hover {
-            background: #3d3d3d;
+            background: #1e2127;
         }
 
         .day-activity-list {
@@ -1882,7 +1932,7 @@
         }
 
         .day-activity-item {
-            background: #1a1a1a;
+            background: #08090b;
             padding: 10px 12px;
             border-radius: 6px;
             margin-bottom: 6px;
@@ -1894,7 +1944,7 @@
         }
 
         .day-activity-item:hover {
-            background: #252525;
+            background: #0d0f12;
             border-left-color: var(--primary-light);
         }
 
@@ -1908,7 +1958,7 @@
             font-weight: 500;
             margin-bottom: 1px;
             text-transform: capitalize;
-            color: #e8e8e8;
+            color: #eceff1;
             background: none !important;
             line-height: 1.2;
         }
@@ -1991,10 +2041,10 @@
             display: flex;
             gap: 8px;
             margin-bottom: 12px;
-            background: #2d2d2d;
+            background: #101216;
             padding: 3px;
             border-radius: 12px;
-            border: 2px solid #3d3d3d;
+            border: 2px solid #1e2127;
         }
 
         .stats-toggle-btn {
@@ -2002,7 +2052,7 @@
             padding: 6px 12px;
             background: none;
             border: none;
-            border-radius: 8px;
+            border-radius: 12px;
             font-size: 14px;
             font-weight: 600;
             color: #9ca3af;
@@ -2022,7 +2072,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: #2d2d2d;
+            background: #101216;
             border-radius: 20px;
             padding: 20px 16px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.5);
@@ -2144,7 +2194,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: #2d2d2d;
+            background: #101216;
             border-radius: 20px;
             padding: 10px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
@@ -2163,7 +2213,7 @@
             font-size: 20px;
             font-weight: 700;
             margin-bottom: 12px;
-            color: #e8e8e8;
+            color: #eceff1;
         }
 
         .customize-slot {
@@ -2181,12 +2231,12 @@
         .customize-slot select {
             width: 100%;
             padding: 12px;
-            border: 1px solid #3d3d3d;
-            border-radius: 8px;
+            border: 1px solid #1e2127;
+            border-radius: 12px;
             font-size: 14px;
             font-weight: 400;
-            background: #2d2d2d;
-            color: #e8e8e8;
+            background: #101216;
+            color: #eceff1;
             cursor: pointer;
             transition: border-color 0.2s;
         }
@@ -2200,13 +2250,13 @@
             color: #9ca3af;
             font-weight: 600;
             font-size: 12px;
-            background: #1a1a1a;
+            background: #08090b;
         }
         
         .customize-slot select option {
-            color: #e8e8e8;
+            color: #eceff1;
             padding: 8px;
-            background: #2d2d2d;
+            background: #101216;
         }
 
         .customize-modal-buttons {
@@ -2237,8 +2287,8 @@
         }
 
         .customize-modal-btn.cancel {
-            background: #3d3d3d;
-            color: #e8e8e8;
+            background: #1e2127;
+            color: #eceff1;
         }
 
         .customize-modal-btn.cancel:active {
@@ -2248,10 +2298,10 @@
 
         /* Weight Input Styles */
         .weight-input-section {
-            background: #2d2d2d;
-            border: 1px solid #3d3d3d;
+            background: #101216;
+            border: 1px solid #1e2127;
             border-left: 3px solid var(--primary);
-            border-radius: 8px;
+            border-radius: 12px;
             padding: 10px 12px;
             margin-top: 12px;
             margin-bottom: 12px;
@@ -2278,12 +2328,12 @@
         .weight-input-field {
             flex: 1;
             padding: 8px 10px;
-            border: 1px solid #3d3d3d;
+            border: 1px solid #1e2127;
             border-radius: 6px;
             font-size: 14px;
             font-weight: 600;
-            background: #1a1a1a;
-            color: #e8e8e8;
+            background: #08090b;
+            color: #eceff1;
         }
 
         .weight-input-field:focus {
@@ -2319,8 +2369,8 @@
             padding: 8px 16px;
             background: transparent;
             color: var(--primary-light);
-            border: 1px solid #3d3d3d;
-            border-radius: 8px;
+            border: 1px solid #1e2127;
+            border-radius: 12px;
             font-size: 13px;
             font-weight: 600;
             cursor: pointer;
@@ -2383,7 +2433,7 @@
         }
         
         .weight-info-content {
-            background: #2d2d2d;
+            background: #101216;
             border: 2px solid var(--primary);
             border-radius: 12px;
             padding: 20px;
@@ -2452,7 +2502,7 @@
             position: relative;
             font-size: 14px;
             line-height: 1.6;
-            color: #e8e8e8;
+            color: #eceff1;
         }
         
         .weight-info-list li:before {
@@ -2467,7 +2517,7 @@
             background: rgba(16, 185, 129, 0.1);
             border: 1px solid rgba(16, 185, 129, 0.3);
             padding: 12px;
-            border-radius: 8px;
+            border-radius: 12px;
             font-size: 13px;
             text-align: center;
             color: var(--primary);
@@ -2518,7 +2568,7 @@
         }
         
         .habit-info-content {
-            background: #2d2d2d;
+            background: #101216;
             border: 2px solid var(--primary);
             border-radius: 12px;
             padding: 20px;
@@ -2576,7 +2626,7 @@
             position: relative;
             font-size: 14px;
             line-height: 1.6;
-            color: #e8e8e8;
+            color: #eceff1;
         }
         
         .habit-info-list li:before {
@@ -2591,7 +2641,7 @@
             background: rgba(16, 185, 129, 0.1);
             border: 1px solid rgba(16, 185, 129, 0.3);
             padding: 12px;
-            border-radius: 8px;
+            border-radius: 12px;
             font-size: 13px;
             text-align: center;
             color: var(--primary);
@@ -2623,10 +2673,10 @@
 
         /* Bar Graph Comparison Styles */
         .comparison-section {
-            background: #2d2d2d;
-            border: 1px solid #3d3d3d;
+            background: #101216;
+            border: 1px solid #1e2127;
             border-left: 3px solid var(--primary);
-            border-radius: 8px;
+            border-radius: 12px;
             padding: 10px;
             margin-bottom: 12px;
             transition: all 0.2s;
@@ -2635,7 +2685,7 @@
         .comparison-header {
             font-size: 15px;
             font-weight: 700;
-            color: #e8e8e8;
+            color: #eceff1;
             margin-bottom: 12px;
             letter-spacing: -0.3px;
         }
@@ -2674,7 +2724,7 @@
         .bar-container {
             flex: 1;
             height: 8px;
-            background: #1a1a1a;
+            background: #08090b;
             border-radius: 4px;
             overflow: hidden;
             position: relative;
@@ -2698,7 +2748,7 @@
         .bar-value {
             font-size: 12px;
             font-weight: 700;
-            color: #e8e8e8;
+            color: #eceff1;
             width: 100px;
             text-align: right;
             flex-shrink: 0;
@@ -2746,7 +2796,7 @@
             max-height: 300px;
             overflow-y: auto;
             margin-top: 12px;
-            border-top: 1px solid #3d3d3d;
+            border-top: 1px solid #1e2127;
             padding-top: 12px;
         }
 
@@ -2755,7 +2805,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 5px 0;
-            border-bottom: 1px solid #2d2d2d;
+            border-bottom: 1px solid #101216;
             font-size: 13px;
         }
 
@@ -2770,7 +2820,7 @@
         }
 
         .weight-entry-value {
-            color: #e8e8e8;
+            color: #eceff1;
             font-weight: 700;
             flex: 1;
             text-align: center;
@@ -3046,7 +3096,7 @@
             padding: 12px;
             background: var(--border);
             border: 1px solid var(--border);
-            border-radius: 8px;
+            border-radius: 12px;
             color: var(--text);
             font-size: 0.5em;
             font-weight: 600;
@@ -3079,24 +3129,54 @@
 </div>
 <div class="app-header-right">
 <div class="info-icon" onclick="app.showWelcome()" title="About JustStep">i</div>
-
+<div class="profile-icon" onclick="app.showScreen('goals')" title="Goals &amp; Settings">⚙</div>
 </div>
 </div>
-<!-- Navigation -->
-<div class="nav-container">
-<div class="nav-tabs first-row">
-<button class="nav-tab active" onclick="app.showScreen('log')">Tracker</button>
-<button class="nav-tab" onclick="app.showScreen('dashboard')">Dashboard</button>
-<button class="nav-tab" onclick="app.showScreen('calendar')">Calendar</button>
+<!-- Bottom navigation (v3.0) -->
+<div class="bottom-nav">
+<button class="bottom-nav-item active" data-screen="today" onclick="app.showScreen('today')"><span class="bn-icon">⚡</span><span class="bn-label">Today</span></button>
+<button class="bottom-nav-item" data-screen="progress" onclick="app.showScreen('progress')"><span class="bn-icon">📈</span><span class="bn-label">Progress</span></button>
+<div class="bottom-nav-plus"><button onclick="app.showScreen('log')" aria-label="Log activity">+</button></div>
+<button class="bottom-nav-item" data-screen="crew" onclick="app.showScreen('crew')"><span class="bn-icon">👥</span><span class="bn-label">Crew</span></button>
+<button class="bottom-nav-item" data-screen="weight" onclick="app.showScreen('weight')"><span class="bn-icon">⚖️</span><span class="bn-label">Weight</span></button>
 </div>
-<div class="nav-tabs">
-<button class="nav-tab" onclick="app.showScreen('goals')">Goals</button>
-<button class="nav-tab" onclick="app.showScreen('pals')">Pals</button>
-<button class="nav-tab" onclick="app.showScreen('leaderboard')">Leaderboard</button>
+<!-- Daily Logging Screen -->
+<!-- Today Screen (v3.0 home) -->
+<div class="screen active" id="today-screen">
+<h1 style="display: flex; align-items: center; justify-content: space-between;">Today <span id="today-date-label" style="font-size: 13px; font-weight: 400; color: #7d838c;"></span></h1>
+<div class="today-hero">
+<svg width="92" height="92" viewBox="0 0 92 92" id="streak-ring" role="img" aria-label="Streak">
+<circle cx="46" cy="46" r="38" fill="none" stroke="#1e2127" stroke-width="8"></circle>
+<circle cx="46" cy="46" r="38" fill="none" stroke="var(--primary)" stroke-width="8" stroke-linecap="round" stroke-dasharray="0 239" transform="rotate(-90 46 46)" id="streak-ring-arc"></circle>
+<text x="46" y="44" text-anchor="middle" font-size="26" font-weight="600" fill="#eceff1" id="streak-ring-num">0</text>
+<text x="46" y="60" text-anchor="middle" font-size="9" fill="#7d838c">day streak</text>
+</svg>
+<div class="today-hero-copy">
+<div class="today-hero-line1" id="today-hero-line1">Let's move.</div>
+<div class="today-hero-sub" id="today-hero-sub"></div>
+<div class="week-segs" id="week-segs"></div>
+</div>
+</div>
+<div class="today-stat-row">
+<div class="today-stat accent"><div class="ts-label" id="today-stat-dist-label">Miles</div><div class="ts-value" id="today-stat-dist">0</div></div>
+<div class="today-stat"><div class="ts-label">Reps</div><div class="ts-value" id="today-stat-reps">0</div></div>
+<div class="today-stat"><div class="ts-label">Steps</div><div class="ts-value" id="today-stat-steps">0</div></div>
+</div>
+<div class="today-card" id="today-entries-card" style="display: none;">
+<div class="today-card-title">Logged today</div>
+<div id="today-entries-list"></div>
+</div>
+<div class="today-card" id="today-crew-card" style="display: none;">
+<div class="today-card-title">Crew</div>
+<div id="today-crew-list"></div>
+</div>
+<div class="today-card" id="today-empty-card">
+<div style="font-size: 13px; color: #b6bcc4;" id="today-empty-line">Nothing logged yet. The day is still yours.</div>
+<button onclick="app.showScreen('log')" style="margin-top: 10px; padding: 10px 16px; background: var(--primary); color: var(--on-accent); border: none; border-radius: 12px; font-weight: 600; font-size: 13px; cursor: pointer; font-family: inherit;">Log an activity</button>
 </div>
 </div>
 <!-- Daily Logging Screen -->
-<div class="screen active" id="log-screen">
+<div class="screen" id="log-screen">
 <h1 style="display: flex; align-items: center; gap: 8px;">Track Activity <span class="info-icon" onclick="app.showTrackInfo()" title="How to track activities">i</span></h1>
 <p class="subtitle">Record today's workout</p>
 <div class="date-selector">
@@ -3126,6 +3206,187 @@
 <div class="section-label-mini" id="todays-log-label">Logged today</div>
 <div id="todays-log-list"></div>
 </div>
+</div>
+
+<!-- Weekly Report Modal -->
+<div class="weekly-report-modal" id="weekly-report-modal" onclick="if(event.target === this) app.closeWeeklyReport()">
+    <div class="weekly-report-container" id="weekly-report-content">
+        <!-- Content will be dynamically generated -->
+    </div>
+</div>
+
+<!-- Progress Screen (v3.0: heatmap + dashboard + calendar) -->
+<div class="screen" id="progress-screen">
+<h1>Progress</h1>
+<div class="today-card">
+<div class="today-card-title" style="display: flex; justify-content: space-between;"><span>Consistency · last 26 weeks</span><span id="heatmap-total" style="color: var(--primary);"></span></div>
+<div class="heatmap-grid" id="heatmap-grid"></div>
+</div>
+<div class="today-card" style="display: flex; justify-content: space-between; align-items: center;">
+<div><div style="font-size: 13px; font-weight: 600; color: #eceff1;">Weekly report card</div><div style="font-size: 11px; color: #7d838c;">Share last week with the crew</div></div>
+<button onclick="app.shareReportCard()" style="padding: 9px 14px; background: var(--primary); color: var(--on-accent); border: none; border-radius: 12px; font-weight: 600; font-size: 12px; cursor: pointer; font-family: inherit;">Share</button>
+</div>
+<h1 style="display: flex; align-items: center; gap: 8px;">Dashboard <span class="info-icon" onclick="app.showDashboardInfo()" title="Dashboard explained">i</span></h1>
+<p class="subtitle">Your progress overview</p>
+<div class="stats-toggle">
+<button class="stats-toggle-btn active" onclick="app.setStatsView('week')">This Week</button>
+<button class="stats-toggle-btn" onclick="app.setStatsView('total')">All Time</button>
+</div>
+<div class="stats-grid">
+<!-- Row 1: Fixed Cards -->
+<div class="stat-card">
+<div class="stat-value" id="stat-miles">0</div>
+<div class="stat-label" id="stat-miles-label">Miles</div>
+<div class="stat-trend" id="stat-miles-trend"></div>
+</div>
+<div class="stat-card">
+<div class="stat-value" id="stat-workouts">0</div>
+<div class="stat-label" id="stat-workouts-label">Strength Days</div>
+<div class="stat-trend" id="stat-workouts-trend"></div>
+</div>
+<div class="stat-card">
+<div class="stat-value" id="stat-steps">0</div>
+<div class="stat-label" id="stat-steps-label">Steps</div>
+<div class="stat-trend" id="stat-steps-trend"></div>
+</div>
+<!-- Row 2: Custom Cards (dynamically rendered) -->
+<div class="stat-card" id="custom-card-1">
+<div class="stat-value" id="custom-stat-1">0</div>
+<div class="stat-label" id="custom-label-1">Push-ups</div>
+<div class="stat-trend" id="custom-trend-1"></div>
+</div>
+<div class="stat-card" id="custom-card-2">
+<div class="stat-value" id="custom-stat-2">0</div>
+<div class="stat-label" id="custom-label-2">Pull-ups</div>
+<div class="stat-trend" id="custom-trend-2"></div>
+</div>
+<div class="stat-card" id="custom-card-3">
+<div class="stat-value" id="custom-stat-3">0</div>
+<div class="stat-label" id="custom-label-3">Ab Wheel Rollout</div>
+<div class="stat-trend" id="custom-trend-3"></div>
+</div>
+</div>
+<div style="display: flex; gap: 12px; margin-bottom: 20px;">
+    <button class="customize-dashboard-btn" onclick="app.openCustomizeModal()" style="flex: 1; margin: 0; background: #101216; border: 1px solid #1e2127; border-radius: 12px; padding: 12px 16px; color: #d4af37;">Customize Favorites</button>
+    <button class="customize-dashboard-btn" onclick="app.showWeeklyReport()" style="flex: 1; margin: 0; background: var(--primary); border: 1px solid var(--primary); border-radius: 12px; padding: 12px 16px; color: white;">Weekly Report</button>
+</div>
+<!-- Comparison Bar Graphs -->
+<div class="comparison-section">
+<div class="comparison-header">Progress Comparison</div>
+<div class="comparison-graph">
+<div class="comparison-title">This Week vs Last Week</div>
+<div class="bar-row">
+<div class="bar-label">This Week</div>
+<div class="bar-container">
+<div class="bar-fill current-period" id="week-current-bar" style="width: 0%"></div>
+</div>
+<div class="bar-value" id="week-current-value">0</div>
+</div>
+<div class="bar-row">
+<div class="bar-label">Last Week</div>
+<div class="bar-container">
+<div class="bar-fill previous-period" id="week-previous-bar" style="width: 0%"></div>
+</div>
+<div class="bar-value" id="week-previous-value">0</div>
+</div>
+</div>
+<div class="comparison-graph">
+<div class="comparison-title">This Month vs Last Month</div>
+<div class="bar-row">
+<div class="bar-label">This Month</div>
+<div class="bar-container">
+<div class="bar-fill current-period" id="month-current-bar" style="width: 0%"></div>
+</div>
+<div class="bar-value" id="month-current-value">0</div>
+</div>
+<div class="bar-row">
+<div class="bar-label">Last Month</div>
+<div class="bar-container">
+<div class="bar-fill previous-period" id="month-previous-bar" style="width: 0%"></div>
+</div>
+<div class="bar-value" id="month-previous-value">0</div>
+</div>
+</div>
+</div>
+<!-- Weight Summary (if weight data exists) -->
+<div class="progress-card" id="weight-summary-card" style="display: none;">
+<div style="display: flex; align-items: center; justify-content: space-between; padding: 4px 0;">
+<span class="progress-title" style="margin: 0;">Weight</span>
+<div style="display: flex; align-items: baseline; gap: 6px;">
+<div id="weight-display-value" style="font-size: 32px; font-weight: 700; color: #eceff1;">--</div>
+<div id="weight-display-unit" style="font-size: 14px; color: #9ca3af;">lbs</div>
+<div id="weight-trend-indicator"></div>
+</div>
+</div>
+<!-- Weight History Toggle -->
+<div class="weight-history-toggle" id="weight-history-toggle" onclick="app.toggleWeightHistory()">
+                    View History ▼
+                </div>
+<!-- Weight History List (expandable) -->
+<div class="weight-history-list" id="weight-history-list">
+<!-- Populated dynamically -->
+</div>
+</div>
+<div class="progress-card">
+<div class="progress-header">
+<span class="progress-title">Annual Goal</span>
+<span class="progress-percentage" id="annual-progress-percent">0%</span>
+</div>
+<div class="progress-bar-bg">
+<div class="progress-bar-fill" id="annual-progress-bar" style="width: 0%"></div>
+</div>
+<div class="progress-details">
+<span id="annual-progress-current">0</span>
+<span id="annual-progress-goal">420</span>
+</div>
+</div>
+</div>
+<div style="height: 8px;"></div>
+<div class="calendar-header">
+<button class="calendar-nav" onclick="app.changeMonth(-1)">‹</button>
+<div class="calendar-month-year" id="calendar-month-year">January 2026</div>
+<button class="calendar-nav" onclick="app.changeMonth(1)">›</button>
+</div>
+<div class="calendar-grid" id="calendar-grid">
+<!-- Calendar will be generated here -->
+</div>
+<div class="calendar-hint">
+                💡 Tap any day to see details
+            </div>
+<!-- Activity Report (Collapsible) -->
+<div class="progress-card">
+<div class="activity-report-toggle" id="activity-report-toggle" onclick="app.toggleActivityReport()">
+<span>Activity Report</span>
+<span>▼</span>
+</div>
+<div class="activity-report-content" id="activity-report-content">
+<div class="activity-summary-list" id="activity-summary-list">
+<p style="text-align: center; color: #6b7280; font-size: 14px;">No activities logged yet.</p>
+</div>
+</div>
+</div>
+<!-- Habit Report (Collapsible) -->
+<div class="progress-card">
+<div class="activity-report-toggle" id="habit-report-toggle" onclick="app.toggleHabitReport()">
+<span>Habit Report</span>
+<span>▼</span>
+</div>
+<div class="activity-report-content" id="habit-report-content">
+<div class="activity-summary-list" id="habit-summary-list">
+<p style="text-align: center; color: #6b7280; font-size: 14px;">No habits created yet.</p>
+</div>
+</div>
+</div>
+<h2>Recent Milestones</h2>
+<div class="progress-card">
+<div class="milestone-list" id="milestone-list">
+<p style="text-align: center; color: #6b7280; font-size: 14px;">No milestones yet. Keep going!</p>
+</div>
+</div>
+</div>
+<!-- Weight Screen (v3.0) -->
+<div class="screen" id="weight-screen">
+<h1>Weight</h1>
 <!-- Weight Input Section -->
 <div class="weight-input-section">
 <div class="weight-input-header">
@@ -3251,175 +3512,6 @@ Rankings update daily. Add PALs to compete with friends!
 </div>
 </div>
 </div>
-
-<!-- Weekly Report Modal -->
-<div class="weekly-report-modal" id="weekly-report-modal" onclick="if(event.target === this) app.closeWeeklyReport()">
-    <div class="weekly-report-container" id="weekly-report-content">
-        <!-- Content will be dynamically generated -->
-    </div>
-</div>
-
-<!-- Dashboard Screen -->
-<div class="screen" id="dashboard-screen">
-<h1 style="display: flex; align-items: center; gap: 8px;">Dashboard <span class="info-icon" onclick="app.showDashboardInfo()" title="Dashboard explained">i</span></h1>
-<p class="subtitle">Your progress overview</p>
-<div class="stats-toggle">
-<button class="stats-toggle-btn active" onclick="app.setStatsView('week')">This Week</button>
-<button class="stats-toggle-btn" onclick="app.setStatsView('total')">All Time</button>
-</div>
-<div class="stats-grid">
-<!-- Row 1: Fixed Cards -->
-<div class="stat-card">
-<div class="stat-value" id="stat-miles">0</div>
-<div class="stat-label" id="stat-miles-label">Miles</div>
-<div class="stat-trend" id="stat-miles-trend"></div>
-</div>
-<div class="stat-card">
-<div class="stat-value" id="stat-workouts">0</div>
-<div class="stat-label" id="stat-workouts-label">Strength Days</div>
-<div class="stat-trend" id="stat-workouts-trend"></div>
-</div>
-<div class="stat-card">
-<div class="stat-value" id="stat-steps">0</div>
-<div class="stat-label" id="stat-steps-label">Steps</div>
-<div class="stat-trend" id="stat-steps-trend"></div>
-</div>
-<!-- Row 2: Custom Cards (dynamically rendered) -->
-<div class="stat-card" id="custom-card-1">
-<div class="stat-value" id="custom-stat-1">0</div>
-<div class="stat-label" id="custom-label-1">Push-ups</div>
-<div class="stat-trend" id="custom-trend-1"></div>
-</div>
-<div class="stat-card" id="custom-card-2">
-<div class="stat-value" id="custom-stat-2">0</div>
-<div class="stat-label" id="custom-label-2">Pull-ups</div>
-<div class="stat-trend" id="custom-trend-2"></div>
-</div>
-<div class="stat-card" id="custom-card-3">
-<div class="stat-value" id="custom-stat-3">0</div>
-<div class="stat-label" id="custom-label-3">Ab Wheel Rollout</div>
-<div class="stat-trend" id="custom-trend-3"></div>
-</div>
-</div>
-<div style="display: flex; gap: 12px; margin-bottom: 20px;">
-    <button class="customize-dashboard-btn" onclick="app.openCustomizeModal()" style="flex: 1; margin: 0; background: #2d2d2d; border: 1px solid #3d3d3d; border-radius: 8px; padding: 12px 16px; color: #d4af37;">Customize Favorites</button>
-    <button class="customize-dashboard-btn" onclick="app.showWeeklyReport()" style="flex: 1; margin: 0; background: var(--primary); border: 1px solid var(--primary); border-radius: 8px; padding: 12px 16px; color: white;">Weekly Report</button>
-</div>
-<!-- Comparison Bar Graphs -->
-<div class="comparison-section">
-<div class="comparison-header">Progress Comparison</div>
-<div class="comparison-graph">
-<div class="comparison-title">This Week vs Last Week</div>
-<div class="bar-row">
-<div class="bar-label">This Week</div>
-<div class="bar-container">
-<div class="bar-fill current-period" id="week-current-bar" style="width: 0%"></div>
-</div>
-<div class="bar-value" id="week-current-value">0</div>
-</div>
-<div class="bar-row">
-<div class="bar-label">Last Week</div>
-<div class="bar-container">
-<div class="bar-fill previous-period" id="week-previous-bar" style="width: 0%"></div>
-</div>
-<div class="bar-value" id="week-previous-value">0</div>
-</div>
-</div>
-<div class="comparison-graph">
-<div class="comparison-title">This Month vs Last Month</div>
-<div class="bar-row">
-<div class="bar-label">This Month</div>
-<div class="bar-container">
-<div class="bar-fill current-period" id="month-current-bar" style="width: 0%"></div>
-</div>
-<div class="bar-value" id="month-current-value">0</div>
-</div>
-<div class="bar-row">
-<div class="bar-label">Last Month</div>
-<div class="bar-container">
-<div class="bar-fill previous-period" id="month-previous-bar" style="width: 0%"></div>
-</div>
-<div class="bar-value" id="month-previous-value">0</div>
-</div>
-</div>
-</div>
-<!-- Weight Summary (if weight data exists) -->
-<div class="progress-card" id="weight-summary-card" style="display: none;">
-<div style="display: flex; align-items: center; justify-content: space-between; padding: 4px 0;">
-<span class="progress-title" style="margin: 0;">Weight</span>
-<div style="display: flex; align-items: baseline; gap: 6px;">
-<div id="weight-display-value" style="font-size: 32px; font-weight: 700; color: #e8e8e8;">--</div>
-<div id="weight-display-unit" style="font-size: 14px; color: #9ca3af;">lbs</div>
-<div id="weight-trend-indicator"></div>
-</div>
-</div>
-<!-- Weight History Toggle -->
-<div class="weight-history-toggle" id="weight-history-toggle" onclick="app.toggleWeightHistory()">
-                    View History ▼
-                </div>
-<!-- Weight History List (expandable) -->
-<div class="weight-history-list" id="weight-history-list">
-<!-- Populated dynamically -->
-</div>
-</div>
-<div class="progress-card">
-<div class="progress-header">
-<span class="progress-title">Annual Goal</span>
-<span class="progress-percentage" id="annual-progress-percent">0%</span>
-</div>
-<div class="progress-bar-bg">
-<div class="progress-bar-fill" id="annual-progress-bar" style="width: 0%"></div>
-</div>
-<div class="progress-details">
-<span id="annual-progress-current">0</span>
-<span id="annual-progress-goal">420</span>
-</div>
-</div>
-</div>
-<!-- Calendar Screen -->
-<div class="screen" id="calendar-screen">
-<div class="calendar-header">
-<button class="calendar-nav" onclick="app.changeMonth(-1)">‹</button>
-<div class="calendar-month-year" id="calendar-month-year">January 2026</div>
-<button class="calendar-nav" onclick="app.changeMonth(1)">›</button>
-</div>
-<div class="calendar-grid" id="calendar-grid">
-<!-- Calendar will be generated here -->
-</div>
-<div class="calendar-hint">
-                💡 Tap any day to see details
-            </div>
-<!-- Activity Report (Collapsible) -->
-<div class="progress-card">
-<div class="activity-report-toggle" id="activity-report-toggle" onclick="app.toggleActivityReport()">
-<span>Activity Report</span>
-<span>▼</span>
-</div>
-<div class="activity-report-content" id="activity-report-content">
-<div class="activity-summary-list" id="activity-summary-list">
-<p style="text-align: center; color: #6b7280; font-size: 14px;">No activities logged yet.</p>
-</div>
-</div>
-</div>
-<!-- Habit Report (Collapsible) -->
-<div class="progress-card">
-<div class="activity-report-toggle" id="habit-report-toggle" onclick="app.toggleHabitReport()">
-<span>Habit Report</span>
-<span>▼</span>
-</div>
-<div class="activity-report-content" id="habit-report-content">
-<div class="activity-summary-list" id="habit-summary-list">
-<p style="text-align: center; color: #6b7280; font-size: 14px;">No habits created yet.</p>
-</div>
-</div>
-</div>
-<h2>Recent Milestones</h2>
-<div class="progress-card">
-<div class="milestone-list" id="milestone-list">
-<p style="text-align: center; color: #6b7280; font-size: 14px;">No milestones yet. Keep going!</p>
-</div>
-</div>
-</div>
 <!-- Goals Screen -->
 <div class="screen" id="goals-screen">
 <h1 style="display: flex; align-items: center; gap: 8px;">Goals <span class="info-icon" onclick="app.showGoalsInfo()" title="Important reminder">i</span></h1>
@@ -3429,8 +3521,8 @@ Rankings update daily. Add PALs to compete with friends!
 <!-- Unit Preference - Inline -->
 <div class="settings-card">
 <div style="display: flex; justify-content: space-between; align-items: center;">
-<label style="font-size: 14px; font-weight: 600; color: #e8e8e8;">Unit Preference</label>
-<select id="unit-preference" style="width: 220px; padding: 6px 10px; border: 1px solid #3d3d3d; border-radius: 6px; font-size: 13px; font-weight: 600; background: #1a1a1a; color: #e8e8e8;">
+<label style="font-size: 14px; font-weight: 600; color: #eceff1;">Unit Preference</label>
+<select id="unit-preference" style="width: 220px; padding: 6px 10px; border: 1px solid #1e2127; border-radius: 6px; font-size: 13px; font-weight: 600; background: #08090b; color: #eceff1;">
 <option value="miles">Miles</option>
 <option value="km">Kilometers</option>
 </select>
@@ -3439,54 +3531,52 @@ Rankings update daily. Add PALs to compete with friends!
 <!-- Initial Weight - Inline -->
 <div class="settings-card">
 <div style="display: flex; justify-content: space-between; align-items: center;">
-<label style="font-size: 14px; font-weight: 600; color: #e8e8e8;">Initial Weight</label>
-<div style="width: 220px; display: flex; align-items: center; gap: 0; padding: 6px 10px; border: 2px solid #3d3d3d; border-radius: 6px; background: #1a1a1a;">
-<input id="initial-weight-preference" inputmode="decimal" placeholder="Enter initial weight" style="flex: 1; min-width: 0; border: none; outline: none; padding: 0; background: transparent; color: #e8e8e8; font-size: 13px; font-weight: 600;" type="number"/>
+<label style="font-size: 14px; font-weight: 600; color: #eceff1;">Initial Weight</label>
+<div style="width: 220px; display: flex; align-items: center; gap: 0; padding: 6px 10px; border: 2px solid #1e2127; border-radius: 6px; background: #08090b;">
+<input id="initial-weight-preference" inputmode="decimal" placeholder="Enter initial weight" style="flex: 1; min-width: 0; border: none; outline: none; padding: 0; background: transparent; color: #eceff1; font-size: 13px; font-weight: 600;" type="number"/>
 <span style="margin-left: 8px; font-size: 12px; color: #9ca3af; font-weight: 600;">lbs</span>
 </div>
 </div>
 </div>
 <!-- App Theme - Compact -->
 <div class="settings-card">
-<label style="font-size: 14px; font-weight: 600; color: #e8e8e8; display: block; margin-bottom: 8px;">App Theme</label>
-<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
-<button onclick="app.openThemeColorPicker()" style="padding: 8px 12px; background: #1a1a1a; color: #e8e8e8; border: 1px solid #3d3d3d; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 6px;">
-<span style="width: 16px; height: 16px; border-radius: 50%; background: var(--primary-dark); display: inline-block;"></span>
-                            Choose
-                        </button>
-<button onclick="app.resetThemeToDefault()" style="padding: 8px 12px; background: #3d3d3d; color: #e8e8e8; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600;">
-                            Reset
-                        </button>
+<label style="font-size: 14px; font-weight: 600; color: #eceff1; display: block; margin-bottom: 8px;">App Theme</label>
+<div class="swatch-row">
+<button class="swatch" data-theme="volt" style="background: #c8f549;" onclick="app.setTheme('volt')" aria-label="Volt"></button>
+<button class="swatch" data-theme="blue" style="background: #4d9fff;" onclick="app.setTheme('blue')" aria-label="Blue"></button>
+<button class="swatch" data-theme="cyan" style="background: #22d3ee;" onclick="app.setTheme('cyan')" aria-label="Cyan"></button>
+<button class="swatch" data-theme="orange" style="background: #ff7a1a;" onclick="app.setTheme('orange')" aria-label="Orange"></button>
+<button class="swatch" data-theme="magenta" style="background: #f043c8;" onclick="app.setTheme('magenta')" aria-label="Magenta"></button>
 </div>
 </div>
 <!-- Weekly Strength Days Target - Inline -->
 <div class="settings-card">
 <div style="display: flex; justify-content: space-between; align-items: center;">
-<label style="font-size: 14px; font-weight: 600; color: #e8e8e8;">Weekly Strength Days Target</label>
-<input id="workout-frequency" inputmode="numeric" placeholder="5" style="width: 80px; padding: 6px 10px; border: 1px solid #3d3d3d; border-radius: 6px; font-size: 13px; font-weight: 600; background: #1a1a1a; color: #e8e8e8; text-align: center;" type="number" value="5"/>
+<label style="font-size: 14px; font-weight: 600; color: #eceff1;">Weekly Strength Days Target</label>
+<input id="workout-frequency" inputmode="numeric" placeholder="5" style="width: 80px; padding: 6px 10px; border: 1px solid #1e2127; border-radius: 6px; font-size: 13px; font-weight: 600; background: #08090b; color: #eceff1; text-align: center;" type="number" value="5"/>
 </div>
 </div>
 <!-- Monthly Mileage Target - Inline -->
 <div class="settings-card">
 <div style="display: flex; justify-content: space-between; align-items: center;">
-<label style="font-size: 14px; font-weight: 600; color: #e8e8e8;">Monthly Mileage Target</label>
-<input id="monthly-goal" inputmode="numeric" placeholder="35" style="width: 80px; padding: 6px 10px; border: 1px solid #3d3d3d; border-radius: 6px; font-size: 13px; font-weight: 600; background: #1a1a1a; color: #e8e8e8; text-align: center;" type="number" value="35"/>
+<label style="font-size: 14px; font-weight: 600; color: #eceff1;">Monthly Mileage Target</label>
+<input id="monthly-goal" inputmode="numeric" placeholder="35" style="width: 80px; padding: 6px 10px; border: 1px solid #1e2127; border-radius: 6px; font-size: 13px; font-weight: 600; background: #08090b; color: #eceff1; text-align: center;" type="number" value="35"/>
 </div>
 </div>
 <!-- Annual Mileage Target - Inline -->
 <div class="settings-card">
 <div style="display: flex; justify-content: space-between; align-items: center;">
-<label style="font-size: 14px; font-weight: 600; color: #e8e8e8;">Annual Mileage Target</label>
-<input id="annual-goal" inputmode="numeric" placeholder="420" style="width: 80px; padding: 6px 10px; border: 1px solid #3d3d3d; border-radius: 6px; font-size: 13px; font-weight: 600; background: #1a1a1a; color: #e8e8e8; text-align: center;" type="number" value="420"/>
+<label style="font-size: 14px; font-weight: 600; color: #eceff1;">Annual Mileage Target</label>
+<input id="annual-goal" inputmode="numeric" placeholder="420" style="width: 80px; padding: 6px 10px; border: 1px solid #1e2127; border-radius: 6px; font-size: 13px; font-weight: 600; background: #08090b; color: #eceff1; text-align: center;" type="number" value="420"/>
 </div>
 </div>
 </div>
 <!-- Elegant divider line like monthly days section -->
-<div style="margin: 12px 0; border-top: 1px solid #3d3d3d;"></div>
+<div style="margin: 12px 0; border-top: 1px solid #1e2127;"></div>
 <!-- Make it a Habit Section -->
 <div>
 <div style="margin-bottom: 12px;">
-<label style="font-size: 14px; font-weight: 600; color: #e8e8e8; display: flex; align-items: center; gap: 6px; margin-bottom: 0;">
+<label style="font-size: 14px; font-weight: 600; color: #eceff1; display: flex; align-items: center; gap: 6px; margin-bottom: 0;">
 Make it a Habit (Private)
 <span class="info-icon" onclick="app.toggleHabitInfoModal()" title="How habits work" style="transform: scale(0.7);">i</span>
 </label>
@@ -3518,11 +3608,11 @@ View your progress in the Habit Report!
 </div>
 </div>
 <!-- Elegant divider line -->
-<div style="margin: 12px 0; border-top: 1px solid #3d3d3d;"></div>
+<div style="margin: 12px 0; border-top: 1px solid #1e2127;"></div>
 <!-- Custom Activity Categories Section -->
 <div>
 <div style="margin-bottom: 12px;">
-<label style="font-size: 14px; font-weight: 600; color: #e8e8e8; display: flex; align-items: center; gap: 6px; margin-bottom: 0;">
+<label style="font-size: 14px; font-weight: 600; color: #eceff1; display: flex; align-items: center; gap: 6px; margin-bottom: 0;">
 Custom Activity Categories
 <span class="info-icon" onclick="app.toggleCustomCategoryInfoModal()" title="How custom categories work" style="transform: scale(0.7);">i</span>
 </label>
@@ -3554,14 +3644,14 @@ Perfect for unique exercises not in our list!
 </div>
 </div>
 <!-- Elegant divider line -->
-<div style="margin: 12px 0; border-top: 1px solid #3d3d3d;"></div>
+<div style="margin: 12px 0; border-top: 1px solid #1e2127;"></div>
 <!-- Save Settings -->
 <div class="settings-card" style="margin-top: 12px; text-align: center;">
 <button class="save-button" onclick="app.saveGoals()" style="margin: 0;">Save Settings</button>
 <div class="success-message" id="settings-success" style="margin-top: 8px;">Settings saved successfully!</div>
 </div>
 <!-- Elegant divider line -->
-<div style="margin: 12px 0; border-top: 1px solid #3d3d3d;"></div>
+<div style="margin: 12px 0; border-top: 1px solid #1e2127;"></div>
 <!-- Data Import/Export -->
 <div style="display: flex; flex-direction: column; gap: 8px;">
 <input accept=".json" id="import-file-input" onchange="app.handleImportFile(event)" style="display: none;" type="file"/>
@@ -3570,8 +3660,8 @@ Perfect for unique exercises not in our list!
 </div>
 <div class="success-message" id="import-success">Data imported successfully!</div>
 </div>
-<!-- PALS Screen -->
-<div class="screen" id="pals-screen">
+<!-- Crew Screen (v3.0: pals + feed + challenges + leaderboard) -->
+<div class="screen" id="crew-screen">
 <h1>Pals</h1>
 <p class="subtitle">Share your fitness journey with friends</p>
 <!-- MY PROFILE Section - Slim Design -->
@@ -3600,7 +3690,7 @@ Perfect for unique exercises not in our list!
                                 Not set
                             </div>
 </div>
-<button onclick="app.editDisplayName()" style="width: 55px; height: 32px; flex-shrink: 0; background: #3d3d3d; color: #e8e8e8; border: none; border-radius: 5px; font-size: 12px; cursor: pointer; font-weight: 600; display: flex; align-items: center; justify-content: center;">
+<button onclick="app.editDisplayName()" style="width: 55px; height: 32px; flex-shrink: 0; background: #1e2127; color: #eceff1; border: none; border-radius: 5px; font-size: 12px; cursor: pointer; font-weight: 600; display: flex; align-items: center; justify-content: center;">
                             Edit
                         </button>
 </div>
@@ -3643,7 +3733,7 @@ Perfect for unique exercises not in our list!
 <h2 style="font-size: 14px; margin-bottom: 8px; color: var(--primary-light); font-weight: 600;">ADD PAL</h2>
 <div class="pals-profile-card">
 <div style="display: flex; gap: 8px; align-items: center;">
-<input id="add-pal-code" inputmode="numeric" maxlength="4" placeholder="Enter PAL Code..." style="flex: 1; min-width: 0; padding: 6px 10px; background: #1a1a1a; border: 1px solid #3d3d3d; border-radius: 6px; color: #e8e8e8; font-size: 13px; height: 32px; box-sizing: border-box;" type="tel"/>
+<input id="add-pal-code" inputmode="numeric" maxlength="4" placeholder="Enter PAL Code..." style="flex: 1; min-width: 0; padding: 6px 10px; background: #08090b; border: 1px solid #1e2127; border-radius: 6px; color: #eceff1; font-size: 13px; height: 32px; box-sizing: border-box;" type="tel"/>
 <button onclick="app.addPal()" style="width: 55px; height: 32px; flex-shrink: 0; background: var(--primary-dark); color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 12px; display: flex; align-items: center; justify-content: center;">
                             Add
                         </button>
@@ -3656,7 +3746,7 @@ Perfect for unique exercises not in our list!
 <div class="pals-section">
 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
 <h2 style="font-size: 14px; color: var(--primary-light); font-weight: 600; margin: 0;">MY PALS</h2>
-<button onclick="app.refreshAllPals()" style="padding: 4px 10px; background: #3d3d3d; color: #e8e8e8; border: none; border-radius: 5px; font-size: 11px; cursor: pointer; font-weight: 600;">
+<button onclick="app.refreshAllPals()" style="padding: 4px 10px; background: #1e2127; color: #eceff1; border: none; border-radius: 5px; font-size: 11px; cursor: pointer; font-weight: 600;">
                         🔄 Refresh All
                     </button>
 </div>
@@ -3665,27 +3755,38 @@ Perfect for unique exercises not in our list!
 </div>
 </div>
 </div>
-<!-- Leaderboard Screen -->
-<div class="screen" id="leaderboard-screen">
+<div class="today-card" id="crew-feed-card" style="margin-top: 16px;">
+<div class="today-card-title">Crew activity</div>
+<div id="crew-feed-list" style="font-size: 12px; color: #7d838c;">Add pals to see their activity here.</div>
+</div>
+<div class="today-card" id="crew-challenges-card">
+<div class="today-card-title" style="display: flex; justify-content: space-between; align-items: center;"><span>Challenges</span>
+<span>
+<button onclick="app.promptCreateChallenge()" style="background: none; border: 1px solid var(--primary); color: var(--primary); border-radius: 999px; padding: 3px 10px; font-size: 11px; cursor: pointer; font-family: inherit;">New</button>
+<button onclick="app.promptJoinChallenge()" style="background: none; border: 1px solid #1e2127; color: #7d838c; border-radius: 999px; padding: 3px 10px; font-size: 11px; cursor: pointer; font-family: inherit;">Join</button>
+</span></div>
+<div id="challenges-list" style="font-size: 12px; color: #7d838c;">No active challenges. Start one and make the crew suffer together.</div>
+</div>
+<div style="height: 8px;"></div>
 <h1 style="display: flex; align-items: center; gap: 8px;">Leaderboard <span class="info-icon" onclick="app.showLeaderboardInfo()" title="How rankings work">i</span></h1>
 <p class="subtitle">Compete with JustStep users worldwide</p>
 <!-- Toggle: Global / Friends -->
 <div class="leaderboard-toggle" style="display: flex; gap: 8px; margin-bottom: 16px;">
-<button class="toggle-btn active" id="lb-global-btn" onclick="app.setLeaderboardMode('global')" style="flex: 1; padding: 10px; background: var(--primary-dark); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.2s;">
+<button class="toggle-btn active" id="lb-global-btn" onclick="app.setLeaderboardMode('global')" style="flex: 1; padding: 10px; background: var(--primary-dark); color: white; border: none; border-radius: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s;">
                     Global
                 </button>
-<button class="toggle-btn" id="lb-friends-btn" onclick="app.setLeaderboardMode('friends')" style="flex: 1; padding: 10px; background: #2d2d2d; color: #9ca3af; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.2s;">
+<button class="toggle-btn" id="lb-friends-btn" onclick="app.setLeaderboardMode('friends')" style="flex: 1; padding: 10px; background: #101216; color: #9ca3af; border: none; border-radius: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s;">
                     Friends
                 </button>
 </div>
 <!-- Time Period & Metric Dropdowns -->
 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px;">
-<select id="leaderboard-metric" onchange="app.renderLeaderboard()" style="padding: 10px; background: #2d2d2d; border: 1px solid #3d3d3d; border-radius: 8px; color: #e8e8e8; font-size: 14px; cursor: pointer;">
+<select id="leaderboard-metric" onchange="app.renderLeaderboard()" style="padding: 10px; background: #101216; border: 1px solid #1e2127; border-radius: 12px; color: #eceff1; font-size: 14px; cursor: pointer;">
 <option value="thisWeekDistance">Distance</option>
 <option value="thisWeekSteps">Steps</option>
 <option value="weight">Weight</option>
 </select>
-<select id="leaderboard-period" onchange="app.renderLeaderboard()" style="padding: 10px; background: #2d2d2d; border: 1px solid #3d3d3d; border-radius: 8px; color: #e8e8e8; font-size: 14px; cursor: pointer;">
+<select id="leaderboard-period" onchange="app.renderLeaderboard()" style="padding: 10px; background: #101216; border: 1px solid #1e2127; border-radius: 12px; color: #eceff1; font-size: 14px; cursor: pointer;">
 <option value="week">This Week</option>
 <option value="month">This Month</option>
 <option value="total">All Time</option>
@@ -3735,7 +3836,7 @@ Perfect for unique exercises not in our list!
         </a>
 <button class="welcome-button" onclick="app.closeWelcome()">Let's Go</button>
 <div style="text-align: center; color: #6b7280; font-size: 11px; margin-top: 16px;">
-            v2.2.2
+            v3.0.0
         </div>
 </div>
 <!-- Customize Dashboard Modal -->
@@ -3980,10 +4081,10 @@ Perfect for unique exercises not in our list!
 <!-- Colors will be rendered here: 10 rows x 8 columns -->
 </div>
 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-<button onclick="app.closeColorPalette()" style="width: 100%; padding: 10px; background: #3d3d3d; color: #e8e8e8; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">
+<button onclick="app.closeColorPalette()" style="width: 100%; padding: 10px; background: #1e2127; color: #eceff1; border: none; border-radius: 12px; cursor: pointer; font-weight: 600;">
                     Cancel
                 </button>
-<button onclick="app.confirmColorSelection()" style="width: 100%; padding: 10px; background: var(--primary-dark); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">
+<button onclick="app.confirmColorSelection()" style="width: 100%; padding: 10px; background: var(--primary-dark); color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: 600;">
                     OK
                 </button>
 </div>
@@ -3991,8 +4092,8 @@ Perfect for unique exercises not in our list!
 </div>
 <!-- Color Wheel Modal -->
 <div class="modal" id="color-wheel-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1000; align-items: center; justify-content: center;">
-<div class="modal-content" style="max-width: 360px; text-align: center; background: #1a1a1a; padding: 24px; border-radius: 12px;">
-<h2 style="margin-bottom: 16px; font-size: 18px; color: #e8e8e8;">Choose Your Color</h2>
+<div class="modal-content" style="max-width: 360px; text-align: center; background: #08090b; padding: 24px; border-radius: 12px;">
+<h2 style="margin-bottom: 16px; font-size: 18px; color: #eceff1;">Choose Your Color</h2>
 <div style="display: flex; justify-content: center; margin-bottom: 16px; position: relative;">
 <canvas height="280" id="color-wheel-canvas" style="cursor: crosshair; border-radius: 50%;" width="280"></canvas>
 <!-- Magnifier Overlay -->
@@ -4001,12 +4102,12 @@ Perfect for unique exercises not in our list!
 </div>
 </div>
 <div id="magnifier-instruction" style="display: none; font-size: 12px; color: #9ca3af; margin-bottom: 8px;">Drag to fine-tune your color</div>
-<div id="selected-color-preview" style="width: 60px; height: 60px; border-radius: 50%; margin: 0 auto 16px; border: 3px solid #3d3d3d; background: #2563eb;"></div>
+<div id="selected-color-preview" style="width: 60px; height: 60px; border-radius: 50%; margin: 0 auto 16px; border: 3px solid #1e2127; background: #2563eb;"></div>
 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-<button onclick="app.closeColorWheel()" style="width: 100%; padding: 10px; background: #3d3d3d; color: #e8e8e8; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">
+<button onclick="app.closeColorWheel()" style="width: 100%; padding: 10px; background: #1e2127; color: #eceff1; border: none; border-radius: 12px; cursor: pointer; font-weight: 600;">
                     Cancel
                 </button>
-<button onclick="app.confirmColorWheelSelection()" style="width: 100%; padding: 10px; background: var(--primary-dark); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">
+<button onclick="app.confirmColorWheelSelection()" style="width: 100%; padding: 10px; background: var(--primary-dark); color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: 600;">
                     OK
                 </button>
 </div>
@@ -4014,7 +4115,7 @@ Perfect for unique exercises not in our list!
 </div>
 <script>
         // App Version
-        const APP_VERSION = '2.2.2';
+        const APP_VERSION = '3.0.0';
         
         // Main App Object
         const app = {
@@ -4030,6 +4131,9 @@ Perfect for unique exercises not in our list!
                     initialWeight: null
                 },
                 habits: [], // Make it a Habit: { id, name, frequency: 'daily'|'weekly', completions: [dates] }
+                records: null, // v3.0 PRs: { longestDistance, bestStepsDay, bestRepsSession, bestWeekDistance, longestStreak, migrated }
+                kudosGiven: {}, // v3.0: kudos I've sent, keyed palCode|ts
+                challengeIds: [], // v3.0: challenge codes I'm in
                 customCategories: [], // Custom Activity Categories: { id, name, exercises: [{id, name, trackingType: 'reps'|'distance'|'logday'}] }
                 milestones: [],
                 currentView: {
@@ -4095,6 +4199,11 @@ Perfect for unique exercises not in our list!
                 this.buildActivityPicker();
                 this.renderQuickChips();
                 this.renderTodaysLog();
+                this.backfillRecords();
+                this.renderToday();
+                this.renderHeatmap();
+                this.refreshPalDocs();
+                this.updateChallengeProgress();
 
                 // Enter / Go on the keypad saves the pending activity
                 const valueInput = document.getElementById('value-entry-input');
@@ -4596,9 +4705,9 @@ Perfect for unique exercises not in our list!
                 let modalHTML = `
                     <div class="overlay" id="exercise-modal-overlay" onclick="app.closeExerciseModal()" style="display: block;"></div>
                     <div class="customize-modal" id="exercise-modal" style="display: block; max-width: 400px;">
-                        <div class="customize-modal-header">${categoryName} <button onclick="app.closeExerciseModal()" style="float: right; background: none; border: none; color: #e8e8e8; font-size: 24px; cursor: pointer; padding: 0; line-height: 1;">×</button></div>
+                        <div class="customize-modal-header">${categoryName} <button onclick="app.closeExerciseModal()" style="float: right; background: none; border: none; color: #eceff1; font-size: 24px; cursor: pointer; padding: 0; line-height: 1;">×</button></div>
                         <button onclick="app.closeExerciseModal(); app.chooseActivity('${categoryType}', '${categoryName}');"
-                                style="width: 100%; padding: 12px; background: var(--primary-dark); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px; margin-bottom: 16px;">
+                                style="width: 100%; padding: 12px; background: var(--primary-dark); color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: 600; font-size: 14px; margin-bottom: 16px;">
                             ✓ Log "${categoryName}"
                         </button>
                         <div style="color: #9ca3af; font-size: 12px; margin-bottom: 12px; text-align: center;">Or track specific exercise:</div>
@@ -4752,11 +4861,13 @@ Perfect for unique exercises not in our list!
                     if (value !== null) applyValue(activity);
 
                     this.data.activities.push(activity);
+                    const prLabel = this.detectPR(activity);
+                    if (prLabel) activity.pr = prLabel;
                     this.afterActivityChange();
                     this.checkMilestones();
 
                     const ts = activity.timestamp;
-                    this.showToast(`Logged ${p.name}`, {
+                    this.showToast(prLabel ? `New PR 🏆 ${prLabel}` : `Logged ${p.name}`, {
                         actionLabel: 'Undo',
                         onAction: () => {
                             const idx = this.data.activities.findIndex(a => a.timestamp === ts);
@@ -4779,6 +4890,8 @@ Perfect for unique exercises not in our list!
                 this.renderCalendar();
                 this.renderTodaysLog();
                 this.renderQuickChips();
+                this.renderToday();
+                this.renderHeatmap();
             },
 
             // ---------- Today's log list ----------
@@ -4944,6 +5057,673 @@ Perfect for unique exercises not in our list!
                 const entryOpen = document.getElementById('value-entry') &&
                     document.getElementById('value-entry').style.display === 'block';
                 section.style.display = (this._hasChips && !entryOpen) ? 'block' : 'none';
+            },
+
+            // ============================================
+            // v3.0 Midnight Athlete engine
+            // ============================================
+
+            _accentHexByTheme: { volt: '#c8f549', blue: '#4d9fff', cyan: '#22d3ee', orange: '#ff7a1a', magenta: '#f043c8' },
+
+            getAccentHex() {
+                const t = localStorage.getItem('appTheme') || 'volt';
+                return this._accentHexByTheme[t] || this._accentHexByTheme.volt;
+            },
+
+            getSundayStart(d) {
+                const s = new Date(d);
+                s.setDate(s.getDate() - s.getDay());
+                s.setHours(0, 0, 0, 0);
+                return s;
+            },
+
+            getLastActivityDate() {
+                let last = null;
+                this.data.activities.forEach(a => {
+                    if (a.date && (!last || a.date > last)) last = a.date;
+                });
+                return last;
+            },
+
+            // ---------- Streak (weekly-frequency based, 1 freeze/week) ----------
+            computeStreakInfo() {
+                const dates = new Set(this.data.activities.map(a => a.date).filter(Boolean));
+                const goalDays = Math.min(7, Math.max(1, parseInt(this.data.goals.workoutFrequency) || 5));
+                const allowedRest = 7 - goalDays;
+
+                const todayStr = this.localDateStr(new Date());
+                const lastDate = this.getLastActivityDate();
+                let gapDays = 9999;
+                if (lastDate) {
+                    gapDays = Math.round((new Date(todayStr + 'T12:00:00') - new Date(lastDate + 'T12:00:00')) / 86400000);
+                }
+
+                // Walk backward; today unlogged is pending, not a miss
+                let streak = 0;
+                const restByWeek = {};
+                const frozeWeek = {};
+                const cursor = new Date(todayStr + 'T12:00:00');
+                if (!dates.has(todayStr)) cursor.setDate(cursor.getDate() - 1);
+
+                for (let i = 0; i < 730; i++) {
+                    const key = this.localDateStr(cursor);
+                    if (dates.has(key)) {
+                        streak++;
+                    } else {
+                        const wk = this.localDateStr(this.getSundayStart(cursor));
+                        restByWeek[wk] = (restByWeek[wk] || 0) + 1;
+                        if (restByWeek[wk] > allowedRest) {
+                            if (!frozeWeek[wk]) frozeWeek[wk] = true;
+                            else break;
+                        }
+                    }
+                    cursor.setDate(cursor.getDate() - 1);
+                }
+
+                // Track longest streak as a record
+                if (!this.data.records) this.data.records = {};
+                if (streak > (this.data.records.longestStreak || 0)) {
+                    this.data.records.longestStreak = streak;
+                }
+
+                // Days active in the current week
+                const weekStart = this.getSundayStart(new Date());
+                let daysThisWeek = 0;
+                const wc = new Date(weekStart);
+                for (let i = 0; i < 7; i++) {
+                    if (dates.has(this.localDateStr(wc))) daysThisWeek++;
+                    wc.setDate(wc.getDate() + 1);
+                }
+
+                return {
+                    streak,
+                    longest: this.data.records.longestStreak || streak,
+                    goalDays,
+                    daysThisWeek,
+                    gapDays,
+                    todayLogged: dates.has(todayStr),
+                    dates
+                };
+            },
+
+            // ---------- Personal records ----------
+            backfillRecords() {
+                if (this.data.records && this.data.records.migrated) return;
+                const rec = { longestDistance: 0, bestStepsDay: 0, bestRepsSession: 0, bestWeekDistance: 0, longestStreak: 0, migrated: true };
+                const stepsByDay = {};
+                const distByWeek = {};
+                this.data.activities.forEach(a => {
+                    if (a.distance !== undefined) {
+                        if (a.distance > rec.longestDistance) rec.longestDistance = a.distance;
+                        if (a.date) {
+                            const wk = this.localDateStr(this.getSundayStart(new Date(a.date + 'T12:00:00')));
+                            distByWeek[wk] = (distByWeek[wk] || 0) + a.distance;
+                        }
+                    }
+                    if (a.reps !== undefined && a.reps > rec.bestRepsSession) rec.bestRepsSession = a.reps;
+                    if (a.steps !== undefined && a.date) stepsByDay[a.date] = (stepsByDay[a.date] || 0) + a.steps;
+                });
+                Object.values(stepsByDay).forEach(v => { if (v > rec.bestStepsDay) rec.bestStepsDay = v; });
+                Object.values(distByWeek).forEach(v => { if (v > rec.bestWeekDistance) rec.bestWeekDistance = v; });
+                this.data.records = { ...rec, ...(this.data.records || {}), migrated: true };
+                // Keep the maxima if records partially existed
+                this.data.records.longestDistance = Math.max(this.data.records.longestDistance || 0, rec.longestDistance);
+                this.data.records.bestStepsDay = Math.max(this.data.records.bestStepsDay || 0, rec.bestStepsDay);
+                this.data.records.bestRepsSession = Math.max(this.data.records.bestRepsSession || 0, rec.bestRepsSession);
+                this.data.records.bestWeekDistance = Math.max(this.data.records.bestWeekDistance || 0, rec.bestWeekDistance);
+                this.saveData();
+            },
+
+            // Returns a PR label or null; updates records. Call AFTER activity is pushed.
+            detectPR(activity) {
+                const rec = this.data.records || (this.data.records = { migrated: true });
+                const unitPref = this.data.goals.unitPreference === 'km' ? 'km' : 'mi';
+                const show = (km) => unitPref === 'km' ? `${km.toFixed(1)} km` : `${(km / 1.60934).toFixed(1)} mi`;
+
+                if (activity.distance !== undefined && activity.distance > (rec.longestDistance || 0)) {
+                    rec.longestDistance = activity.distance;
+                    return `Longest distance: ${show(activity.distance)}`;
+                }
+                if (activity.reps !== undefined && activity.reps > (rec.bestRepsSession || 0)) {
+                    rec.bestRepsSession = activity.reps;
+                    return `Most reps in a session: ${activity.reps}`;
+                }
+                if (activity.steps !== undefined && activity.date) {
+                    const dayTotal = this.data.activities
+                        .filter(a => a.date === activity.date && a.steps !== undefined)
+                        .reduce((s, a) => s + a.steps, 0);
+                    if (dayTotal > (rec.bestStepsDay || 0)) {
+                        rec.bestStepsDay = dayTotal;
+                        return `Best step day: ${dayTotal.toLocaleString()}`;
+                    }
+                }
+                if (activity.distance !== undefined && activity.date) {
+                    const wk = this.localDateStr(this.getSundayStart(new Date(activity.date + 'T12:00:00')));
+                    const weekTotal = this.data.activities
+                        .filter(a => a.distance !== undefined && a.date && this.localDateStr(this.getSundayStart(new Date(a.date + 'T12:00:00'))) === wk)
+                        .reduce((s, a) => s + a.distance, 0);
+                    const prevBest = rec.bestWeekDistance || 0;
+                    if (weekTotal > prevBest) {
+                        rec.bestWeekDistance = weekTotal;
+                        // Only celebrate a week record once there's a real prior record
+                        // to beat — otherwise every early log is a hollow "biggest week"
+                        if (prevBest > 0) return `Biggest week: ${show(weekTotal)}`;
+                    }
+                }
+                return null;
+            },
+
+            // ---------- Today screen ----------
+            _sufferLines: {
+                fresh: ["The iron doesn't care how you feel. Log anyway.", "Nobody's coming to do it for you.", "Today counts. Or it doesn't. Your call."],
+                logged: ["Stacked. Now hold the line.", "Good. The streak feeds on this.", "Logged. The suffering is the point."],
+                locked: ["Week goal locked in. Stay hungry.", "Goal hit. Champions do one more."],
+                comeback: ["The comeback starts with one entry.", "Everyone falls. Few get back up. Be few."]
+            },
+
+            renderToday() {
+                const info = this.computeStreakInfo();
+                const dateLabel = document.getElementById('today-date-label');
+                if (!dateLabel) return;
+                dateLabel.textContent = new Date().toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' });
+
+                // Streak ring: arc = week progress, number = streak
+                const num = document.getElementById('streak-ring-num');
+                const arc = document.getElementById('streak-ring-arc');
+                num.textContent = info.streak;
+                const frac = Math.min(1, info.daysThisWeek / info.goalDays);
+                const circ = 2 * Math.PI * 38;
+                arc.setAttribute('stroke-dasharray', `${(frac * circ).toFixed(1)} ${circ.toFixed(1)}`);
+
+                // Hero copy
+                const line1 = document.getElementById('today-hero-line1');
+                const sub = document.getElementById('today-hero-sub');
+                const pick = (arr) => arr[new Date().getDate() % arr.length];
+                const comeback = info.gapDays > 14 && info.streak === 0;
+                if (comeback) {
+                    line1.textContent = 'Day one. Again.';
+                    sub.textContent = pick(this._sufferLines.comeback);
+                } else if (info.daysThisWeek >= info.goalDays) {
+                    line1.textContent = `${info.daysThisWeek} of ${info.goalDays} days this week`;
+                    sub.textContent = pick(this._sufferLines.locked);
+                } else if (info.todayLogged) {
+                    line1.textContent = `${info.daysThisWeek} of ${info.goalDays} days this week`;
+                    sub.textContent = pick(this._sufferLines.logged);
+                } else {
+                    line1.textContent = `${info.daysThisWeek} of ${info.goalDays} days this week`;
+                    sub.textContent = pick(this._sufferLines.fresh);
+                }
+
+                // Week segments
+                const segs = document.getElementById('week-segs');
+                segs.innerHTML = '';
+                const ws = this.getSundayStart(new Date());
+                for (let i = 0; i < 7; i++) {
+                    const d = new Date(ws);
+                    d.setDate(d.getDate() + i);
+                    const seg = document.createElement('div');
+                    seg.className = 'week-seg' + (info.dates.has(this.localDateStr(d)) ? ' hit' : '');
+                    segs.appendChild(seg);
+                }
+
+                // Week stats
+                const stats = this.calculateStats();
+                const unitPref = this.data.goals.unitPreference === 'km' ? 'km' : 'miles';
+                document.getElementById('today-stat-dist-label').textContent = unitPref === 'km' ? 'Km this week' : 'Miles this week';
+                const dist = unitPref === 'km' ? stats.thisWeekDistance : stats.thisWeekDistance / 1.60934;
+                document.getElementById('today-stat-dist').textContent = dist >= 100 ? Math.round(dist) : dist.toFixed(1);
+                document.getElementById('today-stat-reps').textContent = (stats.thisWeekReps || 0).toLocaleString();
+                const steps = stats.thisWeekSteps || 0;
+                document.getElementById('today-stat-steps').textContent = steps >= 10000 ? `${(steps / 1000).toFixed(1)}k` : steps.toLocaleString();
+
+                // Today's entries
+                const todayStr = this.localDateStr(new Date());
+                const entries = this.data.activities.filter(a => a.date === todayStr);
+                const entriesCard = document.getElementById('today-entries-card');
+                const entriesList = document.getElementById('today-entries-list');
+                const emptyCard = document.getElementById('today-empty-card');
+                entriesList.innerHTML = '';
+                if (entries.length) {
+                    entries.forEach(a => {
+                        const row = document.createElement('div');
+                        row.style.cssText = 'display:flex;justify-content:space-between;align-items:center;padding:6px 0;';
+                        const left = document.createElement('div');
+                        const nm = document.createElement('div');
+                        nm.style.cssText = 'font-size:13px;font-weight:500;color:#eceff1;';
+                        nm.textContent = this.getActivityDisplayName(a);
+                        const val = document.createElement('div');
+                        val.style.cssText = 'font-size:11px;color:#7d838c;';
+                        const up = this.data.goals.unitPreference === 'km' ? 'km' : 'mi';
+                        if (a.distance !== undefined) val.textContent = up === 'km' ? `${a.distance.toFixed(1)} km` : `${(a.distance / 1.60934).toFixed(1)} mi`;
+                        else if (a.steps !== undefined) val.textContent = `${a.steps.toLocaleString()} steps`;
+                        else if (a.reps !== undefined) val.textContent = `${a.reps} reps`;
+                        else if (a.floors !== undefined) val.textContent = `${a.floors} floors`;
+                        else val.textContent = 'Logged';
+                        if (a.pr) val.style.color = 'var(--primary)';
+                        left.appendChild(nm); left.appendChild(val);
+                        row.appendChild(left);
+                        if (a.pr) {
+                            const chip = document.createElement('span');
+                            chip.className = 'pr-chip';
+                            chip.textContent = 'PR';
+                            row.appendChild(chip);
+                        }
+                        entriesList.appendChild(row);
+                    });
+                    entriesCard.style.display = 'block';
+                    emptyCard.style.display = 'none';
+                } else {
+                    entriesCard.style.display = 'none';
+                    emptyCard.style.display = 'block';
+                    document.getElementById('today-empty-line').textContent = comeback
+                        ? 'It has been a while. One entry restarts everything.'
+                        : 'Nothing logged yet. The day is still yours.';
+                }
+
+                this.renderTodayCrew();
+            },
+
+            renderTodayCrew() {
+                const card = document.getElementById('today-crew-card');
+                const list = document.getElementById('today-crew-list');
+                if (!card || !list) return;
+                const docs = this._palDocs || {};
+                const rows = [];
+                Object.keys(docs).forEach(code => {
+                    const d = docs[code];
+                    (d.recentActivities || []).slice(0, 1).forEach(ev => {
+                        rows.push({ name: d.displayName || code, accent: d.accentColor, ev });
+                    });
+                });
+                rows.sort((a, b) => (b.ev.ts || '').localeCompare(a.ev.ts || ''));
+                list.innerHTML = '';
+                rows.slice(0, 3).forEach(r => list.appendChild(this.buildFeedRow(r.name, r.accent, r.ev, null, null)));
+                card.style.display = rows.length ? 'block' : 'none';
+            },
+
+            timeAgo(iso) {
+                if (!iso) return '';
+                const mins = Math.max(0, Math.floor((Date.now() - new Date(iso)) / 60000));
+                if (mins < 60) return `${mins}m`;
+                if (mins < 1440) return `${Math.floor(mins / 60)}h`;
+                return `${Math.floor(mins / 1440)}d`;
+            },
+
+            // ---------- Heatmap ----------
+            renderHeatmap() {
+                const grid = document.getElementById('heatmap-grid');
+                if (!grid) return;
+                const counts = {};
+                this.data.activities.forEach(a => { if (a.date) counts[a.date] = (counts[a.date] || 0) + 1; });
+
+                grid.innerHTML = '';
+                const start = this.getSundayStart(new Date());
+                start.setDate(start.getDate() - 7 * 25);
+                let activeDays = 0;
+                const todayStr = this.localDateStr(new Date());
+                for (let w = 0; w < 26; w++) {
+                    const col = document.createElement('div');
+                    col.className = 'heatmap-col';
+                    for (let d = 0; d < 7; d++) {
+                        const day = new Date(start);
+                        day.setDate(day.getDate() + w * 7 + d);
+                        const key = this.localDateStr(day);
+                        const cell = document.createElement('div');
+                        const c = counts[key] || 0;
+                        cell.className = 'heatmap-cell' + (c >= 4 ? ' l4' : c === 3 ? ' l3' : c === 2 ? ' l2' : c === 1 ? ' l1' : '');
+                        if (key > todayStr) cell.style.visibility = 'hidden';
+                        if (c > 0 && key <= todayStr) activeDays++;
+                        cell.title = `${key}: ${c} ${c === 1 ? 'activity' : 'activities'}`;
+                        col.appendChild(cell);
+                    }
+                    grid.appendChild(col);
+                }
+                const total = document.getElementById('heatmap-total');
+                if (total) total.textContent = `${activeDays} active days`;
+                grid.scrollLeft = grid.scrollWidth;
+            },
+
+            // ---------- Crew: feed + kudos ----------
+            _palDocs: {},
+
+            buildFeedRow(name, accent, ev, palCode, kudosCount) {
+                const row = document.createElement('div');
+                row.className = 'feed-row';
+                const left = document.createElement('div');
+                left.className = 'feed-left';
+                const av = document.createElement('div');
+                av.className = 'feed-avatar';
+                av.textContent = (name || '?').substring(0, 2).toUpperCase();
+                av.style.color = accent || 'var(--primary)';
+                const txt = document.createElement('div');
+                txt.className = 'feed-text';
+                const actName = this.getActivityDisplayName({ type: ev.t });
+                txt.textContent = `${name} · ${actName} · ${this.timeAgo(ev.ts)}`;
+                left.appendChild(av); left.appendChild(txt);
+                row.appendChild(left);
+                if (palCode) {
+                    const btn = document.createElement('button');
+                    btn.className = 'kudos-btn';
+                    const givenKey = `${palCode}|${ev.ts}`;
+                    const given = this.data.kudosGiven && this.data.kudosGiven[givenKey];
+                    if (given) btn.classList.add('given');
+                    btn.textContent = kudosCount ? `💪 ${kudosCount}` : '💪';
+                    btn.onclick = () => this.giveKudos(palCode, ev.ts, btn);
+                    row.appendChild(btn);
+                }
+                return row;
+            },
+
+            renderCrewFeed() {
+                const list = document.getElementById('crew-feed-list');
+                if (!list) return;
+                const docs = this._palDocs || {};
+                const rows = [];
+                Object.keys(docs).forEach(code => {
+                    const d = docs[code];
+                    (d.recentActivities || []).forEach(ev => {
+                        const kc = d.kudos && d.kudos[ev.ts] ? d.kudos[ev.ts] : 0;
+                        rows.push({ code, name: d.displayName || code, accent: d.accentColor, ev, kc });
+                    });
+                });
+                rows.sort((a, b) => (b.ev.ts || '').localeCompare(a.ev.ts || ''));
+                list.innerHTML = '';
+                if (!rows.length) {
+                    list.textContent = 'Add pals to see their activity here.';
+                    return;
+                }
+                rows.slice(0, 12).forEach(r => list.appendChild(this.buildFeedRow(r.name, r.accent, r.ev, r.code, r.kc)));
+            },
+
+            async giveKudos(palCode, ts, btn) {
+                if (!this.db) return;
+                const givenKey = `${palCode}|${ts}`;
+                if (!this.data.kudosGiven) this.data.kudosGiven = {};
+                if (this.data.kudosGiven[givenKey]) {
+                    this.showToast('Already gave kudos for that one', { duration: 2500 });
+                    return;
+                }
+                try {
+                    await this.db.collection('users').doc(palCode).set({
+                        kudos: { [ts]: firebase.firestore.FieldValue.increment(1) }
+                    }, { merge: true });
+                    this.data.kudosGiven[givenKey] = 1;
+                    this.saveData();
+                    if (btn) {
+                        btn.classList.add('given');
+                        const m = btn.textContent.match(/(\d+)/);
+                        btn.textContent = `💪 ${m ? parseInt(m[1]) + 1 : 1}`;
+                    }
+                    this.showToast('Kudos sent 💪', { duration: 2000 });
+                } catch (e) {
+                    console.error('Kudos failed:', e);
+                    this.showToast('Could not send kudos — check connection', { duration: 3000 });
+                }
+            },
+
+            async refreshPalDocs() {
+                if (!this.db || !this.data.pals.friends || !this.data.pals.friends.length) return;
+                try {
+                    const fetches = this.data.pals.friends.map(f =>
+                        this.db.collection('users').doc(f.palCode).get()
+                            .then(snap => { if (snap.exists) this._palDocs[f.palCode] = snap.data(); })
+                            .catch(() => {})
+                    );
+                    await Promise.all(fetches);
+                } catch (e) { console.error('Pal refresh failed:', e); }
+                this.renderCrewFeed();
+                this.renderTodayCrew();
+            },
+
+            getRecentActivitiesForFeed() {
+                return this.data.activities
+                    .slice()
+                    .sort((a, b) => (b.timestamp || '').localeCompare(a.timestamp || ''))
+                    .slice(0, 5)
+                    .map(a => ({ t: a.type, d: a.date, ts: a.timestamp || '' }));
+            },
+
+            // ---------- Challenges ----------
+            _challengeMetrics: { distance: 'Distance', steps: 'Steps', reps: 'Reps', days: 'Active days' },
+
+            promptCreateChallenge() {
+                if (!this.db || !this.data.pals.myPalCode) {
+                    this.showToast('Set up your PAL code first (Crew tab)', { duration: 3500 });
+                    return;
+                }
+                const name = prompt('Challenge name (e.g. "15 miles this week"):');
+                if (!name) return;
+                const metric = (prompt('Metric — type one of: distance / steps / reps / days', 'distance') || '').trim().toLowerCase();
+                if (!this._challengeMetrics[metric]) { this.showToast('Unknown metric', { duration: 2500 }); return; }
+                const target = parseFloat(prompt(`Target ${metric === 'distance' ? '(in ' + (this.data.goals.unitPreference === 'km' ? 'km' : 'miles') + ')' : ''}:`, '15'));
+                if (!target || target <= 0) { this.showToast('Enter a target above 0', { duration: 2500 }); return; }
+                const days = parseInt(prompt('How many days does it run?', '7')) || 7;
+
+                const code = Array.from({ length: 6 }, () => 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'[Math.floor(Math.random() * 32)]).join('');
+                const end = new Date(); end.setDate(end.getDate() + days);
+                let targetStored = target;
+                if (metric === 'distance' && this.data.goals.unitPreference !== 'km') targetStored = target * 1.60934;
+
+                const doc = {
+                    name: name.substring(0, 60),
+                    metric,
+                    target: targetStored,
+                    startDate: this.localDateStr(new Date()),
+                    endDate: this.localDateStr(end),
+                    createdBy: this.data.pals.myPalCode,
+                    participants: {}
+                };
+                this.db.collection('challenges').doc(code).set(doc)
+                    .then(() => {
+                        if (!this.data.challengeIds) this.data.challengeIds = [];
+                        this.data.challengeIds.push(code);
+                        this.saveData();
+                        this.updateChallengeProgress();
+                        this.showToast(`Challenge created — code ${code}. Share it with the crew.`, { duration: 7000 });
+                        this.renderChallenges();
+                    })
+                    .catch(e => { console.error(e); this.showToast('Could not create challenge', { duration: 3000 }); });
+            },
+
+            promptJoinChallenge() {
+                if (!this.db || !this.data.pals.myPalCode) {
+                    this.showToast('Set up your PAL code first (Crew tab)', { duration: 3500 });
+                    return;
+                }
+                const code = (prompt('Enter challenge code:') || '').trim().toUpperCase();
+                if (!code) return;
+                this.db.collection('challenges').doc(code).get().then(snap => {
+                    if (!snap.exists) { this.showToast('No challenge with that code', { duration: 3000 }); return; }
+                    if (!this.data.challengeIds) this.data.challengeIds = [];
+                    if (!this.data.challengeIds.includes(code)) this.data.challengeIds.push(code);
+                    this.saveData();
+                    this.updateChallengeProgress();
+                    this.showToast(`Joined "${snap.data().name}"`, { duration: 3000 });
+                }).catch(e => { console.error(e); this.showToast('Could not join challenge', { duration: 3000 }); });
+            },
+
+            computeChallengeValue(ch) {
+                const inRange = this.data.activities.filter(a => a.date && a.date >= ch.startDate && a.date <= ch.endDate);
+                if (ch.metric === 'distance') return inRange.reduce((s, a) => s + (a.distance || 0), 0);
+                if (ch.metric === 'steps') return inRange.reduce((s, a) => s + (a.steps || 0), 0);
+                if (ch.metric === 'reps') return inRange.reduce((s, a) => s + (a.reps || 0), 0);
+                if (ch.metric === 'days') return new Set(inRange.map(a => a.date)).size;
+                return 0;
+            },
+
+            async updateChallengeProgress() {
+                if (!this.db || !this.data.challengeIds || !this.data.challengeIds.length || !this.data.pals.myPalCode) return;
+                const todayStr = this.localDateStr(new Date());
+                for (const code of this.data.challengeIds) {
+                    try {
+                        const snap = await this.db.collection('challenges').doc(code).get();
+                        if (!snap.exists) continue;
+                        const ch = snap.data();
+                        if (ch.endDate < todayStr) continue;
+                        const value = this.computeChallengeValue(ch);
+                        await this.db.collection('challenges').doc(code).set({
+                            participants: {
+                                [this.data.pals.myPalCode]: {
+                                    name: this.data.pals.displayName || this.data.pals.myPalCode,
+                                    value,
+                                    accent: this.getAccentHex()
+                                }
+                            }
+                        }, { merge: true });
+                    } catch (e) { console.error('Challenge update failed:', code, e); }
+                }
+                this.renderChallenges();
+            },
+
+            async renderChallenges() {
+                const list = document.getElementById('challenges-list');
+                if (!list || !this.db) return;
+                const ids = this.data.challengeIds || [];
+                if (!ids.length) {
+                    list.textContent = 'No active challenges. Start one and make the crew suffer together.';
+                    return;
+                }
+                list.innerHTML = '';
+                const unitPref = this.data.goals.unitPreference === 'km' ? 'km' : 'mi';
+                for (const code of ids) {
+                    try {
+                        const snap = await this.db.collection('challenges').doc(code).get();
+                        if (!snap.exists) continue;
+                        const ch = snap.data();
+                        const wrap = document.createElement('div');
+                        wrap.style.cssText = 'margin-bottom:14px;';
+                        const head = document.createElement('div');
+                        head.style.cssText = 'display:flex;justify-content:space-between;font-size:12px;';
+                        const nm = document.createElement('span');
+                        nm.style.cssText = 'font-weight:600;color:#eceff1;';
+                        nm.textContent = ch.name;
+                        const meta = document.createElement('span');
+                        meta.style.color = '#7d838c';
+                        const ended = ch.endDate < this.localDateStr(new Date());
+                        meta.textContent = ended ? `Ended · ${code}` : `Ends ${ch.endDate.slice(5)} · ${code}`;
+                        head.appendChild(nm); head.appendChild(meta);
+                        wrap.appendChild(head);
+
+                        const parts = Object.keys(ch.participants || {}).map(k => ({ code: k, ...ch.participants[k] }));
+                        parts.sort((a, b) => (b.value || 0) - (a.value || 0));
+                        parts.forEach(p => {
+                            const rowEl = document.createElement('div');
+                            rowEl.style.cssText = 'margin-top:8px;';
+                            const lbl = document.createElement('div');
+                            lbl.style.cssText = 'display:flex;justify-content:space-between;font-size:11px;color:#b6bcc4;';
+                            const shownVal = ch.metric === 'distance'
+                                ? (unitPref === 'km' ? `${(p.value || 0).toFixed(1)} km` : `${((p.value || 0) / 1.60934).toFixed(1)} mi`)
+                                : `${Math.round(p.value || 0).toLocaleString()}`;
+                            const shownTarget = ch.metric === 'distance'
+                                ? (unitPref === 'km' ? `${ch.target.toFixed(0)} km` : `${(ch.target / 1.60934).toFixed(0)} mi`)
+                                : `${Math.round(ch.target).toLocaleString()}`;
+                            const nameSpan = document.createElement('span');
+                            nameSpan.textContent = p.name || p.code;
+                            const valSpan = document.createElement('span');
+                            valSpan.textContent = `${shownVal} / ${shownTarget}`;
+                            lbl.appendChild(nameSpan); lbl.appendChild(valSpan);
+                            const track = document.createElement('div');
+                            track.className = 'challenge-bar-track';
+                            const fill = document.createElement('div');
+                            fill.className = 'challenge-bar-fill';
+                            fill.style.width = `${Math.min(100, ((p.value || 0) / ch.target) * 100)}%`;
+                            fill.style.background = p.accent || 'var(--primary)';
+                            track.appendChild(fill);
+                            rowEl.appendChild(lbl); rowEl.appendChild(track);
+                            wrap.appendChild(rowEl);
+                        });
+                        list.appendChild(wrap);
+                    } catch (e) { console.error('Challenge render failed:', code, e); }
+                }
+                if (!list.children.length) list.textContent = 'No active challenges. Start one and make the crew suffer together.';
+            },
+
+            // ---------- Weekly report card (canvas + Web Share) ----------
+            async shareReportCard() {
+                const canvas = document.createElement('canvas');
+                canvas.width = 1080; canvas.height = 1350;
+                const ctx = canvas.getContext('2d');
+                const accent = this.getAccentHex();
+
+                const weekEnd = this.getSundayStart(new Date());
+                const weekStart = new Date(weekEnd); weekStart.setDate(weekStart.getDate() - 7);
+                const wsStr = this.localDateStr(weekStart);
+                const weStr = this.localDateStr(new Date(weekEnd - 86400000));
+
+                const acts = this.data.activities.filter(a => a.date && a.date >= wsStr && a.date <= weStr);
+                const days = new Set(acts.map(a => a.date)).size;
+                const goalDays = Math.min(7, Math.max(1, parseInt(this.data.goals.workoutFrequency) || 5));
+                const distKm = acts.reduce((s, a) => s + (a.distance || 0), 0);
+                const reps = acts.reduce((s, a) => s + (a.reps || 0), 0);
+                const steps = acts.reduce((s, a) => s + (a.steps || 0), 0);
+                const prs = acts.filter(a => a.pr).length;
+                const info = this.computeStreakInfo();
+
+                const ratio = days / goalDays;
+                const grade = ratio >= 1 ? 'A' : ratio >= 0.8 ? 'B' : ratio >= 0.6 ? 'C' : ratio >= 0.4 ? 'D' : 'F';
+                const verdicts = {
+                    A: 'Showed up every time it mattered.',
+                    B: 'Solid week. Champions find one more day.',
+                    C: 'Half measures. The iron noticed.',
+                    D: 'The week won. Take it back.',
+                    F: 'Day one is waiting. Again.'
+                };
+
+                const unitPref = this.data.goals.unitPreference === 'km' ? 'km' : 'mi';
+                const distShown = unitPref === 'km' ? distKm.toFixed(1) : (distKm / 1.60934).toFixed(1);
+
+                ctx.fillStyle = '#08090b';
+                ctx.fillRect(0, 0, 1080, 1350);
+                ctx.fillStyle = '#eceff1';
+                ctx.font = '600 64px "Space Grotesk", sans-serif';
+                ctx.fillText('Just', 70, 130);
+                ctx.fillStyle = accent;
+                ctx.fillText('Step', 195, 130);
+                ctx.fillStyle = '#7d838c';
+                ctx.font = '400 34px "Space Grotesk", sans-serif';
+                ctx.fillText(`Week of ${wsStr}`, 70, 190);
+
+                ctx.fillStyle = accent;
+                ctx.font = '700 380px "Space Grotesk", sans-serif';
+                ctx.fillText(grade, 70, 560);
+                ctx.fillStyle = '#eceff1';
+                ctx.font = '500 44px "Space Grotesk", sans-serif';
+                ctx.fillText(`${days} of ${goalDays} days`, 70, 640);
+
+                const rows = [
+                    [`${distShown} ${unitPref}`, 'distance'],
+                    [`${reps.toLocaleString()}`, 'reps'],
+                    [`${steps.toLocaleString()}`, 'steps'],
+                    [`${prs}`, prs === 1 ? 'new PR' : 'new PRs'],
+                    [`${info.streak}`, 'day streak']
+                ];
+                let y = 760;
+                rows.forEach(([v, l]) => {
+                    ctx.fillStyle = '#eceff1';
+                    ctx.font = '600 56px "Space Grotesk", sans-serif';
+                    ctx.fillText(v, 70, y);
+                    ctx.fillStyle = '#7d838c';
+                    ctx.font = '400 34px "Space Grotesk", sans-serif';
+                    ctx.fillText(l, 400, y);
+                    y += 92;
+                });
+
+                ctx.fillStyle = accent;
+                ctx.font = '500 40px "Space Grotesk", sans-serif';
+                ctx.fillText(verdicts[grade], 70, 1270);
+
+                canvas.toBlob(async (blob) => {
+                    if (!blob) { this.showToast('Could not render report card', { duration: 3000 }); return; }
+                    const file = new File([blob], `juststep-week-${wsStr}.png`, { type: 'image/png' });
+                    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                        try { await navigator.share({ files: [file], title: 'JustStep weekly report' }); return; } catch (e) { /* fall through */ }
+                    }
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url; a.download = file.name; a.click();
+                    setTimeout(() => URL.revokeObjectURL(url), 5000);
+                    this.showToast('Report card downloaded', { duration: 3000 });
+                }, 'image/png');
             },
 
             // Check for milestones
@@ -6192,7 +6972,7 @@ Perfect for unique exercises not in our list!
                     const displayedMonthName = monthNames[this.data.currentView.calendarMonth];
                     
                     let html = `
-                        <div style="display: grid; grid-template-columns: 1.3fr 1fr 1fr 1fr; gap: 8px; align-items: center; padding: 8px 0; border-bottom: 1px solid #3d3d3d; font-size: 11px; font-weight: 700; color: #9ca3af;">
+                        <div style="display: grid; grid-template-columns: 1.3fr 1fr 1fr 1fr; gap: 8px; align-items: center; padding: 8px 0; border-bottom: 1px solid #1e2127; font-size: 11px; font-weight: 700; color: #9ca3af;">
                             <div style="text-align: left; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Activity</div>
                             <div style="text-align: right; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Current Week</div>
                             <div style="text-align: right; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${displayedMonthName}</div>
@@ -6202,7 +6982,7 @@ Perfect for unique exercises not in our list!
                     
                     // Regular activity data rows
                     html += summaryItems.map(item => `
-                        <div style="display: grid; grid-template-columns: 1.3fr 1fr 1fr 1fr; gap: 8px; align-items: center; padding: 8px 0; border-bottom: 1px solid #2d2d2d; font-size: 12px;">
+                        <div style="display: grid; grid-template-columns: 1.3fr 1fr 1fr 1fr; gap: 8px; align-items: center; padding: 8px 0; border-bottom: 1px solid #101216; font-size: 12px;">
                             <div style="color: #9ca3af; text-align: left; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${item.name}</div>
                             <div style="text-align: right; color: var(--primary); font-weight: 700; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${item.week}</div>
                             <div style="text-align: right; color: var(--primary-light); font-weight: 700; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${item.month}</div>
@@ -6213,11 +6993,11 @@ Perfect for unique exercises not in our list!
                     // Add custom categories after divider if they exist
                     if (customItems.length > 0) {
                         // Add divider line
-                        html += `<div style="margin: 12px 0; border-top: 1px solid #3d3d3d;"></div>`;
+                        html += `<div style="margin: 12px 0; border-top: 1px solid #1e2127;"></div>`;
                         
                         // Custom activity data rows with gold text for activity name
                         html += customItems.map(item => `
-                            <div style="display: grid; grid-template-columns: 1.3fr 1fr 1fr 1fr; gap: 8px; align-items: center; padding: 8px 0; border-bottom: 1px solid #2d2d2d; font-size: 12px;">
+                            <div style="display: grid; grid-template-columns: 1.3fr 1fr 1fr 1fr; gap: 8px; align-items: center; padding: 8px 0; border-bottom: 1px solid #101216; font-size: 12px;">
                                 <div style="color: #d4af37; text-align: left; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${item.name}</div>
                                 <div style="text-align: right; color: var(--primary); font-weight: 700; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${item.week}</div>
                                 <div style="text-align: right; color: var(--primary-light); font-weight: 700; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${item.month}</div>
@@ -6280,17 +7060,17 @@ Perfect for unique exercises not in our list!
                 });
                 
                 const html = `
-                    <div style="display: grid; grid-template-columns: 1.3fr 1fr 1fr 1fr; gap: 8px; align-items: center; padding: 8px 0; border-bottom: 1px solid #3d3d3d; font-size: 11px; font-weight: 700; color: #9ca3af;">
+                    <div style="display: grid; grid-template-columns: 1.3fr 1fr 1fr 1fr; gap: 8px; align-items: center; padding: 8px 0; border-bottom: 1px solid #1e2127; font-size: 11px; font-weight: 700; color: #9ca3af;">
                         <div style="text-align: left; min-width: 0;"></div>
                         <div style="text-align: right; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Current Week</div>
                         <div style="text-align: right; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${displayedMonthName}</div>
                         <div style="text-align: right; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">All Time</div>
                     </div>
                     ${habitStats.map(habit => `
-                        <div style="display: grid; grid-template-columns: 1.3fr 1fr 1fr 1fr; gap: 8px; align-items: center; padding: 8px 0; border-bottom: 1px solid #2d2d2d; font-size: 12px;">
+                        <div style="display: grid; grid-template-columns: 1.3fr 1fr 1fr 1fr; gap: 8px; align-items: center; padding: 8px 0; border-bottom: 1px solid #101216; font-size: 12px;">
                             <div style="display: flex; align-items: center; gap: 6px; min-width: 0; overflow: hidden;">
                                 <div style="width: 10px; height: 10px; border-radius: 2px; background: ${habit.color}; flex-shrink: 0;"></div>
-                                <span style="color: #e8e8e8; font-weight: 600; font-size: 11px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${habit.name}</span>
+                                <span style="color: #eceff1; font-weight: 600; font-size: 11px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${habit.name}</span>
                             </div>
                             <div style="text-align: right; color: var(--primary); font-weight: 700; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${habit.weekDays}/7</div>
                             <div style="text-align: right; color: var(--primary-light); font-weight: 700; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${habit.monthDays}/${endOfMonth.getDate()}</div>
@@ -6648,53 +7428,29 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
 
             // Show screen
             showScreen(screenName) {
-                // Update screens
-                document.querySelectorAll('.screen').forEach(screen => {
-                    screen.classList.remove('active');
-                });
-                document.getElementById(`${screenName}-screen`).classList.add('active');
-                
-                // Update tabs - find the correct tab by screen name
-                document.querySelectorAll('.nav-tab').forEach(tab => {
-                    tab.classList.remove('active');
-                });
-                
-                // Map screen names to tab text for matching
-                const screenToTabText = {
-                    'log': 'Tracker',
-                    'dashboard': 'Dashboard',
-                    'calendar': 'Calendar',
-                    'goals': 'Goals',
-                    'pals': 'Pals',
-                    'leaderboard': 'Leaderboard'
-                };
-                
-                // Find and activate the correct tab
-                const tabText = screenToTabText[screenName];
-                if (tabText) {
-                    const tabs = document.querySelectorAll('.nav-tab');
-                    tabs.forEach(tab => {
-                        if (tab.textContent.trim() === tabText) {
-                            tab.classList.add('active');
-                        }
-                    });
-                }
-                
-                this.data.currentView.screen = screenName;
+                // v3.0: migrate legacy screen names to the new tab set
+                const migrate = { dashboard: 'progress', calendar: 'progress', pals: 'crew', leaderboard: 'crew' };
+                screenName = migrate[screenName] || screenName;
 
-                // Refresh data for specific screens
-                if (screenName === 'dashboard') {
-                    this.updateDashboard();
-                } else if (screenName === 'calendar') {
-                    this.renderCalendar();
-                } else if (screenName === 'goals') {
-                    this.renderHabits(); // Render habits when viewing Goals
-                } else if (screenName === 'leaderboard') {
-                    // Best-effort sync before loading leaderboard (do not block UI)
-                    this.syncMyStatsToFirebase()
-                        .then(() => this.renderLeaderboard())
-                        .catch(() => this.renderLeaderboard());
+                document.querySelectorAll('.screen').forEach(screen => screen.classList.remove('active'));
+                const target = document.getElementById(`${screenName}-screen`);
+                if (target) target.classList.add('active');
+
+                document.querySelectorAll('.bottom-nav-item').forEach(item => {
+                    item.classList.toggle('active', item.getAttribute('data-screen') === screenName);
+                });
+
+                if (screenName === 'today') this.renderToday();
+                if (screenName === 'progress') { this.renderHeatmap(); this.updateDashboard(); this.renderCalendar(); }
+                if (screenName === 'crew') { this.refreshPalDocs(); this.renderChallenges(); }
+                if (screenName === 'log') { this.renderTodaysLog(); this.renderQuickChips(); }
+
+                if (this.data.currentView) {
+                    this.data.currentView.screen = screenName;
+                    this.saveData();
                 }
+
+                window.scrollTo(0, 0);
             },
 
             // Get display name for any activity type (handles old, new, and custom exercises)
@@ -6939,12 +7695,12 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                     habitsHTML += this.data.habits.map(habit => {
                         const isCompleted = completedHabits.some(h => h.id === habit.id);
                         return `
-                            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px; padding: 10px; background: #2d2d2d; border-radius: 8px;">
+                            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px; padding: 10px; background: #101216; border-radius: 12px;">
                                 <input type="checkbox" 
                                        ${isCompleted ? 'checked' : ''} 
                                        onchange="app.toggleHabitCompletion(${habit.id}, '${date}')"
                                        style="cursor: pointer; width: 18px; height: 18px;">
-                                <span style="color: #e8e8e8; font-size: 14px; flex: 1;">${habit.name || 'Unnamed habit'}</span>
+                                <span style="color: #eceff1; font-size: 14px; flex: 1;">${habit.name || 'Unnamed habit'}</span>
                             </div>
                         `;
                     }).join('');
@@ -8311,7 +9067,7 @@ createModalOverlay(titleText) {
 
     const modal = document.createElement('div');
     modal.style.width = 'min(420px, 92vw)';
-    modal.style.background = '#1f1f1f';
+    modal.style.background = '#0d0f12';
     modal.style.border = '1px solid rgba(255,255,255,0.08)';
     modal.style.borderRadius = '16px';
     modal.style.boxShadow = '0 20px 60px rgba(0,0,0,0.55)';
@@ -8751,7 +9507,10 @@ async createPalCode() {
                         joinedLeaderboard: this.data.pals.joinedLeaderboard || false,
                         joinWeightLeaderboard: this.data.pals.joinWeightLeaderboard || false,
                         shareWeightWithPals: this.data.pals.shareWeightWithPals || false,
-                        lastActivityDate: today,
+                        lastActivityDate: this.getLastActivityDate() || today,
+                        lastUpdated: new Date().toISOString(),
+                        accentColor: this.getAccentHex(),
+                        recentActivities: (this.data.pals.joinedLeaderboard ? this.getRecentActivitiesForFeed() : []),
                         stats: {
                             thisWeekDistance: stats.thisWeekDistance,
                             thisWeekStrengthDays: stats.thisWeekStrengthDays,
@@ -8815,6 +9574,7 @@ async createPalCode() {
                         .set(payload, { merge: true });
 
                     console.log('✅ Stats synced to Firebase');
+                    this.updateChallengeProgress();
                 } catch (error) {
                     console.error('Error syncing stats:', error);
                 }
@@ -9120,13 +9880,13 @@ async createPalCode() {
                     globalBtn.classList.add('active');
                     globalBtn.style.background = 'var(--primary-dark)';
                     globalBtn.style.color = 'white';
-                    friendsBtn.style.background = '#2d2d2d';
+                    friendsBtn.style.background = '#101216';
                     friendsBtn.style.color = '#9ca3af';
                 } else {
                     friendsBtn.classList.add('active');
                     friendsBtn.style.background = 'var(--primary-dark)';
                     friendsBtn.style.color = 'white';
-                    globalBtn.style.background = '#2d2d2d';
+                    globalBtn.style.background = '#101216';
                     globalBtn.style.color = '#9ca3af';
                 }
                 
@@ -9442,11 +10202,11 @@ async createPalCode() {
                             <div style="display: flex; justify-content: space-between; align-items: center;">
                                 <div style="display: flex; align-items: center; gap: 8px; flex: 1;">
                                     <div style="width: 14px; height: 14px; border-radius: 3px; background: ${habitColor}; flex-shrink: 0;"></div>
-                                    <div style="font-size: 13px; color: #e8e8e8; font-weight: 500;">${habit.name || 'Unnamed habit'}</div>
+                                    <div style="font-size: 13px; color: #eceff1; font-weight: 500;">${habit.name || 'Unnamed habit'}</div>
                                 </div>
                                 <div style="display: flex; gap: 4px;">
                                     <button onclick="app.editHabit(${habit.id})" 
-                                            style="padding: 4px 8px; background: #3d3d3d; color: #e8e8e8; border: none; border-radius: 5px; font-size: 11px; cursor: pointer; font-weight: 600;">
+                                            style="padding: 4px 8px; background: #1e2127; color: #eceff1; border: none; border-radius: 5px; font-size: 11px; cursor: pointer; font-weight: 600;">
                                         Edit
                                     </button>
                                     <button onclick="app.removeHabit(${habit.id})" 
@@ -9459,7 +10219,7 @@ async createPalCode() {
                         <div class="habit-edit" id="habit-edit-${habit.id}" style="display: none;">
                             <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
                                 <input type="text" id="habit-name-${habit.id}" value="${habit.name || ''}" 
-                                       style="background: #1a1a1a; border: 1px solid #3d3d3d; color: #e8e8e8; padding: 6px 10px; border-radius: 6px; flex: 1; font-size: 14px;" 
+                                       style="background: #08090b; border: 1px solid #1e2127; color: #eceff1; padding: 6px 10px; border-radius: 6px; flex: 1; font-size: 14px;" 
                                        placeholder="Habit name...">
                                 <button onclick="app.removeHabit(${habit.id})" 
                                         style="background: none; border: none; color: #ef4444; cursor: pointer; font-size: 20px; width: 28px; height: 28px; flex-shrink: 0;">×</button>
@@ -9469,12 +10229,12 @@ async createPalCode() {
                                 <input type="hidden" id="habit-color-${habit.id}" value="${habitColor}">
                                 <div id="habit-color-display-${habit.id}" 
                                      onclick="app.openHabitColorPicker(${habit.id})"
-                                     style="width: 40px; height: 28px; background: ${habitColor}; border: 1px solid #3d3d3d; border-radius: 6px; cursor: pointer;">
+                                     style="width: 40px; height: 28px; background: ${habitColor}; border: 1px solid #1e2127; border-radius: 6px; cursor: pointer;">
                                 </div>
                             </div>
                             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
                                 <button onclick="app.cancelEditHabit(${habit.id})" 
-                                        style="padding: 8px 12px; background: #3d3d3d; color: #e8e8e8; border: none; border-radius: 6px; font-size: 12px; cursor: pointer; font-weight: 600;">
+                                        style="padding: 8px 12px; background: #1e2127; color: #eceff1; border: none; border-radius: 6px; font-size: 12px; cursor: pointer; font-weight: 600;">
                                     Cancel
                                 </button>
                                 <button onclick="app.saveHabit(${habit.id})" 
@@ -9648,14 +10408,14 @@ async createPalCode() {
                             <div id="category-display-${category.id}" style="display: flex; flex-direction: column; gap: 4px;">
                                 <div style="display: flex; justify-content: space-between; align-items: center;">
                                     <div style="flex: 1;">
-                                        <div style="font-weight: 600; color: #e8e8e8; font-size: 13px;">${this.esc(category.name)}</div>
+                                        <div style="font-weight: 600; color: #eceff1; font-size: 13px;">${this.esc(category.name)}</div>
                                         <div style="font-size: 11px; color: #9ca3af;">${exerciseCount}/5 exercises</div>
                                     </div>
                                     <div style="display: flex; gap: 4px;">
-                                        <button onclick="app.renameCategoryName(${category.id})" style="padding: 4px 8px; background: #3d3d3d; color: #e8e8e8; border: none; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: 600;">
+                                        <button onclick="app.renameCategoryName(${category.id})" style="padding: 4px 8px; background: #1e2127; color: #eceff1; border: none; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: 600;">
                                             Edit
                                         </button>
-                                        <button onclick="app.manageExercises(${category.id})" style="padding: 4px 8px; background: #3d3d3d; color: #e8e8e8; border: none; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: 600;">
+                                        <button onclick="app.manageExercises(${category.id})" style="padding: 4px 8px; background: #1e2127; color: #eceff1; border: none; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: 600;">
                                             Manage
                                         </button>
                                         <button onclick="app.removeCustomCategory(${category.id})" style="padding: 4px 8px; background: #7f1d1d; color: #fca5a5; border: none; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: 600;">
@@ -9734,13 +10494,13 @@ async createPalCode() {
                     category.exercises.forEach(ex => {
                         const trackingLabel = ex.trackingType === 'reps' ? 'Reps' : ex.trackingType === 'distance' ? 'Distance' : 'Log Day';
                         html += `
-                            <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px; background: #2d2d2d; border-radius: 6px; margin-bottom: 6px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px; background: #101216; border-radius: 6px; margin-bottom: 6px;">
                                 <div>
-                                    <div style="font-weight: 600; color: #e8e8e8; font-size: 13px;">${this.esc(ex.name)}</div>
+                                    <div style="font-weight: 600; color: #eceff1; font-size: 13px;">${this.esc(ex.name)}</div>
                                     <div style="font-size: 11px; color: #9ca3af;">(${trackingLabel})</div>
                                 </div>
                                 <div style="display: flex; gap: 4px;">
-                                    <button onclick="app.renameExercise(${categoryId}, ${ex.id})" style="padding: 4px 8px; background: #3d3d3d; color: #e8e8e8; border: none; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: 600;">
+                                    <button onclick="app.renameExercise(${categoryId}, ${ex.id})" style="padding: 4px 8px; background: #1e2127; color: #eceff1; border: none; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: 600;">
                                         Edit
                                     </button>
                                     <button onclick="app.removeExercise(${categoryId}, ${ex.id})" style="padding: 4px 8px; background: #7f1d1d; color: #fca5a5; border: none; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: 600;">
@@ -9759,14 +10519,14 @@ async createPalCode() {
                 // Add exercise button
                 if (!category.exercises || category.exercises.length < 5) {
                     html += `
-                        <button onclick="app.addExerciseToCategory(${categoryId})" style="width: 100%; padding: 10px; background: var(--primary-dark); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; margin-bottom: 8px;">
+                        <button onclick="app.addExerciseToCategory(${categoryId})" style="width: 100%; padding: 10px; background: var(--primary-dark); color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: 600; margin-bottom: 8px;">
                             + Add Exercise
                         </button>
                     `;
                 }
                 
                 html += `
-                    <button onclick="app.closeManageExercises()" style="width: 100%; padding: 10px; background: #3d3d3d; color: #e8e8e8; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">
+                    <button onclick="app.closeManageExercises()" style="width: 100%; padding: 10px; background: #1e2127; color: #eceff1; border: none; border-radius: 12px; cursor: pointer; font-weight: 600;">
                         Done
                     </button>
                     </div>
@@ -9827,19 +10587,19 @@ async createPalCode() {
                         </p>
                         <div style="display: flex; flex-direction: column; gap: 8px;">
                             <button onclick="app.confirmTrackingType(${categoryId}, '${exerciseName}', 'reps')" 
-                                    style="width: 100%; padding: 12px; background: var(--primary-dark); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px;">
+                                    style="width: 100%; padding: 12px; background: var(--primary-dark); color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: 600; font-size: 14px;">
                                 Reps
                             </button>
                             <button onclick="app.confirmTrackingType(${categoryId}, '${exerciseName}', 'distance')" 
-                                    style="width: 100%; padding: 12px; background: var(--primary-dark); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px;">
+                                    style="width: 100%; padding: 12px; background: var(--primary-dark); color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: 600; font-size: 14px;">
                                 Distance
                             </button>
                             <button onclick="app.confirmTrackingType(${categoryId}, '${exerciseName}', 'logday')" 
-                                    style="width: 100%; padding: 12px; background: var(--primary-dark); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px;">
+                                    style="width: 100%; padding: 12px; background: var(--primary-dark); color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: 600; font-size: 14px;">
                                 Log Day
                             </button>
                             <button onclick="app.closeTrackingTypeModal()" 
-                                    style="width: 100%; padding: 10px; background: #3d3d3d; color: #e8e8e8; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">
+                                    style="width: 100%; padding: 10px; background: #1e2127; color: #eceff1; border: none; border-radius: 12px; cursor: pointer; font-weight: 600;">
                                 Cancel
                             </button>
                         </div>
@@ -9968,30 +10728,30 @@ async createPalCode() {
 
             // Theme Functions
             loadTheme() {
-                const savedTheme = localStorage.getItem('appTheme') || 'blue';
-                this.applyTheme(savedTheme);
+                let saved = localStorage.getItem('appTheme') || 'volt';
+                // v3.0 migration: map legacy themes to the nearest new swatch
+                const legacyMap = { green: 'volt', pink: 'magenta', purple: 'magenta', red: 'orange', blue: 'blue' };
+                if (!this._accentHexByTheme[saved]) {
+                    saved = legacyMap[saved] || 'volt';
+                    localStorage.setItem('appTheme', saved);
+                }
+                this.applyTheme(saved);
             },
 
             setTheme(theme) {
+                if (!this._accentHexByTheme[theme]) theme = 'volt';
                 localStorage.setItem('appTheme', theme);
                 this.applyTheme(theme);
+                this.scheduleSync(); // pals see your new jersey color
             },
 
             applyTheme(theme) {
-                // Remove all theme classes
                 document.documentElement.removeAttribute('data-theme');
-                
-                // Apply new theme (blue is default, no attribute needed)
-                if (theme !== 'blue') {
+                if (theme !== 'volt') {
                     document.documentElement.setAttribute('data-theme', theme);
                 }
-
-                // Update active state in theme selector
-                document.querySelectorAll('.theme-option').forEach(option => {
-                    option.classList.remove('active');
-                    if (option.getAttribute('data-theme') === theme) {
-                        option.classList.add('active');
-                    }
+                document.querySelectorAll('.swatch').forEach(sw => {
+                    sw.classList.toggle('active', sw.getAttribute('data-theme') === theme);
                 });
             },
 
@@ -10372,10 +11132,10 @@ async createPalCode() {
 <div id="palcode-prompt-overlay" style="display:none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 9999; align-items: center; justify-content: center;">
   <div style="width: min(360px, 90vw); background: #111; border: 1px solid rgba(255,255,255,0.12); border-radius: 14px; padding: 16px; box-shadow: 0 16px 50px rgba(0,0,0,0.5);">
     <div id="palcode-prompt-message" style="font-size: 14px; font-weight: 700; color: rgba(255,255,255,0.92); margin-bottom: 10px;">Create your PAL Code (4 digits)</div>
-    <input id="palcode-prompt-input" type="tel" inputmode="numeric" pattern="\\d{4}" maxlength="4" placeholder="0000" style="width: 100%; padding: 10px 12px; background: #1a1a1a; border: 1px solid #3d3d3d; border-radius: 10px; color: #e8e8e8; font-size: 16px; box-sizing: border-box;" />
+    <input id="palcode-prompt-input" type="tel" inputmode="numeric" pattern="\\d{4}" maxlength="4" placeholder="0000" style="width: 100%; padding: 10px 12px; background: #08090b; border: 1px solid #1e2127; border-radius: 14px; color: #eceff1; font-size: 16px; box-sizing: border-box;" />
     <div style="display:flex; gap: 10px; margin-top: 12px;">
-      <button id="palcode-prompt-cancel" style="flex:1; height: 38px; background: #2a2a2a; color: rgba(255,255,255,0.88); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; font-weight: 700; cursor: pointer;">Cancel</button>
-      <button id="palcode-prompt-ok" style="flex:1; height: 38px; background: var(--primary); color: #fff; border: none; border-radius: 10px; font-weight: 800; cursor: pointer;">OK</button>
+      <button id="palcode-prompt-cancel" style="flex:1; height: 38px; background: #2a2a2a; color: rgba(255,255,255,0.88); border: 1px solid rgba(255,255,255,0.12); border-radius: 14px; font-weight: 700; cursor: pointer;">Cancel</button>
+      <button id="palcode-prompt-ok" style="flex:1; height: 38px; background: var(--primary); color: #fff; border: none; border-radius: 14px; font-weight: 800; cursor: pointer;">OK</button>
     </div>
   </div>
 </div>
