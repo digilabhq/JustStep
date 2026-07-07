@@ -337,6 +337,173 @@
             color-scheme: dark;
         }
 
+        /* Quick chips, value entry, today's log, toasts (v2.2.2) */
+        .section-label-mini {
+            font-size: 11px;
+            font-weight: 600;
+            color: #9ca3af;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin: 14px 0 6px 2px;
+        }
+
+        .quick-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .quick-chip {
+            background: #2d2d2d;
+            border: 1px solid #3d3d3d;
+            color: #e8e8e8;
+            border-radius: 999px;
+            padding: 8px 14px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: border-color 0.2s, background 0.2s;
+        }
+
+        .quick-chip:active {
+            background: var(--primary-dark);
+            border-color: var(--primary);
+        }
+
+        .value-entry-card {
+            background: #2d2d2d;
+            border: 1px solid #3d3d3d;
+            border-left: 3px solid var(--primary);
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 14px;
+        }
+
+        .value-entry-name {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--primary-light);
+            margin-bottom: 8px;
+        }
+
+        .value-entry-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .value-entry-cancel {
+            flex: 1;
+            padding: 10px;
+            background: none;
+            border: 1px solid #3d3d3d;
+            color: #9ca3af;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .value-entry-save {
+            flex: 2;
+            padding: 10px;
+            background: var(--primary-dark);
+            border: none;
+            color: white;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .todays-log-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #2d2d2d;
+            border: 1px solid #3d3d3d;
+            border-radius: 8px;
+            padding: 10px 12px;
+            margin-bottom: 6px;
+        }
+
+        .todays-log-main {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            flex: 1;
+            cursor: pointer;
+        }
+
+        .todays-log-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: #e8e8e8;
+        }
+
+        .todays-log-value {
+            font-size: 12px;
+            color: var(--primary-light);
+        }
+
+        .todays-log-delete {
+            background: none;
+            border: none;
+            color: #6b7280;
+            font-size: 18px;
+            width: 30px;
+            height: 30px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .todays-log-delete:active {
+            background: rgba(239, 68, 68, 0.15);
+            color: #ef4444;
+        }
+
+        .js-toast {
+            position: fixed;
+            left: 50%;
+            bottom: 24px;
+            transform: translateX(-50%) translateY(12px);
+            background: #1a1a1a;
+            border: 1px solid #3d3d3d;
+            border-left: 3px solid var(--primary);
+            color: #e8e8e8;
+            font-size: 13px;
+            font-weight: 500;
+            padding: 12px 16px;
+            border-radius: 10px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 3000;
+            opacity: 0;
+            transition: opacity 0.25s, transform 0.25s;
+            max-width: calc(100vw - 32px);
+        }
+
+        .js-toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .js-toast-action {
+            background: none;
+            border: none;
+            color: var(--primary-light);
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            padding: 4px 6px;
+            white-space: nowrap;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .js-toast { transition: opacity 0.25s; transform: translateX(-50%); }
+            .js-toast.show { transform: translateX(-50%); }
+        }
+
         /* Accordion Styles */
         .activity-accordion {
             border: 1px solid #3d3d3d;
@@ -2934,17 +3101,30 @@
 <p class="subtitle">Record today's workout</p>
 <div class="date-selector">
 <span>📅</span>
-<input id="log-date" type="date" value=""/>
+<input id="log-date" type="date" value="" onchange="app.onLogDateChange()"/>
 </div>
-<div class="activities-container" id="activities-container">
-<!-- Activity cards will be added here -->
+<div id="quick-chips-section" style="display: none;">
+<div class="section-label-mini">Quick log</div>
+<div class="quick-chips" id="quick-chips"></div>
 </div>
-<div class="combined-buttons-row">
-<button class="add-activity-button" onclick="app.addActivityRow()">
-<span style="font-size: 18px; margin-right: 6px;">+</span>
-                Add
-            </button>
-<button class="log-button" onclick="app.saveLog()">Save Activity</button>
+<div id="activity-picker-wrap">
+<div class="section-label-mini">Browse activities</div>
+<div class="activity-accordion" id="accordion-picker"></div>
+</div>
+<div class="value-entry-card" id="value-entry" style="display: none;">
+<div class="value-entry-name" id="value-entry-name"></div>
+<div class="activity-value-input">
+<input id="value-entry-input" placeholder="0" type="number"/>
+<span class="unit" id="value-entry-unit"></span>
+</div>
+<div class="value-entry-actions">
+<button class="value-entry-cancel" onclick="app.cancelValueEntry()">Cancel</button>
+<button class="value-entry-save" onclick="app.saveValueEntry()">Save</button>
+</div>
+</div>
+<div id="todays-log-section" style="display: none;">
+<div class="section-label-mini" id="todays-log-label">Logged today</div>
+<div id="todays-log-list"></div>
 </div>
 <!-- Weight Input Section -->
 <div class="weight-input-section">
@@ -2991,11 +3171,13 @@ Track Activity
 <button class="weight-info-close" onclick="app.closeInfoModal('track-info-modal')">×</button>
 </div>
 <div class="weight-info-list" style="padding: 16px; line-height: 1.8;">
-<strong style="color: #60a5fa;">Two ways to log workouts:</strong><br><br>
-• <strong>QUICK LOG:</strong> Log "Arm Day" without tracking individual exercises<br><br>
-• <strong>DETAILED LOG:</strong> Track specific exercises with reps (e.g., Bicep Curls: 20 reps)<br><br>
+<strong style="color: #60a5fa;">Ways to log activities:</strong><br><br>
+• <strong>QUICK LOG:</strong> Tap a chip for activities you log often — they appear automatically<br><br>
+• <strong>BROWSE:</strong> Pick anything from the category list below the chips<br><br>
+• <strong>DETAILED LOG:</strong> Inside a workout day, track a specific exercise with reps (e.g., Bicep Curls: 20 reps)<br><br>
+Each activity saves the moment you confirm it — tap Undo on the popup if you make a mistake. Tap any logged entry to edit its value, or × to remove it.<br><br>
 <div class="weight-info-highlight">
-Choose what works for your tracking style!
+Fewer taps, same tracking!
 </div>
 </div>
 </div>
@@ -3553,7 +3735,7 @@ Perfect for unique exercises not in our list!
         </a>
 <button class="welcome-button" onclick="app.closeWelcome()">Let's Go</button>
 <div style="text-align: center; color: #6b7280; font-size: 11px; margin-top: 16px;">
-            v2.2.1
+            v2.2.2
         </div>
 </div>
 <!-- Customize Dashboard Modal -->
@@ -3832,7 +4014,7 @@ Perfect for unique exercises not in our list!
 </div>
 <script>
         // App Version
-        const APP_VERSION = '2.2.1';
+        const APP_VERSION = '2.2.2';
         
         // Main App Object
         const app = {
@@ -3868,7 +4050,6 @@ Perfect for unique exercises not in our list!
                     friends: [] // Array of {palCode, displayName, stats, lastSync}
                 }
             },
-            activityCounter: 0,
             habitCounter: 0,
             customCategoryCounter: 0,
             leaderboardMode: 'global', // 'global' or 'friends'
@@ -3911,7 +4092,20 @@ Perfect for unique exercises not in our list!
                 this.checkWelcome();
                 this.setupLogDate();
                 this.updateWeightInputDisplay();
-                this.addActivityRow();
+                this.buildActivityPicker();
+                this.renderQuickChips();
+                this.renderTodaysLog();
+
+                // Enter / Go on the keypad saves the pending activity
+                const valueInput = document.getElementById('value-entry-input');
+                if (valueInput) {
+                    valueInput.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter') {
+                            e.preventDefault();
+                            this.saveValueEntry();
+                        }
+                    });
+                }
                 this.updateDashboard();
                 this.renderCalendar();
                 this.updateGoalsUI();
@@ -3919,23 +4113,8 @@ Perfect for unique exercises not in our list!
                 this.initCustomCategories(); // Initialize custom categories
                 this.updatePalsUI();
                 this.loadTheme();
-                this.registerServiceWorker();
-            },
-
-            // Register service worker for auto-updates
-            registerServiceWorker() {
-                if ('serviceWorker' in navigator) {
-                    navigator.serviceWorker.register('./service-worker.js')
-                        .then(registration => {
-                            console.log('Service Worker registered');
-                            
-                            // Check for updates every time app is opened
-                            registration.update();
-                        })
-                        .catch(error => {
-                            console.log('Service Worker registration failed:', error);
-                        });
-                }
+                // Service worker registration lives in the dedicated script block
+                // at the end of the page (single registration, update toast).
             },
 
             // Check if welcome modal should show
@@ -3977,7 +4156,7 @@ Perfect for unique exercises not in our list!
                 if (now.getDay() !== 0) return;
 
                 // Today's Sunday date (YYYY-MM-DD)
-                const sundayDate = now.toISOString().split('T')[0];
+                const sundayDate = this.localDateStr(now);
 
                 // Check if we already showed the report for this Sunday
                 const lastShownSunday = localStorage.getItem('lastWeeklyReportSunday');
@@ -3994,7 +4173,17 @@ Perfect for unique exercises not in our list!
             loadData() {
                 const saved = localStorage.getItem('justStepData');
                 if (saved) {
-                    const parsed = JSON.parse(saved);
+                    let parsed;
+                    try {
+                        parsed = JSON.parse(saved);
+                    } catch (e) {
+                        // Corrupted data must not brick the app: back it up, start fresh
+                        console.error('Saved data is corrupted, backing up and resetting:', e);
+                        try { localStorage.setItem('justStepData_corrupt_backup', saved); } catch (_) { /* ignore */ }
+                        try { localStorage.removeItem('justStepData'); } catch (_) { /* ignore */ }
+                        setTimeout(() => this.showToast('Saved data was unreadable — a backup was kept and the app started fresh.', { duration: 7000 }), 600);
+                        return;
+                    }
                     this.data = { ...this.data, ...parsed };
                     // Ensure statsView exists (for users upgrading from old version)
                     if (!this.data.currentView.statsView) {
@@ -4062,7 +4251,12 @@ Perfect for unique exercises not in our list!
 
             // Save data to localStorage
             saveData() {
-                localStorage.setItem('justStepData', JSON.stringify(this.data));
+                try {
+                    localStorage.setItem('justStepData', JSON.stringify(this.data));
+                } catch (e) {
+                    console.error('Failed to save data:', e);
+                    this.showToast('Could not save — device storage may be full. Export your data from Settings as a backup.', { duration: 7000 });
+                }
             },
 
             // Setup log date input (FIXED: timezone-safe)
@@ -4075,316 +4269,335 @@ Perfect for unique exercises not in our list!
                 dateInput.value = `${year}-${month}-${day}`;
             },
 
-            // Add activity row
-            addActivityRow() {
-                this.activityCounter++;
-                const container = document.getElementById('activities-container');
-                const isFirst = this.activityCounter === 1;
-                
-                const activityCard = document.createElement('div');
-                activityCard.className = 'activity-card';
-                activityCard.id = `activity-${this.activityCounter}`;
-                
-                activityCard.innerHTML = `
-                    <div class="activity-card-header">
-                        <span class="activity-card-title">Activity ${this.activityCounter}</span>
-                        <button class="remove-activity" onclick="app.removeActivity(${this.activityCounter})" ${isFirst ? 'style="visibility: hidden;"' : ''}>×</button>
-                    </div>
-                    
-                    <div class="activity-accordion" id="accordion-${this.activityCounter}">
-                        <!-- Cardio Category -->
-                        <div class="accordion-category">
-                            <div class="accordion-header" onclick="app.toggleAccordion(${this.activityCounter}, 'cardio')">
-                                <div>
-                                    <span class="accordion-title">Cardio</span>
-                                    <span class="accordion-count">(6)</span>
-                                </div>
-                                <span class="accordion-arrow">▼</span>
+            // ============================================
+            // Activity logging engine (v2.2.2, immediate-save)
+            // ============================================
+
+            pendingActivity: null,
+            _syncTimer: null,
+            _toastEl: null,
+            _toastTimer: null,
+            _hasChips: false,
+
+            // Escape a string for safe interpolation into HTML
+            esc(str) {
+                return String(str == null ? '' : str)
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#39;');
+            },
+
+            // Timezone-safe local YYYY-MM-DD (replaces toISOString().split('T')[0])
+            localDateStr(d) {
+                const dt = d || new Date();
+                const y = dt.getFullYear();
+                const m = String(dt.getMonth() + 1).padStart(2, '0');
+                const day = String(dt.getDate()).padStart(2, '0');
+                return `${y}-${m}-${day}`;
+            },
+
+            getLogDate() {
+                return document.getElementById('log-date').value;
+            },
+
+            onLogDateChange() {
+                this.cancelValueEntry(true);
+                this.renderTodaysLog();
+            },
+
+            // ---------- Toast system (replaces alert() in logging flows) ----------
+            showToast(message, opts = {}) {
+                if (this._toastTimer) clearTimeout(this._toastTimer);
+                // Remove ALL toast elements, including any still mid-fade-out,
+                // so a stale Undo button can never be clicked by mistake
+                document.querySelectorAll('.js-toast').forEach(el => el.remove());
+                this._toastEl = null;
+
+                const toast = document.createElement('div');
+                toast.className = 'js-toast';
+                const msg = document.createElement('span');
+                msg.textContent = message;
+                toast.appendChild(msg);
+
+                if (opts.actionLabel && typeof opts.onAction === 'function') {
+                    const btn = document.createElement('button');
+                    btn.className = 'js-toast-action';
+                    btn.textContent = opts.actionLabel;
+                    btn.onclick = () => {
+                        opts.onAction();
+                        this.hideToast();
+                    };
+                    toast.appendChild(btn);
+                }
+
+                document.body.appendChild(toast);
+                this._toastEl = toast;
+                requestAnimationFrame(() => toast.classList.add('show'));
+                this._toastTimer = setTimeout(() => this.hideToast(), opts.duration || 4000);
+            },
+
+            hideToast() {
+                if (this._toastTimer) clearTimeout(this._toastTimer);
+                const el = this._toastEl;
+                if (!el) return;
+                el.classList.remove('show');
+                setTimeout(() => el.remove(), 300);
+                this._toastEl = null;
+            },
+
+            // Debounced Firebase stats sync (immediate saves would otherwise spam writes)
+            scheduleSync() {
+                if (this._syncTimer) clearTimeout(this._syncTimer);
+                this._syncTimer = setTimeout(() => this.syncMyStatsToFirebase(), 2500);
+            },
+
+            // ---------- Activity metadata ----------
+            _cardioTypes: ['walk', 'run', 'dog', 'hiking', 'biking'],
+            _dayTypes: ['arm', 'back', 'chest', 'core', 'fullbody', 'glutes', 'leg', 'shoulder', 'stretch'],
+            _repTypes: [
+                'pushups', 'pullups', 'rollerabs', 'dips', 'squats', 'situps',
+                'bicepcurls', 'forearmcurls', 'hammercurls', 'tricepdips', 'tricepsextensions',
+                'deadlifts', 'facepulls', 'latpulldowns', 'rows',
+                'benchpress', 'chestflys', 'inclinepress',
+                'abwheelrollout', 'legraises', 'planks', 'russiantwists',
+                'bulgariansplitsquats', 'donkeykicks', 'glutebridges', 'hipthrusts', 'stepups',
+                'calfraises', 'legpress', 'lunges', 'romaniandeadlifts',
+                'frontraises', 'lateralraises', 'reardeltflys', 'shoulderpress', 'shrugs'
+            ],
+            _exerciseCategoryByType: {
+                pushups: 'chest', pullups: 'back', rollerabs: 'core', dips: 'chest', squats: 'legs', situps: 'core',
+                bicepcurls: 'arms', forearmcurls: 'arms', hammercurls: 'arms', tricepdips: 'arms', tricepsextensions: 'arms',
+                deadlifts: 'back', facepulls: 'back', latpulldowns: 'back', rows: 'back',
+                benchpress: 'chest', chestflys: 'chest', inclinepress: 'chest',
+                abwheelrollout: 'core', legraises: 'core', planks: 'core', russiantwists: 'core',
+                bulgariansplitsquats: 'glutes', donkeykicks: 'glutes', glutebridges: 'glutes', hipthrusts: 'glutes', stepups: 'glutes',
+                calfraises: 'legs', legpress: 'legs', lunges: 'legs', romaniandeadlifts: 'legs',
+                frontraises: 'shoulders', lateralraises: 'shoulders', reardeltflys: 'shoulders', shoulderpress: 'shoulders', shrugs: 'shoulders'
+            },
+
+            // Resolve how a type is tracked. Returns { kind, unit } or null if unknown/deleted.
+            resolveTracking(type, trackingType) {
+                const distUnit = this.data.goals.unitPreference === 'km' ? 'km' : 'miles';
+
+                if (trackingType === 'reps') return { kind: 'reps', unit: 'reps' };
+                if (trackingType === 'distance') return { kind: 'distance', unit: distUnit };
+                if (trackingType === 'logday') return { kind: 'logday', unit: '' };
+
+                if (type && type.startsWith('custom-')) {
+                    const parts = type.split('-');
+                    if (parts.length === 3 && this.data.customCategories) {
+                        const cat = this.data.customCategories.find(c => c.id === parseInt(parts[1]));
+                        const ex = cat && cat.exercises ? cat.exercises.find(e => e.id === parseInt(parts[2])) : null;
+                        if (ex) return this.resolveTracking(null, ex.trackingType);
+                    }
+                    return null; // custom exercise was deleted
+                }
+
+                if (this._cardioTypes.includes(type)) return { kind: 'distance', unit: distUnit };
+                if (type === 'stairs') return { kind: 'floors', unit: 'floors' };
+                if (type === 'steps') return { kind: 'steps', unit: 'steps' };
+                if (this._repTypes.includes(type)) return { kind: 'reps', unit: 'reps' };
+                if (this._dayTypes.includes(type)) return { kind: 'logday', unit: '' };
+                return null;
+            },
+
+            // ---------- Activity picker (single accordion) ----------
+            buildActivityPicker() {
+                const picker = document.getElementById('accordion-picker');
+                if (!picker) return;
+
+                picker.innerHTML = `
+                    <div class="accordion-category">
+                        <div class="accordion-header" onclick="app.toggleAccordion('cardio', this)">
+                            <div>
+                                <span class="accordion-title">Cardio</span>
+                                <span class="accordion-count">(6)</span>
                             </div>
-                            <div class="accordion-content" id="accordion-${this.activityCounter}-cardio">
-                                <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'biking', 'Biking')">Biking</div>
-                                <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'dog', 'Dog Walking')">Dog Walking</div>
-                                <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'hiking', 'Hiking')">Hiking</div>
-                                <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'run', 'Running')">Running</div>
-                                <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'stairs', 'Stairmaster')">Stairmaster</div>
-                                <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'walk', 'Walking')">Walking</div>
-                            </div>
+                            <span class="accordion-arrow">▼</span>
                         </div>
-                        
-                        <!-- Strength Category -->
-                        <div class="accordion-category">
-                            <div class="accordion-header" onclick="app.toggleAccordion(${this.activityCounter}, 'strength')">
-                                <div>
-                                    <span class="accordion-title">Strength</span>
-                                    <span class="accordion-count">(9)</span>
-                                </div>
-                                <span class="accordion-arrow">▼</span>
-                            </div>
-                            <div class="accordion-content" id="accordion-${this.activityCounter}-strength">
-                                <div class="accordion-item" onclick="app.openExerciseModal(${this.activityCounter}, 'arm', 'Arm Day')">
-                                    <span>Arm Day</span>
-                                    <span style="float: right; color: #9ca3af;">→</span>
-                                </div>
-                                <div class="accordion-item" onclick="app.openExerciseModal(${this.activityCounter}, 'back', 'Back Day')">
-                                    <span>Back Day</span>
-                                    <span style="float: right; color: #9ca3af;">→</span>
-                                </div>
-                                <div class="accordion-item" onclick="app.openExerciseModal(${this.activityCounter}, 'chest', 'Chest Day')">
-                                    <span>Chest Day</span>
-                                    <span style="float: right; color: #9ca3af;">→</span>
-                                </div>
-                                <div class="accordion-item" onclick="app.openExerciseModal(${this.activityCounter}, 'core', 'Core Day')">
-                                    <span>Core Day</span>
-                                    <span style="float: right; color: #9ca3af;">→</span>
-                                </div>
-                                <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'fullbody', 'Full Body Day')">
-                                    <span>Full Body Day</span>
-                                    <span style="float: right; color: #9ca3af;">→</span>
-                                </div>
-                                <div class="accordion-item" onclick="app.openExerciseModal(${this.activityCounter}, 'glutes', 'Glutes Day')">
-                                    <span>Glutes Day</span>
-                                    <span style="float: right; color: #9ca3af;">→</span>
-                                </div>
-                                <div class="accordion-item" onclick="app.openExerciseModal(${this.activityCounter}, 'leg', 'Leg Day')">
-                                    <span>Leg Day</span>
-                                    <span style="float: right; color: #9ca3af;">→</span>
-                                </div>
-                                <div class="accordion-item" onclick="app.openExerciseModal(${this.activityCounter}, 'shoulder', 'Shoulder Day')">
-                                    <span>Shoulder Day</span>
-                                    <span style="float: right; color: #9ca3af;">→</span>
-                                </div>
-                                <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'stretch', 'Stretch Day')">
-                                    <span>Stretch Day</span>
-                                    <span style="float: right; color: #9ca3af;">→</span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Steps Category -->
-                        <div class="accordion-category">
-                            <div class="accordion-header" onclick="app.toggleAccordion(${this.activityCounter}, 'steps')">
-                                <div>
-                                    <span class="accordion-title">Steps</span>
-                                    <span class="accordion-count">(1)</span>
-                                </div>
-                                <span class="accordion-arrow">▼</span>
-                            </div>
-                            <div class="accordion-content" id="accordion-${this.activityCounter}-steps-cat">
-                                <div class="accordion-item" onclick="app.selectActivity(${this.activityCounter}, 'steps', 'Steps')">Steps</div>
-                            </div>
+                        <div class="accordion-content" id="accordion-picker-cardio">
+                            <div class="accordion-item" onclick="app.chooseActivity('biking', 'Biking')">Biking</div>
+                            <div class="accordion-item" onclick="app.chooseActivity('dog', 'Dog Walking')">Dog Walking</div>
+                            <div class="accordion-item" onclick="app.chooseActivity('hiking', 'Hiking')">Hiking</div>
+                            <div class="accordion-item" onclick="app.chooseActivity('run', 'Running')">Running</div>
+                            <div class="accordion-item" onclick="app.chooseActivity('stairs', 'Stairmaster')">Stairmaster</div>
+                            <div class="accordion-item" onclick="app.chooseActivity('walk', 'Walking')">Walking</div>
                         </div>
                     </div>
-                    
-                    <div id="selected-activity-${this.activityCounter}" style="margin-top: 12px; font-size: 13px; color: #6b7280; display: none;">
-                        <span style="display: flex; justify-content: space-between; align-items: center;">
-                            <span>
-                                Selected: <span id="selected-name-${this.activityCounter}" style="color: var(--primary-light); font-weight: 600;"></span>
-                            </span>
-                            <span style="display: flex; gap: 6px;">
-                                <button onclick="app.reopenAccordion(${this.activityCounter})" style="background: none; border: 1px solid #3d3d3d; color: #9ca3af; padding: 4px 10px; border-radius: 6px; font-size: 11px; cursor: pointer; transition: all 0.2s;">
-                                    Change
-                                </button>
-                                ${isFirst ? `<button onclick="app.cancelActivity(${this.activityCounter})" style="background: none; border: 1px solid #3d3d3d; color: #ef4444; padding: 4px 10px; border-radius: 6px; font-size: 11px; cursor: pointer; transition: all 0.2s;">Cancel</button>` : ''}
-                            </span>
-                        </span>
+                    <div class="accordion-category">
+                        <div class="accordion-header" onclick="app.toggleAccordion('strength', this)">
+                            <div>
+                                <span class="accordion-title">Strength</span>
+                                <span class="accordion-count">(9)</span>
+                            </div>
+                            <span class="accordion-arrow">▼</span>
+                        </div>
+                        <div class="accordion-content" id="accordion-picker-strength">
+                            <div class="accordion-item" onclick="app.openExerciseModal('arm', 'Arm Day')"><span>Arm Day</span><span style="float: right; color: #9ca3af;">→</span></div>
+                            <div class="accordion-item" onclick="app.openExerciseModal('back', 'Back Day')"><span>Back Day</span><span style="float: right; color: #9ca3af;">→</span></div>
+                            <div class="accordion-item" onclick="app.openExerciseModal('chest', 'Chest Day')"><span>Chest Day</span><span style="float: right; color: #9ca3af;">→</span></div>
+                            <div class="accordion-item" onclick="app.openExerciseModal('core', 'Core Day')"><span>Core Day</span><span style="float: right; color: #9ca3af;">→</span></div>
+                            <div class="accordion-item" onclick="app.chooseActivity('fullbody', 'Full Body Day')">Full Body Day</div>
+                            <div class="accordion-item" onclick="app.openExerciseModal('glutes', 'Glutes Day')"><span>Glutes Day</span><span style="float: right; color: #9ca3af;">→</span></div>
+                            <div class="accordion-item" onclick="app.openExerciseModal('leg', 'Leg Day')"><span>Leg Day</span><span style="float: right; color: #9ca3af;">→</span></div>
+                            <div class="accordion-item" onclick="app.openExerciseModal('shoulder', 'Shoulder Day')"><span>Shoulder Day</span><span style="float: right; color: #9ca3af;">→</span></div>
+                            <div class="accordion-item" onclick="app.chooseActivity('stretch', 'Stretch Day')">Stretch Day</div>
+                        </div>
                     </div>
-                    
-                    <div id="value-input-${this.activityCounter}">
-                        <!-- Value input will be inserted here -->
-                    </div>
-                    </div>
+                    <div class="accordion-category">
+                        <div class="accordion-header" onclick="app.toggleAccordion('steps', this)">
+                            <div>
+                                <span class="accordion-title">Steps</span>
+                                <span class="accordion-count">(1)</span>
+                            </div>
+                            <span class="accordion-arrow">▼</span>
+                        </div>
+                        <div class="accordion-content" id="accordion-picker-steps-cat">
+                            <div class="accordion-item" onclick="app.chooseActivity('steps', 'Steps')">Steps</div>
+                        </div>
                     </div>
                 `;
-                
-                container.appendChild(activityCard);
-                
-                // Add custom categories dynamically as top-level categories
-                this.addCustomCategoriesToActivityCard(this.activityCounter);
+
+                this.addCustomCategoriesToPicker();
             },
 
-            // Add custom categories to activity card as top-level categories with theme-colored arrow
-            addCustomCategoriesToActivityCard(activityId) {
+            // Custom categories are built with DOM APIs + listeners so user-entered
+            // names (quotes, angle brackets, etc.) can never break markup or handlers.
+            addCustomCategoriesToPicker() {
                 if (!this.data.customCategories || this.data.customCategories.length === 0) return;
-                
-                const accordion = document.getElementById(`accordion-${activityId}`);
-                if (!accordion) return;
-                
-                // Add each custom category as a top-level category
+                const picker = document.getElementById('accordion-picker');
+                if (!picker) return;
+
                 this.data.customCategories.forEach(category => {
                     if (!category.exercises || category.exercises.length === 0) return;
-                    
+
                     const categoryDiv = document.createElement('div');
                     categoryDiv.className = 'accordion-category';
-                    categoryDiv.setAttribute('data-custom-category', 'true'); // Mark as custom
-                    
-                    const exerciseCount = category.exercises.length;
-                    
-                    let categoryHTML = `
-                        <div class="accordion-header" onclick="app.toggleAccordion(${activityId}, 'custom-${category.id}')">
-                            <div>
-                                <span class="accordion-title">${category.name}</span>
-                                <span class="accordion-count">(${exerciseCount})</span>
-                            </div>
-                            <span class="accordion-arrow" style="color: var(--primary);">▼</span>
-                        </div>
-                        <div class="accordion-content" id="accordion-${activityId}-custom-${category.id}">
-                    `;
-                    
-                    // Add exercises with arrow and modal trigger
+                    categoryDiv.setAttribute('data-custom-category', 'true');
+
+                    const header = document.createElement('div');
+                    header.className = 'accordion-header';
+                    const titleWrap = document.createElement('div');
+                    const title = document.createElement('span');
+                    title.className = 'accordion-title';
+                    title.textContent = category.name;
+                    const count = document.createElement('span');
+                    count.className = 'accordion-count';
+                    count.textContent = ` (${category.exercises.length})`;
+                    titleWrap.appendChild(title);
+                    titleWrap.appendChild(count);
+                    const arrow = document.createElement('span');
+                    arrow.className = 'accordion-arrow';
+                    arrow.style.color = 'var(--primary)';
+                    arrow.textContent = '▼';
+                    header.appendChild(titleWrap);
+                    header.appendChild(arrow);
+                    header.onclick = () => this.toggleAccordion(`custom-${category.id}`, header);
+
+                    const content = document.createElement('div');
+                    content.className = 'accordion-content';
+                    content.id = `accordion-picker-custom-${category.id}`;
+
                     category.exercises.forEach(ex => {
-                        categoryHTML += `
-                            <div class="accordion-item" onclick="app.selectCustomExercise(${activityId}, ${category.id}, ${ex.id}, '${ex.name}', '${ex.trackingType}')">
-                                <span>${ex.name}</span>
-                                <span style="float: right; color: #9ca3af;">→</span>
-                            </div>
-                        `;
+                        const item = document.createElement('div');
+                        item.className = 'accordion-item';
+                        item.textContent = ex.name;
+                        item.onclick = () => this.chooseActivity(
+                            `custom-${category.id}-${ex.id}`,
+                            ex.name,
+                            `custom-${category.id}`,
+                            ex.trackingType
+                        );
+                        content.appendChild(item);
                     });
-                    
-                    categoryHTML += '</div>';
-                    categoryDiv.innerHTML = categoryHTML;
-                    accordion.appendChild(categoryDiv);
+
+                    categoryDiv.appendChild(header);
+                    categoryDiv.appendChild(content);
+                    picker.appendChild(categoryDiv);
                 });
             },
 
-            // Refresh custom categories in all existing activity rows
+            // Kept under the old name because settings-save calls it after
+            // custom categories change.
             refreshActivityRows() {
-                // Find all activity accordions (only the main accordion containers, not nested ones)
-                const logScreen = document.getElementById('log-screen');
-                const activityCards = logScreen.querySelectorAll('[id^="accordion-"]:not([id*="-cardio"]):not([id*="-strength"]):not([id*="-steps"]):not([id*="-custom"])');
-                
-                activityCards.forEach(accordion => {
-                    // Extract activity ID from accordion id (e.g., "accordion-1" -> "1")
-                    const activityId = parseInt(accordion.id.replace('accordion-', ''));
-                    
-                    // Skip if not a number (means it's a nested accordion)
-                    if (isNaN(activityId)) return;
-                    
-                    // Remove all existing custom category accordions using data attribute
-                    const customCategories = accordion.querySelectorAll('[data-custom-category="true"]');
-                    customCategories.forEach(cat => cat.remove());
-                    
-                    // Re-add custom categories
-                    this.addCustomCategoriesToActivityCard(activityId);
-                });
+                this.buildActivityPicker();
+                this.renderQuickChips();
             },
 
-            // Toggle accordion section
-            toggleAccordion(id, category) {
-                const header = event.target.closest('.accordion-header');
-                const content = document.getElementById(`accordion-${id}-${category === 'steps' ? 'steps-cat' : category}`);
-                const allContents = document.querySelectorAll(`#accordion-${id} .accordion-content`);
-                const allHeaders = document.querySelectorAll(`#accordion-${id} .accordion-header`);
-                
-                // Close all other sections
-                allContents.forEach(c => {
-                    if (c !== content) {
-                        c.classList.remove('active');
-                    }
-                });
-                allHeaders.forEach(h => {
-                    if (h !== header) {
-                        h.classList.remove('active');
-                    }
-                });
-                
-                // Toggle this section
-                header.classList.toggle('active');
+            toggleAccordion(category, headerEl) {
+                const content = document.getElementById(`accordion-picker-${category === 'steps' ? 'steps-cat' : category}`);
+                if (!content || !headerEl) return;
+                const root = document.getElementById('accordion-picker');
+                root.querySelectorAll('.accordion-content').forEach(c => { if (c !== content) c.classList.remove('active'); });
+                root.querySelectorAll('.accordion-header').forEach(h => { if (h !== headerEl) h.classList.remove('active'); });
+                headerEl.classList.toggle('active');
                 content.classList.toggle('active');
             },
 
-            // Toggle sub-accordion for specific exercises
-            toggleSubAccordion(id, subCategory) {
-                const header = event.target.closest('.sub-accordion-header');
-                const content = document.getElementById(`sub-accordion-${id}-${subCategory}`);
-                
-                if (!content) return; // Stretch Day has no sub-content
-                
-                // Toggle this sub-section
-                header.classList.toggle('active');
-                content.classList.toggle('active');
-                
-                // Prevent event from bubbling to parent accordion
-                event.stopPropagation();
-            },
-
-            // Open exercise modal for category with sub-exercises
-            openExerciseModal(activityId, categoryType, categoryName) {
-                // Define exercises for each category
+            // Open exercise modal for a strength category
+            openExerciseModal(categoryType, categoryName) {
                 const exerciseMap = {
-                    'arm': {
-                        exercises: [
-                            { type: 'bicepcurls', name: 'Bicep Curls', category: 'arms' },
-                            { type: 'forearmcurls', name: 'Forearm Curls', category: 'arms' },
-                            { type: 'hammercurls', name: 'Hammer Curls', category: 'arms' },
-                            { type: 'tricepdips', name: 'Tricep Dips', category: 'arms' },
-                            { type: 'tricepsextensions', name: 'Triceps Extensions', category: 'arms' }
-                        ]
-                    },
-                    'back': {
-                        exercises: [
-                            { type: 'deadlifts', name: 'Deadlifts', category: 'back' },
-                            { type: 'facepulls', name: 'Face Pulls', category: 'back' },
-                            { type: 'latpulldowns', name: 'Lat Pulldowns', category: 'back' },
-                            { type: 'pullups', name: 'Pull-ups', category: 'back' },
-                            { type: 'rows', name: 'Rows', category: 'back' }
-                        ]
-                    },
-                    'chest': {
-                        exercises: [
-                            { type: 'benchpress', name: 'Bench Press', category: 'chest' },
-                            { type: 'chestflys', name: 'Chest Flys', category: 'chest' },
-                            { type: 'dips', name: 'Dips', category: 'chest' },
-                            { type: 'inclinepress', name: 'Incline Press', category: 'chest' },
-                            { type: 'pushups', name: 'Push-ups', category: 'chest' }
-                        ]
-                    },
-                    'core': {
-                        exercises: [
-                            { type: 'abwheelrollout', name: 'Ab Wheel Rollout', category: 'core' },
-                            { type: 'legraises', name: 'Leg Raises', category: 'core' },
-                            { type: 'planks', name: 'Planks', category: 'core' },
-                            { type: 'russiantwists', name: 'Russian Twists', category: 'core' },
-                            { type: 'situps', name: 'Sit-ups', category: 'core' }
-                        ]
-                    },
-                    'glutes': {
-                        exercises: [
-                            { type: 'bulgariansplitsquats', name: 'Bulgarian Split Squats', category: 'glutes' },
-                            { type: 'donkeykicks', name: 'Donkey Kicks', category: 'glutes' },
-                            { type: 'glutebridges', name: 'Glute Bridges', category: 'glutes' },
-                            { type: 'hipthrusts', name: 'Hip Thrusts', category: 'glutes' },
-                            { type: 'stepups', name: 'Step-ups', category: 'glutes' }
-                        ]
-                    },
-                    'leg': {
-                        exercises: [
-                            { type: 'calfraises', name: 'Calf Raises', category: 'legs' },
-                            { type: 'legpress', name: 'Leg Press', category: 'legs' },
-                            { type: 'lunges', name: 'Lunges', category: 'legs' },
-                            { type: 'romaniandeadlifts', name: 'Romanian Deadlifts', category: 'legs' },
-                            { type: 'squats', name: 'Squats', category: 'legs' }
-                        ]
-                    },
-                    'shoulder': {
-                        exercises: [
-                            { type: 'frontraises', name: 'Front Raises', category: 'shoulders' },
-                            { type: 'lateralraises', name: 'Lateral Raises', category: 'shoulders' },
-                            { type: 'reardeltflys', name: 'Rear Delt Flys', category: 'shoulders' },
-                            { type: 'shoulderpress', name: 'Shoulder Press', category: 'shoulders' },
-                            { type: 'shrugs', name: 'Shrugs', category: 'shoulders' }
-                        ]
-                    }
+                    'arm': [
+                        { type: 'bicepcurls', name: 'Bicep Curls' },
+                        { type: 'forearmcurls', name: 'Forearm Curls' },
+                        { type: 'hammercurls', name: 'Hammer Curls' },
+                        { type: 'tricepdips', name: 'Tricep Dips' },
+                        { type: 'tricepsextensions', name: 'Triceps Extensions' }
+                    ],
+                    'back': [
+                        { type: 'deadlifts', name: 'Deadlifts' },
+                        { type: 'facepulls', name: 'Face Pulls' },
+                        { type: 'latpulldowns', name: 'Lat Pulldowns' },
+                        { type: 'pullups', name: 'Pull-ups' },
+                        { type: 'rows', name: 'Rows' }
+                    ],
+                    'chest': [
+                        { type: 'benchpress', name: 'Bench Press' },
+                        { type: 'chestflys', name: 'Chest Flys' },
+                        { type: 'dips', name: 'Dips' },
+                        { type: 'inclinepress', name: 'Incline Press' },
+                        { type: 'pushups', name: 'Push-ups' }
+                    ],
+                    'core': [
+                        { type: 'abwheelrollout', name: 'Ab Wheel Rollout' },
+                        { type: 'legraises', name: 'Leg Raises' },
+                        { type: 'planks', name: 'Planks' },
+                        { type: 'russiantwists', name: 'Russian Twists' },
+                        { type: 'situps', name: 'Sit-ups' }
+                    ],
+                    'glutes': [
+                        { type: 'bulgariansplitsquats', name: 'Bulgarian Split Squats' },
+                        { type: 'donkeykicks', name: 'Donkey Kicks' },
+                        { type: 'glutebridges', name: 'Glute Bridges' },
+                        { type: 'hipthrusts', name: 'Hip Thrusts' },
+                        { type: 'stepups', name: 'Step-ups' }
+                    ],
+                    'leg': [
+                        { type: 'calfraises', name: 'Calf Raises' },
+                        { type: 'legpress', name: 'Leg Press' },
+                        { type: 'lunges', name: 'Lunges' },
+                        { type: 'romaniandeadlifts', name: 'Romanian Deadlifts' },
+                        { type: 'squats', name: 'Squats' }
+                    ],
+                    'shoulder': [
+                        { type: 'frontraises', name: 'Front Raises' },
+                        { type: 'lateralraises', name: 'Lateral Raises' },
+                        { type: 'reardeltflys', name: 'Rear Delt Flys' },
+                        { type: 'shoulderpress', name: 'Shoulder Press' },
+                        { type: 'shrugs', name: 'Shrugs' }
+                    ]
                 };
 
-                const categoryData = exerciseMap[categoryType];
-                if (!categoryData) return;
+                const exercises = exerciseMap[categoryType];
+                if (!exercises) return;
 
-                // Build modal HTML
                 let modalHTML = `
                     <div class="overlay" id="exercise-modal-overlay" onclick="app.closeExerciseModal()" style="display: block;"></div>
                     <div class="customize-modal" id="exercise-modal" style="display: block; max-width: 400px;">
                         <div class="customize-modal-header">${categoryName} <button onclick="app.closeExerciseModal()" style="float: right; background: none; border: none; color: #e8e8e8; font-size: 24px; cursor: pointer; padding: 0; line-height: 1;">×</button></div>
-                        <button onclick="app.selectActivity(${activityId}, '${categoryType}', '${categoryName}'); app.closeExerciseModal();" 
+                        <button onclick="app.closeExerciseModal(); app.chooseActivity('${categoryType}', '${categoryName}');"
                                 style="width: 100%; padding: 12px; background: var(--primary-dark); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px; margin-bottom: 16px;">
                             ✓ Log "${categoryName}"
                         </button>
@@ -4392,10 +4605,11 @@ Perfect for unique exercises not in our list!
                         <div style="display: flex; flex-direction: column; gap: 6px;">
                 `;
 
-                categoryData.exercises.forEach(ex => {
+                exercises.forEach(ex => {
+                    const cat = this._exerciseCategoryByType[ex.type] || '';
                     modalHTML += `
-                        <div class="accordion-item" onclick="app.selectActivity(${activityId}, '${ex.type}', '${ex.name}', '${ex.category}'); app.closeExerciseModal();" style="cursor: pointer;">
-                            ${ex.name}
+                        <div class="accordion-item" onclick="app.closeExerciseModal(); app.chooseActivity('${ex.type}', '${ex.name.replace(/'/g, "\\'")}', '${cat}');" style="cursor: pointer;">
+                            ${this.esc(ex.name)}
                         </div>
                     `;
                 });
@@ -4408,7 +4622,6 @@ Perfect for unique exercises not in our list!
                 document.body.insertAdjacentHTML('beforeend', modalHTML);
             },
 
-            // Close exercise modal
             closeExerciseModal() {
                 const overlay = document.getElementById('exercise-modal-overlay');
                 const modal = document.getElementById('exercise-modal');
@@ -4416,305 +4629,317 @@ Perfect for unique exercises not in our list!
                 if (modal) modal.remove();
             },
 
-            // Select custom exercise (for custom categories)
-            selectCustomExercise(activityId, categoryId, exerciseId, exerciseName, trackingType) {
-                const exerciseKey = `custom-${categoryId}-${exerciseId}`;
-                this.selectActivity(activityId, exerciseKey, exerciseName, `custom-${categoryId}`, trackingType);
-            },
-
-            // Select activity from accordion
-            selectActivity(id, activityType, activityName, category, trackingType) {
-                // Store the selected type
-                const accordion = document.getElementById(`accordion-${id}`);
-                accordion.dataset.selectedType = activityType;
-                
-                // Store category if provided (for new sub-exercises)
-                if (category) {
-                    accordion.dataset.selectedCategory = category;
-                }
-                
-                // Store trackingType if provided (for custom exercises)
-                if (trackingType) {
-                    accordion.dataset.trackingType = trackingType;
-                }
-                
-                // Update selected display
-                const selectedDiv = document.getElementById(`selected-activity-${id}`);
-                const selectedNameSpan = document.getElementById(`selected-name-${id}`);
-                selectedDiv.style.display = 'block';
-                selectedNameSpan.textContent = activityName;
-                
-                // Highlight selected item
-                const allItems = accordion.querySelectorAll('.accordion-item');
-                allItems.forEach(item => item.classList.remove('selected'));
-                if (event && event.target) {
-                    event.target.classList.add('selected');
-                }
-                
-                // Close all accordions and sub-accordions
-                const allContents = accordion.querySelectorAll('.accordion-content');
-                const allHeaders = accordion.querySelectorAll('.accordion-header');
-                const allSubContents = accordion.querySelectorAll('.sub-accordion-content');
-                const allSubHeaders = accordion.querySelectorAll('.sub-accordion-header');
-                allContents.forEach(c => c.classList.remove('active'));
-                allHeaders.forEach(h => h.classList.remove('active'));
-                allSubContents.forEach(c => c.classList.remove('active'));
-                allSubHeaders.forEach(h => h.classList.remove('active'));
-                
-                // HIDE the entire accordion after selection (auto-collapse)
-                accordion.style.display = 'none';
-                
-                // Update value inputs
-                this.updateActivityInputs(id, activityType, trackingType);
-            },
-
-            // Re-open accordion to change selection
-            reopenAccordion(id) {
-                const accordion = document.getElementById(`accordion-${id}`);
-                accordion.style.display = 'block';
-            },
-
-            // Cancel activity selection (for activity 1)
-            cancelActivity(id) {
-                const accordion = document.getElementById(`accordion-${id}`);
-                const selectedDiv = document.getElementById(`selected-activity-${id}`);
-                const valueContainer = document.getElementById(`value-input-${id}`);
-                
-                // Clear selected type
-                delete accordion.dataset.selectedType;
-                
-                // Hide selected display
-                selectedDiv.style.display = 'none';
-                
-                // Clear value input
-                valueContainer.innerHTML = '';
-                
-                // Show accordion again
-                accordion.style.display = 'block';
-                
-                // Remove selection highlights
-                const allItems = accordion.querySelectorAll('.accordion-item');
-                allItems.forEach(item => item.classList.remove('selected'));
-            },
-
-            // Update activity inputs based on type
-            updateActivityInputs(id, activityType, trackingType) {
-                const valueContainer = document.getElementById(`value-input-${id}`);
-                const unit = this.data.goals.unitPreference === 'km' ? 'km' : 'miles';
-                
-                if (!activityType) {
-                    valueContainer.innerHTML = '';
+            // ---------- Choose → value entry → immediate save ----------
+            chooseActivity(type, name, category, trackingType) {
+                const t = this.resolveTracking(type, trackingType);
+                if (!t) {
+                    this.showToast('That activity is no longer available');
                     return;
                 }
-                
-                // Handle custom exercises with explicit trackingType
-                if (trackingType) {
-                    if (trackingType === 'reps') {
-                        valueContainer.innerHTML = `
-                            <div class="activity-value-input">
-                                <input type="number" placeholder="0" id="value-${id}" inputmode="numeric" />
-                                <span class="unit">reps</span>
-                            </div>
-                        `;
-                    } else if (trackingType === 'distance') {
-                        valueContainer.innerHTML = `
-                            <div class="activity-value-input">
-                                <input type="number" step="0.1" placeholder="0.0" id="value-${id}" inputmode="decimal" />
-                                <span class="unit">${unit}</span>
-                            </div>
-                        `;
-                    } else if (trackingType === 'logday') {
-                        // No input needed for log day
-                        valueContainer.innerHTML = '';
-                    }
+
+                this.pendingActivity = {
+                    type: type,
+                    name: name,
+                    category: category || this._exerciseCategoryByType[type] || null,
+                    trackingType: trackingType || null,
+                    editIndex: null
+                };
+
+                if (t.kind === 'logday') {
+                    this.commitActivity(null);
                     return;
                 }
-                
-                // For cardio activities (distance-based)
-                if (['walk', 'run', 'dog', 'hiking', 'biking'].includes(activityType)) {
-                    valueContainer.innerHTML = `
-                        <div class="activity-value-input">
-                            <input type="number" step="0.1" placeholder="0.0" id="value-${id}" inputmode="decimal" />
-                            <span class="unit">${unit}</span>
-                        </div>
-                    `;
+                this.showValueEntry(t, '');
+            },
+
+            showValueEntry(tracking, prefill) {
+                const card = document.getElementById('value-entry');
+                const input = document.getElementById('value-entry-input');
+                const nameEl = document.getElementById('value-entry-name');
+                const unitEl = document.getElementById('value-entry-unit');
+
+                nameEl.textContent = this.pendingActivity.editIndex !== null
+                    ? `Edit ${this.pendingActivity.name}`
+                    : this.pendingActivity.name;
+                unitEl.textContent = tracking.unit;
+                this._entryKind = tracking.kind;
+
+                if (tracking.kind === 'distance') {
+                    input.setAttribute('inputmode', 'decimal');
+                    input.setAttribute('step', '0.1');
+                    input.placeholder = '0.0';
+                } else {
+                    input.setAttribute('inputmode', 'numeric');
+                    input.setAttribute('step', '1');
+                    input.placeholder = '0';
                 }
-                // For stairs (floors)
-                else if (activityType === 'stairs') {
-                    valueContainer.innerHTML = `
-                        <div class="activity-value-input">
-                            <input type="number" placeholder="0" id="value-${id}" inputmode="numeric" />
-                            <span class="unit">floors</span>
-                        </div>
-                    `;
-                }
-                // For steps
-                else if (activityType === 'steps') {
-                    valueContainer.innerHTML = `
-                        <div class="activity-value-input">
-                            <input type="number" placeholder="0" id="value-${id}" inputmode="numeric" />
-                            <span class="unit">steps</span>
-                        </div>
-                    `;
-                }
-                // For exercises that track reps (all specific exercises + old ones)
-                else if ([
-                    // Old exercises (still supported for backwards compatibility)
-                    'pushups', 'pullups', 'rollerabs', 'dips', 'squats', 'situps',
-                    // New Arm exercises
-                    'bicepcurls', 'forearmcurls', 'hammercurls', 'tricepdips', 'tricepsextensions',
-                    // New Back exercises
-                    'deadlifts', 'facepulls', 'latpulldowns', 'rows',
-                    // New Chest exercises
-                    'benchpress', 'chestflys', 'inclinepress',
-                    // New Core exercises
-                    'abwheelrollout', 'legraises', 'planks', 'russiantwists',
-                    // New Glutes exercises
-                    'bulgariansplitsquats', 'donkeykicks', 'glutebridges', 'hipthrusts', 'stepups',
-                    // New Leg exercises
-                    'calfraises', 'legpress', 'lunges', 'romaniandeadlifts',
-                    // New Shoulder exercises
-                    'frontraises', 'lateralraises', 'reardeltflys', 'shoulderpress', 'shrugs'
-                ].includes(activityType)) {
-                    valueContainer.innerHTML = `
-                        <div class="activity-value-input">
-                            <input type="number" placeholder="0" id="value-${id}" inputmode="numeric" />
-                            <span class="unit">reps</span>
-                        </div>
-                    `;
-                }
-                // For workout days - no value input needed, but show nothing to avoid confusion
-                else {
-                    valueContainer.innerHTML = '';
+                input.value = prefill || '';
+
+                document.getElementById('activity-picker-wrap').style.display = 'none';
+                document.getElementById('quick-chips-section').style.display = 'none';
+                card.style.display = 'block';
+
+                setTimeout(() => input.focus(), 50);
+            },
+
+            cancelValueEntry(silent) {
+                const card = document.getElementById('value-entry');
+                if (card) card.style.display = 'none';
+                this.pendingActivity = null;
+                const picker = document.getElementById('activity-picker-wrap');
+                if (picker) picker.style.display = 'block';
+                const chips = document.getElementById('quick-chips-section');
+                if (chips) chips.style.display = this._hasChips ? 'block' : 'none';
+                if (!silent) {
+                    const input = document.getElementById('value-entry-input');
+                    if (input) input.value = '';
                 }
             },
 
-            // Remove activity row
-            removeActivity(id) {
-                const activityCard = document.getElementById(`activity-${id}`);
-                activityCard.style.animation = 'slideOut 0.3s ease';
-                setTimeout(() => {
-                    activityCard.remove();
-                }, 300);
+            saveValueEntry() {
+                if (!this.pendingActivity) return;
+                const input = document.getElementById('value-entry-input');
+                const value = parseFloat(input.value);
+                if (!value || value <= 0) {
+                    this.showToast('Enter a value greater than 0', { duration: 3000 });
+                    input.focus();
+                    return;
+                }
+                this.commitActivity(value);
             },
 
-            // Save log
-            saveLog() {
-                const date = document.getElementById('log-date').value;
+            commitActivity(value) {
+                const p = this.pendingActivity;
+                if (!p) return;
+
+                const date = this.getLogDate();
                 if (!date) {
-                    alert('Please select a date');
+                    this.showToast('Pick a date first', { duration: 3000 });
                     return;
                 }
 
-                const activities = [];
-                const baseTimestamp = Date.now(); // Get timestamp once at start
-                
-                for (let i = 1; i <= this.activityCounter; i++) {
-                    // Get type from accordion dataset (not from type-${i} element which doesn't exist)
-                    const accordion = document.getElementById(`accordion-${i}`);
-                    if (!accordion) continue;
-                    
-                    const type = accordion.dataset.selectedType;
-                    if (!type) continue; // Skip if no activity selected
+                const t = this.resolveTracking(p.type, p.trackingType);
+                if (!t) return;
 
+                const applyValue = (activity) => {
+                    if (t.kind === 'distance') {
+                        activity.distance = this.data.goals.unitPreference === 'miles' ? value * 1.60934 : value;
+                    } else if (t.kind === 'floors') {
+                        activity.floors = value;
+                    } else if (t.kind === 'steps') {
+                        activity.steps = value;
+                    } else if (t.kind === 'reps') {
+                        activity.reps = value;
+                    }
+                };
+
+                if (p.editIndex !== null && this.data.activities[p.editIndex]) {
+                    // Editing an existing logged entry
+                    applyValue(this.data.activities[p.editIndex]);
+                    this.afterActivityChange();
+                    this.showToast(`Updated ${p.name}`);
+                } else {
                     const activity = {
                         date: date,
-                        type: type,
-                        timestamp: new Date(baseTimestamp + i).toISOString() // Add i milliseconds to ensure uniqueness
+                        type: p.type,
+                        timestamp: new Date().toISOString()
                     };
-                    
-                    // Add category if it was stored (for new sub-exercises)
-                    const category = accordion.dataset.selectedCategory;
-                    if (category) {
-                        activity.category = category;
-                    }
+                    if (p.category) activity.category = p.category;
+                    if (value !== null) applyValue(activity);
 
-                    // Get value for cardio and reps-based exercises
-                    const valueElement = document.getElementById(`value-${i}`);
-                    
-                    // Get trackingType from accordion dataset (for custom exercises)
-                    const trackingType = accordion.dataset.trackingType;
-                    
-                    // Define activities that REQUIRE a value
-                    const requiresValue = [
-                        'walk', 'run', 'dog', 'hiking', 'biking', 'stairs', 'steps',
-                        // Old exercises
-                        'pushups', 'pullups', 'rollerabs', 'dips', 'squats', 'situps',
-                        // New exercises
-                        'bicepcurls', 'forearmcurls', 'hammercurls', 'tricepdips', 'tricepsextensions',
-                        'deadlifts', 'facepulls', 'latpulldowns', 'rows',
-                        'benchpress', 'chestflys', 'inclinepress',
-                        'abwheelrollout', 'legraises', 'planks', 'russiantwists',
-                        'bulgariansplitsquats', 'donkeykicks', 'glutebridges', 'hipthrusts', 'stepups',
-                        'calfraises', 'legpress', 'lunges', 'romaniandeadlifts',
-                        'frontraises', 'lateralraises', 'reardeltflys', 'shoulderpress', 'shrugs'
-                    ];
-                    
-                    // Check if custom exercise requires value based on trackingType
-                    const isCustomExercise = type && type.startsWith('custom-');
-                    const customRequiresValue = isCustomExercise && trackingType && (trackingType === 'reps' || trackingType === 'distance');
-                    
-                    if (valueElement) {
-                        const value = parseFloat(valueElement.value);
-                        if (value && value > 0) {
-                            if (['walk', 'run', 'dog', 'hiking', 'biking'].includes(type)) {
-                                // Convert to km for storage if in miles
-                                activity.distance = this.data.goals.unitPreference === 'miles' ? value * 1.60934 : value;
-                            } else if (type === 'stairs') {
-                                activity.floors = value;
-                            } else if (type === 'steps') {
-                                activity.steps = value;
-                            } else if (isCustomExercise && trackingType === 'distance') {
-                                // Custom exercise with distance tracking
-                                activity.distance = this.data.goals.unitPreference === 'miles' ? value * 1.60934 : value;
-                            } else if (isCustomExercise && trackingType === 'reps') {
-                                // Custom exercise with reps tracking
-                                activity.reps = value;
-                            } else if (requiresValue.includes(type)) {
-                                // All other standard exercises use reps
-                                activity.reps = value;
+                    this.data.activities.push(activity);
+                    this.afterActivityChange();
+                    this.checkMilestones();
+
+                    const ts = activity.timestamp;
+                    this.showToast(`Logged ${p.name}`, {
+                        actionLabel: 'Undo',
+                        onAction: () => {
+                            const idx = this.data.activities.findIndex(a => a.timestamp === ts);
+                            if (idx >= 0) {
+                                this.data.activities.splice(idx, 1);
+                                this.afterActivityChange();
                             }
-                        } else if (requiresValue.includes(type) || customRequiresValue) {
-                            // ONLY skip if this activity type requires a value but none was entered
-                            continue;
                         }
-                    } else if (requiresValue.includes(type) || customRequiresValue) {
-                        // No value element found, but activity requires value - skip it
-                        continue;
-                    }
-                    // If we reach here, either:
-                    // 1. Activity has a valid value, OR
-                    // 2. Activity doesn't require a value (like Strength Days or custom logday exercises)
-
-                    activities.push(activity);
+                    });
                 }
 
-                if (activities.length === 0) {
-                    alert('Please add at least one activity');
+                this.cancelValueEntry(true);
+            },
+
+            // Shared refresh after any activity add / edit / delete / undo
+            afterActivityChange() {
+                this.saveData();
+                this.scheduleSync();
+                this.updateDashboard();
+                this.renderCalendar();
+                this.renderTodaysLog();
+                this.renderQuickChips();
+            },
+
+            // ---------- Today's log list ----------
+            renderTodaysLog() {
+                const section = document.getElementById('todays-log-section');
+                const list = document.getElementById('todays-log-list');
+                const label = document.getElementById('todays-log-label');
+                if (!section || !list) return;
+
+                const date = this.getLogDate();
+                const entries = this.data.activities
+                    .map((a, i) => ({ a, i }))
+                    .filter(x => x.a.date === date);
+
+                if (!date || entries.length === 0) {
+                    section.style.display = 'none';
+                    list.innerHTML = '';
                     return;
                 }
 
-                // Add to data
-                this.data.activities.push(...activities);
-                this.saveData();
+                const todayStr = this.localDateStr(new Date());
+                if (label) {
+                    if (date === todayStr) {
+                        label.textContent = 'Logged today';
+                    } else {
+                        const d = new Date(date + 'T12:00:00');
+                        label.textContent = `Logged · ${d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}`;
+                    }
+                }
 
-                // Sync to Firebase (PALS feature)
-                this.syncMyStatsToFirebase();
+                const unitPref = this.data.goals.unitPreference === 'km' ? 'km' : 'miles';
+                list.innerHTML = '';
 
-                // Check for milestones
-                this.checkMilestones();
+                entries.forEach(({ a, i }) => {
+                    const row = document.createElement('div');
+                    row.className = 'todays-log-item';
 
-                // Clear form
-                document.getElementById('activities-container').innerHTML = '';
-                this.activityCounter = 0;
-                this.addActivityRow();
+                    const main = document.createElement('div');
+                    main.className = 'todays-log-main';
 
-                // Update UI
-                this.updateDashboard();
-                this.renderCalendar();
+                    const nameEl = document.createElement('div');
+                    nameEl.className = 'todays-log-name';
+                    nameEl.textContent = this.getActivityDisplayName(a);
 
-                // Show success
-                alert('Activity logged successfully!');
+                    const valueEl = document.createElement('div');
+                    valueEl.className = 'todays-log-value';
+                    if (a.distance !== undefined) {
+                        const shown = unitPref === 'miles' ? a.distance / 1.60934 : a.distance;
+                        valueEl.textContent = `${shown.toFixed(1)} ${unitPref}`;
+                    } else if (a.floors !== undefined) {
+                        valueEl.textContent = `${a.floors} floors`;
+                    } else if (a.steps !== undefined) {
+                        valueEl.textContent = `${a.steps.toLocaleString()} steps`;
+                    } else if (a.reps !== undefined) {
+                        valueEl.textContent = `${a.reps} reps`;
+                    } else {
+                        valueEl.textContent = 'Logged';
+                    }
+
+                    main.appendChild(nameEl);
+                    main.appendChild(valueEl);
+                    main.onclick = () => this.editLoggedActivity(i);
+
+                    const del = document.createElement('button');
+                    del.className = 'todays-log-delete';
+                    del.setAttribute('aria-label', 'Delete entry');
+                    del.textContent = '×';
+                    del.onclick = () => this.deleteLoggedActivity(i);
+
+                    row.appendChild(main);
+                    row.appendChild(del);
+                    list.appendChild(row);
+                });
+
+                section.style.display = 'block';
+            },
+
+            editLoggedActivity(index) {
+                const a = this.data.activities[index];
+                if (!a) return;
+                const t = this.resolveTracking(a.type, null);
+                if (!t || t.kind === 'logday') {
+                    this.showToast('Nothing to edit for this entry', { duration: 2500 });
+                    return;
+                }
+
+                let prefill = '';
+                if (a.distance !== undefined) {
+                    const shown = this.data.goals.unitPreference === 'miles' ? a.distance / 1.60934 : a.distance;
+                    prefill = String(Math.round(shown * 10) / 10);
+                } else if (a.floors !== undefined) {
+                    prefill = String(a.floors);
+                } else if (a.steps !== undefined) {
+                    prefill = String(a.steps);
+                } else if (a.reps !== undefined) {
+                    prefill = String(a.reps);
+                }
+
+                this.pendingActivity = {
+                    type: a.type,
+                    name: this.getActivityDisplayName(a),
+                    category: a.category || null,
+                    trackingType: null,
+                    editIndex: index
+                };
+                this.showValueEntry(t, prefill);
+            },
+
+            deleteLoggedActivity(index) {
+                const a = this.data.activities[index];
+                if (!a) return;
+                const name = this.getActivityDisplayName(a);
+                this.data.activities.splice(index, 1);
+                this.afterActivityChange();
+                this.showToast(`Removed ${name}`, {
+                    actionLabel: 'Undo',
+                    onAction: () => {
+                        this.data.activities.splice(Math.min(index, this.data.activities.length), 0, a);
+                        this.afterActivityChange();
+                    }
+                });
+            },
+
+            // ---------- Quick-log chips (auto-learned from history) ----------
+            renderQuickChips() {
+                const section = document.getElementById('quick-chips-section');
+                const container = document.getElementById('quick-chips');
+                if (!section || !container) return;
+
+                const now = new Date();
+                const cutoff90 = new Date(now); cutoff90.setDate(cutoff90.getDate() - 90);
+                const cutoff30 = new Date(now); cutoff30.setDate(cutoff30.getDate() - 30);
+                const cutoff7 = new Date(now); cutoff7.setDate(cutoff7.getDate() - 7);
+
+                const scores = {};
+                this.data.activities.forEach(a => {
+                    if (!a.date || !a.type) return;
+                    const d = new Date(a.date + 'T12:00:00');
+                    if (isNaN(d) || d < cutoff90) return;
+                    let w = 1;
+                    if (d >= cutoff7) w = 3;
+                    else if (d >= cutoff30) w = 2;
+                    scores[a.type] = (scores[a.type] || 0) + w;
+                });
+
+                const ranked = Object.keys(scores)
+                    .filter(type => this.resolveTracking(type, null) !== null)
+                    .sort((x, y) => scores[y] - scores[x])
+                    .slice(0, 6);
+
+                container.innerHTML = '';
+                ranked.forEach(type => {
+                    const name = this.getActivityDisplayName({ type: type });
+                    const chip = document.createElement('button');
+                    chip.className = 'quick-chip';
+                    chip.textContent = name;
+                    chip.onclick = () => this.chooseActivity(type, name, null, null);
+                    container.appendChild(chip);
+                });
+
+                this._hasChips = ranked.length > 0;
+                // Don't reveal chips while the value-entry card is open
+                const entryOpen = document.getElementById('value-entry') &&
+                    document.getElementById('value-entry').style.display === 'block';
+                section.style.display = (this._hasChips && !entryOpen) ? 'block' : 'none';
             },
 
             // Check for milestones
@@ -6303,7 +6528,7 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                 const url = URL.createObjectURL(dataBlob);
                 const link = document.createElement('a');
                 link.href = url;
-                link.download = `juststep-data-${new Date().toISOString().split('T')[0]}.json`;
+                link.download = `juststep-data-${this.localDateStr(new Date())}.json`;
                 link.click();
             },
 
@@ -6778,7 +7003,8 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                 const weight = parseFloat(weightInput.value);
 
                 if (!weight || weight <= 0) {
-                    alert('Please enter a valid weight');
+                    this.showToast('Enter a valid weight first', { duration: 3000 });
+                    weightInput.focus();
                     return;
                 }
 
@@ -6820,7 +7046,7 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
 
                 // Clear input and show success
                 weightInput.value = '';
-                alert(`Weight logged: ${weight} lbs`);
+                this.showToast(`Weight logged: ${weight} lbs`);
             },
             
             toggleWeightInfoModal() {
@@ -6855,7 +7081,7 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                     targetStart = d;
                 }
 
-                this.weeklyReportViewStart = targetStart.toISOString().split('T')[0];
+                this.weeklyReportViewStart = this.localDateStr(targetStart);
 
                 this.renderWeeklyReport(this.weeklyReportViewStart);
                 const modal = document.getElementById('weekly-report-modal');
@@ -6884,7 +7110,7 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                     base.setTime(currentWeekStart.getTime());
                 }
 
-                this.weeklyReportViewStart = base.toISOString().split('T')[0];
+                this.weeklyReportViewStart = this.localDateStr(base);
                 this.renderWeeklyReport(this.weeklyReportViewStart);
             },
 
@@ -6898,7 +7124,7 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                 // Mark this Sunday's report as seen (only when today is Sunday)
                 const now = new Date();
                 if (now.getDay() === 0) {
-                    const sundayDate = now.toISOString().split('T')[0];
+                    const sundayDate = this.localDateStr(now);
                     localStorage.setItem('lastWeeklyReportSunday', sundayDate);
                 }
             },
@@ -6924,7 +7150,7 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                 }
 
                 // Keep navigation state in sync
-                this.weeklyReportViewStart = startOfWeek.toISOString().split('T')[0];
+                this.weeklyReportViewStart = this.localDateStr(startOfWeek);
 const endOfWeek = new Date(startOfWeek);
                 endOfWeek.setDate(startOfWeek.getDate() + 6);
                 endOfWeek.setHours(23, 59, 59, 999);
@@ -7420,7 +7646,7 @@ const endOfWeek = new Date(startOfWeek);
                     // Get weight from 7 days ago for trend
                     const sevenDaysAgo = new Date();
                     sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-                    const sevenDaysAgoStr = sevenDaysAgo.toISOString().split('T')[0];
+                    const sevenDaysAgoStr = this.localDateStr(sevenDaysAgo);
 
                     const pastWeight = this.data.weights.find(w => w.date <= sevenDaysAgoStr);
 
@@ -8513,7 +8739,7 @@ async createPalCode() {
                     const weightChangeLbsThisWeek = this.calculateWeightChangeLbsForPeriod('week');
                     const weightChangeLbsThisMonth = this.calculateWeightChangeLbsForPeriod('month');
 
-                    const today = new Date().toISOString().split('T')[0];
+                    const today = this.localDateStr(new Date());
 
                     const payload = {
                         palCode: this.data.pals.myPalCode,
@@ -8825,7 +9051,7 @@ async createPalCode() {
                         <div class="pal-card ${expandedClass}">
                             <div class="pal-header" onclick="app.togglePalExpanded('${pal.palCode}')">
                                 <div class="pal-header-info">
-                                    <div class="pal-name">${pal.displayName}</div>
+                                    <div class="pal-name">${this.esc(pal.displayName)}</div>
                                     <span class="pal-divider">•</span>
                                     <div class="pal-quick-stats">${stepsText} steps • ${distanceText}</div>
                                 </div>
@@ -8905,8 +9131,10 @@ async createPalCode() {
 
             // Helper: Calculate days between two dates
             daysBetween(date1Str, date2Str) {
-                const d1 = new Date(date1Str);
-                const d2 = new Date(date2Str);
+                // Parse date-only strings at local noon so UTC offsets can't shift the day
+                const parse = (s) => /^\d{4}-\d{2}-\d{2}$/.test(s) ? new Date(s + 'T12:00:00') : new Date(s);
+                const d1 = parse(date1Str);
+                const d2 = parse(date2Str);
                 const diffTime = Math.abs(d2 - d1);
                 const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
                 return diffDays;
@@ -8980,7 +9208,7 @@ async createPalCode() {
                     }
 
                     const participants = [];
-                    const today = new Date().toISOString().split('T')[0];
+                    const today = this.localDateStr(new Date());
 
                     snapshot.docs.forEach(doc => {
                         const data = doc.data();
@@ -8991,10 +9219,11 @@ async createPalCode() {
                         
                         // Calculate hours inactive for emoji status
                         let hoursInactive = 999;
-                        if (lastActivity) {
-                            const lastDate = new Date(lastActivity);
-                            const nowDate = new Date(today);
-                            hoursInactive = Math.floor((nowDate - lastDate) / (1000 * 60 * 60));
+                        const lastTs = data.lastUpdated
+                            ? new Date(data.lastUpdated)
+                            : (lastActivity ? new Date(lastActivity + 'T12:00:00') : null);
+                        if (lastTs && !isNaN(lastTs)) {
+                            hoursInactive = Math.max(0, Math.floor((Date.now() - lastTs) / (1000 * 60 * 60)));
                         }
                         
                         // Determine emoji status based on hours
@@ -9158,7 +9387,7 @@ async createPalCode() {
                                 <div class="leaderboard-item-header">
                                     <span class="leaderboard-rank">${rank}</span>
                                     <span class="leaderboard-name">
-                                        ${p.displayName}${p.isMe ? ' (You)' : ''} ${p.statusIndicator}
+                                        ${this.esc(p.displayName)}${p.isMe ? ' (You)' : ''} ${p.statusIndicator}
                                     </span>
                                     <span class="leaderboard-value">${displayValue}${suffix}</span>
                                 </div>
@@ -9415,7 +9644,7 @@ async createPalCode() {
                             <div id="category-display-${category.id}" style="display: flex; flex-direction: column; gap: 4px;">
                                 <div style="display: flex; justify-content: space-between; align-items: center;">
                                     <div style="flex: 1;">
-                                        <div style="font-weight: 600; color: #e8e8e8; font-size: 13px;">${category.name}</div>
+                                        <div style="font-weight: 600; color: #e8e8e8; font-size: 13px;">${this.esc(category.name)}</div>
                                         <div style="font-size: 11px; color: #9ca3af;">${exerciseCount}/5 exercises</div>
                                     </div>
                                     <div style="display: flex; gap: 4px;">
@@ -9492,7 +9721,7 @@ async createPalCode() {
                 let html = `
                     <div class="overlay" id="manage-exercises-overlay" onclick="app.closeManageExercises()" style="display: block;"></div>
                     <div class="customize-modal" id="manage-exercises-modal" style="display: block;">
-                        <div class="customize-modal-header">✏️ Manage: ${category.name}</div>
+                        <div class="customize-modal-header">✏️ Manage: ${this.esc(category.name)}</div>
                         <div style="max-height: 400px; overflow-y: auto; margin-bottom: 12px;">
                 `;
                 
@@ -9503,7 +9732,7 @@ async createPalCode() {
                         html += `
                             <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px; background: #2d2d2d; border-radius: 6px; margin-bottom: 6px;">
                                 <div>
-                                    <div style="font-weight: 600; color: #e8e8e8; font-size: 13px;">${ex.name}</div>
+                                    <div style="font-weight: 600; color: #e8e8e8; font-size: 13px;">${this.esc(ex.name)}</div>
                                     <div style="font-size: 11px; color: #9ca3af;">(${trackingLabel})</div>
                                 </div>
                                 <div style="display: flex; gap: 4px;">
@@ -10149,46 +10378,39 @@ async createPalCode() {
 
 <!-- Service Worker Registration -->
 <script>
-// Register service worker for PWA functionality and auto-updates
+// Register service worker for PWA functionality.
+// v2.2.2: updates no longer force a mid-session reload. The user gets a
+// toast with a Refresh action instead, so an in-progress entry is never lost.
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
         navigator.serviceWorker.register('./service-worker.js')
             .then(registration => {
-                console.log('✅ Service Worker registered successfully');
-                
-                // Check for updates immediately on load
+                console.log('✅ Service Worker registered');
+
+                // Check for updates on load and periodically (iOS-friendly)
                 registration.update();
-                
-                // Check for updates every 60 seconds (iOS-friendly)
-                setInterval(() => {
-                    registration.update();
-                }, 60000);
-                
-                // Listen for new service worker updates
+                setInterval(() => registration.update(), 60000);
+
+                const notifyUpdate = () => {
+                    if (typeof app !== 'undefined' && typeof app.showToast === 'function') {
+                        app.showToast('JustStep was updated', {
+                            actionLabel: 'Refresh',
+                            onAction: () => window.location.reload(),
+                            duration: 10000
+                        });
+                    }
+                };
+
                 registration.addEventListener('updatefound', () => {
                     const newWorker = registration.installing;
+                    if (!newWorker) return;
                     console.log('🔄 New version found, installing...');
-                    
                     newWorker.addEventListener('statechange', () => {
-                        if (newWorker.state === 'activated' && !navigator.serviceWorker.controller) {
-                            // First install
-                            console.log('✅ Service Worker activated (first install)');
-                        } else if (newWorker.state === 'activated') {
-                            // Update found - reload to get new version
-                            console.log('🔄 New version activated, reloading...');
-                            window.location.reload();
+                        if (newWorker.state === 'activated' && navigator.serviceWorker.controller) {
+                            console.log('🔄 New version ready');
+                            notifyUpdate();
                         }
                     });
-                });
-                
-                // Handle controlling service worker change (for updates)
-                let refreshing = false;
-                navigator.serviceWorker.addEventListener('controllerchange', () => {
-                    if (!refreshing) {
-                        refreshing = true;
-                        console.log('🔄 Controller changed, reloading...');
-                        window.location.reload();
-                    }
                 });
             })
             .catch(error => {

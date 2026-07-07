@@ -1,5 +1,11 @@
-// JustStep Service Worker (safe caching: GET-only)
-const CACHE_NAME = 'juststep-cache-v2.2.1';
+// JustStep Service Worker v2.2.2
+// Strategy:
+//   - Navigations (HTML): network-first, so deploys reach users on the next
+//     load, with cached index.html as the offline fallback.
+//   - Other same-origin GETs: cache-first with background fill.
+//   - Non-GET and cross-origin requests (Firebase etc.) pass through untouched.
+const CACHE_NAME = 'juststep-cache-v2.2.2';
+const OFFLINE_FALLBACK = './index.html';
 const FILES_TO_CACHE = [
   './',
   './index.html',
@@ -7,28 +13,21 @@ const FILES_TO_CACHE = [
   './styles.css',
   './icon-192.png',
   './icon-512.png'
-].filter(Boolean);
+];
 
 self.addEventListener('install', (event) => {
-  console.log('Service Worker: Installing v2.2.1');
+  console.log('Service Worker: Installing v2.2.2');
   event.waitUntil(
-    caches.open(CACHE_NAME).then(async (cache) => {
-      try {
-        // Cache core assets; ignore individual failures (e.g., missing icons)
-        await Promise.allSettled(FILES_TO_CACHE.map((u) => cache.add(u)));
-        console.log('Service Worker: Assets cached');
-      } catch (e) {
-        // Non-fatal: app still works online
-        console.warn('Service Worker: Cache addAll failed', e);
-      }
-    })
+    caches.open(CACHE_NAME).then((cache) =>
+      // Cache core assets; ignore individual failures (e.g., missing icons)
+      Promise.allSettled(FILES_TO_CACHE.map((u) => cache.add(u)))
+    )
   );
-  // Force immediate activation - critical for updates
   self.skipWaiting();
 });
 
 self.addEventListener('activate', (event) => {
-  console.log('Service Worker: Activating v2.2.1');
+  console.log('Service Worker: Activating v2.2.2');
   event.waitUntil(
     caches.keys().then((keys) =>
       Promise.all(
@@ -39,38 +38,57 @@ self.addEventListener('activate', (event) => {
           }
         })
       )
-    ).then(() => {
-      console.log('Service Worker: Claiming clients');
-      return self.clients.claim();
-    })
+    ).then(() => self.clients.claim())
   );
 });
 
 self.addEventListener('fetch', (event) => {
   const req = event.request;
 
-  // IMPORTANT: Never try to cache non-GET requests (Firebase uses POST)
+  // Never touch non-GET requests (Firebase uses POST)
   if (req.method !== 'GET') return;
 
   const url = new URL(req.url);
 
-  // Only cache same-origin assets. Let everything else pass through.
+  // Only handle same-origin assets; let everything else pass through
   if (url.origin !== self.location.origin) return;
 
+  // Navigations: network-first so updates land immediately, cache as offline fallback
+  if (req.mode === 'navigate') {
+    event.respondWith(
+      fetch(req)
+        .then((resp) => {
+          if (resp && resp.status === 200) {
+            const clone = resp.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(req, clone));
+          }
+          return resp;
+        })
+        .catch(() =>
+          caches.match(req).then(
+            (cached) => cached || caches.match(OFFLINE_FALLBACK)
+          ).then(
+            (fallback) => fallback || Response.error()
+          )
+        )
+    );
+    return;
+  }
+
+  // Static assets: cache-first, fill cache from network
   event.respondWith(
     caches.match(req).then((cached) => {
       if (cached) return cached;
 
       return fetch(req)
         .then((resp) => {
-          // Only cache successful, basic responses
           if (resp && resp.status === 200 && resp.type === 'basic') {
-            const respClone = resp.clone();
-            caches.open(CACHE_NAME).then((cache) => cache.put(req, respClone));
+            const clone = resp.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(req, clone));
           }
           return resp;
         })
-        .catch(() => cached); // if offline and nothing cached, will return undefined
+        .catch(() => Response.error()); // explicit failure, never undefined
     })
   );
 });
