@@ -4,8 +4,8 @@
   "description": "Track your fitness journey - Just take the next step",
   "start_url": "./",
   "display": "standalone",
-  "background_color": "#1a1a1a",
-  "theme_color": "#2563eb",
+  "background_color": "#08090b",
+  "theme_color": "#08090b",
   "orientation": "portrait",
   "icons": [
     {
