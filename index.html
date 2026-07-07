@@ -4679,7 +4679,11 @@ Perfect for unique exercises not in our list!
                 document.getElementById('quick-chips-section').style.display = 'none';
                 card.style.display = 'block';
 
-                setTimeout(() => input.focus(), 50);
+                // Focus synchronously, inside the tap's gesture chain — mobile
+                // browsers only open the keyboard for gesture-initiated focus,
+                // so a setTimeout here would leave the keypad closed.
+                input.focus();
+                if (prefill) input.select();
             },
 
             cancelValueEntry(silent) {
