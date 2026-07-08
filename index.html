@@ -370,13 +370,6 @@
         .today-card { background: #101216; border-radius: 18px; padding: 14px 16px; margin-bottom: 12px; }
         .today-card-title { font-size: 12px; color: #7d838c; margin-bottom: 8px; }
         .pr-chip { background: var(--primary-darker); color: var(--primary); font-size: 10px; padding: 3px 8px; border-radius: 999px; font-weight: 600; }
-        .heatmap-grid { display: flex; gap: 3px; overflow-x: auto; padding-bottom: 4px; }
-        .heatmap-col { display: flex; flex-direction: column; gap: 3px; }
-        .heatmap-cell { width: 11px; height: 11px; border-radius: 3px; background: #16181c; flex: 0 0 auto; }
-        .heatmap-cell.l1 { background: var(--primary-darker); }
-        .heatmap-cell.l2 { background: var(--primary-dark); }
-        .heatmap-cell.l3 { background: var(--primary-medium); }
-        .heatmap-cell.l4 { background: var(--primary); }
         .swatch-row { display: flex; gap: 10px; }
         .swatch { width: 38px; height: 38px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; padding: 0; }
         .swatch.active { border-color: #eceff1; }
@@ -385,8 +378,8 @@
         .feed-left { display: flex; align-items: center; gap: 9px; min-width: 0; }
         .feed-avatar { width: 28px; height: 28px; border-radius: 50%; background: #1e2127; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 600; flex: 0 0 auto; }
         .feed-text { font-size: 12px; color: #b6bcc4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .kudos-btn { background: #16181c; border: 1px solid #1e2127; border-radius: 999px; padding: 3px 10px; font-size: 11px; color: #7d838c; cursor: pointer; flex: 0 0 auto; }
-        .kudos-btn.given { border-color: var(--primary); color: var(--primary); }
+        .steppa-btn { background: #16181c; border: 1px solid #1e2127; border-radius: 999px; padding: 3px 10px; font-size: 11px; color: #7d838c; cursor: pointer; flex: 0 0 auto; }
+        .steppa-btn.given { border-color: var(--primary); color: var(--primary); }
         .challenge-bar-track { background: #1e2127; border-radius: 999px; height: 8px; overflow: hidden; margin-top: 4px; }
         .challenge-bar-fill { height: 100%; border-radius: 999px; }
 
@@ -460,7 +453,7 @@
             padding: 10px;
             background: var(--primary-dark);
             border: none;
-            color: white;
+            color: var(--on-accent);
             border-radius: 12px;
             font-weight: 700;
             cursor: pointer;
@@ -707,7 +700,7 @@
             margin: 8px 14px;
             padding: 10px;
             background: var(--primary);
-            color: white;
+            color: var(--on-accent);
             border: none;
             border-radius: 12px;
             font-size: 13px;
@@ -814,7 +807,7 @@
             flex: 2;
             padding: 12px;
             background: var(--primary);
-            color: white;
+            color: var(--on-accent);
             border: none;
             border-radius: 6px;
             font-size: 15px;
@@ -1242,7 +1235,7 @@
             width: 100%;
             padding: 10px;
             background: #08090b;
-            color: white;
+            color: var(--on-accent);
             border: none;
             border-radius: 12px;
             font-size: 16px;
@@ -1433,7 +1426,7 @@
         /* Leaderboard Redesign */
         .leaderboard-toggle .toggle-btn.active {
             background: var(--primary-dark) !important;
-            color: white !important;
+            color: var(--on-accent) !important;
         }
 
         .leaderboard-toggle .toggle-btn:hover {
@@ -2042,7 +2035,7 @@
 
         .stats-toggle-btn.active {
             background: var(--primary);
-            color: white;
+            color: var(--on-accent);
         }
 
         /* Welcome Modal */
@@ -2070,7 +2063,8 @@
         }
 
         .welcome-header {
-            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-darker) 100%);
+            background: #0d0f12;
+            border-bottom: 1px solid #1e2127;
             margin: -20px -16px 16px -16px;
             padding: 16px;
             border-radius: 20px 20px 0 0;
@@ -2257,7 +2251,7 @@
 
         .customize-modal-btn.save {
             background: var(--primary);
-            color: white;
+            color: var(--on-accent);
         }
 
         .customize-modal-btn.save:active {
@@ -2329,7 +2323,7 @@
         .weight-save-btn {
             padding: 8px 16px;
             background: var(--primary);
-            color: white;
+            color: var(--on-accent);
             border: none;
             border-radius: 6px;
             font-size: 13px;
@@ -3088,7 +3082,7 @@
         .weekly-report-action-btn.primary {
             background: var(--primary);
             border-color: var(--primary);
-            color: white;
+            color: var(--on-accent);
         }
         
         .weekly-report-action-btn.primary:hover {
@@ -3155,7 +3149,7 @@
 <h1 style="display: flex; align-items: center; gap: 8px;">Track Activity <span class="info-icon" onclick="app.showTrackInfo()" title="How to track activities">i</span></h1>
 <p class="subtitle">Record today's workout</p>
 <div class="date-selector">
-<span>📅</span>
+<span style="color: #7d838c; display: flex;"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18"/></svg></span>
 <input id="log-date" type="date" value="" onchange="app.onLogDateChange()"/>
 </div>
 <div id="quick-chips-section" style="display: none;">
@@ -3193,9 +3187,12 @@
 <!-- Progress Screen (v3.0: heatmap + dashboard + calendar) -->
 <div class="screen" id="progress-screen">
 <h1>Progress</h1>
-<div class="today-card">
-<div class="today-card-title" style="display: flex; justify-content: space-between;"><span>Consistency · last 26 weeks</span><span id="heatmap-total" style="color: var(--primary);"></span></div>
-<div class="heatmap-grid" id="heatmap-grid"></div>
+<div class="today-card" id="month-hero" style="position: relative; overflow: hidden;">
+<div style="display: flex; justify-content: space-between;"><span class="today-card-title" style="margin-bottom: 0;">THIS MONTH</span><span id="month-hero-label" style="font-size: 12px; color: #7d838c;"></span></div>
+<svg id="month-hero-spark" preserveAspectRatio="none" viewBox="0 0 300 60" style="position: absolute; left: 16px; right: 16px; bottom: 40px; width: calc(100% - 32px); height: 60px; opacity: 0.22;"></svg>
+<div id="month-hero-pct" style="font-size: 54px; font-weight: 700; color: var(--primary); line-height: 1.05; margin-top: 10px;">&ndash;</div>
+<div id="month-hero-sub" style="font-size: 13px; color: #7d838c; margin-top: 4px;"></div>
+<div id="month-hero-status" style="font-size: 13px; color: var(--primary); font-weight: 500; margin-top: 16px;"></div>
 </div>
 <div class="today-card" style="display: flex; justify-content: space-between; align-items: center;">
 <div><div style="font-size: 13px; font-weight: 600; color: #eceff1;">Weekly report card</div><div style="font-size: 11px; color: #7d838c;">Share last week with the crew</div></div>
@@ -3243,7 +3240,7 @@
 </div>
 <div style="display: flex; gap: 12px; margin-bottom: 20px;">
     <button class="customize-dashboard-btn" onclick="app.openCustomizeModal()" style="flex: 1; margin: 0; background: #101216; border: 1px solid #1e2127; border-radius: 12px; padding: 12px 16px; color: #eceff1;">Customize Favorites</button>
-    <button class="customize-dashboard-btn" onclick="app.showWeeklyReport()" style="flex: 1; margin: 0; background: var(--primary); border: 1px solid var(--primary); border-radius: 12px; padding: 12px 16px; color: white;">Weekly Report</button>
+    <button class="customize-dashboard-btn" onclick="app.showWeeklyReport()" style="flex: 1; margin: 0; background: var(--primary); border: 1px solid var(--primary); border-radius: 12px; padding: 12px 16px; color: var(--on-accent);">Weekly Report</button>
 </div>
 <!-- Comparison Bar Graphs -->
 <div class="comparison-section">
@@ -3325,7 +3322,7 @@
 <!-- Calendar will be generated here -->
 </div>
 <div class="calendar-hint">
-                💡 Tap any day to see details
+                <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px;"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-4 10.5c.7.6 1 1.4 1 2.5h6c0-1.1.3-1.9 1-2.5A6 6 0 0 0 12 3z"/></svg> Tap any day to see details
             </div>
 <!-- Activity Report (Collapsible) -->
 <div class="progress-card">
@@ -3351,12 +3348,6 @@
 </div>
 </div>
 </div>
-<h2>Recent Milestones</h2>
-<div class="progress-card">
-<div class="milestone-list" id="milestone-list">
-<p style="text-align: center; color: #6b7280; font-size: 14px;">No milestones yet. Keep going!</p>
-</div>
-</div>
 </div>
 <!-- Weight Screen (v3.0) -->
 <div class="screen" id="weight-screen">
@@ -3378,7 +3369,7 @@ Track Weight
 <div class="weight-info-content">
 <div class="weight-info-header">
 <div class="weight-info-title">
-<span>📊</span>
+<span style="color: var(--primary); display: flex;"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="12" width="4" height="7" rx="1"/><rect x="10" y="8" width="4" height="11" rx="1"/><rect x="16" y="4" width="4" height="15" rx="1"/></svg></span>
 Weight Tracking Tips
 </div>
 <button class="weight-info-close" onclick="app.toggleWeightInfoModal()">×</button>
@@ -3400,7 +3391,7 @@ Weekly tracking shows real progress!
 <div class="weight-info-content">
 <div class="weight-info-header">
 <div class="weight-info-title">
-<span>✅</span>
+<span style="color: var(--primary); display: flex;"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg></span>
 Track Activity
 </div>
 <button class="weight-info-close" onclick="app.closeInfoModal('track-info-modal')">×</button>
@@ -3423,7 +3414,7 @@ Fewer taps, same tracking!
 <div class="weight-info-content">
 <div class="weight-info-header">
 <div class="weight-info-title">
-<span>📈</span>
+<span style="color: var(--primary); display: flex;"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19h16M4 19V5"/><path d="M6 15l4-4 3 3 5-6"/></svg></span>
 Dashboard
 </div>
 <button class="weight-info-close" onclick="app.closeInfoModal('dashboard-info-modal')">×</button>
@@ -3448,7 +3439,7 @@ Toggle to see weekly or lifetime stats!
 <div class="weight-info-content">
 <div class="weight-info-header">
 <div class="weight-info-title">
-<span>⚙️</span>
+<span style="color: var(--primary); display: flex;"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M2 12h3M19 12h3M4.9 19.1L7 17M17 7l2.1-2.1"/></svg></span>
 Important Reminder
 </div>
 <button class="weight-info-close" onclick="app.closeInfoModal('goals-info-modal')">×</button>
@@ -3466,7 +3457,7 @@ Always click "Save Settings" after making changes or adding categories/habits!
 <div class="weight-info-content">
 <div class="weight-info-header">
 <div class="weight-info-title">
-<span>📊</span>
+<span style="color: var(--primary); display: flex;"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="12" width="4" height="7" rx="1"/><rect x="10" y="8" width="4" height="11" rx="1"/><rect x="16" y="4" width="4" height="15" rx="1"/></svg></span>
 Leaderboard
 </div>
 <button class="weight-info-close" onclick="app.closeInfoModal('leaderboard-info-modal')">×</button>
@@ -3477,11 +3468,11 @@ Leaderboard
 • <strong>DISTANCE:</strong> Total miles/km from all cardio activities in last 7 days<br><br>
 • <strong>WEIGHT:</strong> Weight change (% and lbs) based on selected period (Week/Month/Total)<br><br>
 <strong style="color: #60a5fa;">Activity indicators:</strong><br><br>
-⚡ Updated within 16 hours<br>
-✨ Updated 16-32 hours ago<br>
-💤 Updated 32+ hours ago<br><br>
+<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--primary);"></span> Updated within 16 hours<br>
+<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#7d838c;"></span> Updated 16&ndash;32 hours ago<br>
+<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#3a3f47;"></span> Updated 32+ hours ago<br><br>
 <div class="weight-info-highlight">
-Rankings update daily. Add PALs to compete with friends!
+Rankings update daily. Add Crew to compete with friends!
 </div>
 </div>
 </div>
@@ -3566,7 +3557,7 @@ Make it a Habit (Private)
 <div class="habit-info-content">
 <div class="habit-info-header">
 <div class="habit-info-title">
-<span>📝</span>
+<span style="color: var(--primary); display: flex;"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/></svg></span>
 Daily Habits
 </div>
 <button class="habit-info-close" onclick="app.toggleHabitInfoModal()">×</button>
@@ -3574,7 +3565,7 @@ Daily Habits
 <ul class="habit-info-list">
 <li>Track up to 3 habits</li>
 <li>Private - not shared with anyone</li>
-<li>Check off in Calendar tab each day</li>
+<li>Check off in the Progress tab each day</li>
 <li>Build consistency one day at a time!</li>
 </ul>
 <div class="habit-info-highlight">
@@ -3611,7 +3602,7 @@ Custom Categories
 <li>Add up to 5 exercises per category</li>
 <li>Track with Reps, Distance, or Log Day</li>
 <li>Use in Favorite Stats cards</li>
-<li>Not shared with PALs</li>
+<li>Not shared with Crew</li>
 </ul>
 <div class="habit-info-highlight">
 Perfect for unique exercises not in our list!
@@ -3643,11 +3634,11 @@ Perfect for unique exercises not in our list!
 <!-- MY PROFILE Section - Slim Design -->
 <div class="pals-section">
 <h2 style="font-size: 14px; margin-bottom: 8px; color: var(--primary-light); font-weight: 600;">MY PROFILE</h2>
-<!-- PAL Code Row -->
+<!-- Crew Code Row -->
 <div class="pals-profile-card">
 <div style="display: flex; align-items: center; gap: 8px;">
 <div style="flex: 1; min-width: 0;">
-<div style="font-size: 12px; color: var(--text); margin-bottom: 4px; font-weight: 600;">PAL Code</div>
+<div style="font-size: 12px; color: var(--text); margin-bottom: 4px; font-weight: 600;">Crew Code</div>
 <div id="display-pal-code" style="font-size: 12px; color: rgba(255,255,255,0.75); font-weight: 500;">
                                 Not set
                             </div>
@@ -3709,7 +3700,7 @@ Perfect for unique exercises not in our list!
 <h2 style="font-size: 14px; margin-bottom: 8px; color: var(--primary-light); font-weight: 600;">ADD PAL</h2>
 <div class="pals-profile-card">
 <div style="display: flex; gap: 8px; align-items: center;">
-<input id="add-pal-code" inputmode="numeric" maxlength="4" placeholder="Enter PAL Code..." style="flex: 1; min-width: 0; padding: 6px 10px; background: #08090b; border: 1px solid #1e2127; border-radius: 6px; color: #eceff1; font-size: 13px; height: 32px; box-sizing: border-box;" type="tel"/>
+<input id="add-pal-code" inputmode="numeric" maxlength="4" placeholder="Enter Crew Code..." style="flex: 1; min-width: 0; padding: 6px 10px; background: #08090b; border: 1px solid #1e2127; border-radius: 6px; color: #eceff1; font-size: 13px; height: 32px; box-sizing: border-box;" type="tel"/>
 <button onclick="app.addPal()" style="width: 55px; height: 32px; flex-shrink: 0; background: var(--primary-dark); color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 12px; display: flex; align-items: center; justify-content: center;">
                             Add
                         </button>
@@ -3718,21 +3709,24 @@ Perfect for unique exercises not in our list!
 <div class="success-message" id="add-pal-success" style="margin-top: 6px;">Pal added!</div>
 <div class="error-message" id="add-pal-error" style="margin-top: 6px;"></div>
 </div>
-<!-- MY PALS List - Slim -->
+<!-- MY CREW list (v3.0: collapsible) -->
 <div class="pals-section">
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-<h2 style="font-size: 14px; color: var(--primary-light); font-weight: 600; margin: 0;">MY PALS</h2>
-<button onclick="app.refreshAllPals()" style="padding: 4px 10px; background: #1e2127; color: #eceff1; border: none; border-radius: 5px; font-size: 11px; cursor: pointer; font-weight: 600;">
-                        🔄 Refresh All
-                    </button>
+<div onclick="app.toggleCrewList()" style="display: flex; justify-content: space-between; align-items: center; cursor: pointer; padding: 4px 0;">
+<h2 style="font-size: 14px; color: var(--primary-light); font-weight: 600; margin: 0;">MY CREW <span id="crew-count" style="color: #7d838c; font-weight: 500;"></span></h2>
+<span id="crew-list-chevron" style="color: #7d838c; font-size: 13px; transition: transform 0.2s; display: inline-block;">▼</span>
+</div>
+<div id="crew-list-wrap" style="display: none; margin-top: 8px;">
+<div style="display: flex; justify-content: flex-end; margin-bottom: 8px;">
+<button onclick="app.refreshAllPals()" style="padding: 4px 10px; background: #1e2127; color: #eceff1; border: none; border-radius: 6px; font-size: 11px; cursor: pointer; font-weight: 600;"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px;"><path d="M20 11a8 8 0 1 0-2.34 5.66"/><path d="M20 5v6h-6"/></svg> Refresh All</button>
 </div>
 <div id="pals-list">
-<p style="color: #6b7280; text-align: center; padding: 16px 0; font-size: 13px;">No pals yet. Add one above!</p>
+<p style="color: #6b7280; text-align: center; padding: 16px 0; font-size: 13px;">No crew yet. Add someone above!</p>
+</div>
 </div>
 </div>
 <div class="today-card" id="crew-feed-card" style="margin-top: 16px;">
 <div class="today-card-title">Crew activity</div>
-<div id="crew-feed-list" style="font-size: 12px; color: #7d838c;">Add pals to see their activity here.</div>
+<div id="crew-feed-list" style="font-size: 12px; color: #7d838c;">Add to crews to see their activity here.</div>
 </div>
 <div class="today-card" id="crew-challenges-card">
 <div class="today-card-title" style="display: flex; justify-content: space-between; align-items: center;"><span>Challenges</span>
@@ -3776,7 +3770,7 @@ Perfect for unique exercises not in our list!
 <!-- Milestone Notification -->
 <div class="overlay" id="overlay" onclick="app.closeMilestone()"></div>
 <div class="milestone-notification" id="milestone-notification">
-<div class="milestone-icon-large" id="milestone-icon">🎯</div>
+<div class="milestone-icon-large" id="milestone-icon" style="color: var(--primary);"><svg viewBox="0 0 24 24" width="44" height="44" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v6a5 5 0 0 1-10 0V4z"/><path d="M7 6H4a3 3 0 0 0 3 4M17 6h3a3 3 0 0 1-3 4"/></svg></div>
 <div class="milestone-title" id="milestone-title">Milestone Reached</div>
 <div class="milestone-description" id="milestone-description">Great work!</div>
 <button class="milestone-close" onclick="app.closeMilestone()">Continue</button>
@@ -3811,13 +3805,13 @@ Perfect for unique exercises not in our list!
         </a>
 <button class="welcome-button" onclick="app.closeWelcome()">Let's Go</button>
 <div style="text-align: center; color: #6b7280; font-size: 11px; margin-top: 16px;">
-            v3.0.0
+            v3.1.0
         </div>
 </div>
 <!-- Customize Dashboard Modal -->
 <div class="overlay" id="customize-overlay" onclick="app.closeCustomizeModal()"></div>
 <div class="customize-modal" id="customize-modal">
-<div class="customize-modal-header">⭐ Customize Your Favorites</div>
+<div class="customize-modal-header"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px;"><path d="M12 3l2.7 5.6 6.1.8-4.5 4.2 1.1 6-5.4-2.9L6.6 19.6l1.1-6L3.2 9.4l6.1-.8L12 3z"/></svg> Customize Your Favorites</div>
 <div class="customize-slot">
 <label class="customize-slot-label">Favorite 1</label>
 <select id="custom-slot-1">
@@ -4085,7 +4079,7 @@ Perfect for unique exercises not in our list!
 </div>
 <script>
         // App Version
-        const APP_VERSION = '3.0.0';
+        const APP_VERSION = '3.1.0';
         
         // Main App Object
         const app = {
@@ -4102,7 +4096,7 @@ Perfect for unique exercises not in our list!
                 },
                 habits: [], // Make it a Habit: { id, name, frequency: 'daily'|'weekly', completions: [dates] }
                 records: null, // v3.0 PRs: { longestDistance, bestStepsDay, bestRepsSession, bestWeekDistance, longestStreak, migrated }
-                kudosGiven: {}, // v3.0: kudos I've sent, keyed palCode|ts
+                steppasGiven: {}, // v3.0: Steppas I've sent, keyed palCode|ts
                 challengeIds: [], // v3.0: challenge codes I'm in
                 customCategories: [], // Custom Activity Categories: { id, name, exercises: [{id, name, trackingType: 'reps'|'distance'|'logday'}] }
                 milestones: [],
@@ -4172,8 +4166,14 @@ Perfect for unique exercises not in our list!
                 this.renderQuickChips();
                 this.renderTodaysLog();
                 this.backfillRecords();
+                // v3.1 one-time notice: streak/consistency definition changed
+                if (!this.data.streakRuleNoticeShown && this.data.activities.some(a => a.type === 'steps')) {
+                    this.data.streakRuleNoticeShown = true;
+                    this.saveData();
+                    setTimeout(() => this.showToast('Streaks and consistency now count training days — steps-only days no longer qualify', { duration: 8000 }), 1200);
+                }
                 this.renderToday();
-                this.renderHeatmap();
+                this.renderMonthHero();
                 this.refreshPalDocs();
                 this.updateChallengeProgress();
 
@@ -4298,6 +4298,11 @@ Perfect for unique exercises not in our list!
                         if (this.data.pals.myPalCode === undefined) this.data.pals.myPalCode = '';
                         if (this.data.pals.displayName === undefined) this.data.pals.displayName = '';
                         if (this.data.pals.joinedLeaderboard === undefined) this.data.pals.joinedLeaderboard = false;
+                        // v3.0 rename: kudosGiven -> steppasGiven (one-time migration)
+                        if (parsed.kudosGiven && !parsed.steppasGiven) {
+                            this.data.steppasGiven = { ...parsed.kudosGiven };
+                            delete this.data.kudosGiven;
+                        }
                         if (this.data.pals.joinWeightLeaderboard === undefined) this.data.pals.joinWeightLeaderboard = false;
                         if (!this.data.pals.friends) this.data.pals.friends = [];
                     }
@@ -4359,6 +4364,31 @@ Perfect for unique exercises not in our list!
             _toastEl: null,
             _toastTimer: null,
             _hasChips: false,
+
+            // Inline monoline SVG icons (match bottom-nav style; currentColor)
+            _iconPaths: {
+                calendar: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18"/>',
+                refresh: '<path d="M20 11a8 8 0 1 0-2.34 5.66"/><path d="M20 5v6h-6"/>',
+                muscle: '<path d="M4 15a8 8 0 0 1 8-8h1a3 3 0 0 1 3 3v1"/><path d="M4 15a6 6 0 0 0 6 6h4a6 6 0 0 0 6-6c0-2-1.5-3.5-3.5-3.5S13 13 13 15"/>',
+                trophy: '<path d="M8 21h8M12 17v4M7 4h10v6a5 5 0 0 1-10 0V4z"/><path d="M7 6H4a3 3 0 0 0 3 4M17 6h3a3 3 0 0 1-3 4"/>',
+                target: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.2"/>',
+                star: '<path d="M12 3l2.7 5.6 6.1.8-4.5 4.2 1.1 6-5.4-2.9L6.6 19.6l1.1-6L3.2 9.4l6.1-.8L12 3z"/>',
+                pencil: '<path d="M4 20l4-1L19.5 7.5a2.1 2.1 0 0 0-3-3L5 16l-1 4z"/><path d="M14.5 6.5l3 3"/>',
+                chartline: '<path d="M4 19h16M4 19V5"/><path d="M6 15l4-4 3 3 5-6"/>',
+                chartbar: '<rect x="4" y="12" width="4" height="7" rx="1"/><rect x="10" y="8" width="4" height="11" rx="1"/><rect x="16" y="4" width="4" height="15" rx="1"/>',
+                check: '<circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/>',
+                bulb: '<path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-4 10.5c.7.6 1 1.4 1 2.5h6c0-1.1.3-1.9 1-2.5A6 6 0 0 0 12 3z"/>',
+                gear: '<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M2 12h3M19 12h3M4.9 19.1L7 17M17 7l2.1-2.1"/>',
+                note: '<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/>',
+                inbox: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 13h5l1.5 2h5L16 13h5"/>',
+                share: '<circle cx="6" cy="12" r="2.5"/><circle cx="17" cy="6" r="2.5"/><circle cx="17" cy="18" r="2.5"/><path d="M8.3 10.8l6.4-3.6M8.3 13.2l6.4 3.6"/>'
+            },
+
+            icon(name, size, style) {
+                const p = this._iconPaths[name];
+                if (!p) return '';
+                return `<svg viewBox="0 0 24 24" width="${size || 16}" height="${size || 16}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px; ${style || ''}">${p}</svg>`;
+            },
 
             // Escape a string for safe interpolation into HTML
             esc(str) {
@@ -4839,7 +4869,7 @@ Perfect for unique exercises not in our list!
                     this.checkMilestones();
 
                     const ts = activity.timestamp;
-                    this.showToast(prLabel ? `New PR 🏆 ${prLabel}` : `Logged ${p.name}`, {
+                    this.showToast(prLabel ? `New PR — ${prLabel}` : `Logged ${p.name}`, {
                         actionLabel: 'Undo',
                         onAction: () => {
                             const idx = this.data.activities.findIndex(a => a.timestamp === ts);
@@ -4863,7 +4893,7 @@ Perfect for unique exercises not in our list!
                 this.renderTodaysLog();
                 this.renderQuickChips();
                 this.renderToday();
-                this.renderHeatmap();
+                this.renderMonthHero();
             },
 
             // ---------- Today's log list ----------
@@ -5124,6 +5154,13 @@ Perfect for unique exercises not in our list!
                 return s;
             },
 
+            // v3.1: a "training day" is any logged activity except steps-only.
+            // Steps happen anyway; training is deliberate. One rule everywhere:
+            // streaks, week segments, consistency, report-card grade, day challenges.
+            isTrainingActivity(a) {
+                return !!a && a.type !== 'steps';
+            },
+
             getLastActivityDate() {
                 let last = null;
                 this.data.activities.forEach(a => {
@@ -5134,7 +5171,9 @@ Perfect for unique exercises not in our list!
 
             // ---------- Streak (weekly-frequency based, 1 freeze/week) ----------
             computeStreakInfo() {
-                const dates = new Set(this.data.activities.map(a => a.date).filter(Boolean));
+                const dates = new Set(this.data.activities
+                    .filter(a => this.isTrainingActivity(a))
+                    .map(a => a.date).filter(Boolean));
                 const goalDays = Math.min(7, Math.max(1, parseInt(this.data.goals.workoutFrequency) || 5));
                 const allowedRest = 7 - goalDays;
 
@@ -5396,44 +5435,82 @@ Perfect for unique exercises not in our list!
                 return `${Math.floor(mins / 1440)}d`;
             },
 
-            // ---------- Heatmap ----------
-            renderHeatmap() {
-                const grid = document.getElementById('heatmap-grid');
-                if (!grid) return;
-                const counts = {};
-                this.data.activities.forEach(a => { if (a.date) counts[a.date] = (counts[a.date] || 0) + 1; });
+            // ---------- Month hero (v3.1: replaces heatmap) ----------
+            renderMonthHero() {
+                const pctEl = document.getElementById('month-hero-pct');
+                if (!pctEl) return;
 
-                grid.innerHTML = '';
-                const start = this.getSundayStart(new Date());
-                start.setDate(start.getDate() - 7 * 25);
-                let activeDays = 0;
-                const todayStr = this.localDateStr(new Date());
-                for (let w = 0; w < 26; w++) {
-                    const col = document.createElement('div');
-                    col.className = 'heatmap-col';
-                    for (let d = 0; d < 7; d++) {
-                        const day = new Date(start);
-                        day.setDate(day.getDate() + w * 7 + d);
-                        const key = this.localDateStr(day);
-                        const cell = document.createElement('div');
-                        const c = counts[key] || 0;
-                        cell.className = 'heatmap-cell' + (c >= 4 ? ' l4' : c === 3 ? ' l3' : c === 2 ? ' l2' : c === 1 ? ' l1' : '');
-                        if (key > todayStr) cell.style.visibility = 'hidden';
-                        if (c > 0 && key <= todayStr) activeDays++;
-                        cell.title = `${key}: ${c} ${c === 1 ? 'activity' : 'activities'}`;
-                        col.appendChild(cell);
+                const now = new Date();
+                const y = now.getFullYear(), m = now.getMonth();
+                const daysElapsed = now.getDate();
+                const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+                // Honest sparkline data: one point per elapsed day, value = training
+                // activities logged that day (steps-only entries excluded everywhere)
+                const counts = new Array(daysElapsed).fill(0);
+                const trainingDates = new Set();
+                this.data.activities.forEach(a => {
+                    if (!this.isTrainingActivity(a) || !a.date) return;
+                    const d = new Date(a.date + 'T12:00:00');
+                    if (d.getFullYear() === y && d.getMonth() === m && d.getDate() <= daysElapsed) {
+                        counts[d.getDate() - 1]++;
+                        trainingDates.add(a.date);
                     }
-                    grid.appendChild(col);
+                });
+
+                const trainDays = trainingDates.size;
+                const pct = daysElapsed ? Math.round((trainDays / daysElapsed) * 100) : 0;
+
+                document.getElementById('month-hero-label').textContent = monthNames[m];
+                pctEl.textContent = `${pct}%`;
+                document.getElementById('month-hero-sub').textContent =
+                    `consistency · ${trainDays} of ${daysElapsed} training day${daysElapsed === 1 ? '' : 's'}`;
+
+                const status = document.getElementById('month-hero-status');
+                if (pct >= 90) status.textContent = 'Relentless. Keep it that way.';
+                else if (pct >= 70) status.textContent = 'On pace. Keep stacking.';
+                else if (pct >= 50) status.textContent = 'The month is slipping. Take it back.';
+                else status.textContent = 'Day one is waiting.';
+
+                // Sparkline: smooth path across elapsed days
+                const svg = document.getElementById('month-hero-spark');
+                if (svg) {
+                    const maxC = Math.max(3, ...counts);
+                    const n = Math.max(counts.length, 2);
+                    const pts = counts.map((c, i) => [
+                        (i / (n - 1)) * 300,
+                        56 - (c / maxC) * 50
+                    ]);
+                    let d = `M ${pts[0][0].toFixed(1)},${pts[0][1].toFixed(1)} `;
+                    for (let i = 1; i < pts.length; i++) {
+                        const mx = ((pts[i - 1][0] + pts[i][0]) / 2).toFixed(1);
+                        d += `C ${mx},${pts[i - 1][1].toFixed(1)} ${mx},${pts[i][1].toFixed(1)} ${pts[i][0].toFixed(1)},${pts[i][1].toFixed(1)} `;
+                    }
+                    svg.innerHTML = `<path d="${d}" fill="none" stroke="var(--primary)" stroke-width="2.5" vector-effect="non-scaling-stroke"/>`;
                 }
-                const total = document.getElementById('heatmap-total');
-                if (total) total.textContent = `${activeDays} active days`;
-                grid.scrollLeft = grid.scrollWidth;
             },
 
-            // ---------- Crew: feed + kudos ----------
+            toggleCrewList() {
+                const wrap = document.getElementById('crew-list-wrap');
+                const chev = document.getElementById('crew-list-chevron');
+                if (!wrap) return;
+                const open = wrap.style.display !== 'none';
+                wrap.style.display = open ? 'none' : 'block';
+                if (chev) chev.style.transform = open ? '' : 'rotate(180deg)';
+            },
+
+            updateCrewCount() {
+                const el = document.getElementById('crew-count');
+                if (el) {
+                    const n = (this.data.pals.friends || []).length;
+                    el.textContent = n ? `· ${n}` : '';
+                }
+            },
+
+            // ---------- Crew: feed + Steppas ----------
             _palDocs: {},
 
-            buildFeedRow(name, accent, ev, palCode, kudosCount) {
+            buildFeedRow(name, accent, ev, palCode, steppaCount) {
                 const row = document.createElement('div');
                 row.className = 'feed-row';
                 const left = document.createElement('div');
@@ -5450,12 +5527,14 @@ Perfect for unique exercises not in our list!
                 row.appendChild(left);
                 if (palCode) {
                     const btn = document.createElement('button');
-                    btn.className = 'kudos-btn';
+                    btn.className = 'steppa-btn';
+                    btn.title = 'Send a Steppa';
+                    btn.setAttribute('aria-label', 'Send a Steppa');
                     const givenKey = `${palCode}|${ev.ts}`;
-                    const given = this.data.kudosGiven && this.data.kudosGiven[givenKey];
+                    const given = this.data.steppasGiven && this.data.steppasGiven[givenKey];
                     if (given) btn.classList.add('given');
-                    btn.textContent = kudosCount ? `💪 ${kudosCount}` : '💪';
-                    btn.onclick = () => this.giveKudos(palCode, ev.ts, btn);
+                    btn.innerHTML = this.icon('muscle', 13) + (steppaCount ? ` ${steppaCount}` : '');
+                    btn.onclick = () => this.giveSteppa(palCode, ev.ts, btn);
                     row.appendChild(btn);
                 }
                 return row;
@@ -5469,42 +5548,43 @@ Perfect for unique exercises not in our list!
                 Object.keys(docs).forEach(code => {
                     const d = docs[code];
                     (d.recentActivities || []).forEach(ev => {
-                        const kc = d.kudos && d.kudos[ev.ts] ? d.kudos[ev.ts] : 0;
+                        const src2 = d.steppas || d.kudos || {};
+                        const kc = src2[ev.ts] || 0;
                         rows.push({ code, name: d.displayName || code, accent: d.accentColor, ev, kc });
                     });
                 });
                 rows.sort((a, b) => (b.ev.ts || '').localeCompare(a.ev.ts || ''));
                 list.innerHTML = '';
                 if (!rows.length) {
-                    list.textContent = 'Add pals to see their activity here.';
+                    list.textContent = 'Add to crews to see their activity here.';
                     return;
                 }
                 rows.slice(0, 12).forEach(r => list.appendChild(this.buildFeedRow(r.name, r.accent, r.ev, r.code, r.kc)));
             },
 
-            async giveKudos(palCode, ts, btn) {
+            async giveSteppa(palCode, ts, btn) {
                 if (!this.db) return;
                 const givenKey = `${palCode}|${ts}`;
-                if (!this.data.kudosGiven) this.data.kudosGiven = {};
-                if (this.data.kudosGiven[givenKey]) {
-                    this.showToast('Already gave kudos for that one', { duration: 2500 });
+                if (!this.data.steppasGiven) this.data.steppasGiven = {};
+                if (this.data.steppasGiven[givenKey]) {
+                    this.showToast('Already gave a Steppa for that one', { duration: 2500 });
                     return;
                 }
                 try {
                     await this.db.collection('users').doc(palCode).set({
-                        kudos: { [ts]: firebase.firestore.FieldValue.increment(1) }
+                        steppas: { [ts]: firebase.firestore.FieldValue.increment(1) }
                     }, { merge: true });
-                    this.data.kudosGiven[givenKey] = 1;
+                    this.data.steppasGiven[givenKey] = 1;
                     this.saveData();
                     if (btn) {
                         btn.classList.add('given');
                         const m = btn.textContent.match(/(\d+)/);
-                        btn.textContent = `💪 ${m ? parseInt(m[1]) + 1 : 1}`;
+                        btn.innerHTML = this.icon('muscle', 13) + ` ${m ? parseInt(m[1]) + 1 : 1}`;
                     }
-                    this.showToast('Kudos sent 💪', { duration: 2000 });
+                    this.showToast('Steppa sent', { duration: 2000 });
                 } catch (e) {
-                    console.error('Kudos failed:', e);
-                    this.showToast('Could not send kudos — check connection', { duration: 3000 });
+                    console.error('Steppa failed:', e);
+                    this.showToast('Could not send Steppa — check connection', { duration: 3000 });
                 }
             },
 
@@ -5594,7 +5674,7 @@ Perfect for unique exercises not in our list!
                 if (ch.metric === 'distance') return inRange.reduce((s, a) => s + (a.distance || 0), 0);
                 if (ch.metric === 'steps') return inRange.reduce((s, a) => s + (a.steps || 0), 0);
                 if (ch.metric === 'reps') return inRange.reduce((s, a) => s + (a.reps || 0), 0);
-                if (ch.metric === 'days') return new Set(inRange.map(a => a.date)).size;
+                if (ch.metric === 'days') return new Set(inRange.filter(a => this.isTrainingActivity(a)).map(a => a.date)).size;
                 return 0;
             },
 
@@ -5686,38 +5766,24 @@ Perfect for unique exercises not in our list!
             },
 
             // ---------- Weekly report card (canvas + Web Share) ----------
-            async shareReportCard() {
-                const canvas = document.createElement('canvas');
-                canvas.width = 1080; canvas.height = 1350;
-                const ctx = canvas.getContext('2d');
+            async shareReportCard(weekStartStr) {
+                // Default: the last completed week
+                if (!weekStartStr || typeof weekStartStr !== 'string') {
+                    const lastWeek = this.getSundayStart(new Date());
+                    lastWeek.setDate(lastWeek.getDate() - 7);
+                    weekStartStr = this.localDateStr(lastWeek);
+                }
+                const w = this.buildWeekSummary(weekStartStr);
                 const accent = this.getAccentHex();
-
-                const weekEnd = this.getSundayStart(new Date());
-                const weekStart = new Date(weekEnd); weekStart.setDate(weekStart.getDate() - 7);
-                const wsStr = this.localDateStr(weekStart);
-                const weStr = this.localDateStr(new Date(weekEnd - 86400000));
-
-                const acts = this.data.activities.filter(a => a.date && a.date >= wsStr && a.date <= weStr);
-                const days = new Set(acts.map(a => a.date)).size;
-                const goalDays = Math.min(7, Math.max(1, parseInt(this.data.goals.workoutFrequency) || 5));
-                const distKm = acts.reduce((s, a) => s + (a.distance || 0), 0);
-                const reps = acts.reduce((s, a) => s + (a.reps || 0), 0);
-                const steps = acts.reduce((s, a) => s + (a.steps || 0), 0);
-                const prs = acts.filter(a => a.pr).length;
                 const info = this.computeStreakInfo();
 
-                const ratio = days / goalDays;
-                const grade = ratio >= 1 ? 'A' : ratio >= 0.8 ? 'B' : ratio >= 0.6 ? 'C' : ratio >= 0.4 ? 'D' : 'F';
-                const verdicts = {
-                    A: 'Showed up every time it mattered.',
-                    B: 'Solid week. Champions find one more day.',
-                    C: 'Half measures. The iron noticed.',
-                    D: 'The week won. Take it back.',
-                    F: 'Day one is waiting. Again.'
-                };
+                const canvas = document.createElement('canvas');
+                canvas.width = 1080; canvas.height = 1350;
+                const ctx = canvas.getContext && canvas.getContext('2d');
+                if (!ctx) { this.showToast('Sharing is not supported here', { duration: 3000 }); return; }
 
                 const unitPref = this.data.goals.unitPreference === 'km' ? 'km' : 'mi';
-                const distShown = unitPref === 'km' ? distKm.toFixed(1) : (distKm / 1.60934).toFixed(1);
+                const distShown = unitPref === 'km' ? w.distKm.toFixed(1) : (w.distKm / 1.60934).toFixed(1);
 
                 ctx.fillStyle = '#08090b';
                 ctx.fillRect(0, 0, 1080, 1350);
@@ -5728,20 +5794,20 @@ Perfect for unique exercises not in our list!
                 ctx.fillText('Step', 195, 130);
                 ctx.fillStyle = '#7d838c';
                 ctx.font = '400 34px "Space Grotesk", sans-serif';
-                ctx.fillText(`Week of ${wsStr}`, 70, 190);
+                ctx.fillText(`Week of ${w.startStr}`, 70, 190);
 
                 ctx.fillStyle = accent;
                 ctx.font = '700 380px "Space Grotesk", sans-serif';
-                ctx.fillText(grade, 70, 560);
+                ctx.fillText(w.grade, 70, 560);
                 ctx.fillStyle = '#eceff1';
                 ctx.font = '500 44px "Space Grotesk", sans-serif';
-                ctx.fillText(`${days} of ${goalDays} days`, 70, 640);
+                ctx.fillText(`${w.days} of ${w.goalDays} days`, 70, 640);
 
                 const rows = [
                     [`${distShown} ${unitPref}`, 'distance'],
-                    [`${reps.toLocaleString()}`, 'reps'],
-                    [`${steps.toLocaleString()}`, 'steps'],
-                    [`${prs}`, prs === 1 ? 'new PR' : 'new PRs'],
+                    [`${w.reps.toLocaleString()}`, 'reps'],
+                    [`${w.steps.toLocaleString()}`, 'steps'],
+                    [`${w.prs}`, w.prs === 1 ? 'new PR' : 'new PRs'],
                     [`${info.streak}`, 'day streak']
                 ];
                 let y = 760;
@@ -5757,11 +5823,11 @@ Perfect for unique exercises not in our list!
 
                 ctx.fillStyle = accent;
                 ctx.font = '500 40px "Space Grotesk", sans-serif';
-                ctx.fillText(verdicts[grade], 70, 1270);
+                ctx.fillText(w.verdict, 70, 1270);
 
                 canvas.toBlob(async (blob) => {
                     if (!blob) { this.showToast('Could not render report card', { duration: 3000 }); return; }
-                    const file = new File([blob], `juststep-week-${wsStr}.png`, { type: 'image/png' });
+                    const file = new File([blob], `juststep-week-${w.startStr}.png`, { type: 'image/png' });
                     if (navigator.canShare && navigator.canShare({ files: [file] })) {
                         try { await navigator.share({ files: [file], title: 'JustStep weekly report' }); return; } catch (e) { /* fall through */ }
                     }
@@ -5819,7 +5885,8 @@ Perfect for unique exercises not in our list!
 
             // Show milestone notification
             showMilestone(milestone) {
-                document.getElementById('milestone-icon').textContent = milestone.icon;
+                // v3.0: monoline trophy for all milestones (emoji retired)
+                document.getElementById('milestone-icon').innerHTML = this.icon('trophy', 44);
                 document.getElementById('milestone-title').textContent = milestone.title;
                 document.getElementById('milestone-description').textContent = milestone.description;
                 document.getElementById('overlay').classList.add('show');
@@ -5936,7 +6003,7 @@ Perfect for unique exercises not in our list!
                     const activityDate = new Date(activity.date + 'T12:00:00');
                     
                     // Check which periods this activity belongs to
-                    const isThisWeek = activityDate >= thisWeekStart && activityDate <= now;
+                    const isThisWeek = activityDate >= thisWeekStart && activityDate < new Date(thisWeekStart.getTime() + 7 * 86400000);
                     const isPrevWeek = activityDate >= prevWeekStart && activityDate <= prevWeekEnd;
                     
                     // ========== DISTANCE ACTIVITIES ==========
@@ -6043,7 +6110,7 @@ Perfect for unique exercises not in our list!
                 
                 this.data.activities.forEach(activity => {
                     const activityDate = new Date(activity.date + 'T12:00:00');
-                    const isThisWeek = activityDate >= thisWeekStart && activityDate <= now;
+                    const isThisWeek = activityDate >= thisWeekStart && activityDate < new Date(thisWeekStart.getTime() + 7 * 86400000);
                     const isPrevWeek = activityDate >= prevWeekStart && activityDate <= prevWeekEnd;
                     
                     // Check if this is a strength activity (parent category OR sub-exercise)
@@ -6263,7 +6330,7 @@ Perfect for unique exercises not in our list!
                         if (exerciseTrackingType === 'logday') {
                             // Count unique days
                             uniqueDaysTotal.add(activity.date);
-                            if (activityDate >= thisWeekStart && activityDate <= now) {
+                            if (activityDate >= thisWeekStart && activityDate < new Date(thisWeekStart.getTime() + 7 * 86400000)) {
                                 uniqueDaysThisWeek.add(activity.date);
                             }
                             if (activityDate >= prevWeekStart && activityDate <= prevWeekEnd) {
@@ -6274,7 +6341,7 @@ Perfect for unique exercises not in our list!
                             const value = parseFloat(activity.distance) || 0;
                             total += value;
                             
-                            if (activityDate >= thisWeekStart && activityDate <= now) {
+                            if (activityDate >= thisWeekStart && activityDate < new Date(thisWeekStart.getTime() + 7 * 86400000)) {
                                 thisWeek += value;
                             }
                             
@@ -6286,7 +6353,7 @@ Perfect for unique exercises not in our list!
                             const value = parseFloat(activity.reps) || 0;
                             total += value;
                             
-                            if (activityDate >= thisWeekStart && activityDate <= now) {
+                            if (activityDate >= thisWeekStart && activityDate < new Date(thisWeekStart.getTime() + 7 * 86400000)) {
                                 thisWeek += value;
                             }
                             
@@ -6393,6 +6460,7 @@ Perfect for unique exercises not in our list!
 
                 // Recent milestones
                 const milestoneList = document.getElementById('milestone-list');
+                if (!milestoneList) return; // v3.0: dashboard card removed; celebration popups remain
                 if (this.data.milestones.length === 0) {
                     milestoneList.innerHTML = '<p style="text-align: center; color: #6b7280; font-size: 14px;">No milestones yet. Keep going!</p>';
                 } else {
@@ -6736,7 +6804,7 @@ Perfect for unique exercises not in our list!
                 const uniqueSelections = new Set(selections);
                 
                 if (uniqueSelections.size !== 3) {
-                    alert('Please select 3 different stats for your dashboard cards.');
+                    this.showToast('Pick 3 different stats for your dashboard cards', { duration: 3500 });
                     return;
                 }
 
@@ -7374,7 +7442,7 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                         const importedData = JSON.parse(e.target.result);
                         this.importData(importedData);
                     } catch (error) {
-                        alert('Error reading file. Please make sure it\'s a valid JustStep export file.');
+                        this.showToast('Could not read that file — export from JustStep and try again', { duration: 4500 });
                         console.error('Import error:', error);
                     }
                 };
@@ -7388,7 +7456,7 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
             importData(importedData) {
                 // Validate data structure
                 if (!importedData || !importedData.activities || !Array.isArray(importedData.activities)) {
-                    alert('Invalid data file. Please export from JustStep and try again.');
+                    this.showToast('Invalid data file — export from JustStep and try again', { duration: 4500 });
                     return;
                 }
 
@@ -7488,8 +7556,23 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                 });
 
                 if (screenName === 'today') this.renderToday();
-                if (screenName === 'progress') { this.renderHeatmap(); this.updateDashboard(); this.renderCalendar(); }
-                if (screenName === 'crew') { this.refreshPalDocs(); this.renderChallenges(); }
+                if (screenName === 'progress') {
+                    // Always land on the current month; arrows still browse from there
+                    const nowD = new Date();
+                    this.data.currentView.calendarMonth = nowD.getMonth();
+                    this.data.currentView.calendarYear = nowD.getFullYear();
+                    this.renderMonthHero();
+                    this.updateDashboard();
+                    this.renderCalendar();
+                }
+                if (screenName === 'crew') {
+                    this.updateCrewCount();
+                    this.refreshPalDocs();
+                    this.renderChallenges();
+                    // Merged tab must refresh the leaderboard on entry, or new
+                    // members who joined since app-load never appear
+                    this.renderLeaderboard();
+                }
                 if (screenName === 'log') { this.renderTodaysLog(); this.renderQuickChips(); }
 
                 if (this.data.currentView) {
@@ -7602,7 +7685,7 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                 if (activities.length === 0) {
                     content.innerHTML = `
                         <div class="empty-day">
-                            <div class="empty-day-icon">📭</div>
+                            <div class="empty-day-icon" style="color: #565b63;"><svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 13h5l1.5 2h5L16 13h5"/></svg></div>
                             <div class="empty-day-text">No activities logged for this day</div>
                         </div>
                     `;
@@ -7936,376 +8019,122 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                 }
             },
 
+            // v3.0: shared week summary used by the modal and the share card
+            buildWeekSummary(weekStartStr) {
+                const start = new Date(weekStartStr + 'T00:00:00');
+                const end = new Date(start); end.setDate(end.getDate() + 6);
+                const sStr = this.localDateStr(start);
+                const eStr = this.localDateStr(end);
+                const prevStart = new Date(start); prevStart.setDate(prevStart.getDate() - 7);
+                const pStr = this.localDateStr(prevStart);
+                const pEnd = new Date(start); pEnd.setDate(pEnd.getDate() - 1);
+                const peStr = this.localDateStr(pEnd);
+
+                const inRange = (a, lo, hi) => a.date && a.date >= lo && a.date <= hi;
+                const acts = this.data.activities.filter(a => inRange(a, sStr, eStr));
+                const prev = this.data.activities.filter(a => inRange(a, pStr, peStr));
+
+                const sum = (arr, f) => arr.reduce((s, a) => s + (f(a) || 0), 0);
+                const days = new Set(acts.filter(a => this.isTrainingActivity(a)).map(a => a.date)).size;
+                const goalDays = Math.min(7, Math.max(1, parseInt(this.data.goals.workoutFrequency) || 5));
+                const ratio = days / goalDays;
+                const grade = ratio >= 1 ? 'A' : ratio >= 0.8 ? 'B' : ratio >= 0.6 ? 'C' : ratio >= 0.4 ? 'D' : 'F';
+
+                return {
+                    startStr: sStr, endStr: eStr, days, goalDays, grade,
+                    distKm: sum(acts, a => a.distance),
+                    reps: sum(acts, a => a.reps),
+                    steps: sum(acts, a => a.steps),
+                    prs: acts.filter(a => a.pr).length,
+                    prevDistKm: sum(prev, a => a.distance),
+                    prevReps: sum(prev, a => a.reps),
+                    prevSteps: sum(prev, a => a.steps),
+                    prevDays: new Set(prev.filter(a => this.isTrainingActivity(a)).map(a => a.date)).size,
+                    verdict: ({
+                        A: 'Showed up every time it mattered.',
+                        B: 'Solid week. Champions find one more day.',
+                        C: 'Half measures. The iron noticed.',
+                        D: 'The week won. Take it back.',
+                        F: 'Day one is waiting. Again.'
+                    })[grade]
+                };
+            },
+
+            _deltaChip(cur, prev, fmt) {
+                if (prev <= 0 && cur <= 0) return '';
+                const up = cur >= prev;
+                const diff = Math.abs(cur - prev);
+                const color = up ? 'var(--primary)' : '#f87171';
+                const arrow = up ? '&#9650;' : '&#9660;';
+                return `<span style="font-size: 11px; color: ${color}; font-weight: 600;">${arrow} ${fmt(diff)}</span>`;
+            },
+
             renderWeeklyReport(weekStartDate) {
                 const container = document.getElementById('weekly-report-content');
                 if (!container) return;
-                
-                // Calculate week range (Sunday to Saturday)
-                const now = new Date();
-                const currentWeekStart = new Date(now);
-                currentWeekStart.setDate(now.getDate() - now.getDay());
-                currentWeekStart.setHours(0, 0, 0, 0);
 
+                const now = new Date();
+                const currentWeekStart = this.getSundayStart(now);
                 let startOfWeek = new Date(currentWeekStart);
                 if (weekStartDate) {
-                    const d = typeof weekStartDate === 'string'
-                        ? new Date(weekStartDate + 'T00:00:00')
-                        : new Date(weekStartDate);
+                    const d = typeof weekStartDate === 'string' ? new Date(weekStartDate + 'T00:00:00') : new Date(weekStartDate);
                     d.setHours(0, 0, 0, 0);
                     d.setDate(d.getDate() - d.getDay());
                     startOfWeek = d;
                 }
-
-                // Keep navigation state in sync
                 this.weeklyReportViewStart = this.localDateStr(startOfWeek);
-const endOfWeek = new Date(startOfWeek);
-                endOfWeek.setDate(startOfWeek.getDate() + 6);
-                endOfWeek.setHours(23, 59, 59, 999);
-                
-                // Calculate last week range
-                const lastWeekStart = new Date(startOfWeek);
-                lastWeekStart.setDate(lastWeekStart.getDate() - 7);
-                const lastWeekEnd = new Date(endOfWeek);
-                lastWeekEnd.setDate(lastWeekEnd.getDate() - 7);
-                
-                // Format date range
-                const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-                const startMonth = monthNames[startOfWeek.getMonth()];
-                const endMonth = monthNames[endOfWeek.getMonth()];
-                const startDay = startOfWeek.getDate();
-                const endDay = endOfWeek.getDate();
-                const year = endOfWeek.getFullYear();
-                
-                const dateRange = startMonth === endMonth 
-                    ? `${startMonth} ${startDay}-${endDay}, ${year}`
-                    : `${startMonth} ${startDay} - ${endMonth} ${endDay}, ${year}`;
-                
-
+                const w = this.buildWeekSummary(this.weeklyReportViewStart);
                 const isCurrentWeek = startOfWeek.getTime() === currentWeekStart.getTime();
-                // Get activities for this week and last week
-                const thisWeekActivities = this.data.activities.filter(a => {
-                    const actDate = new Date(a.date + 'T12:00:00');
-                    return actDate >= startOfWeek && actDate <= endOfWeek;
-                });
-                
-                const lastWeekActivities = this.data.activities.filter(a => {
-                    const actDate = new Date(a.date + 'T12:00:00');
-                    return actDate >= lastWeekStart && actDate <= lastWeekEnd;
-                });
-                
-                // Calculate chart data - STEPS ONLY (not distance)
-                const thisWeekSteps = [0, 0, 0, 0, 0, 0, 0]; // Sun-Sat
-                const lastWeekSteps = [0, 0, 0, 0, 0, 0, 0];
-                
-                thisWeekActivities.forEach(a => {
-                    if (a.steps) {
-                        const actDate = new Date(a.date + 'T12:00:00');
-                        const dayIndex = actDate.getDay();
-                        thisWeekSteps[dayIndex] += a.steps;
-                    }
-                });
-                
-                lastWeekActivities.forEach(a => {
-                    if (a.steps) {
-                        const actDate = new Date(a.date + 'T12:00:00');
-                        const dayIndex = actDate.getDay();
-                        lastWeekSteps[dayIndex] += a.steps;
-                    }
-                });
-                
-                const maxChartValue = Math.max(...thisWeekSteps, ...lastWeekSteps, 1);
-                
-                // Aggregate activities by type for THIS WEEK
-                const thisWeekTotals = {};
-                thisWeekActivities.forEach(a => {
-                    const key = a.type;
-                    if (!thisWeekTotals[key]) {
-                        thisWeekTotals[key] = { steps: 0, distance: 0, reps: 0, floors: 0, days: new Set() };
-                    }
-                    if (a.steps) thisWeekTotals[key].steps += a.steps;
-                    if (a.distance) thisWeekTotals[key].distance += a.distance;
-                    if (a.reps) thisWeekTotals[key].reps += a.reps;
-                    if (a.floors) thisWeekTotals[key].floors += a.floors;
-                    thisWeekTotals[key].days.add(a.date);
-                });
-                
-                // Aggregate activities by type for LAST WEEK
-                const lastWeekTotals = {};
-                lastWeekActivities.forEach(a => {
-                    const key = a.type;
-                    if (!lastWeekTotals[key]) {
-                        lastWeekTotals[key] = { steps: 0, distance: 0, reps: 0, floors: 0, days: new Set() };
-                    }
-                    if (a.steps) lastWeekTotals[key].steps += a.steps;
-                    if (a.distance) lastWeekTotals[key].distance += a.distance;
-                    if (a.reps) lastWeekTotals[key].reps += a.reps;
-                    if (a.floors) lastWeekTotals[key].floors += a.floors;
-                    lastWeekTotals[key].days.add(a.date);
-                });
-                
-                // Get unit preference
-                const unit = this.data.goals.unitPreference === 'km' ? 'km' : 'miles';
-                
-                // Build activity lists with comparisons
-                const cardioActivities = [];
-                const strengthActivities = [];
-                
-                Object.keys(thisWeekTotals).forEach(activityType => {
-                    const thisWeek = thisWeekTotals[activityType];
-                    const lastWeek = lastWeekTotals[activityType] || { steps: 0, distance: 0, reps: 0, floors: 0, days: new Set() };
-                    const activityName = this.getActivityTypeName(activityType);
-                    
-                    // Skip activities that ONLY have steps (steps shown in chart only, not in lists)
-                    const hasOnlySteps = thisWeek.steps > 0 && 
-                                        thisWeek.distance === 0 && 
-                                        thisWeek.reps === 0 && 
-                                        thisWeek.floors === 0;
-                    if (hasOnlySteps) {
-                        return; // This is a steps-only activity, skip it
-                    }
-                    
-                    // CARDIO: Distance-based (NOT STEPS), Stairs
-                    if (thisWeek.distance > 0) {
-                        let thisDistance = thisWeek.distance;
-                        let lastDistance = lastWeek.distance;
-                        if (this.data.goals.unitPreference === 'miles') {
-                            thisDistance = thisDistance / 1.60934;
-                            lastDistance = lastDistance / 1.60934;
-                        }
-                        
-                        const diff = thisDistance - lastDistance;
-                        const comparison = diff > 0 ? `+${diff.toFixed(1)}` : diff < 0 ? diff.toFixed(1) : '=';
-                        
-                        cardioActivities.push({
-                            name: activityName,
-                            value: thisDistance.toFixed(1),
-                            unit: unit,
-                            comparison: comparison,
-                            isIncrease: diff > 0,
-                            isDecrease: diff < 0
-                        });
-                    }
-                    
-                    if (thisWeek.floors > 0) {
-                        const diff = thisWeek.floors - lastWeek.floors;
-                        const comparison = diff > 0 ? `+${diff}` : diff < 0 ? `${diff}` : '=';
-                        
-                        cardioActivities.push({
-                            name: activityName,
-                            value: thisWeek.floors.toLocaleString(),
-                            unit: thisWeek.floors === 1 ? 'floor' : 'floors',
-                            comparison: comparison,
-                            isIncrease: diff > 0,
-                            isDecrease: diff < 0
-                        });
-                    }
-                    
-                    // STRENGTH: Reps-based, Log days
-                    if (thisWeek.reps > 0) {
-                        const diff = thisWeek.reps - lastWeek.reps;
-                        const comparison = diff > 0 ? `+${diff}` : diff < 0 ? `${diff}` : '=';
-                        
-                        strengthActivities.push({
-                            name: activityName,
-                            value: thisWeek.reps.toLocaleString(),
-                            unit: 'reps',
-                            comparison: comparison,
-                            isIncrease: diff > 0,
-                            isDecrease: diff < 0
-                        });
-                    }
-                    
-                    // Log day activities (only if no reps/distance/floors/steps)
-                    if (thisWeek.days.size > 0 && thisWeek.reps === 0 && thisWeek.distance === 0 && thisWeek.floors === 0 && thisWeek.steps === 0) {
-                        const diff = thisWeek.days.size - lastWeek.days.size;
-                        const comparison = diff > 0 ? `+${diff}` : diff < 0 ? `${diff}` : '=';
-                        
-                        strengthActivities.push({
-                            name: activityName,
-                            value: thisWeek.days.size,
-                            unit: thisWeek.days.size === 1 ? 'day' : 'days',
-                            comparison: comparison,
-                            isIncrease: diff > 0,
-                            isDecrease: diff < 0
-                        });
-                    }
-                });
-                
-                // Generate HTML
-                let html = `
-                    <div class="weekly-report-shell">
-                    <div class="weekly-report-header">
-                        <button class="weekly-report-nav-btn" onclick="app.navigateWeeklyReport(-1)" aria-label="Previous week">←</button>
-                        <div style="flex: 1; text-align: center;">
-                            <div class="weekly-report-title">Weekly Summary Ready</div>
-                            <div class="weekly-report-date">${dateRange}</div>
+
+                const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                const s = new Date(w.startStr + 'T12:00:00'), e = new Date(w.endStr + 'T12:00:00');
+                const dateRange = `${monthNames[s.getMonth()]} ${s.getDate()} &ndash; ${monthNames[e.getMonth()]} ${e.getDate()}`;
+
+                const unitPref = this.data.goals.unitPreference === 'km' ? 'km' : 'mi';
+                const showDist = (km) => unitPref === 'km' ? km.toFixed(1) : (km / 1.60934).toFixed(1);
+
+                const info = this.computeStreakInfo();
+                const streakLine = isCurrentWeek ? `${info.streak}` : '&mdash;';
+
+                const navBtn = 'background: #16181c; border: 1px solid #1e2127; color: #eceff1; width: 32px; height: 32px; border-radius: 50%; font-size: 15px;';
+                const row = (value, label, delta) => `
+                    <div style="display: flex; align-items: baseline; justify-content: space-between; padding: 9px 0; border-bottom: 1px solid #16181c;">
+                        <div><span style="font-size: 22px; font-weight: 600; color: #eceff1;">${value}</span>
+                        <span style="font-size: 12px; color: #7d838c; margin-left: 8px;">${label}</span></div>
+                        <div>${delta || ''}</div>
+                    </div>`;
+
+                container.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                        <button onclick="app.navigateWeeklyReport(-1)" style="${navBtn} cursor: pointer;">&lsaquo;</button>
+                        <div style="text-align: center;">
+                            <div style="font-size: 13px; font-weight: 600; color: #eceff1;">Weekly report</div>
+                            <div style="font-size: 11px; color: #7d838c;">${dateRange}${isCurrentWeek ? ' &middot; in progress' : ''}</div>
                         </div>
-                        <button class="weekly-report-nav-btn" onclick="app.navigateWeeklyReport(1)" ${isCurrentWeek ? 'disabled' : ''} aria-label="Next week">→</button>
+                        <button onclick="app.navigateWeeklyReport(1)" ${isCurrentWeek ? 'disabled' : ''} style="${navBtn} ${isCurrentWeek ? 'opacity: 0.3; cursor: default;' : 'cursor: pointer;'}">&rsaquo;</button>
                     </div>
-                    <div class="weekly-report-body">
-                    
-                    <div class="weekly-report-chart-section">
-                        <div class="weekly-report-chart-title">Daily Steps</div>
-                        <div style="max-width: 62.5%; margin: 0 auto;">
-                            <div style="display: flex; gap: 8px; align-items: stretch;">
-                                <div class="weekly-report-chart" style="flex: 1; position: relative;">
-                `;
-                
-                // Calculate raw max and round UP to next 2k increment
-                const rawMax = Math.max(...thisWeekSteps, ...lastWeekSteps, 1);
-                const scaledMax = Math.max(Math.ceil(rawMax / 2000) * 2000, 2000); // Minimum 2k scale
-                
-                // Find last week's peak for reference line
-                const lastWeekPeak = Math.max(...lastWeekSteps);
-                
-                // Generate Y-axis labels (5 ticks: 0%, 25%, 50%, 75%, 100%)
-                const yAxisLabels = [];
-                for (let i = 4; i >= 0; i--) {
-                    const value = (scaledMax * i) / 4;
-                    let label = '0';
-                    if (value >= 1000) {
-                        label = (value / 1000).toFixed(0) + 'k';
-                    } else if (value > 0) {
-                        label = Math.round(value).toString();
-                    }
-                    yAxisLabels.push({ value, label, percent: (i * 25) });
-                }
-                
-                // Add reference line at last week's peak
-                const peakPercent = scaledMax > 0 ? (lastWeekPeak / scaledMax * 100) : 0;
-                
-                if (lastWeekPeak > 0) {
-                    html += `
-                        <div style="
-                            position: absolute;
-                            left: 0;
-                            right: 0;
-                            bottom: ${peakPercent}%;
-                            border-top: 1px dashed rgba(255,255,255,0.9);
-                            opacity: 0.9;
-                            pointer-events: none;
-                            z-index: 0;
-                        "></div>
-                    `;
-                }
-                
-                // Generate overlaid bars (use scaledMax for height calculations)
-                thisWeekSteps.forEach((thisValue, index) => {
-                    const lastValue = lastWeekSteps[index];
-                    const thisHeight = scaledMax > 0 ? (thisValue / scaledMax * 100) : 0;
-                    const lastHeight = scaledMax > 0 ? (lastValue / scaledMax * 100) : 0;
-                    
-                    html += `
-                        <div class="weekly-report-chart-bar-container" style="position: relative;">
-                            ${lastValue > 0 ? `
-                            <div style="
-                                position: absolute;
-                                bottom: 0;
-                                width: 4px;
-                                height: ${Math.max(lastHeight, 8)}%;
-                                border: 1px dashed rgba(255,255,255,0.85);
-                                border-bottom: none;
-                                border-radius: 4px 4px 0 0;
-                                opacity: 0.5;
-                                box-sizing: border-box;
-                            "></div>
-                            ` : ''}
-                            ${thisValue > 0 ? `
-                            <div class="weekly-report-chart-bar" style="height: ${Math.max(thisHeight, 8)}%; position: relative; z-index: 1;"></div>
-                            ` : ''}
-                        </div>
-                    `;
-                });
-                
-                html += `
-                            </div>
-                            <div style="display: flex; flex-direction: column; justify-content: space-between; padding: 0 4px; font-size: 9px; color: #6b7280; font-weight: 600; min-width: 32px; text-align: left;">
-                `;
-                
-                // Add Y-axis labels
-                yAxisLabels.forEach(tick => {
-                    html += `<div style="line-height: 1;">${tick.label}</div>`;
-                });
-                
-                html += `
-                            </div>
-                        </div>
-                        <div style="display: flex; gap: 8px; padding: 0 20px;">
-                            <div style="flex: 1; display: flex; justify-content: space-around; gap: 8px;">
-                                <span style="flex: 1; text-align: center; font-size: 11px; color: #6b7280; font-weight: 600;">S</span>
-                                <span style="flex: 1; text-align: center; font-size: 11px; color: #6b7280; font-weight: 600;">M</span>
-                                <span style="flex: 1; text-align: center; font-size: 11px; color: #6b7280; font-weight: 600;">T</span>
-                                <span style="flex: 1; text-align: center; font-size: 11px; color: #6b7280; font-weight: 600;">W</span>
-                                <span style="flex: 1; text-align: center; font-size: 11px; color: #6b7280; font-weight: 600;">T</span>
-                                <span style="flex: 1; text-align: center; font-size: 11px; color: #6b7280; font-weight: 600;">F</span>
-                                <span style="flex: 1; text-align: center; font-size: 11px; color: #6b7280; font-weight: 600;">S</span>
-                            </div>
-                            <div style="min-width: 32px;"></div>
-                        </div>
+                    <div style="display: flex; align-items: center; gap: 16px; margin: 10px 0 4px;">
+                        <div style="font-size: 88px; font-weight: 700; line-height: 1; color: var(--primary);">${w.grade}</div>
+                        <div>
+                            <div style="font-size: 16px; font-weight: 600; color: #eceff1;">${w.days} of ${w.goalDays} days</div>
+                            <div style="font-size: 12px; color: #7d838c;">${this._deltaChip(w.days, w.prevDays, v => v + (v === 1 ? ' day' : ' days')) || 'vs last week'}</div>
                         </div>
                     </div>
-                    
-                    <div class="weekly-report-stats-section">
-                        <div class="weekly-report-stat-column">
-                            <div class="weekly-report-stat-column-title">Cardio</div>
-                `;
-                
-                if (cardioActivities.length === 0) {
-                    html += `<div class="weekly-report-stat-item"><span class="weekly-report-stat-label" style="color: #6b7280;">No cardio logged</span></div>`;
-                } else {
-                    cardioActivities.forEach(item => {
-                        const compColor = item.isIncrease ? '#10b981' : item.isDecrease ? '#ef4444' : 'var(--primary-light)';
-                        html += `
-                            <div class="weekly-report-stat-item">
-                                <span class="weekly-report-stat-label" title="${item.name}">${item.name}</span>
-                                <span class="weekly-report-stat-value">
-                                    ${item.value} ${item.unit}
-                                    <span class="weekly-report-stat-comp" style="color: ${compColor};">${item.comparison}</span>
-                                </span>
-                            </div>
-                        `;
-                    });
-                }
-                
-                html += `
-                        </div>
-                        <div class="weekly-report-stat-column">
-                            <div class="weekly-report-stat-column-title">Strength</div>
-                `;
-                
-                if (strengthActivities.length === 0) {
-                    html += `<div class="weekly-report-stat-item"><span class="weekly-report-stat-label" style="color: #6b7280;">No strength logged</span></div>`;
-                } else {
-                    strengthActivities.forEach(item => {
-                        const compColor = item.isIncrease ? '#10b981' : item.isDecrease ? '#ef4444' : 'var(--primary-light)';
-                        html += `
-                            <div class="weekly-report-stat-item">
-                                <span class="weekly-report-stat-label" title="${item.name}">${item.name}</span>
-                                <span class="weekly-report-stat-value">
-                                    ${item.value} ${item.unit}
-                                    <span class="weekly-report-stat-comp" style="color: ${compColor};">${item.comparison}</span>
-                                </span>
-                            </div>
-                        `;
-                    });
-                }
-                
-                html += `
-                        </div>
+                    <div style="margin-top: 6px;">
+                        ${row(`${showDist(w.distKm)} <span style="font-size: 13px;">${unitPref}</span>`, 'distance', this._deltaChip(w.distKm, w.prevDistKm, v => showDist(v) + ' ' + unitPref))}
+                        ${row(w.reps.toLocaleString(), 'reps', this._deltaChip(w.reps, w.prevReps, v => Math.round(v).toLocaleString()))}
+                        ${row(w.steps.toLocaleString(), 'steps', this._deltaChip(w.steps, w.prevSteps, v => Math.round(v).toLocaleString()))}
+                        ${row(w.prs, w.prs === 1 ? 'new PR' : 'new PRs', '')}
+                        ${row(streakLine, 'day streak', '')}
                     </div>
-                    
-                    </div>
-                    <div class="weekly-report-footer">
-                    <div class="weekly-report-actions">
-                        <button class="weekly-report-action-btn" onclick="app.closeWeeklyReport()">Dismiss</button>
-                        <button class="weekly-report-action-btn" onclick="app.closeWeeklyReport(); app.showScreen('calendar')">Go to Calendar</button>
-                        <button class="weekly-report-action-btn primary" onclick="app.saveWeeklyReportImage()">Save Image</button>
+                    <div style="font-size: 13px; color: var(--primary); font-weight: 500; margin-top: 14px;">${w.verdict}</div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 16px;">
+                        <button onclick="app.closeWeeklyReport()" style="padding: 11px; background: #1e2127; color: #eceff1; border: none; border-radius: 12px; font-weight: 600; cursor: pointer; font-family: inherit;">Close</button>
+                        <button onclick="app.shareReportCard(app.weeklyReportViewStart)" style="padding: 11px; background: var(--primary); color: var(--on-accent); border: none; border-radius: 12px; font-weight: 600; cursor: pointer; font-family: inherit;">Share</button>
                     </div>
                 `;
-                
-                container.innerHTML = html;
             },
-            
+
             getActivityTypeName(type) {
                 // Map activity types to display names
                 const nameMap = {
@@ -8353,7 +8182,7 @@ const endOfWeek = new Date(startOfWeek);
             },
             
             saveWeeklyReportImage() {
-                alert('Save Image feature coming soon! This will capture the report as a PNG.');
+                this.shareReportCard(this.weeklyReportViewStart);
                 // TODO: Implement html2canvas or similar library
                 this.closeWeeklyReport();
             },
@@ -8879,7 +8708,7 @@ const endOfWeek = new Date(startOfWeek);
 
                 const parsedWeight = parseFloat(newWeight);
                 if (isNaN(parsedWeight) || parsedWeight <= 0) {
-                    alert('Please enter a valid weight');
+                    this.showToast('Enter a valid weight first', { duration: 3000 });
                     return;
                 }
 
@@ -8968,7 +8797,7 @@ const endOfWeek = new Date(startOfWeek);
                 const hasPalCode = !!(this.data.pals && this.data.pals.myPalCode);
                 const checkbox = document.getElementById('join-leaderboard');
                 if (checkbox) {
-                    // Only allow leaderboard participation once PAL Code is set
+                    // Only allow leaderboard participation once Crew Code is set
                     checkbox.checked = (this.data.pals.joinedLeaderboard || false) && hasPalCode;
                     checkbox.disabled = !hasPalCode;
                     checkbox.style.opacity = checkbox.disabled ? '0.5' : '1';
@@ -8979,7 +8808,7 @@ const endOfWeek = new Date(startOfWeek);
                 if (weightCheckbox) {
                     const eligibleForWeight = this.isWeightLeaderboardEligible();
                     // Weight leaderboard only available when:
-                    // 1) PAL Code exists
+                    // 1) Crew Code exists
                     // 2) User is in leaderboards (Steps/Distance)
                     // 3) Initial weight + at least one weigh-in exist
                     const canToggleWeight = hasPalCode && (this.data.pals.joinedLeaderboard || false) && eligibleForWeight;
@@ -8993,7 +8822,7 @@ const endOfWeek = new Date(startOfWeek);
                 // Share Weight with Pals checkbox
                 const shareWeightCheckbox = document.getElementById('share-weight-with-pals');
                 if (shareWeightCheckbox) {
-                    // Can share weight with pals if PAL Code exists
+                    // Can share weight with pals if Crew Code exists
                     shareWeightCheckbox.checked = (this.data.pals.shareWeightWithPals || false) && hasPalCode;
                     shareWeightCheckbox.disabled = !hasPalCode;
                     shareWeightCheckbox.style.opacity = shareWeightCheckbox.disabled ? '0.5' : '1';
@@ -9015,7 +8844,7 @@ const endOfWeek = new Date(startOfWeek);
             },
 
             // Toggle leaderboard participation (Steps/Distance).
-            // Only allowed once PAL Code is set.
+            // Only allowed once Crew Code is set.
             async toggleLeaderboard() {
                 const checkbox = document.getElementById('join-leaderboard');
                 const hasPalCode = !!(this.data.pals && this.data.pals.myPalCode);
@@ -9026,7 +8855,7 @@ const endOfWeek = new Date(startOfWeek);
                     this.data.pals.joinWeightLeaderboard = false;
                     this.saveData();
                     this.updatePalsUI();
-                    alert('Create your PAL Code first to join the leaderboards.');
+                    this.showToast('Create your Crew Code first to join the leaderboards.', { duration: 4000 });
                     return;
                 }
 
@@ -9043,8 +8872,16 @@ const endOfWeek = new Date(startOfWeek);
                 this.saveData();
                 this.updatePalsUI();
 
-                // Sync if possible (non-blocking)
-                try { await this.syncMyStatsToFirebase(); } catch (e) {}
+                // Sync immediately so the rest of the crew sees the change,
+                // and tell the user whether it actually reached the server
+                try {
+                    await this.syncMyStatsToFirebase();
+                    this.showToast(joined ? 'Joined the leaderboard — visible to your crew' : 'Left the leaderboard');
+                } catch (e) {
+                    console.error('Leaderboard toggle sync failed:', e);
+                    this.showToast('Saved locally — will sync when back online', { duration: 4000 });
+                }
+                this.renderLeaderboard();
             },
 
             // Toggle Weight leaderboard opt-in.
@@ -9066,7 +8903,7 @@ const endOfWeek = new Date(startOfWeek);
                     this.data.pals.joinWeightLeaderboard = false;
                     this.saveData();
                     this.updatePalsUI();
-                    alert('To join the Weight leaderboard, add your Initial Weight in Goals and log at least one weigh-in.');
+                    this.showToast('Add your initial weight in Goals and log one weigh-in to join', { duration: 4500 });
                     return;
                 }
 
@@ -9101,7 +8938,7 @@ const endOfWeek = new Date(startOfWeek);
 
             // Share my code via text/messaging
             
-// -------- PAL Code / Display Name modal helpers (v1.7.0) --------
+// -------- Crew Code / Display Name modal helpers (v1.7.0) --------
 createModalOverlay(titleText) {
     const overlay = document.createElement('div');
     overlay.style.position = 'fixed';
@@ -9183,7 +9020,7 @@ async promptForPalCode() {
     const wrap = document.createElement('div');
 
     const desc = document.createElement('div');
-    desc.textContent = 'Enter a 4-digit PAL Code (numbers only). Leading zeros are allowed.';
+    desc.textContent = 'Enter a 4-digit Crew Code (numbers only). Leading zeros are allowed.';
     desc.style.color = 'rgba(255,255,255,0.75)';
     desc.style.fontSize = '13px';
     desc.style.marginBottom = '12px';
@@ -9211,12 +9048,12 @@ async promptForPalCode() {
     wrap.appendChild(input);
 
     // show modal
-    const result = await this.promptModal({ title: 'Create Your PAL Code', bodyNode: wrap, okText: 'OK', cancelText: 'Cancel' });
+    const result = await this.promptModal({ title: 'Create Your Crew Code', bodyNode: wrap, okText: 'OK', cancelText: 'Cancel' });
     if (!result) return null;
 
     const code = (input.value || '').trim();
     if (!/^\d{4}$/.test(code)) {
-        alert('❌ PAL Code must be exactly 4 digits (example: 0042).');
+        app.showToast('Crew Code must be exactly 4 digits (e.g. 0042)', { duration: 3500 });
         return await this.promptForPalCode();
     }
     return code;
@@ -9251,7 +9088,7 @@ async promptForDisplayName() {
 
     const name = (input.value || '').trim();
     if (!name) {
-        alert('❌ Display Name cannot be empty.');
+        app.showToast('Display name cannot be empty', { duration: 3000 });
         return await this.promptForDisplayName();
     }
     return name;
@@ -9261,7 +9098,7 @@ async promptForDisplayName() {
 shareMyPalCode() {
                 const code = this.data.pals.myPalCode;
                 if (!code) {
-                    alert('Please save your PAL Code first!');
+                    this.showToast('Save your Crew Code first', { duration: 3000 });
                     return;
                 }
 
@@ -9278,10 +9115,10 @@ shareMyPalCode() {
                 } else {
                     // Fallback - copy to clipboard
                     navigator.clipboard.writeText(message).then(() => {
-                        alert('Message copied to clipboard! Paste it in a text message.');
+                        this.showToast('Invite copied — paste it in a text', { duration: 3000 });
                     }).catch(() => {
                         // Final fallback - show alert with code
-                        alert(message);
+                        this.showToast(message, { duration: 8000 });
                     });
                 }
             },
@@ -9291,7 +9128,7 @@ shareMyPalCode() {
                 const name = document.getElementById('display-name').value.trim();
                 
                 if (!name) {
-                    alert('Please enter a display name');
+                    this.showToast('Enter a display name first', { duration: 3000 });
                     return;
                 }
 
@@ -9314,7 +9151,7 @@ shareMyPalCode() {
 
                 const name = String(entered).trim();
                 if (!name) {
-                    alert('Please enter a display name');
+                    this.showToast('Enter a display name first', { duration: 3000 });
                     return;
                 }
 
@@ -9336,15 +9173,15 @@ shareMyPalCode() {
                     if (!overlay || !input || !cancelBtn || !okBtn || !msg) {
                         // Fallback to browser prompt (should be rare)
                         const raw = prompt(
-                            'Create your PAL Code (4 digits):\n' +
+                            'Create your Crew Code (4 digits):\n' +
                             'Numbers only (example: 0042).\n\n' +
-                            'Note: Your PAL Code cannot be changed later.'
+                            'Note: Your Crew Code cannot be changed later.'
                         );
                         resolve(raw === null ? null : String(raw).trim());
                         return;
                     }
 
-                    msg.textContent = 'Create your PAL Code (4 digits)';
+                    msg.textContent = 'Create your Crew Code (4 digits)';
                     input.value = '';
                     overlay.style.display = 'flex';
 
@@ -9388,9 +9225,9 @@ shareMyPalCode() {
                 });
             },
 
-            // Edit PAL Code (inline prompt)
+            // Edit Crew Code (inline prompt)
 
-// Handle PAL Code button (Set Code or Share)
+// Handle Crew Code button (Set Code or Share)
 async handlePalCodeButton() {
     if (this.data.pals.myPalCode) {
         // Already has code - share it
@@ -9401,21 +9238,21 @@ async handlePalCodeButton() {
     }
 },
 
-// Create PAL Code
-// Create PAL Code
+// Create Crew Code
+// Create Crew Code
 async createPalCode() {
-    // PAL Code creation flow (4 digits)
+    // Crew Code creation flow (4 digits)
     while (true) {
         const code = await this.promptFourDigitPalCode();
         if (code === null) return; // cancelled
         if (!/^\d{4}$/.test(code)) {
-            alert('⚠️ Invalid PAL Code. Please enter exactly 4 digits (e.g., 0042).');
+            this.showToast('Invalid Crew Code — enter exactly 4 digits', { duration: 3500 });
             continue;
         }
 
         const confirmLock = confirm(
-            'Your PAL Code cannot be changed later.\n\n' +
-            'Use PAL Code: ' + code + ' ?'
+            'Your Crew Code cannot be changed later.\n\n' +
+            'Use Crew Code: ' + code + ' ?'
         );
         if (!confirmLock) continue;
 
@@ -9432,7 +9269,7 @@ async createPalCode() {
 
         if (!this.db) {
             console.error('Firebase is not initialized (db is missing).');
-            alert('❌ Firebase is not available. Please try again.');
+            this.showToast('Connection unavailable — try again', { duration: 3500 });
             return;
         }
 
@@ -9511,15 +9348,15 @@ async createPalCode() {
             // Best-effort stats sync (merge update)
             await this.syncMyStatsToFirebase();
 
-            alert('✅ PAL Code created! You can now share it.');
+            this.showToast('Crew Code created — share it with your crew');
             return;
         } catch (err) {
             if (String(err && err.message) === 'CODE_TAKEN') {
-                alert('⚠️ That PAL Code is already taken. Please try another.');
+                this.showToast('That Crew Code is taken — try another', { duration: 3500 });
                 continue;
             }
             console.error(err);
-            alert('❌ Error creating PAL Code. Please try again.');
+            this.showToast('Could not create Crew Code — try again', { duration: 3500 });
             return;
         }
     }
@@ -9627,7 +9464,7 @@ async createPalCode() {
                 }
             },
 
-            // Add pal
+            // Add to crew
             async addPal() {
                 const code = document.getElementById('add-pal-code').value.trim();
                 const errorEl = document.getElementById('add-pal-error');
@@ -9637,14 +9474,14 @@ async createPalCode() {
                 successEl.classList.remove('show');
 
                 if (!code) {
-                    errorEl.textContent = 'Please enter a PAL Code';
+                    errorEl.textContent = 'Please enter a Crew Code';
                     errorEl.classList.add('show');
                     return;
                 }
 
                 // Format: 4 digits
                 if (!/^\d{4}$/.test(code)) {
-                    errorEl.textContent = 'Invalid PAL Code. Use 4 digits (example: 0042).';
+                    errorEl.textContent = 'Invalid Crew Code. Use 4 digits (example: 0042).';
                     errorEl.classList.add('show');
                     return;
                 }
@@ -9668,7 +9505,7 @@ async createPalCode() {
                     const doc = await this.db.collection('users').doc(code).get();
                     
                     if (!doc.exists) {
-                        errorEl.textContent = 'PAL Code not found. Make sure your pal has set up their profile!';
+                        errorEl.textContent = 'Crew Code not found. Make sure your pal has set up their profile!';
                         errorEl.classList.add('show');
                         return;
                     }
@@ -9735,7 +9572,7 @@ async createPalCode() {
                 const weightUnit = 'lbs';
 // Show empty state if no pals
                 if (!this.data.pals.friends || this.data.pals.friends.length === 0) {
-                    listEl.innerHTML = '<p style="color: #6b7280; text-align: center; padding: 20px;">No pals yet. Add one above!</p>';
+                    listEl.innerHTML = '<p style="color: #6b7280; text-align: center; padding: 20px;">No crew yet. Add someone above!</p>';
                     return;
                 }
 
@@ -9869,7 +9706,7 @@ async createPalCode() {
                                 <div class="pal-expand-icon">${arrow}</div>
                             </div>
                             <div class="pal-stats-expanded">
-                                <div class="pal-id-display">PAL Code: ${pal.palCode}</div>
+                                <div class="pal-id-display">Crew Code: ${pal.palCode}</div>
                                 ${activityTableHTML}
                                 <div class="pal-actions">
                                     <button class="pal-btn pal-btn-remove" onclick="app.removePal('${pal.palCode}')">Remove</button>
@@ -9903,11 +9740,11 @@ async createPalCode() {
                 }
 
                 if (btn) {
-                    btn.textContent = '🔄 Refresh All';
+                    btn.innerHTML = this.icon('refresh', 13) + ' Refresh All';
                     btn.disabled = false;
                 }
                 
-                alert('All pals refreshed!');
+                this.showToast('Crew refreshed');
             },
 
             // Render leaderboard
@@ -10038,13 +9875,15 @@ async createPalCode() {
                         }
                         
                         // Determine emoji status based on hours
+                        // v3.0: colored dot instead of emoji (accent = fresh, gray = day-old, dark = stale)
+                        const dot = (c) => `<span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:${c};margin-left:6px;vertical-align:1px;"></span>`;
                         let statusIndicator = '';
                         if (hoursInactive < 16) {
-                            statusIndicator = '⚡'; // 0-16 hours
+                            statusIndicator = dot('var(--primary)'); // 0-16 hours
                         } else if (hoursInactive < 32) {
-                            statusIndicator = '✨'; // 16-32 hours
+                            statusIndicator = dot('#7d838c'); // 16-32 hours
                         } else {
-                            statusIndicator = '💤'; // 32+ hours (shows in all leaderboards until 21 days)
+                            statusIndicator = dot('#3a3f47'); // 32+ hours (until 21-day removal)
                         }
                         
                         // REMOVE users with 21+ days of inactivity (from all leaderboards)
@@ -10303,7 +10142,7 @@ async createPalCode() {
             // Add new habit
             addHabit() {
                 if (this.data.habits.length >= 3) {
-                    alert('Maximum 3 habits reached!');
+                    this.showToast('Maximum of 3 habits', { duration: 3000 });
                     return;
                 }
 
@@ -10312,7 +10151,7 @@ async createPalCode() {
                 if (name === null) return; // cancelled
                 name = name.trim();
                 if (!name) {
-                    alert('Habit name is required.');
+                    this.showToast('Habit name is required', { duration: 3000 });
                     return;
                 }
 
@@ -10480,7 +10319,7 @@ async createPalCode() {
             // Add custom category
             addCustomCategory() {
                 if (this.data.customCategories.length >= 3) {
-                    alert('Maximum 3 custom categories reached!');
+                    this.showToast('Maximum of 3 custom categories', { duration: 3000 });
                     return;
                 }
                 
@@ -10490,15 +10329,15 @@ async createPalCode() {
                 
                 // Validate: letters only, max 20 chars
                 if (!name) {
-                    alert('Category name is required.');
+                    this.showToast('Category name is required', { duration: 3000 });
                     return;
                 }
                 if (!/^[a-zA-Z\s]+$/.test(name)) {
-                    alert('Category name must contain letters only.');
+                    this.showToast('Category name must contain letters only', { duration: 3000 });
                     return;
                 }
                 if (name.length > 20) {
-                    alert('Category name must be 20 characters or less.');
+                    this.showToast('Category name must be 20 characters or less', { duration: 3000 });
                     return;
                 }
                 
@@ -10532,7 +10371,7 @@ async createPalCode() {
                 let html = `
                     <div class="overlay" id="manage-exercises-overlay" onclick="app.closeManageExercises()" style="display: block;"></div>
                     <div class="customize-modal" id="manage-exercises-modal" style="display: block;">
-                        <div class="customize-modal-header">✏️ Manage: ${this.esc(category.name)}</div>
+                        <div class="customize-modal-header"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px;"><path d="M4 20l4-1L19.5 7.5a2.1 2.1 0 0 0-3-3L5 16l-1 4z"/><path d="M14.5 6.5l3 3"/></svg> Manage: ${this.esc(category.name)}</div>
                         <div style="max-height: 400px; overflow-y: auto; margin-bottom: 12px;">
                 `;
                 
@@ -10597,7 +10436,7 @@ async createPalCode() {
                 if (!category) return;
                 
                 if (category.exercises && category.exercises.length >= 5) {
-                    alert('Maximum 5 exercises per category reached!');
+                    this.showToast('Maximum of 5 exercises per category', { duration: 3000 });
                     return;
                 }
                 
@@ -10607,15 +10446,15 @@ async createPalCode() {
                 
                 // Validate
                 if (!name) {
-                    alert('Exercise name is required.');
+                    this.showToast('Exercise name is required', { duration: 3000 });
                     return;
                 }
                 if (!/^[a-zA-Z\s]+$/.test(name)) {
-                    alert('Exercise name must contain letters only.');
+                    this.showToast('Exercise name must contain letters only', { duration: 3000 });
                     return;
                 }
                 if (name.length > 20) {
-                    alert('Exercise name must be 20 characters or less.');
+                    this.showToast('Exercise name must be 20 characters or less', { duration: 3000 });
                     return;
                 }
                 
@@ -10715,15 +10554,15 @@ async createPalCode() {
                 
                 // Validate
                 if (!newName) {
-                    alert('Category name is required.');
+                    this.showToast('Category name is required', { duration: 3000 });
                     return;
                 }
                 if (!/^[a-zA-Z\s]+$/.test(newName)) {
-                    alert('Category name must contain letters only.');
+                    this.showToast('Category name must contain letters only', { duration: 3000 });
                     return;
                 }
                 if (newName.length > 20) {
-                    alert('Category name must be 20 characters or less.');
+                    this.showToast('Category name must be 20 characters or less', { duration: 3000 });
                     return;
                 }
                 
@@ -10746,15 +10585,15 @@ async createPalCode() {
                 
                 // Validate
                 if (!newName) {
-                    alert('Exercise name is required.');
+                    this.showToast('Exercise name is required', { duration: 3000 });
                     return;
                 }
                 if (!/^[a-zA-Z\s]+$/.test(newName)) {
-                    alert('Exercise name must contain letters only.');
+                    this.showToast('Exercise name must contain letters only', { duration: 3000 });
                     return;
                 }
                 if (newName.length > 20) {
-                    alert('Exercise name must be 20 characters or less.');
+                    this.showToast('Exercise name must be 20 characters or less', { duration: 3000 });
                     return;
                 }
                 
@@ -11072,10 +10911,10 @@ async createPalCode() {
         });
     </script>
 
-<!-- PAL Code numeric prompt modal (for mobile numeric keyboard) -->
+<!-- Crew Code numeric prompt modal (for mobile numeric keyboard) -->
 <div id="palcode-prompt-overlay" style="display:none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 9999; align-items: center; justify-content: center;">
   <div style="width: min(360px, 90vw); background: #111; border: 1px solid rgba(255,255,255,0.12); border-radius: 14px; padding: 16px; box-shadow: 0 16px 50px rgba(0,0,0,0.5);">
-    <div id="palcode-prompt-message" style="font-size: 14px; font-weight: 700; color: rgba(255,255,255,0.92); margin-bottom: 10px;">Create your PAL Code (4 digits)</div>
+    <div id="palcode-prompt-message" style="font-size: 14px; font-weight: 700; color: rgba(255,255,255,0.92); margin-bottom: 10px;">Create your Crew Code (4 digits)</div>
     <input id="palcode-prompt-input" type="tel" inputmode="numeric" pattern="\\d{4}" maxlength="4" placeholder="0000" style="width: 100%; padding: 10px 12px; background: #08090b; border: 1px solid #1e2127; border-radius: 14px; color: #eceff1; font-size: 16px; box-sizing: border-box;" />
     <div style="display:flex; gap: 10px; margin-top: 12px;">
       <button id="palcode-prompt-cancel" style="flex:1; height: 38px; background: #2a2a2a; color: rgba(255,255,255,0.88); border: 1px solid rgba(255,255,255,0.12); border-radius: 14px; font-weight: 700; cursor: pointer;">Cancel</button>
