@@ -3709,6 +3709,11 @@ Perfect for unique exercises not in our list!
 <div class="success-message" id="add-pal-success" style="margin-top: 6px;">Pal added!</div>
 <div class="error-message" id="add-pal-error" style="margin-top: 6px;"></div>
 </div>
+<!-- Follow-back (v3.2) -->
+<div class="today-card" id="followback-card" style="display: none; border: 1px solid var(--primary-dark);">
+<div class="today-card-title">Added you</div>
+<div id="followback-list"></div>
+</div>
 <!-- MY CREW list (v3.0: collapsible) -->
 <div class="pals-section">
 <div onclick="app.toggleCrewList()" style="display: flex; justify-content: space-between; align-items: center; cursor: pointer; padding: 4px 0;">
@@ -3728,7 +3733,7 @@ Perfect for unique exercises not in our list!
 <div class="today-card-title">Crew activity</div>
 <div id="crew-feed-list" style="font-size: 12px; color: #7d838c;">Add to crews to see their activity here.</div>
 </div>
-<div class="today-card" id="crew-challenges-card">
+<div class="today-card" id="crew-challenges-card" style="display: none;">
 <div class="today-card-title" style="display: flex; justify-content: space-between; align-items: center;"><span>Challenges</span>
 <span>
 <button onclick="app.promptCreateChallenge()" style="background: none; border: 1px solid var(--primary); color: var(--primary); border-radius: 999px; padding: 3px 10px; font-size: 11px; cursor: pointer; font-family: inherit;">New</button>
@@ -4097,7 +4102,8 @@ Perfect for unique exercises not in our list!
                 habits: [], // Make it a Habit: { id, name, frequency: 'daily'|'weekly', completions: [dates] }
                 records: null, // v3.0 PRs: { longestDistance, bestStepsDay, bestRepsSession, bestWeekDistance, longestStreak, migrated }
                 steppasGiven: {}, // v3.0: Steppas I've sent, keyed palCode|ts
-                challengeIds: [], // v3.0: challenge codes I'm in
+                challengeIds: [], // v3.0: challenge codes I'm in (feature currently disabled)
+                followBackHandled: {}, // v3.2: dismissed follow-back prompts
                 customCategories: [], // Custom Activity Categories: { id, name, exercises: [{id, name, trackingType: 'reps'|'distance'|'logday'}] }
                 milestones: [],
                 currentView: {
@@ -4175,7 +4181,7 @@ Perfect for unique exercises not in our list!
                 this.renderToday();
                 this.renderMonthHero();
                 this.refreshPalDocs();
-                this.updateChallengeProgress();
+                this.checkFollowBacks();
 
                 // Enter / Go on the keypad saves the pending activity
                 const valueInput = document.getElementById('value-entry-input');
@@ -5490,6 +5496,106 @@ Perfect for unique exercises not in our list!
                 }
             },
 
+            // ---------- Follow-back (v3.2) ----------
+            async checkFollowBacks() {
+                if (!this.db || !this.data.pals.myPalCode) return;
+                try {
+                    const snap = await this.db.collection('users').doc(this.data.pals.myPalCode).get();
+                    if (!snap.exists) return;
+                    this._myDoc = snap.data();
+                } catch (e) {
+                    console.error('Own-doc read failed:', e);
+                    return;
+                }
+                this.renderFollowBacks();
+            },
+
+            renderFollowBacks() {
+                const card = document.getElementById('followback-card');
+                const list = document.getElementById('followback-list');
+                if (!card || !list) return;
+
+                const addedBy = (this._myDoc && this._myDoc.addedBy) || {};
+                if (!this.data.followBackHandled) this.data.followBackHandled = {};
+
+                const entries = Object.keys(addedBy)
+                    .filter(code => code !== this.data.pals.myPalCode)
+                    .map(code => ({
+                        code,
+                        name: (addedBy[code] && addedBy[code].name) || code,
+                        inCrew: !!this.data.pals.friends.find(f => f.palCode === code),
+                        dismissed: !!this.data.followBackHandled[code]
+                    }))
+                    .filter(e => !e.inCrew && !e.dismissed);
+
+                list.innerHTML = '';
+                if (!entries.length) { card.style.display = 'none'; return; }
+
+                entries.forEach(e => {
+                    const row = document.createElement('div');
+                    row.style.cssText = 'display:flex;justify-content:space-between;align-items:center;padding:7px 0;';
+                    const label = document.createElement('div');
+                    label.style.cssText = 'font-size:13px;color:#eceff1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;';
+                    label.textContent = `${e.name} added you`;
+                    const btns = document.createElement('div');
+                    btns.style.cssText = 'display:flex;gap:6px;flex:0 0 auto;';
+                    const add = document.createElement('button');
+                    add.style.cssText = 'padding:5px 12px;background:var(--primary);color:var(--on-accent);border:none;border-radius:999px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;';
+                    add.textContent = 'Add back';
+                    add.onclick = () => this.followBack(e.code);
+                    const dismiss = document.createElement('button');
+                    dismiss.style.cssText = 'padding:5px 10px;background:none;border:1px solid #1e2127;color:#7d838c;border-radius:999px;font-size:12px;cursor:pointer;font-family:inherit;';
+                    dismiss.textContent = 'Dismiss';
+                    dismiss.onclick = () => {
+                        this.data.followBackHandled[e.code] = true;
+                        this.saveData();
+                        this.renderFollowBacks();
+                    };
+                    btns.appendChild(add); btns.appendChild(dismiss);
+                    row.appendChild(label); row.appendChild(btns);
+                    list.appendChild(row);
+                });
+                card.style.display = 'block';
+            },
+
+            async followBack(code) {
+                if (!this.db) return;
+                try {
+                    const doc = await this.db.collection('users').doc(code).get();
+                    if (!doc.exists) { this.showToast('That Crew Code no longer exists', { duration: 3000 }); return; }
+                    if (!this.data.pals.friends.find(f => f.palCode === code)) {
+                        const palData = doc.data();
+                        this.data.pals.friends.push({
+                            palCode: code,
+                            displayName: palData.displayName || code,
+                            stats: palData.stats || {},
+                            shareWeightWithPals: palData.shareWeightWithPals || false,
+                            lastSync: new Date().toISOString()
+                        });
+                        this.saveData();
+                        this.updatePalsUI();
+                        this.updateCrewCount();
+                        // reciprocal marker so they see we're connected
+                        if (this.data.pals.myPalCode) {
+                            this.db.collection('users').doc(code).set({
+                                addedBy: {
+                                    [this.data.pals.myPalCode]: {
+                                        name: this.data.pals.displayName || this.data.pals.myPalCode,
+                                        ts: new Date().toISOString()
+                                    }
+                                }
+                            }, { merge: true }).catch(() => {});
+                        }
+                    }
+                    this.showToast('Added to your crew');
+                    this.renderFollowBacks();
+                    this.refreshPalDocs();
+                } catch (e) {
+                    console.error('Follow back failed:', e);
+                    this.showToast('Could not add — try again', { duration: 3000 });
+                }
+            },
+
             toggleCrewList() {
                 const wrap = document.getElementById('crew-list-wrap');
                 const chev = document.getElementById('crew-list-chevron');
@@ -5525,18 +5631,7 @@ Perfect for unique exercises not in our list!
                 txt.textContent = `${name} · ${actName} · ${this.timeAgo(ev.ts)}`;
                 left.appendChild(av); left.appendChild(txt);
                 row.appendChild(left);
-                if (palCode) {
-                    const btn = document.createElement('button');
-                    btn.className = 'steppa-btn';
-                    btn.title = 'Send a Steppa';
-                    btn.setAttribute('aria-label', 'Send a Steppa');
-                    const givenKey = `${palCode}|${ev.ts}`;
-                    const given = this.data.steppasGiven && this.data.steppasGiven[givenKey];
-                    if (given) btn.classList.add('given');
-                    btn.innerHTML = this.icon('muscle', 13) + (steppaCount ? ` ${steppaCount}` : '');
-                    btn.onclick = () => this.giveSteppa(palCode, ev.ts, btn);
-                    row.appendChild(btn);
-                }
+                // v3.2: Steppa interactions disabled for now (machinery kept dormant)
                 return row;
             },
 
@@ -7568,7 +7663,7 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
                 if (screenName === 'crew') {
                     this.updateCrewCount();
                     this.refreshPalDocs();
-                    this.renderChallenges();
+                    this.checkFollowBacks();
                     // Merged tab must refresh the leaderboard on entry, or new
                     // members who joined since app-load never appear
                     this.renderLeaderboard();
@@ -9458,7 +9553,6 @@ async createPalCode() {
                         .set(payload, { merge: true });
 
                     console.log('✅ Stats synced to Firebase');
-                    this.updateChallengeProgress();
                 } catch (error) {
                     console.error('Error syncing stats:', error);
                 }
@@ -9523,6 +9617,19 @@ async createPalCode() {
 
                     this.saveData();
                     this.updatePalsUI();
+                    this.updateCrewCount();
+
+                    // v3.2: leave a marker on their doc so they can follow back
+                    if (this.data.pals.myPalCode) {
+                        this.db.collection('users').doc(code).set({
+                            addedBy: {
+                                [this.data.pals.myPalCode]: {
+                                    name: this.data.pals.displayName || this.data.pals.myPalCode,
+                                    ts: new Date().toISOString()
+                                }
+                            }
+                        }, { merge: true }).catch(e => console.error('Follow marker failed:', e));
+                    }
 
                     document.getElementById('add-pal-code').value = '';
                     successEl.classList.add('show');
@@ -9536,11 +9643,20 @@ async createPalCode() {
 
             // Remove pal
             removePal(palCode) {
-                if (!confirm(`Remove this pal?`)) return;
+                if (!confirm('Remove them from your crew?')) return;
 
                 this.data.pals.friends = this.data.pals.friends.filter(f => f.palCode !== palCode);
                 this.saveData();
                 this.updatePalsUI();
+                this.updateCrewCount();
+
+                // v3.2: withdraw our marker from their doc so their
+                // "added you" list stays truthful
+                if (this.db && this.data.pals.myPalCode) {
+                    this.db.collection('users').doc(palCode).set({
+                        addedBy: { [this.data.pals.myPalCode]: firebase.firestore.FieldValue.delete() }
+                    }, { merge: true }).catch(e => console.error('Marker removal failed:', e));
+                }
             },
 
             // Refresh pal's stats
