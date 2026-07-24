@@ -1662,7 +1662,31 @@
         .pal-id-display {
             font-size: 10px;
             color: #6b7280;
+            margin-bottom: 4px;
+        }
+
+        .pal-fresh-dot {
+            display: inline-block;
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            margin-left: 6px;
+            vertical-align: 1px;
+            flex-shrink: 0;
+        }
+
+        .pal-last-seen {
+            font-size: 10px;
+            color: #7d838c;
             margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+
+        .pal-last-seen strong {
+            color: #b6bcc4;
+            font-weight: 600;
+            margin: 0 2px;
         }
 
         .pal-activity-report {
@@ -3810,7 +3834,7 @@ Perfect for unique exercises not in our list!
         </a>
 <button class="welcome-button" onclick="app.closeWelcome()">Let's Go</button>
 <div style="text-align: center; color: #6b7280; font-size: 11px; margin-top: 16px;">
-            v3.1.1
+            v3.1.2
         </div>
 </div>
 <!-- Customize Dashboard Modal -->
@@ -4084,7 +4108,7 @@ Perfect for unique exercises not in our list!
 </div>
 <script>
         // App Version
-        const APP_VERSION = '3.1.1';
+        const APP_VERSION = '3.1.2';
         
         // Main App Object
         const app = {
@@ -5443,6 +5467,42 @@ Perfect for unique exercises not in our list!
                 return `${Math.floor(mins / 1440)}d`;
             },
 
+            // ---------- Crew freshness helpers ----------
+            // A pal doc's lastUpdated can be a Firestore Timestamp (serverTimestamp),
+            // an ISO string from older clients, or missing. Normalize to ISO.
+            palLastUpdatedISO(d) {
+                if (!d) return null;
+                const lu = d.lastUpdated;
+                if (lu && typeof lu.toDate === 'function') {
+                    try { return lu.toDate().toISOString(); } catch (e) { /* fall through */ }
+                }
+                if (typeof lu === 'string' && !isNaN(new Date(lu))) return lu;
+                if (typeof d.lastUpdatedISO === 'string' && !isNaN(new Date(d.lastUpdatedISO))) return d.lastUpdatedISO;
+                return null;
+            },
+
+            // 'YYYY-MM-DD' -> "Today" / "Yesterday" / "3 days ago"
+            formatLastActivityDate(dateStr) {
+                if (!dateStr) return 'No activity yet';
+                const today = this.localDateStr(new Date());
+                if (dateStr === today) return 'Today';
+                const days = this.daysBetween(dateStr, today);
+                if (days === 1) return 'Yesterday';
+                if (days < 7) return `${days} days ago`;
+                if (days < 14) return 'Last week';
+                return `${days} days ago`;
+            },
+
+            // Accent = fresh (<16h), gray = day-old (<32h), dark = stale. Mirrors leaderboard.
+            palFreshnessColor(iso) {
+                if (!iso) return '#3a3f47';
+                const hrs = (Date.now() - new Date(iso)) / 3600000;
+                if (!isFinite(hrs)) return '#3a3f47';
+                if (hrs < 16) return 'var(--primary)';
+                if (hrs < 32) return '#7d838c';
+                return '#3a3f47';
+            },
+
             // ---------- Month hero (v3.1: replaces heatmap) ----------
             renderMonthHero() {
                 const pctEl = document.getElementById('month-hero-pct');
@@ -5702,6 +5762,8 @@ Perfect for unique exercises not in our list!
                                     friend.stats = d.stats || {};
                                     friend.displayName = d.displayName || f.palCode;
                                     friend.shareWeightWithPals = d.shareWeightWithPals || false;
+                                    friend.lastActivityDate = d.lastActivityDate || null;
+                                    friend.lastUpdatedAt = this.palLastUpdatedISO(d);
                                     friend.lastSync = new Date().toISOString();
                                 }
                             })
@@ -9692,6 +9754,8 @@ async createPalCode() {
                             friend.stats = palData.stats || {};
                             friend.displayName = palData.displayName || palCode;
                             friend.shareWeightWithPals = palData.shareWeightWithPals || false;
+                            friend.lastActivityDate = palData.lastActivityDate || null;
+                            friend.lastUpdatedAt = this.palLastUpdatedISO(palData);
                             friend.lastSync = new Date().toISOString();
                             this.saveData();
                             this.updatePalsUI();
@@ -9830,6 +9894,14 @@ async createPalCode() {
                     const stepsText = stepsValue >= 1000 ? (stepsValue / 1000).toFixed(1) + 'k' : stepsValue.toString();
                     const distanceValue = stats.thisWeekDistance || 0;
                     const distanceText = distanceValue.toFixed(1) + (unit === 'km' ? ' km' : ' mi');
+
+                    // Freshness: when they last logged, and when their data last reached us
+                    const lastUpdIso = pal.lastUpdatedAt || null;
+                    const freshColor = this.palFreshnessColor(lastUpdIso);
+                    const lastActText = this.formatLastActivityDate(pal.lastActivityDate);
+                    const syncedAgo = lastUpdIso ? this.timeAgo(lastUpdIso) : '';
+                    const syncedText = syncedAgo ? `synced ${syncedAgo} ago` : 'never synced';
+                    const freshTitle = `Last activity: ${lastActText} · ${syncedText}`;
                     
                     // Return pal card HTML
                     return `
@@ -9837,6 +9909,7 @@ async createPalCode() {
                             <div class="pal-header" onclick="app.togglePalExpanded('${pal.palCode}')">
                                 <div class="pal-header-info">
                                     <div class="pal-name">${this.esc(pal.displayName)}</div>
+                                    <span class="pal-fresh-dot" style="background:${freshColor};margin-left:0;" title="${this.esc(freshTitle)}"></span>
                                     <span class="pal-divider">•</span>
                                     <div class="pal-quick-stats">${stepsText} steps • ${distanceText}</div>
                                 </div>
@@ -9844,6 +9917,9 @@ async createPalCode() {
                             </div>
                             <div class="pal-stats-expanded">
                                 <div class="pal-id-display">Crew Code: ${pal.palCode}</div>
+                                <div class="pal-last-seen">
+                                    <span class="pal-fresh-dot" style="background:${freshColor};margin-left:0;margin-right:6px;"></span>Last activity: <strong>${this.esc(lastActText)}</strong> · ${this.esc(syncedText)}
+                                </div>
                                 ${activityTableHTML}
                                 <div class="pal-actions">
                                     <button class="pal-btn pal-btn-remove" onclick="app.removePal('${pal.palCode}')">Remove</button>
