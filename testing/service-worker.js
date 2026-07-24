@@ -1,10 +1,10 @@
-// JustStep Service Worker v3.1.2
+// JustStep Service Worker v3.1.1
 // Strategy:
 //   - Navigations (HTML): network-first, so deploys reach users on the next
 //     load, with cached index.html as the offline fallback.
 //   - Other same-origin GETs: cache-first with background fill.
 //   - Non-GET and cross-origin requests (Firebase etc.) pass through untouched.
-const CACHE_NAME = 'juststep-cache-v3.1.2';
+const CACHE_NAME = 'juststep-cache-v3.1.1';
 const OFFLINE_FALLBACK = './index.html';
 const FILES_TO_CACHE = [
   './',
@@ -16,7 +16,7 @@ const FILES_TO_CACHE = [
 ];
 
 self.addEventListener('install', (event) => {
-  console.log('Service Worker: Installing v3.1.2');
+  console.log('Service Worker: Installing v3.1.1');
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) =>
       // Cache core assets; ignore individual failures (e.g., missing icons)
@@ -27,7 +27,7 @@ self.addEventListener('install', (event) => {
 });
 
 self.addEventListener('activate', (event) => {
-  console.log('Service Worker: Activating v3.1.2');
+  console.log('Service Worker: Activating v3.1.1');
   event.waitUntil(
     caches.keys().then((keys) =>
       Promise.all(
