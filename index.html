@@ -383,6 +383,129 @@
         .challenge-bar-track { background: #1e2127; border-radius: 999px; height: 8px; overflow: hidden; margin-top: 4px; }
         .challenge-bar-fill { height: 100%; border-radius: 999px; }
 
+        /* ---------- Bottom sheet (v3.2: crew activity) ---------- */
+        .sheet-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.62);
+            -webkit-backdrop-filter: blur(3px);
+            backdrop-filter: blur(3px);
+            z-index: 1400;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.22s ease;
+        }
+        .sheet-overlay.show { opacity: 1; pointer-events: auto; }
+
+        .bottom-sheet {
+            position: fixed; left: 0; right: 0; bottom: 0;
+            z-index: 1500;
+            background: #101216;
+            border-top: 1px solid #1e2127;
+            border-radius: 20px 20px 0 0;
+            box-shadow: 0 -12px 40px rgba(0,0,0,0.55);
+            max-height: 82vh;
+            display: flex;
+            flex-direction: column;
+            transform: translateY(101%);
+            transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+            padding-bottom: env(safe-area-inset-bottom, 0px);
+            visibility: hidden;
+        }
+        .bottom-sheet.show { transform: translateY(0); visibility: visible; }
+        .bottom-sheet.dragging { transition: none; }
+
+        .sheet-grip-area {
+            padding: 8px 0 2px;
+            cursor: grab;
+            touch-action: none;
+            flex: 0 0 auto;
+        }
+        .sheet-grip {
+            width: 36px; height: 4px;
+            border-radius: 999px;
+            background: #2a2e35;
+            margin: 0 auto;
+        }
+        .sheet-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 6px 16px 10px;
+            border-bottom: 1px solid #16181c;
+            flex: 0 0 auto;
+        }
+        .sheet-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #eceff1;
+        }
+        .sheet-subtitle {
+            font-size: 11px;
+            color: #6b7280;
+            margin-top: 2px;
+        }
+        .sheet-close {
+            background: #16181c;
+            border: 1px solid #1e2127;
+            color: #b6bcc4;
+            width: 30px; height: 30px;
+            border-radius: 50%;
+            font-size: 17px;
+            line-height: 1;
+            cursor: pointer;
+            flex: 0 0 auto;
+            display: flex; align-items: center; justify-content: center;
+            font-family: inherit;
+        }
+        .sheet-close:active { background: #1e2127; }
+
+        .sheet-body {
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            overscroll-behavior: contain;
+            padding: 4px 16px 20px;
+            flex: 1 1 auto;
+        }
+        .sheet-day-label {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--primary-light);
+            padding: 12px 0 4px;
+            position: sticky;
+            top: 0;
+            background: #101216;
+        }
+        .sheet-empty {
+            text-align: center;
+            color: #6b7280;
+            font-size: 13px;
+            padding: 28px 0;
+        }
+
+        /* Tappable preview card */
+        .feed-preview-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            margin-bottom: 8px;
+        }
+        .feed-view-all {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--primary);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+            padding: 2px 0;
+            display: flex;
+            align-items: center;
+            gap: 3px;
+        }
+
         /* Quick chips, value entry, today's log, toasts (v2.2.2) */
         .section-label-mini {
             font-size: 11px;
@@ -3754,7 +3877,10 @@ Perfect for unique exercises not in our list!
 </div>
 </div>
 <div class="today-card" id="crew-feed-card" style="margin-top: 16px;">
-<div class="today-card-title">Crew activity</div>
+<div class="feed-preview-head" onclick="app.openCrewFeed()">
+<div class="today-card-title" style="margin: 0;">Crew activity</div>
+<button class="feed-view-all" id="crew-feed-viewall" onclick="event.stopPropagation(); app.openCrewFeed();">View all <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
+</div>
 <div id="crew-feed-list" style="font-size: 12px; color: #7d838c;">Add to crews to see their activity here.</div>
 </div>
 <div class="today-card" id="crew-challenges-card" style="display: none;">
@@ -3798,6 +3924,19 @@ Perfect for unique exercises not in our list!
 </div>
 <!-- Milestone Notification -->
 <div class="overlay" id="overlay" onclick="app.closeMilestone()"></div>
+<!-- Crew activity bottom sheet (v3.2) -->
+<div class="sheet-overlay" id="crew-feed-overlay" onclick="app.closeCrewFeed()"></div>
+<div class="bottom-sheet" id="crew-feed-sheet" role="dialog" aria-modal="true" aria-labelledby="crew-feed-sheet-title">
+<div class="sheet-grip-area" id="crew-feed-grip"><div class="sheet-grip"></div></div>
+<div class="sheet-header">
+<div>
+<div class="sheet-title" id="crew-feed-sheet-title">Crew activity</div>
+<div class="sheet-subtitle" id="crew-feed-sheet-sub">Everything your crew has logged</div>
+</div>
+<button class="sheet-close" onclick="app.closeCrewFeed()" aria-label="Close">×</button>
+</div>
+<div class="sheet-body" id="crew-feed-sheet-body"></div>
+</div>
 <div class="milestone-notification" id="milestone-notification">
 <div class="milestone-icon-large" id="milestone-icon" style="color: var(--primary);"><svg viewBox="0 0 24 24" width="44" height="44" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v6a5 5 0 0 1-10 0V4z"/><path d="M7 6H4a3 3 0 0 0 3 4M17 6h3a3 3 0 0 1-3 4"/></svg></div>
 <div class="milestone-title" id="milestone-title">Milestone Reached</div>
@@ -3834,7 +3973,7 @@ Perfect for unique exercises not in our list!
         </a>
 <button class="welcome-button" onclick="app.closeWelcome()">Let's Go</button>
 <div style="text-align: center; color: #6b7280; font-size: 11px; margin-top: 16px;">
-            v3.1.2
+            v3.2.0
         </div>
 </div>
 <!-- Customize Dashboard Modal -->
@@ -4108,7 +4247,7 @@ Perfect for unique exercises not in our list!
 </div>
 <script>
         // App Version
-        const APP_VERSION = '3.1.2';
+        const APP_VERSION = '3.2.0';
         
         // Main App Object
         const app = {
@@ -5697,9 +5836,8 @@ Perfect for unique exercises not in our list!
                 return row;
             },
 
-            renderCrewFeed() {
-                const list = document.getElementById('crew-feed-list');
-                if (!list) return;
+            // Shared source of truth for both the preview card and the sheet
+            getCrewFeedRows() {
                 const docs = this._palDocs || {};
                 const rows = [];
                 Object.keys(docs).forEach(code => {
@@ -5711,12 +5849,149 @@ Perfect for unique exercises not in our list!
                     });
                 });
                 rows.sort((a, b) => (b.ev.ts || '').localeCompare(a.ev.ts || ''));
+                return rows;
+            },
+
+            renderCrewFeed() {
+                const list = document.getElementById('crew-feed-list');
+                if (!list) return;
+                const rows = this.getCrewFeedRows();
+                const viewAll = document.getElementById('crew-feed-viewall');
+
                 list.innerHTML = '';
                 if (!rows.length) {
                     list.textContent = 'Add to crews to see their activity here.';
+                    if (viewAll) viewAll.style.display = 'none';
                     return;
                 }
-                rows.slice(0, 12).forEach(r => list.appendChild(this.buildFeedRow(r.name, r.accent, r.ev, r.code, r.kc)));
+                if (viewAll) {
+                    viewAll.style.display = 'flex';
+                    const labelNode = viewAll.firstChild;
+                    if (labelNode && labelNode.nodeType === 3) {
+                        labelNode.textContent = rows.length > 3 ? `View all ${rows.length} ` : 'View all ';
+                    }
+                }
+                // Preview shows the 3 freshest; the sheet has the rest
+                rows.slice(0, 3).forEach(r => list.appendChild(this.buildFeedRow(r.name, r.accent, r.ev, r.code, r.kc)));
+
+                // Keep an open sheet in sync with fresh data
+                const sheet = document.getElementById('crew-feed-sheet');
+                if (sheet && sheet.classList.contains('show')) this.renderCrewFeedSheet();
+            },
+
+            // 'YYYY-MM-DD' -> "Today" / "Yesterday" / "Mon, Jul 21"
+            feedDayLabel(dateStr) {
+                if (!dateStr) return 'Earlier';
+                const today = this.localDateStr(new Date());
+                if (dateStr === today) return 'Today';
+                const y = new Date(); y.setDate(y.getDate() - 1);
+                if (dateStr === this.localDateStr(y)) return 'Yesterday';
+                const d = /^\d{4}-\d{2}-\d{2}$/.test(dateStr) ? new Date(dateStr + 'T12:00:00') : new Date(dateStr);
+                if (isNaN(d)) return 'Earlier';
+                return d.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' });
+            },
+
+            renderCrewFeedSheet() {
+                const body = document.getElementById('crew-feed-sheet-body');
+                const sub = document.getElementById('crew-feed-sheet-sub');
+                if (!body) return;
+                const rows = this.getCrewFeedRows();
+                body.innerHTML = '';
+
+                if (!rows.length) {
+                    const p = document.createElement('div');
+                    p.className = 'sheet-empty';
+                    p.textContent = 'Nothing yet. Add crew members and their logs will show up here.';
+                    body.appendChild(p);
+                    if (sub) sub.textContent = 'No activity to show';
+                    return;
+                }
+
+                const crewNames = new Set(rows.map(r => r.name));
+                if (sub) sub.textContent = `${rows.length} ${rows.length === 1 ? 'entry' : 'entries'} from ${crewNames.size} ${crewNames.size === 1 ? 'member' : 'members'}`;
+
+                // Group by day, newest first
+                let currentDay = null;
+                rows.forEach(r => {
+                    const day = r.ev.d || '';
+                    if (day !== currentDay) {
+                        currentDay = day;
+                        const label = document.createElement('div');
+                        label.className = 'sheet-day-label';
+                        label.textContent = this.feedDayLabel(day);
+                        body.appendChild(label);
+                    }
+                    body.appendChild(this.buildFeedRow(r.name, r.accent, r.ev, r.code, r.kc));
+                });
+            },
+
+            openCrewFeed() {
+                const sheet = document.getElementById('crew-feed-sheet');
+                const ov = document.getElementById('crew-feed-overlay');
+                if (!sheet || !ov) return;
+                this.renderCrewFeedSheet();
+                ov.classList.add('show');
+                // next frame so the transform transition actually runs
+                requestAnimationFrame(() => sheet.classList.add('show'));
+                document.body.style.overflow = 'hidden';
+                this._bindCrewSheetGestures();
+                if (!this._crewSheetEsc) {
+                    this._crewSheetEsc = (e) => { if (e.key === 'Escape') this.closeCrewFeed(); };
+                    document.addEventListener('keydown', this._crewSheetEsc);
+                }
+                // Pull fresh data while it's open
+                this.refreshPalDocs();
+            },
+
+            closeCrewFeed() {
+                const sheet = document.getElementById('crew-feed-sheet');
+                const ov = document.getElementById('crew-feed-overlay');
+                if (sheet) {
+                    sheet.classList.remove('show', 'dragging');
+                    sheet.style.transform = '';
+                }
+                if (ov) ov.classList.remove('show');
+                document.body.style.overflow = '';
+                if (this._crewSheetEsc) {
+                    document.removeEventListener('keydown', this._crewSheetEsc);
+                    this._crewSheetEsc = null;
+                }
+            },
+
+            // Drag the grip down to dismiss
+            _bindCrewSheetGestures() {
+                const grip = document.getElementById('crew-feed-grip');
+                const sheet = document.getElementById('crew-feed-sheet');
+                if (!grip || !sheet || grip._bound) return;
+                grip._bound = true;
+
+                let startY = 0, dy = 0, active = false;
+
+                const start = (y) => { active = true; startY = y; dy = 0; sheet.classList.add('dragging'); };
+                const move = (y) => {
+                    if (!active) return;
+                    dy = Math.max(0, y - startY);
+                    sheet.style.transform = `translateY(${dy}px)`;
+                };
+                const end = () => {
+                    if (!active) return;
+                    active = false;
+                    sheet.classList.remove('dragging');
+                    sheet.style.transform = '';
+                    if (dy > 90) this.closeCrewFeed();
+                };
+
+                grip.addEventListener('touchstart', (e) => start(e.touches[0].clientY), { passive: true });
+                grip.addEventListener('touchmove', (e) => move(e.touches[0].clientY), { passive: true });
+                grip.addEventListener('touchend', end);
+                grip.addEventListener('touchcancel', end);
+                grip.addEventListener('mousedown', (e) => {
+                    start(e.clientY);
+                    const mm = (ev) => move(ev.clientY);
+                    const mu = () => { end(); document.removeEventListener('mousemove', mm); document.removeEventListener('mouseup', mu); };
+                    document.addEventListener('mousemove', mm);
+                    document.addEventListener('mouseup', mu);
+                });
             },
 
             async giveSteppa(palCode, ts, btn) {
@@ -7718,6 +7993,9 @@ const initialWeightInput = document.getElementById('initial-weight-preference');
 
             // Show screen
             showScreen(screenName) {
+                // Any open sheet shouldn't survive a tab change
+                this.closeCrewFeed();
+
                 // v3.0: migrate legacy screen names to the new tab set
                 const migrate = { dashboard: 'progress', calendar: 'progress', pals: 'crew', leaderboard: 'crew' };
                 screenName = migrate[screenName] || screenName;
