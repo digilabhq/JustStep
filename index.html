@@ -3810,7 +3810,7 @@ Perfect for unique exercises not in our list!
         </a>
 <button class="welcome-button" onclick="app.closeWelcome()">Let's Go</button>
 <div style="text-align: center; color: #6b7280; font-size: 11px; margin-top: 16px;">
-            v3.1.0
+            v3.1.1
         </div>
 </div>
 <!-- Customize Dashboard Modal -->
@@ -4084,7 +4084,7 @@ Perfect for unique exercises not in our list!
 </div>
 <script>
         // App Version
-        const APP_VERSION = '3.1.0';
+        const APP_VERSION = '3.1.1';
         
         // Main App Object
         const app = {
@@ -5362,7 +5362,9 @@ Perfect for unique exercises not in our list!
                 const stats = this.calculateStats();
                 const unitPref = this.data.goals.unitPreference === 'km' ? 'km' : 'miles';
                 document.getElementById('today-stat-dist-label').textContent = unitPref === 'km' ? 'Km this week' : 'Miles this week';
-                const dist = unitPref === 'km' ? stats.thisWeekDistance : stats.thisWeekDistance / 1.60934;
+                // calculateStats() already returns distance in the user's preferred unit.
+                // Do NOT convert again here — that was dividing miles by 1.60934 a second time.
+                const dist = stats.thisWeekDistance || 0;
                 document.getElementById('today-stat-dist').textContent = dist >= 100 ? Math.round(dist) : dist.toFixed(1);
                 document.getElementById('today-stat-reps').textContent = (stats.thisWeekReps || 0).toLocaleString();
                 const steps = stats.thisWeekSteps || 0;
@@ -5688,13 +5690,29 @@ Perfect for unique exercises not in our list!
                 try {
                     const fetches = this.data.pals.friends.map(f =>
                         this.db.collection('users').doc(f.palCode).get()
-                            .then(snap => { if (snap.exists) this._palDocs[f.palCode] = snap.data(); })
+                            .then(snap => {
+                                if (!snap.exists) return;
+                                const d = snap.data();
+                                this._palDocs[f.palCode] = d;
+                                // Keep the locally cached friend record in sync too — the
+                                // MY CREW cards read from data.pals.friends, not _palDocs,
+                                // so without this they only updated on "Refresh All".
+                                const friend = this.data.pals.friends.find(x => x.palCode === f.palCode);
+                                if (friend) {
+                                    friend.stats = d.stats || {};
+                                    friend.displayName = d.displayName || f.palCode;
+                                    friend.shareWeightWithPals = d.shareWeightWithPals || false;
+                                    friend.lastSync = new Date().toISOString();
+                                }
+                            })
                             .catch(() => {})
                     );
                     await Promise.all(fetches);
+                    this.saveData();
                 } catch (e) { console.error('Pal refresh failed:', e); }
                 this.renderCrewFeed();
                 this.renderTodayCrew();
+                this.renderPalsList();
             },
 
             getRecentActivitiesForFeed() {
@@ -9487,7 +9505,10 @@ async createPalCode() {
                         joinWeightLeaderboard: this.data.pals.joinWeightLeaderboard || false,
                         shareWeightWithPals: this.data.pals.shareWeightWithPals || false,
                         lastActivityDate: this.getLastActivityDate() || today,
-                        lastUpdated: new Date().toISOString(),
+                        // Duplicate key: this was being overwritten by the serverTimestamp
+                        // `lastUpdated` further down, leaving readers with a Firestore
+                        // Timestamp object they tried to parse as a date string.
+                        lastUpdatedISO: new Date().toISOString(),
                         accentColor: this.getAccentHex(),
                         recentActivities: (this.data.pals.joinedLeaderboard ? this.getRecentActivitiesForFeed() : []),
                         stats: {
@@ -9808,7 +9829,7 @@ async createPalCode() {
                     const stepsValue = stats.thisWeekSteps || 0;
                     const stepsText = stepsValue >= 1000 ? (stepsValue / 1000).toFixed(1) + 'k' : stepsValue.toString();
                     const distanceValue = stats.thisWeekDistance || 0;
-                    const distanceText = distanceValue.toFixed(1) + ' mi';
+                    const distanceText = distanceValue.toFixed(1) + (unit === 'km' ? ' km' : ' mi');
                     
                     // Return pal card HTML
                     return `
@@ -9983,9 +10004,14 @@ async createPalCode() {
                         
                         // Calculate hours inactive for emoji status
                         let hoursInactive = 999;
-                        const lastTs = data.lastUpdated
-                            ? new Date(data.lastUpdated)
-                            : (lastActivity ? new Date(lastActivity + 'T12:00:00') : null);
+                        // lastUpdated may be a Firestore Timestamp (serverTimestamp) or an
+                        // ISO string from older clients — handle both, then fall back.
+                        const lu = data.lastUpdated;
+                        const lastTs = (lu && typeof lu.toDate === 'function')
+                            ? lu.toDate()
+                            : (lu ? new Date(lu)
+                                : (data.lastUpdatedISO ? new Date(data.lastUpdatedISO)
+                                    : (lastActivity ? new Date(lastActivity + 'T12:00:00') : null)));
                         if (lastTs && !isNaN(lastTs)) {
                             hoursInactive = Math.max(0, Math.floor((Date.now() - lastTs) / (1000 * 60 * 60)));
                         }
